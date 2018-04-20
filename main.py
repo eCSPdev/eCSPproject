@@ -16,15 +16,15 @@ app.debuger = True
 @app.route('/eCSP')
 @app.route('/eCSP/Home')
 def home():
-    return render_template('index.html')
+    return render_template('INDEX')
 
 @app.route('/eCSP/PLogin')
 def Plogin():
-    return "Patient Login Not Currently Available"
+    return 'Patient Login Not Currently Available'
 
 @app.route('/eCSP/DALogin')
 def DAlogin():
-    return "Doctor and Assistant Login Not Currently Available"
+    return 'Doctor and Assistant Login Not Currently Available'
 
 #######################################
 ######### Second Draft ################

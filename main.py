@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from handler.Assistant import AssistantHandler
 from handler.Doctor import DoctorHandler
 from handler.Patient import PatientHandler
@@ -10,10 +10,13 @@ from handler.Referral import ReferralHandler
 from handler.Result import ResultHandler
 
 app = Flask(__name__)
+app.debuger = True
 
+@app.route('/')
+@app.route('/eCSP')
 @app.route('/eCSP/Home')
 def home():
-    return 'Welcome to eCSP Home Page'
+    return render_template('index.html')
 
 @app.route('/eCSP/PLogin')
 def Plogin():
@@ -122,5 +125,5 @@ def getAllResult(rn):
 def getResultByID(rn, rid):
     return ResultHandler().getResultByID(rn, rid)
 
-if __name__=='__main__':
+if __name__== '__main__':
     app.run()

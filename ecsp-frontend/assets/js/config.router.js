@@ -25,7 +25,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     // APPLICATION ROUTES
     // -----------------------------------
     // For any unmatched url, redirect to /app/dashboard
-    $urlRouterProvider.otherwise("/app/ui/elements");
+    $urlRouterProvider.otherwise("/app/views/dashboard");
     //
     // Set up the states
     $stateProvider.state('app', {
@@ -35,8 +35,8 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         abstract: true
     }).state('app.dashboard', {
         url: "/dashboard",
-        templateUrl: "assets/views/dashboard.html",
-        resolve: loadSequence('jquery-sparkline', 'dashboardCtrl'),
+        templateUrl: "assets/views/homepage.html",
+        resolve: loadSequence('jquery-sparkline', 'homepageCtrl'),
         title: 'Dashboard',
         ncyBreadcrumb: {
             label: 'Dashboard'

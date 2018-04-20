@@ -365,7 +365,7 @@ $rootScope.app = {
 	abstract: true
 }).state('app.dashboard', {
 	url: "/dashboard",
-	templateUrl: "assets/views/dashboard.html",
+	templateUrl: "assets/views/homepage.html",
 	title: 'Dashboard'
 })</pre>
 			<p>
@@ -425,7 +425,7 @@ scripts: {
 	abstract: true 
 }).state('app.dashboard', {
 	url: "/dashboard",
-	templateUrl: "assets/views/dashboard.html",
+	templateUrl: "assets/views/homepage.html",
 	<mark>resolve: loadSequence('modernizr', 'toaster'),</mark>
 	title: 'Dashboard'
 })</pre>
@@ -447,7 +447,7 @@ scripts: {
 	abstract: true
 }).state('app.dashboard', {
 	url: "/dashboard",
-	templateUrl: "assets/views/dashboard.html",
+	templateUrl: "assets/views/homepage.html",
 	resolve: loadSequence('chartjs', 'tc.chartjs'),
 	title: 'Dashboard',
 	<mark>ncyBreadcrumb: {

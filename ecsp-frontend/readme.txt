@@ -1,3 +1,5 @@
+-- TEMPLATE README: IGNORE --
+
 1:  Please put the files on a Server or on a Local Development Web Server to preview.
 
 Then to access the preview, type in the address bar of the browser:

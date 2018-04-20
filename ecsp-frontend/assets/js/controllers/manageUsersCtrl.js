@@ -6,9 +6,9 @@
 app.controller('manageUsersCtrl', ["$scope", function ($scope) {
 
 
-    $scope.print = function () {
-        console.log("wepa");
-    };
+    // $scope.print = function () {
+    //     console.log("wepa");
+    // };
     
 
 

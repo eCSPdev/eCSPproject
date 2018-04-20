@@ -34,7 +34,8 @@ app.run(['$rootScope', '$state', '$stateParams', '$trace',
 			}
 		};
 		$rootScope.user = {
-			name: 'Peter',
+			name: 'Dr. Fulgencio',
+			lastName: 'Talavera',
 			job: 'ng-Dev',
 			picture: 'app/img/user/02.jpg'
         };
@@ -62,11 +63,13 @@ app.config(['$translateProvider',
 		$translateProvider.useSanitizeValueStrategy('sanitize');
 
 	}]);
+
 // configuration: Angular-Loading-Bar
 app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
 	cfpLoadingBarProvider.includeBar = true;
-	cfpLoadingBarProvider.includeSpinner = false; // way too trili
+	cfpLoadingBarProvider.includeSpinner = false;
 }]);
+
 //Custom UI Bootstrap Calendar Popup Template
 app.run(["$templateCache", function ($templateCache) {
 	$templateCache.put("uib/template/datepickerPopup/popup.html",

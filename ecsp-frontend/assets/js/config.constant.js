@@ -29,7 +29,7 @@ app.constant('JS_REQUIRES', {
 		'spectrum-plugin': ['bower_components/spectrum/spectrum.js', 'bower_components/spectrum/spectrum.css'],
 		
         //*** Controllers
-        'dashboardCtrl': 'assets/js/controllers/dashboardCtrl.js',
+        'homepageCtrl': 'assets/js/controllers/homepageCtrl.js',
         'manageUsersCtrl': 'assets/js/controllers/manageUsersCtrl.js',
         'managePatientsCtrl': 'assets/js/controllers/managePatientsCtrl.js',
         'iconsCtrl': 'assets/js/controllers/iconsCtrl.js',

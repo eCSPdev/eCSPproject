@@ -112,7 +112,8 @@ a {
   color: #007AFF;
 }
 a:hover, a:focus, a:active {
-  color: #004999;
+  /*color: #004999;*/
+  color: none;
 }
 
 h1, h2 {
@@ -11155,7 +11156,7 @@ td.small-width {
   display: block;
   font-size: 18px;
   font-weight: 300;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 #page-title .mainDescription small {
   font-size: 60%;
@@ -11170,7 +11171,7 @@ td.small-width {
   /*padding: 0 !important;*/
   position: absolute;
   /*right: 30px !important;*/
-  top: 80% !important;
+  top: 85% !important;
   width: auto !important;
   font-family: "Lato", sans-serif;
 }

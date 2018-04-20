@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from dao.Patient import PatientDAO
 
+## Luis Santiago ##
 class PatientHandler:
 
     def mapToDict(self,row):

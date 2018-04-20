@@ -1,0 +1,48 @@
+<div ng-controller="manageUsersCtrl">
+	<!-- start: DASHBOARD TITLE -->
+<!-- 	<section id="page-title" class="padding-top-15 padding-bottom-15">
+		<div class="row">
+			<div class="col-sm-7">
+				<h1 class="mainTitle"">Manage Users</h1>
+			</div>
+			<div ncy-breadcrumb></div>
+		</div>
+	</section> -->
+
+	<section id="page-title">
+	<div class="row">
+		<div class="col-sm-8">
+			<h1 class="mainTitle">eCSP</h1>
+		</div>
+		<div ncy-breadcrumb></div>
+	</div>
+</section>
+
+	<!-- end: DASHBOARD TITLE -->
+	<!-- start: FEATURED BOX LINKS -->
+	<div class="container-fluid container-fullw bg-white">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="panel panel-white no-radius text-center">
+					<a ui-sref="app.manage_patients"> <!-- Link to this page on click -->
+						<div class="panel-body" ng-click="print()"> <!-- Console log output -->
+
+							<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-smile-o fa-stack-1x fa-inverse"></i> </span>
+							<h2 class="StepTitle">Manage Patients</h2>
+
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="panel panel-white no-radius text-center">
+					<a ui-sref="app."
+					<div class="panel-body" ng-click="print()">
+						<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
+						<h2 class="StepTitle">Manage Assistants</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

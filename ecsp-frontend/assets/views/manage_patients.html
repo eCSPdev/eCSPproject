@@ -1,0 +1,72 @@
+<!-- <div ng-controller="managePatientsCtrl">
+ -->	<!-- start: DASHBOARD TITLE -->
+	<section id="page-title" class="padding-top-15 padding-bottom-15">
+		<div class="row">
+			<div class="col-sm-7">
+				<h1 class="mainTitle"">Manage Patients</h1>
+			</div>
+		</div>
+	</section>
+	<!-- end: DASHBOARD TITLE -->
+<!-- </div>
+ -->
+
+
+<div class="container-fluid container-fullw bg-white" ng-controller="managePatientsCtrl">
+  <div class="row">
+  	<div class="col-md-12">
+	  <form>
+	    <div class="form-group">
+	      <div class="input-group">
+	        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+	        <input type="text" class="form-control" placeholder="Search Patients" ng-model="patientSearch">
+	      </div>      
+	    </div>
+	  </form>
+	  
+	  <table class="table table-bordered table-striped">
+	    
+	    <thead>
+	      <tr>
+	        <td>
+	          <a href="#" ng-click="sortType = 'record'; sortReverse = !sortReverse">
+	            Record 
+	            <span ng-show="sortType == 'record' && !sortReverse" class="fa fa-caret-down"></span>
+	            <span ng-show="sortType == 'record' && sortReverse" class="fa fa-caret-up"></span>
+	          </a>
+	        </td>
+	        <td>
+	          <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+	          Name 
+	            <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+	            <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+	          </a>
+	        </td>
+	        <td>
+	          <a href="#" ng-click="sortType = 'status'; sortReverse = !sortReverse">
+	          Status 
+	            <span ng-show="sortType == 'status' && !sortReverse" class="fa fa-caret-down"></span>
+	            <span ng-show="sortType == 'status' && sortReverse" class="fa fa-caret-up"></span>
+	          </a>
+	        </td>
+	        <td>
+	          <a href="#">
+	          Action 
+	          </a>
+	        </td>
+	      </tr>
+	    </thead>
+	    
+	    <tbody>
+	      <tr ng-repeat="patient in patients | orderBy:sortType:sortReverse | filter:patientSearch">
+	        <td>{{ patient.record }}</td>
+	        <td>{{ patient.name }}</td>
+	        <td>{{ patient.status }}</td>
+	      </tr>
+	    </tbody>
+	    
+	  </table>
+	</div>
+</div>
+  
+</div>

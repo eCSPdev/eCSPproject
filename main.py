@@ -23,10 +23,8 @@ def Plogin():
 def DAlogin():
     return "Doctor and Assistant Login Not Currently Available"
 
-
-
 #######################################
-########Doctor's Routes################
+######### Second Draft ################
 #######################################
 
 #Get the Doctor Personal Information by Doctor ID
@@ -49,6 +47,7 @@ def getAllAssistant():
 
 #Get an Assistant Personal Information by Assistant ID
 @app.route('/eCSP/Doctor/Assistant/PersonalInformation', methods=['GET', 'PUT', 'POST'])
+@app.route('/eCSP/Assistant/PersonalInformation', methods=['GET', 'PUT', 'POST'])
 def getAssistantByID():
     if request.method == 'GET':
         return AssistantHandler().getAssistantByID(request.form)
@@ -61,6 +60,7 @@ def getAssistantByID():
 
 #Get Patient List
 @app.route('/eCSP/Doctor/PatientList', methods=['GET'])
+@app.route('/eCSP/Assistant/PatientList', methods=['GET'])
 def getAllMedicalRecord():
     if request.method == 'GET':
         return MedicalRecordHandler().getAllMedicalRecord()
@@ -69,6 +69,8 @@ def getAllMedicalRecord():
 
 #Get a Patient Personal Information by PatientID
 @app.route('/eCSP/Doctor/Patient/PersonalInformation', methods=['GET', 'PUT', 'POST'])
+@app.route('/eCSP/Assistant/Patient/PersonalInformation', methods=['GET', 'PUT', 'POST'])
+@app.route('/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT', 'POST'])
 def getPatientByID():
     if request.method == 'GET':
         return PatientHandler().getPatientByID(request.form)
@@ -81,6 +83,8 @@ def getPatientByID():
 
 #Get Patient Consultation Note List
 @app.route('/eCSP/Doctor/Patient/ConsultationNotesList', methods=['GET'])
+@app.route('/eCSP/Assistant/Patient/ConsultationNotesList', methods=['GET'])
+@app.route('/eCSP/Patient/ConsultationNotesList', methods=['GET'])
 def getAllConsultationNotes():
     if request.method == 'GET':
         return ConsultationNotesHandler().getAllColsultationNotes(request.form)
@@ -89,6 +93,8 @@ def getAllConsultationNotes():
 
 #Get Patient Consultation Note Information
 @app.route('/eCSP/Doctor/Patient/ConsultationNotes', methods=['GET','POST'])
+@app.route('/eCSP/Assistant/Patient/ConsultationNotes', methods=['GET','POST'])
+@app.route('/eCSP/Patient/ConsultationNotes', methods=['GET','POST'])
 def getConsultationNotesByID():
     if request.method == 'GET':
         return ConsultationNotesHandler().getConsultationNotesByID(request.form)
@@ -99,6 +105,8 @@ def getConsultationNotesByID():
 
 #Get Patient Initial Form List
 @app.route('/eCSP/Doctor/Patient/InitialFormList', methods=['GET'])
+@app.route('/eCSP/Assistant/Patient/InitialFormList', methods=['GET'])
+@app.route('/eCSP/Patient/InitialFormList', methods=['GET'])
 def getAllInitialForm():
     if request.method == 'GET':
         return InitialFormHandler().getAllInitialForm(request.form)
@@ -107,6 +115,8 @@ def getAllInitialForm():
 
 #Get Patient Initial Form Information
 @app.route('/eCSP/Doctor/Patient/InitialForm', methods=['GET','POST'])
+@app.route('/eCSP/Assistant/Patient/InitialForm', methods=['GET','POST'])
+@app.route('/eCSP/Patient/InitialForm', methods=['GET','POST'])
 def getInitialFormByID():
     if request.method == 'GET':
         return InitialFormHandler().getInitialFormByID(request.form)
@@ -117,6 +127,8 @@ def getInitialFormByID():
 
 #Get Patient Prescription List
 @app.route('/eCSP/Doctor/Patient/PrescriptionList', methods=['GET'])
+@app.route('/eCSP/Assistant/Patient/PrescriptionList', methods=['GET'])
+@app.route('/eCSP/Patient/PrescriptionList', methods=['GET'])
 def getAllPrescription():
     if request.method == 'GET':
         return PrescriptionHandler().getAllPrescription(request.form)
@@ -125,6 +137,8 @@ def getAllPrescription():
 
 #Get Patient Prescription Information
 @app.route('/eCSP/Doctor/Patient/Prescription', methods=['GET','POST'])
+@app.route('/eCSP/Assistant/Patient/Prescription', methods=['GET','POST'])
+@app.route('/eCSP/Patient/Prescription', methods=['GET','POST'])
 def getPrescriptionByID():
     if request.method == 'GET':
         return PrescriptionHandler().getPrescriptionByID(request.form)
@@ -135,6 +149,8 @@ def getPrescriptionByID():
 
 #Get Patient Referral List
 @app.route('/eCSP/Doctor/Patient/ReferralList', methods=['GET'])
+@app.route('/eCSP/Assistant/Patient/ReferralList', methods=['GET'])
+@app.route('/eCSP/Patient/ReferralList', methods=['GET'])
 def getAllReferral():
     if request.method == 'GET':
         return ReferralHandler().getAllReferral(request.form)
@@ -143,6 +159,8 @@ def getAllReferral():
 
 #Get Patient Referral Information
 @app.route('/eCSP/Doctor/Patient/Referral', methods=['GET','POST'])
+@app.route('/eCSP/Assistant/Patient/Referral', methods=['GET','POST'])
+@app.route('/eCSP/Patient/Referral', methods=['GET','POST'])
 def getReferralByID():
     if request.method == 'GET':
         return ReferralHandler().getReferralByID(request.form)
@@ -153,6 +171,8 @@ def getReferralByID():
 
 #Get Patient Result List
 @app.route('/eCSP/Doctor/Patient/ResultList', methods=['GET'])
+@app.route('/eCSP/Assistant/Patient/ResultList', methods=['GET'])
+@app.route('/eCSP/Patient/ResultList', methods=['GET'])
 def getAllResult():
     if request.method == 'GET':
         return ResultHandler().getAllResult(request.form)
@@ -161,6 +181,8 @@ def getAllResult():
 
 #Get Patient Result Information
 @app.route('/eCSP/Doctor/Patient/Result', methods=['GET','POST'])
+@app.route('/eCSP/Assistant/Patient/Result', methods=['GET','POST'])
+@app.route('/eCSP/Patient/Result', methods=['GET','POST'])
 def getResultByID():
     if request.method == 'GET':
         return ResultHandler().getResultByID(request.form)
@@ -170,6 +192,7 @@ def getResultByID():
         return jsonify(Error="Method not allowed."), 405
 
 #######################################
+########## First Draft ################
 #######################################
 
 

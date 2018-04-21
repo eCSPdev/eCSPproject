@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from dao.Patient import PatientsDAO
 
+## Luis Santiago ##
 class PatientHandler:
 
     def build_patientinfo_Dict(self,row):

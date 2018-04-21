@@ -28,9 +28,11 @@ class PatientHandler:
             result_list.append(self.build_patientinfo_Dict(row)) #mapToDict() turns returned array of arrays to an array of maps
         return jsonify(Users=result_list)
 
-    def getPatientByID(self, pid):
+    def getPatientByID(self, args):
+        pid = args.get("patientid")
         dao = PatientsDAO()
-        row = dao.getPatientByID(pid)
+        print ('este es el pid: ' + pid)
+        row = dao.getPatientByID(int(pid))
         if row == None:
             return jsonify(Error="NOT FOUND"),404
         else:

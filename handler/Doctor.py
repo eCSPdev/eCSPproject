@@ -44,7 +44,7 @@ class DoctorHandler:
         if not dao.getDoctorByID(doctorid):
             return jsonify(Error="Part not found."), 404
         else:
-            if len(args) != 10:
+            if len(args) != 11:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 licenseno = args.get("liceseno")
@@ -57,9 +57,34 @@ class DoctorHandler:
                 email = args.get("email")
                 username = args.get("username")
                 pssword = args.get("pssword")
-                if doctorid and licenseno and firstname and middlename and lastname and officename and phone and status and email and username and pssword:
-                    dao.update(doctorid, licenseno, firstname, middlename, lastname, officename, phone, status, email, username, pssword)
-                    result = self.build_doctor_dict(doctorid, licenseno, firstname, middlename, lastname, officename, phone, status, email, username, pssword)
+                if licenseno and firstname and middlename and lastname and officename and phone and status and email and username and pssword:
+                    dao.updateDoctor(licenseno, firstname, middlename, lastname, officename, phone, status, email, username, pssword)
+                    result = self.build_doctor_dict(licenseno, firstname, middlename, lastname, officename, phone, status, email, username, pssword)
                     return jsonify(Doctor = result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
+
+########## Doctor History #############
+#Para hacerle insert al history del Doctor
+
+    def insertDoctorHistory(self, args):
+        dao = DoctorDAO()
+        if len(args) != 10:
+            return jsonify(Error="Malformed update request"), 400
+        else:
+            licenseno = args.get("liceseno")
+            firstname = args.get("firstname")
+            middlename = args.get("middlename")
+            lastname = args.get("lastname")
+            officename = args.get("officename")
+            phone = args.get("phone")
+            status = bool(args.get("status"))
+            email = args.get("email")
+            username = args.get("username")
+            pssword = args.get("pssword")
+            if licenseno and firstname and middlename and lastname and officename and phone and status and email and username and pssword:
+                dao.insertDoctorHistory(licenseno, firstname, middlename, lastname, officename, phone, status, email, username, pssword)
+                result = self.build_doctor_dict(licenseno, firstname, middlename, lastname, officename, phone, status, email, username, pssword)
+                return jsonify(Doctor = result), 201 #Verificar porque 201
+            else:
+                return jsonify(Error="Unexpected attributes in update request"), 400

@@ -4,7 +4,7 @@
 	<!-- start: eCSP Logo and Title -->
 	<ul class="nav navbar-left" ct-fullheight="window" data-ct-fullheight-exclusion="header" data-ct-fullheight-if="isSmallDevice">
 		<li style="margin-left: -10%;">
-			<a ui-sref="app.dashboard" class="navbar-brand">
+			<a ui-sref="app.home" class="navbar-brand">
 				<img src="/assets/images/ecsp-logo.png" alt="{{app.name}}" width="25" height="45">
 				<h2 style="margin: -50% 0% 0% 45%">eCSP</h2>
 			</a>
@@ -16,7 +16,7 @@
 	<ul class="nav navbar-right" ct-fullheight="window" data-ct-fullheight-exclusion="header" data-ct-fullheight-if="isSmallDevice">
 
 		<li class="dropdown current-user">
-			<a href class="dropdown-toggle"> 
+			<a ui-sref="app.users.view_my_profile">
 				<i class="fa fa-user fa-inverse" alt="{{user.name}}"></i> 
 				<span class="username"> {{user.name}} {{user.lastName}} </i></span> 
 			</a>
@@ -32,10 +32,10 @@
 	<!-- end: Current User Profile and Log Out Buttons -->
 
 	<!-- start: MENU TOGGLER FOR MOBILE DEVICES -->
-<!-- 	<div class="close-handle visible-xs-block menu-toggler" ng-click="navbarCollapsed = true">
+	<div class="close-handle visible-xs-block menu-toggler" ng-click="navbarCollapsed = true">
 		<div class="arrow-left"></div>
 		<div class="arrow-right"></div>
-	</div> -->
+	</div>
 	<!-- end: MENU TOGGLER FOR MOBILE DEVICES -->
 
 </div>

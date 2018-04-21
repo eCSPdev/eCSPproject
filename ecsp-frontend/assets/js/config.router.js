@@ -3,16 +3,16 @@
 /**
  * Config for the router
  */
-app.config(['$stateProvider', '$urlRouterProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$ocLazyLoadProvider', 'JS_REQUIRES',
-function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $ocLazyLoadProvider, jsRequires) {
+ app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$ocLazyLoadProvider', 'JS_REQUIRES',
+    function ($stateProvider, $locationProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $ocLazyLoadProvider, jsRequires) {
 
-    app.controller = $controllerProvider.register;
-    app.directive = $compileProvider.directive;
-    app.filter = $filterProvider.register;
-    app.factory = $provide.factory;
-    app.service = $provide.service;
-    app.constant = $provide.constant;
-    app.value = $provide.value;
+        app.controller = $controllerProvider.register;
+        app.directive = $compileProvider.directive;
+        app.filter = $filterProvider.register;
+        app.factory = $provide.factory;
+        app.service = $provide.service;
+        app.constant = $provide.constant;
+        app.value = $provide.value;
 
     // LAZY MODULES
 
@@ -24,24 +24,32 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
 
     // APPLICATION ROUTES
     // -----------------------------------
-    // For any unmatched url, redirect to /app/dashboard
-    $urlRouterProvider.otherwise("/app/views/dashboard");
+    // For any unmatched url, redirect to /home
+    $urlRouterProvider.otherwise("/home");
+    $locationProvider.hashPrefix('');
     //
     // Set up the states
     $stateProvider.state('app', {
-        url: "/app",
+        url: "",
         templateUrl: "assets/views/app.html",
         resolve: loadSequence('modernizr', 'moment', 'angularMoment', 'uiSwitch', 'perfect-scrollbar-plugin', 'toaster', 'ngAside', 'vAccordion', 'sweet-alert', 'chartjs', 'tc.chartjs', 'oitozero.ngSweetAlert', 'chatCtrl', 'truncate', 'htmlToPlaintext', 'angular-notification-icons'),
         abstract: true
-    }).state('app.dashboard', {
-        url: "/dashboard",
+    }).state('app.home', {
+        url: "/home",
         templateUrl: "assets/views/homepage.html",
         resolve: loadSequence('jquery-sparkline', 'homepageCtrl'),
-        title: 'Dashboard',
+        title: 'Home',
         ncyBreadcrumb: {
             label: 'Home'
         }
-    }).state('app.manage_users', {
+    }).state('app.users', {
+        url: '/home',
+        template: '<div ui-view class="fade-in-up"></div>',
+        title: 'Home',
+        ncyBreadcrumb: {
+            label: 'Home'
+        }
+    }).state('app.users.manage_users', {
         url: "/manage_users",
         templateUrl: "assets/views/manage_users.html",
         resolve: loadSequence('jquery-sparkline', 'manageUsersCtrl'),
@@ -49,21 +57,53 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         ncyBreadcrumb: {
             label: 'Manage Users'
         }
-    }).state('app.manage_patients', {
-        url: "/manage_patients",
+    }).state('app.users.manage_users.manage_patients', {
+        url: "/patients",
         templateUrl: "assets/views/manage_patients.html",
         resolve: loadSequence('jquery-sparkline', 'managePatientsCtrl'),
         title: 'Manage Patients',
         ncyBreadcrumb: {
-            label: 'Manage Patients'
+            label: 'Patients'
         }
-    }).state('app.manage_assistants', {
-        url: "/manage_assistants",
+    }).state('app.users.manage_users.manage_assistants', {
+        url: "/assistants",
         templateUrl: "assets/views/manage_assistants.html",
         resolve: loadSequence('jquery-sparkline', 'manageAssistantsCtrl'),
         title: 'Manage Assistants',
         ncyBreadcrumb: {
-            label: 'Manage Assistants'
+            label: 'Assistants'
+        }
+    }).state('app.users.manage_users.add_new_user', {
+        url: "/add_new_user",
+        templateUrl: "assets/views/add_new_user.html",
+        resolve: loadSequence('jquery-sparkline', 'addNewUserCtrl'),
+        title: 'Add New User',
+        ncyBreadcrumb: {
+            label: 'New User'
+        }
+    }).state('app.users.view_my_profile', {
+        url: "/view_my_profile",
+        templateUrl: "assets/views/view_my_profile.html",
+        resolve: loadSequence('jquery-sparkline', 'viewMyProfileCtrl'),
+        title: 'My Profile',
+        ncyBreadcrumb: {
+            label: 'View Profile'
+        }
+    }).state('app.users.edit_my_profile', {
+        url: "/edit_profile",
+        templateUrl: "assets/views/edit_my_profile.html",
+        resolve: loadSequence('jquery-sparkline', 'editMyProfileCtrl'),
+        title: 'Edit Profile',
+        ncyBreadcrumb: {
+            label: 'Edit Profile'
+        }
+    }).state('app.users.view_records', {
+        url: "/view_records",
+        templateUrl: "assets/views/view_records.html",
+        resolve: loadSequence('jquery-sparkline', 'viewRecordsCtrl'),
+        title: 'View Records',
+        ncyBreadcrumb: {
+            label: 'View Patient Records'
         }
     }).state('app.ui', {
         url: '/ui',
@@ -393,55 +433,55 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
 	// Login routes
 
 	.state('login', {
-	    url: '/login',
-	    template: '<div ui-view class="fade-in-right-big smooth"></div>',
-	    abstract: true
-	}).state('login.signin', {
-	    url: '/signin',
-	    templateUrl: "assets/views/login_login.html"
-	}).state('login.forgot', {
-	    url: '/forgot',
-	    templateUrl: "assets/views/login_forgot.html"
-	}).state('login.registration', {
-	    url: '/registration',
-	    templateUrl: "assets/views/login_registration.html"
-	}).state('login.lockscreen', {
-	    url: '/lock',
-	    templateUrl: "assets/views/login_lock_screen.html"
-	});
+     url: '/login',
+     template: '<div ui-view class="fade-in-right-big smooth"></div>',
+     abstract: true
+ }).state('login.signin', {
+     url: '/signin',
+     templateUrl: "assets/views/login_login.html"
+ }).state('login.forgot', {
+     url: '/forgot',
+     templateUrl: "assets/views/login_forgot.html"
+ }).state('login.registration', {
+     url: '/registration',
+     templateUrl: "assets/views/login_registration.html"
+ }).state('login.lockscreen', {
+     url: '/lock',
+     templateUrl: "assets/views/login_lock_screen.html"
+ });
 
     // Generates a resolve object previously configured in constant.JS_REQUIRES (config.constant.js)
     function loadSequence() {
         var _args = arguments;
         return {
             deps: ['$ocLazyLoad', '$q',
-			function ($ocLL, $q) {
-			    var promise = $q.when(1);
-			    for (var i = 0, len = _args.length; i < len; i++) {
-			        promise = promiseThen(_args[i]);
-			    }
-			    return promise;
+            function ($ocLL, $q) {
+               var promise = $q.when(1);
+               for (var i = 0, len = _args.length; i < len; i++) {
+                   promise = promiseThen(_args[i]);
+               }
+               return promise;
 
-			    function promiseThen(_arg) {
-			        if (typeof _arg == 'function')
-			            return promise.then(_arg);
-			        else
-			            return promise.then(function () {
-			                var nowLoad = requiredData(_arg);
-			                if (!nowLoad)
-			                    return $.error('Route resolve: Bad resource name [' + _arg + ']');
-			                return $ocLL.load(nowLoad);
-			            });
-			    }
+               function promiseThen(_arg) {
+                   if (typeof _arg == 'function')
+                       return promise.then(_arg);
+                   else
+                       return promise.then(function () {
+                           var nowLoad = requiredData(_arg);
+                           if (!nowLoad)
+                               return $.error('Route resolve: Bad resource name [' + _arg + ']');
+                           return $ocLL.load(nowLoad);
+                       });
+               }
 
-			    function requiredData(name) {
-			        if (jsRequires.modules)
-			            for (var m in jsRequires.modules)
-			                if (jsRequires.modules[m].name && jsRequires.modules[m].name === name)
-			                    return jsRequires.modules[m];
-			        return jsRequires.scripts && jsRequires.scripts[name];
-			    }
-			}]
-        };
-    }
-}]);
+               function requiredData(name) {
+                   if (jsRequires.modules)
+                       for (var m in jsRequires.modules)
+                           if (jsRequires.modules[m].name && jsRequires.modules[m].name === name)
+                               return jsRequires.modules[m];
+                           return jsRequires.scripts && jsRequires.scripts[name];
+                       }
+                   }]
+               };
+           }
+       }]);

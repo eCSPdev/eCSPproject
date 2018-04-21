@@ -1,4 +1,4 @@
-<div ng-controller="manageUsersCtrl">
+<div ng-controller="manageUsersCtrl" ui-view class="fade-in-up">
 
 	<section id="page-title">
 		<div class="row">
@@ -13,8 +13,8 @@
 	<div class="col-sm-4">
 		<div class="panel panel-white no-radius text-center">
 
-			<!-- TODO: Link to this page -->
-			<a ui-sref="#">
+			<!-- Link to this page -->
+			<a ui-sref="app.users.manage_users.add_new_user">
 
 				<div class="panel-body">
 					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-plus fa-stack-1x fa-inverse"></i> </span>
@@ -35,7 +35,7 @@
 		<div class="panel panel-white no-radius text-center">
 
 			<!-- Link to this page -->
-			<a ui-sref="app.manage_patients">
+			<a ui-sref="app.users.manage_users.manage_patients">
 
 				<div class="panel-body">
 					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-user-md fa-stack-1x fa-inverse"></i> </span>
@@ -56,7 +56,7 @@
 		<div class="panel panel-white no-radius text-center">
 
 			<!-- Link to this page -->
-			<a ui-sref="app.manage_assistants">
+			<a ui-sref="app.users.manage_users.manage_assistants">
 
 				<div class="panel-body">
 					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>

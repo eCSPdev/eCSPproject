@@ -1,0 +1,87 @@
+<div ng-controller="viewMyProfileCtrl" ui-view class="fade-in-up">
+
+	<section id="page-title">
+		<div class="row">
+
+			<!-- Include breadcrumbs -->
+			<div ncy-breadcrumb></div>
+
+		</div>
+	</section>
+
+	<!-- start: View Current User Profile -->
+	<div class="container-fluid container-fullw bg-white">
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+
+				<!-- Personal Information -->
+					<div class="form-group">
+						<label>
+							First Name
+						</label>
+						<input type="text" name="firstName" class="form-control" value="{{user.name}}" readonly>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">
+							Last Name
+						</label>
+						<input type="text" name="lastName" class="form-control" value="{{user.lastName}}" readonly>
+					</div>
+
+					<!-- Contact Information -->
+					<div class="form-group">
+						<label for="form-field-mask-2">
+							Phone Number
+						</label>
+						<div class="input-group">
+							<input type="text" class="form-control" name="phoneNumber" value="(787) 452-1244" readonly>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">
+							Address Line #1
+						</label>
+						<input type="text" name="addressLine1" class="form-control" value="HC-73 1232 Bo. Molina" readonly> 
+					</div>	
+
+					<div class="form-group">
+						<label class="control-label">
+							Address Line #2
+						</label>
+						<input type="text" name="addressLine2" class="form-control" value="Apt. #212" readonly>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">
+							Country or Region
+						</label>
+						<input type="text" name="countryRegion" class="form-control" value="Puerto Rico" readonly>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">
+							Zip Code
+						</label>
+						<input type="text" name="zipCode" class="form-control" value="00736" readonly>
+					</div>	
+
+					<div class="form-group">
+						<label>
+							Email
+						</label>
+						<div class="form-group">
+							<input type="email" value="fulgencio.talavera@gmail.com" name="email" id="email" class="form-control" readonly>
+						</div>
+					</div>
+
+					<div class="form-group" style="margin-top: 15px;">
+						<a class="btn btn-default" ui-sref="app.home" style="float: right">Exit</a>
+						<a class="btn btn-primary" ui-sref="app.users.edit_my_profile" style="float: right; margin-right: 15px;">Edit Profile</a>
+					</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- end: View Current User Profile -->

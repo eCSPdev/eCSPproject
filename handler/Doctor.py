@@ -28,7 +28,8 @@ class DoctorHandler:
             result.append(result)
         return jsonify(Doctor=result_list)
 
-    def getDoctorByID(self, did):
+    def getDoctorByID(self, args):
+        did = args.get("doctorid")
         dao = DoctorDAO()
         row = dao.getAssistantByID(did)
         if not row:

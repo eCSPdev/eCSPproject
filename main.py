@@ -76,7 +76,13 @@ def getAllPatients():
 @app.route('/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT', 'POST'])
 def getPatientByID():
     if request.method == 'GET':
-        return PatientHandler().getPatientByID(request.form)
+        print ('entre al get')
+        if not request.args:
+            print ('no tengo args')
+            return jsonify(Error="No Patient ID Included."), 405
+        else:
+            print ('enviando args')
+            return PatientHandler().getPatientByID(request.args)
     if request.method == 'PUT':
         return AssistantHandler().updatePatient(request.form)
     if request.method == 'POST':

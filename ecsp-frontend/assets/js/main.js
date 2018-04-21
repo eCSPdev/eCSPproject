@@ -14,7 +14,7 @@ app.run(['$rootScope', '$state', '$stateParams', '$trace',
 		$rootScope.app = {
 			name: 'eCSP', // name of your project
 			author: 'KLC Tech Solutions', // author's name or company name
-			description: 'Digital File System for Medical Records', // brief description
+			// description: 'Digital File System for Medical Records', // brief description
 			version: '1.0', // current version
 			year: ((new Date()).getFullYear()), // automatic current year (for copyright information)
 			isMobile: (function () {// true if the browser is a mobile device

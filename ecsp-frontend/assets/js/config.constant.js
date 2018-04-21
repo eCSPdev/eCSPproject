@@ -32,6 +32,7 @@ app.constant('JS_REQUIRES', {
         'homepageCtrl': 'assets/js/controllers/homepageCtrl.js',
         'manageUsersCtrl': 'assets/js/controllers/manageUsersCtrl.js',
         'managePatientsCtrl': 'assets/js/controllers/managePatientsCtrl.js',
+        'manageAssistantsCtrl': 'assets/js/controllers/manageAssistantsCtrl.js',
         'iconsCtrl': 'assets/js/controllers/iconsCtrl.js',
         'vAccordionCtrl': 'assets/js/controllers/vAccordionCtrl.js',
         'ckeditorCtrl': 'assets/js/controllers/ckeditorCtrl.js',

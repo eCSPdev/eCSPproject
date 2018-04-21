@@ -1,48 +1,75 @@
 <div ng-controller="manageUsersCtrl">
-	<!-- start: DASHBOARD TITLE -->
-<!-- 	<section id="page-title" class="padding-top-15 padding-bottom-15">
-		<div class="row">
-			<div class="col-sm-7">
-				<h1 class="mainTitle"">Manage Users</h1>
-			</div>
-			<div ncy-breadcrumb></div>
-		</div>
-	</section> -->
 
 	<section id="page-title">
-	<div class="row">
-		<div class="col-sm-8">
-			<h1 class="mainTitle">eCSP</h1>
-		</div>
-		<div ncy-breadcrumb></div>
-	</div>
-</section>
-
-	<!-- end: DASHBOARD TITLE -->
-	<!-- start: FEATURED BOX LINKS -->
-	<div class="container-fluid container-fullw bg-white">
 		<div class="row">
-			<div class="col-sm-4">
-				<div class="panel panel-white no-radius text-center">
-					<a ui-sref="app.manage_patients"> <!-- Link to this page on click -->
-						<div class="panel-body" ng-click="print()"> <!-- Console log output -->
 
-							<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-smile-o fa-stack-1x fa-inverse"></i> </span>
-							<h2 class="StepTitle">Manage Patients</h2>
+			<!-- Include breadcrumbs -->
+			<div ncy-breadcrumb></div>
 
-						</div>
-					</a>
+		</div>
+	</section>
+
+	<!-- start: Add New User Button -->
+	<div class="col-sm-4">
+		<div class="panel panel-white no-radius text-center">
+
+			<!-- TODO: Link to this page -->
+			<a ui-sref="#">
+
+				<div class="panel-body">
+					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-plus fa-stack-1x fa-inverse"></i> </span>
+					<br>
+					<br>
+					<h2 class="StepTitle">Add New User</h2>
+					<p class="text-small">
+						[Create a new patient or assistant]
+					</p>
 				</div>
-			</div>
-			<div class="col-sm-4">
-				<div class="panel panel-white no-radius text-center">
-					<a ui-sref="app."
-					<div class="panel-body" ng-click="print()">
-						<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
-						<h2 class="StepTitle">Manage Assistants</h2>
-					</div>
-				</div>
-			</div>
+			</a>
 		</div>
 	</div>
+	<!-- end: Add New User Button -->
+
+	<!-- start: Manage Patients Button -->
+	<div class="col-sm-4">
+		<div class="panel panel-white no-radius text-center">
+
+			<!-- Link to this page -->
+			<a ui-sref="app.manage_patients">
+
+				<div class="panel-body">
+					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-user-md fa-stack-1x fa-inverse"></i> </span>
+					<br>
+					<br>
+					<h2 class="StepTitle">Manage Patients</h2>
+					<p class="text-small">
+						[View or edit patient profiles]
+					</p>
+				</div>
+			</a>
+		</div>
+	</div>
+	<!-- end: Manage Patients Button -->
+
+	<!-- start: Manange Assistants Button -->
+	<div class="col-sm-4">
+		<div class="panel panel-white no-radius text-center">
+
+			<!-- Link to this page -->
+			<a ui-sref="app.manage_assistants">
+
+				<div class="panel-body">
+					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
+					<br>
+					<br>
+					<h2 class="StepTitle">Manage Assistants</h2>
+					<p class="text-small">
+						[View or edit assistant profiles]
+					</p>
+				</div>
+			</a>
+		</div>
+	</div>
+	<!-- end: Manage Patients Button -->
+
 </div>

@@ -4,16 +4,16 @@
 */
 app.controller('manageAssistantsCtrl', ["$scope", function ($scope) {
 
-	$scope.sortType     = 'record'; // set the default sort type
+	$scope.sortType     = 'status'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
-	$scope.patientSearch   = '';     // set the default search/filter term
+	$scope.assistantSearch   = '';     // set the default search/filter term
 
-	// create the list of sushi rolls 
-	$scope.patients = [
-	{ name: 'Cordero, Jacinto', record: '123', status: 'Active' },
-	{ name: 'Melendez, Teófilo', record: '456', status: 'Inactive' },
-	{ name: 'Reyes, Adelaida', record: '789', status: 'Active' },
-	{ name: 'González, Rigoberta', record: '321', status: 'Inactive' }
+	// create the list of assistants
+	$scope.assistants = [
+	{ name: 'Rodríguez, Magali', employeeID: '1', status: 'Active' },
+	{ name: 'Méndez, Benzeno', employeeID: '2', status: 'Inactive' },
+	{ name: 'Hernández, Santa', employeeID: '3', status: 'Active' },
+	{ name: 'Suárez, Roberto', employeeID: '4', status: 'Inactive' }
 	];
 
 

@@ -4,7 +4,7 @@
 */
 app.controller('managePatientsCtrl', ["$scope", function ($scope) {
 
-	$scope.sortType     = 'record'; // set the default sort type
+	$scope.sortType     = 'status'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
 	$scope.patientSearch   = '';     // set the default search/filter term
 

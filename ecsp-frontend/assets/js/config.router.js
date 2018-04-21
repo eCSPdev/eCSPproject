@@ -39,7 +39,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         resolve: loadSequence('jquery-sparkline', 'homepageCtrl'),
         title: 'Dashboard',
         ncyBreadcrumb: {
-            label: 'Dashboard'
+            label: 'Home'
         }
     }).state('app.manage_users', {
         url: "/manage_users",

@@ -6,31 +6,31 @@
 	</div>
 </section>
 
-<div class="container-fluid container-fullw bg-white" ng-controller="managePatientsCtrl">
+<div class="container-fluid container-fullw bg-white" ng-controller="manageAssistantsCtrl">
 	<div class="row">
 		<div class="col-md-12" style="padding-right: 100px; padding-left: 50px;">
 			
-			<!-- start: Patient Search Form -->
+			<!-- start: Assistant Search Form -->
 			<form>
 				<div class="form-group">
 					<div class="input-group">
 						<div class="input-group-addon"><i class="fa fa-search"></i></div>
-						<input type="text" class="form-control" placeholder="Search Patients" ng-model="patientSearch">
+						<input type="text" class="form-control" placeholder="Search Assistants" ng-model="assistantSearch">
 					</div>      
 				</div>
 			</form>
-			<!-- end: Patient Search Form -->
+			<!-- end: Assistant Search Form -->
 
-			<!-- start: Table of Patients -->
+			<!-- start: Table of Assistants -->
 			<div class="table-responsive">
 				<table class="table table-bordered table-striped" style="width=50%;">
 					<thead>
 						<tr>
 							<td>
-								<a href="#" ng-click="sortType = 'record'; sortReverse = !sortReverse">
-									Record Number 
-									<span ng-show="sortType == 'record' && !sortReverse" class="fa fa-caret-down"></span>
-									<span ng-show="sortType == 'record' && sortReverse" class="fa fa-caret-up"></span>
+								<a href="#" ng-click="sortType = 'employeeNumber'; sortReverse = !sortReverse">
+									Employee ID 
+									<span ng-show="sortType == 'employeeNumber' && !sortReverse" class="fa fa-caret-down"></span>
+									<span ng-show="sortType == 'employeeNumber' && sortReverse" class="fa fa-caret-up"></span>
 								</a>
 							</td>
 							<td>
@@ -42,7 +42,7 @@
 							</td>
 							<td>
 								<a href="#" ng-click="sortType = 'status'; sortReverse = !sortReverse">
-									Patient Status 
+									Assistant Status 
 									<span ng-show="sortType == 'status' && !sortReverse" class="fa fa-caret-down"></span>
 									<span ng-show="sortType == 'status' && sortReverse" class="fa fa-caret-up"></span>
 								</a>
@@ -54,16 +54,15 @@
 					</thead>
 
 					<tbody>
-						<tr ng-repeat="patient in patients | orderBy:sortType:sortReverse | filter:patientSearch">
-							<td>{{ patient.record }}</td>
-							<td>{{ patient.name }}</td>
-							<td>{{ patient.status }}</td>
+						<tr ng-repeat="assistant in assistants | orderBy:sortType:sortReverse | filter:assistantSearch">
+							<td>{{ assistant.employeeID }}</td>
+							<td>{{ assistant.name }}</td>
+							<td>{{ assistant.status }}</td>
 							<td> 
 								<!-- View or Edit Profile Button -->
-								<button type="button" class="btn btn-wide btn-default">
+									<button type="button" class="btn btn-wide btn-default">
 										View
 									</button>
-									
 									<button type="button" class="btn btn-wide btn-primary">
 										Edit
 									</button>
@@ -74,7 +73,7 @@
 
 					</table>
 				</div>
-				<!-- end: Table of Patients -->
+				<!-- end: Table of Assistants -->
 			</div>
 		</div>
 

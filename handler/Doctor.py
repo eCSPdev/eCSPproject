@@ -29,11 +29,37 @@ class DoctorHandler:
         return jsonify(Doctor=result_list)
 
     def getDoctorByID(self, args):
-        did = args.get("doctorid")
         dao = DoctorDAO()
-        row = dao.getAssistantByID(did)
+        doctorid = int(args.get("doctorid"))
+        row = dao.getAssistantByID(doctorid)
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
             doctor = self.build_doctor_dict(row)
             return jsonify(Doctor = doctor)
+
+    def updateDoctor(self, args):
+        dao = DoctorDAO()
+        doctorid = int(args.get("doctorid"))
+        if not dao.getDoctorByID(doctorid):
+            return jsonify(Error="Part not found."), 404
+        else:
+            if len(args) != 10:
+                return jsonify(Error="Malformed update request"), 400
+            else:
+                licenseno = args.get("liceseno")
+                firstname = args.get("firstname")
+                middlename = args.get("middlename")
+                lastname = args.get("lastname")
+                officename = args.get("officename")
+                phone = args.get("phone")
+                status = args.get("status")
+                email = args.get("email")
+                username = args.get("username")
+                pssword = args.get("pssword")
+                if doctorid and licenseno and firstname and middlename and lastname and officename and phone and status and email and username and pssword:
+                    dao.update(doctorid, licenseno, firstname, middlename, lastname, officename, phone, status, email, username, pssword)
+                    result = self.build_doctor_dict(doctorid, licenseno, firstname, middlename, lastname, officename, phone, status, email, username, pssword)
+                    return jsonify(Doctor = result), 200
+                else:
+                    return jsonify(Error="Unexpected attributes in update request"), 400

@@ -1,37 +1,37 @@
 from flask import jsonify, request
-from dao.Patient import PatientDAO
+from dao.Patient import PatientsDAO
 
 class PatientHandler:
 
-    def mapToDict(self,row):
+    def build_patientinfo_Dict(self,row):
         result = {}
-        result['RecordNo'] = row[0]
-        result['SSN'] = row[1]
-        result['Firstname'] = row[2]
-        result['LastName'] = row[3]
-        result['BirthDate'] = row[4]
-        result['Gener'] = row[5]
-        result['Phone'] = row[6]
-        result['Status'] = row[7]
-        result['Email'] = row[8]
-        result['Password'] = row[9]
+        result['patientid'] = row[0]
+        result['firstname'] = row[1]
+        result['middlename'] = row[2]
+        result['lastname'] = row[3]
+        result['ssn'] = row[4]
+        result['birthdate'] = row[5]
+        result['gender'] = row[6]
+        result['phone'] = row[7]
+        result['status'] = row[8]
+        result['email'] = row[9]
+        result['username'] = row[10]
+        result['Password'] = row[11]
         return result
 
-    def getAllPatient(self):
-        dao = PatientDAO()
-        result = dao.getAllPatient()
-        mapped_result = []
-        for r in result:
-            mapped_result.append(self.mapToDict(r)) #mapToDict() turns returned array of arrays to an array of maps
-        return jsonify(Users=mapped_result)
+    def getAllPatients(self):
+        dao = PatientsDAO()
+        patient_list = dao.getAllPatients()
+        result_list = []
+        for row in patient_list:
+            result_list.append(self.build_patientinfo_Dict(row)) #mapToDict() turns returned array of arrays to an array of maps
+        return jsonify(Users=result_list)
 
     def getPatientByID(self, pid):
-        dao = PatientDAO()
-        result = dao.getPatientByID(pid)
-        mapped_result = []
-        if result == None:
+        dao = PatientsDAO()
+        row = dao.getPatientByID(pid)
+        if row == None:
             return jsonify(Error="NOT FOUND"),404
         else:
-            for r in result:
-                mapped_result.append(self.mapToDict(r)) #mapToDict() turns returned array of arrays to an array of maps
-            return jsonify(Users=mapped_result)
+            patient = self.build_patientinfo_Dict(row) #mapToDict() turns returned array of arrays to an array of maps
+            return jsonify(Users=patient)

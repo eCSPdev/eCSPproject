@@ -16,7 +16,7 @@ app.debuger = True
 @app.route('/eCSP')
 @app.route('/eCSP/Home')
 def home():
-    return render_template('INDEX')
+    return 'INDEX'
 
 @app.route('/eCSP/PLogin')
 def Plogin():
@@ -64,9 +64,9 @@ def getAssistantByID():
 #Get Patient List
 @app.route('/eCSP/Doctor/PatientList', methods=['GET'])
 @app.route('/eCSP/Assistant/PatientList', methods=['GET'])
-def getAllMedicalRecord():
+def getAllPatients():
     if request.method == 'GET':
-        return MedicalRecordHandler().getAllMedicalRecord()
+        return PatientHandler().getAllPatients()
     else:
         return jsonify(Error="Method not allowed."), 405
 

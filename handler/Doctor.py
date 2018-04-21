@@ -3,7 +3,7 @@ from dao.Doctor import DoctorDAO
 
 class DoctorHandler:
 
-    def mapToDict(self,row):
+    def build_doctor_dict(self,row):
         result = {}
         result['DoctorID'] = row[0]
         result['LicNo'] = row[1]
@@ -13,7 +13,7 @@ class DoctorHandler:
         result['Phone'] = row[5]
         result['Status'] = row[6]
         result['Email'] = row[7]
-        result['Password'] = row[8]
+        result['Pssword'] = row[8]
         return result
 
     def getAllDoctor(self):

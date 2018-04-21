@@ -105,6 +105,22 @@
         ncyBreadcrumb: {
             label: 'View Patient Records'
         }
+    }).state('app.users.view_records.patient_consultations', {
+        url: "/consultations",
+        templateUrl: "assets/views/patient_consultations.html",
+        resolve: loadSequence('jquery-sparkline', 'patientConsultationsCtrl'),
+        title: 'Patient Consultations',
+        ncyBreadcrumb: {
+            label: 'Consultations'
+        }
+    }).state('app.users.view_records.patient_consultations.consultation_details', {
+        url: "/consultation_details",
+        templateUrl: "assets/views/consultation_details.html",
+        resolve: loadSequence('jquery-sparkline', 'consultationDetailsCtrl'),
+        title: 'Consultation Details',
+        ncyBreadcrumb: {
+            label: 'Consultation Details'
+        }
     }).state('app.ui', {
         url: '/ui',
         template: '<div ui-view class="fade-in-up"></div>',
@@ -438,7 +454,7 @@
      abstract: true
  }).state('login.signin', {
      url: '/signin',
-     templateUrl: "assets/views/login_login.html"
+     templateUrl: "assets/views/login.html"
  }).state('login.forgot', {
      url: '/forgot',
      templateUrl: "assets/views/login_forgot.html"

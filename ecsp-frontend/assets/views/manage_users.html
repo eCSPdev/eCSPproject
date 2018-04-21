@@ -1,5 +1,4 @@
-<div ng-controller="manageUsersCtrl" ui-view class="fade-in-up">
-
+<div ui-view class="fade-in-up">
 	<section id="page-title">
 		<div class="row">
 
@@ -9,67 +8,70 @@
 		</div>
 	</section>
 
-	<!-- start: Add New User Button -->
-	<div class="col-sm-4">
-		<div class="panel panel-white no-radius text-center">
+	<div ng-controller="manageUsersCtrl">
 
-			<!-- Link to this page -->
-			<a ui-sref="app.users.manage_users.add_new_user">
+		<!-- start: Add New User Button -->
+		<div class="col-sm-4">
+			<div class="panel panel-white no-radius text-center">
 
-				<div class="panel-body">
-					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-plus fa-stack-1x fa-inverse"></i> </span>
-					<br>
-					<br>
-					<h2 class="StepTitle">Add New User</h2>
-					<p class="text-small">
-						[Create a new patient or assistant]
-					</p>
-				</div>
-			</a>
+				<!-- Link to this page -->
+				<a ui-sref="app.users.manage_users.add_new_user">
+
+					<div class="panel-body">
+						<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-plus fa-stack-1x fa-inverse"></i> </span>
+						<br>
+						<br>
+						<h2 class="StepTitle">Add New User</h2>
+						<p class="text-small">
+							[Create a new patient or assistant]
+						</p>
+					</div>
+				</a>
+			</div>
 		</div>
-	</div>
-	<!-- end: Add New User Button -->
+		<!-- end: Add New User Button -->
 
-	<!-- start: Manage Patients Button -->
-	<div class="col-sm-4">
-		<div class="panel panel-white no-radius text-center">
+		<!-- start: Manage Patients Button -->
+		<div class="col-sm-4">
+			<div class="panel panel-white no-radius text-center">
 
-			<!-- Link to this page -->
-			<a ui-sref="app.users.manage_users.manage_patients">
+				<!-- Link to this page -->
+				<a ui-sref="app.users.manage_users.manage_patients">
 
-				<div class="panel-body">
-					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-user-md fa-stack-1x fa-inverse"></i> </span>
-					<br>
-					<br>
-					<h2 class="StepTitle">Manage Patients</h2>
-					<p class="text-small">
-						[View or edit patient profiles]
-					</p>
-				</div>
-			</a>
+					<div class="panel-body">
+						<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-user-md fa-stack-1x fa-inverse"></i> </span>
+						<br>
+						<br>
+						<h2 class="StepTitle">Manage Patients</h2>
+						<p class="text-small">
+							[View or edit patient profiles]
+						</p>
+					</div>
+				</a>
+			</div>
 		</div>
-	</div>
-	<!-- end: Manage Patients Button -->
+		<!-- end: Manage Patients Button -->
 
-	<!-- start: Manange Assistants Button -->
-	<div class="col-sm-4">
-		<div class="panel panel-white no-radius text-center">
+		<!-- start: Manange Assistants Button -->
+		<div class="col-sm-4">
+			<div class="panel panel-white no-radius text-center">
 
-			<!-- Link to this page -->
-			<a ui-sref="app.users.manage_users.manage_assistants">
+				<!-- Link to this page -->
+				<a ui-sref="app.users.manage_users.manage_assistants">
 
-				<div class="panel-body">
-					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
-					<br>
-					<br>
-					<h2 class="StepTitle">Manage Assistants</h2>
-					<p class="text-small">
-						[View or edit assistant profiles]
-					</p>
-				</div>
-			</a>
+					<div class="panel-body">
+						<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
+						<br>
+						<br>
+						<h2 class="StepTitle">Manage Assistants</h2>
+						<p class="text-small">
+							[View or edit assistant profiles]
+						</p>
+					</div>
+				</a>
+			</div>
 		</div>
-	</div>
-	<!-- end: Manage Patients Button -->
+		<!-- end: Manage Patients Button -->
 
+	</div>
 </div>

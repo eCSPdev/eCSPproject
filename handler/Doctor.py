@@ -53,7 +53,7 @@ class DoctorHandler:
                 lastname = args.get("lastname")
                 officename = args.get("officename")
                 phone = args.get("phone")
-                status = args.get("status")
+                status = bool(args.get("status"))
                 email = args.get("email")
                 username = args.get("username")
                 pssword = args.get("pssword")

@@ -49,6 +49,14 @@
         ncyBreadcrumb: {
             label: 'Home'
         }
+    }).state('app.users.contact', {
+        url: "/contact_us",
+        templateUrl: "assets/views/contact_page.html",
+        resolve: loadSequence('jquery-sparkline', 'ngMap', 'mapsCtrl'),
+        title: 'Contact Page',
+        ncyBreadcrumb: {
+            label: 'Contact Us'
+        }
     }).state('app.users.manage_users', {
         url: "/manage_users",
         templateUrl: "assets/views/manage_users.html",

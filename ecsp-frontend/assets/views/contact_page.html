@@ -1,0 +1,56 @@
+<div ui-view class="fade-in-up">
+	<section id="page-title">
+		<div class="row">
+
+			<!-- Include breadcrumbs -->
+			<div ncy-breadcrumb></div>
+		</div>
+	</section>
+
+	<!-- start: Contact Information -->
+	<div class="container-fluid container-fullw bg-white">
+		<div class="row">
+			<div class="col-md-6">
+				<h3 class="over-title margin-bottom-15"><span class="text-bold">Contact Information</span></h3>
+				<p class="margin-top-20">
+					<h4>Dr. Ismael Segarra</h4>
+					<span class="text-bold">Tel.</span> (787) 805-0707
+					<br> <span class="text-bold">Fax</span> (787) 652-4795
+					<br> <span class="text-bold">Email</span> drsegarra@gmail.com | 
+					<br> <span class="text-bold">Office Email</span> clinicadesaludyprevencion@gmail.com
+				</p>
+			</div>
+
+			<div class="col-md-6">
+				<h3 class="over-title margin-bottom-15"><span class="text-bold">Our Offices</span></h3>
+				<p class="margin-top-20">
+					<h4>Clínica de Salud y Prevención</h4>
+					Calle Méndez Vigo #63 W
+					<br> Edificio Torre de Hostos Oficina 1D
+					<br> Mayagüez, PR 00680
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- end: Contact Information -->
+
+	<!-- start: Google Maps -->
+	<div class="container-fluid container-fullw">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-white">
+					<div class="panel-body">
+						<h3 class="over-title margin-bottom-15"> <span class="text-bold">Find Our Offices</span></h3>
+						<div map-lazy-load="https://maps.google.com/maps/api/js">
+							<ng-map default-style="true" center="[18.202610,-67.143263]">
+								<marker id="foo" position="18.202610,-67.143263"></marker>
+							</ng-map>
+						</div>                    
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- end: Google Maps -->
+
+</div>

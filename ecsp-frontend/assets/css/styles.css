@@ -477,7 +477,7 @@ h5.over-title {
     text-align: center;
   }
   .app-sidebar-closed .navbar .navbar-collapse {
-    margin-left: 70px;
+    margin-left: 0px;
   }
 }
 @media (max-width: 991px) {

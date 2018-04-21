@@ -24,12 +24,12 @@
 
 				<!-- start: Table of Consultations Details -->
 				<div class="table-responsive">
-					<table class="table table-hover clickable" style="width=50%;">
+					<table class="table table-hover" style="width=50%;">
 						<thead>
 							<tr>
 								<td>
 									<a href="#" ng-click="sortType = 'documentName'; sortReverse = !sortReverse">
-										 Document Name
+										Document Name
 										<span ng-show="sortType == 'documentName' && !sortReverse" class="fa fa-caret-down"></span>
 										<span ng-show="sortType == 'documentName' && sortReverse" class="fa fa-caret-up"></span>
 									</a>
@@ -61,7 +61,7 @@
 								<td>{{ document.uploadedBy }}</td>
 								<td> 
 									<!-- Download File Button -->
-									<button type="button" class="btn btn-wide btn-primary">
+									<button type="button" class="btn btn-wide btn-blue">
 										<i class="fa fa-download fa-inverse" style="margin-right: 5px;"></i> Download
 									</button>
 
@@ -72,6 +72,16 @@
 					</table>
 				</div>
 				<!-- end: Table of Consultations Details -->
+
+				<!-- start: Upload Button -->
+				<form>
+					<div class="form-group">
+						<button type="button" class="btn btn-wide btn-primary" style="float:right">
+							<i class="fa fa-upload fa-inverse" style="margin-right: 5px;"></i> Upload File
+						</button>    
+					</div>
+				</form>
+				<!-- end: Upload Button -->
 
 			</div>
 		</div>

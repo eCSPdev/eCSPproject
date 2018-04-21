@@ -14,7 +14,7 @@ app.run(['$rootScope', '$state', '$stateParams', '$trace',
 		$rootScope.app = {
 			name: 'eCSP', // name of your project
 			author: 'KLC Tech Solutions', // author's name or company name
-			// description: 'Digital File System for Medical Records', // brief description
+			description: '', // brief description
 			version: '1.0', // current version
 			year: ((new Date()).getFullYear()), // automatic current year (for copyright information)
 			isMobile: (function () {// true if the browser is a mobile device
@@ -26,9 +26,9 @@ app.run(['$rootScope', '$state', '$stateParams', '$trace',
 			})(),
 			layout: {
 				isNavbarFixed: true, //true if you want to initialize the template with fixed header
-				isSidebarFixed: true, // true if you want to initialize the template with fixed sidebar
+				isSidebarFixed: false, // true if you want to initialize the template with fixed sidebar
 				isSidebarClosed: false, // true if you want to initialize the template with closed sidebar
-				isFooterFixed: false, // true if you want to initialize the template with fixed footer
+				isFooterFixed: true, // true if you want to initialize the template with fixed footer
 				theme: 'theme-1', // indicate the theme chosen for your project
 				logo: 'assets/images/ecsp-logo.png', // relative path of the project logo
 			}

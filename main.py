@@ -34,9 +34,13 @@ def DAlogin():
 @app.route('/eCSP/Doctor/PersonalInformation', methods=['GET', 'PUT'])
 def getDoctorByID():
     if request.method == 'GET':
-        return DoctorHandler().getDoctorByID(request.form)
+        if not request.args:
+            return jsonify(Error="No Patient ID Included."), 405
+        else:
+            return DoctorHandler().getDoctorByID(request.form)
     if request.method == 'PUT':
-        return DoctorHandler().updateDoctor(request.form)
+        DoctorHandler().updateDoctorInformation(request.form)
+        return DoctorHandler().updateDoctorInformation(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 

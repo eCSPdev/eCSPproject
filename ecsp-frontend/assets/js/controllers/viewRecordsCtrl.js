@@ -2,11 +2,22 @@
 /** 
   * controllers used for the dashboard
 */
-app.controller('viewRecordsCtrl', ["$scope", "$rootScope", "$state", function ($scope, $state, $rootScope) {
+app.controller('viewRecordsCtrl', ["$scope", "$rootScope", "$state", function ($scope, $rootScope, $state) {
 
 	$scope.sortType     = 'status'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
 	$scope.recordSearch   = '';     // set the default search/filter term
+
+	/* Redirect user to login page if he or she is not logged in correctly */
+    if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
+        $state.go('login.signin');
+    }
+
+  	if($rootScope.isLoggedIn == true) {
+  		if($rootScope.currentUser.role == 'patient') {
+      		$state.go('app.home');
+      	}
+    }
 
 	// create the list of patient records
 	$scope.records = [

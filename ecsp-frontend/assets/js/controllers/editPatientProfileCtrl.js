@@ -2,7 +2,7 @@
 /** 
   * controllers used for the dashboard
   */
-  app.controller('editMyProfileCtrl', ["$scope", "$rootScope", "$state", "$uibModal", function ($scope, $rootScope, $state, $uibModal) {
+  app.controller('editPatientProfileCtrl', ["$scope", "$rootScope", "$state", "$uibModal", function ($scope, $rootScope, $state, $uibModal) {
 
   	$scope.userType = "";
 

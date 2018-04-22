@@ -61,10 +61,11 @@
 								<td>{{ assistant.status }}</td>
 								<td> 
 									<!-- View or Edit Profile Button -->
-									<button type="button" class="btn btn-wide btn-default">
+									<button type="button" class="btn btn-wide btn-default" ng-click="getAssistantProfile('view', assistant.employeeID)">
 										View
 									</button>
-									<button type="button" class="btn btn-wide btn-primary">
+									
+									<button type="button" class="btn btn-wide btn-primary" ng-click="getAssistantProfile('edit', assistant.record)">
 										Edit
 									</button>
 

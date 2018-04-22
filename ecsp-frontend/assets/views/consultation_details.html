@@ -11,6 +11,9 @@
 		<div class="row">
 			<div class="col-md-12" style="padding-right: 100px; padding-left: 50px;">
 				
+				<h2><span class="text-bold">Patient: </span>{{ currentUser.name }} {{ currentUser.lastName }}</h2>
+				<br>
+
 				<!-- start: Consultation Details Search Form -->
 				<form>
 					<div class="form-group">
@@ -32,6 +35,13 @@
 										Document Name
 										<span ng-show="sortType == 'documentName' && !sortReverse" class="fa fa-caret-down"></span>
 										<span ng-show="sortType == 'documentName' && sortReverse" class="fa fa-caret-up"></span>
+									</a>
+								</td>
+								<td>
+									<a href="#" ng-click="sortType = 'documentType'; sortReverse = !sortReverse">
+										Type of Document
+										<span ng-show="sortType == 'documentType' && !sortReverse" class="fa fa-caret-down"></span>
+										<span ng-show="sortType == 'documentType' && sortReverse" class="fa fa-caret-up"></span>
 									</a>
 								</td>
 								<td>
@@ -57,6 +67,7 @@
 						<tbody>
 							<tr ng-repeat="document in documents | orderBy:sortType:sortReverse | filter:consultationDetailsSearch">
 								<td> <i class="fa fa-file-text" style="margin-right: 5px;"></i> {{ document.documentName }}</td>
+								<td>{{ document.documentType }}</td>
 								<td>{{ document.uploadDate }}</td>
 								<td>{{ document.uploadedBy }}</td>
 								<td> 

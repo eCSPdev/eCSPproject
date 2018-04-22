@@ -2,13 +2,19 @@
 /** 
   * controllers used for the dashboard
   */
-  app.controller('editMyProfileCtrl', ["$scope", "$rootScope", "$state", "$uibModal", function ($scope, $rootScope, $state, $uibModal) {
+  app.controller('editAssistantProfileCtrl', ["$scope", "$rootScope", "$state", "$uibModal", function ($scope, $rootScope, $state, $uibModal) {
 
   	$scope.userType = "";
 
     /* Redirect user to login page if he or she is not logged in correctly */
     if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
         $state.go('login.signin');
+    }
+
+    if($rootScope.isLoggedIn == true) {
+      if($rootScope.currentUser.role == 'assistant' || $rootScope.currentUser.role == 'patient') {
+          $state.go('app.home');
+        }
     }
 
   	// open() Function Definition

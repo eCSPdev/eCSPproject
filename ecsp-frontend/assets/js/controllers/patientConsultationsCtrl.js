@@ -1,8 +1,19 @@
 'use strict';
 /** 
   * controllers used for the dashboard
-*/
-app.controller('patientConsultationsCtrl', ["$scope", "$rootScope", function ($scope, $rootScope) {
+  */
+  app.controller('patientConsultationsCtrl', ["$scope", "$rootScope", "$state", function ($scope, $rootScope, $state) {
+
+  	/* Redirect user to login page if he or she is not logged in correctly */
+  	if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
+  		$state.go('login.signin');
+  	}
+
+  	if($rootScope.isLoggedIn == true) {
+  		if($rootScope.currentUser.role == 'patient') {
+      		$state.go('app.home');
+      	}
+    }
 
 	$scope.sortType     = 'consultationDate'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
@@ -21,8 +32,9 @@ app.controller('patientConsultationsCtrl', ["$scope", "$rootScope", function ($s
 	// getPatientConsultation() Function Definition
 	$scope.getPatientConsultation = function(consultationDate) {
 
+		$rootScope.consultationDate = consultationDate;
 		console.log('Month of Consultation: ' + consultationDate);
+		$state.go("app.users.view_records.patient_consultations.consultation_details");
 	}
-
 }]);
 

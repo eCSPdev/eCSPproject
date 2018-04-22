@@ -1,4 +1,4 @@
-<div ng-controller="editMyProfileCtrl" ui-view class="fade-in-up">
+<div ng-controller="editPatientProfileCtrl" ui-view class="fade-in-up">
 
 	<section id="page-title">
 		<div class="row">
@@ -9,7 +9,7 @@
 		</div>
 	</section>
 
-	<!-- start: Edit Current User Profile -->
+	<!-- start: Edit Patient User Profile -->
 	<div class="container-fluid container-fullw bg-white">
 		<div class="row">
 			<div class="col-md-offset-2 col-md-8">
@@ -143,7 +143,7 @@
 				</div>
 
 				<div class="form-group" style="margin-top: 15px;">
-					<a class="btn btn-red" ui-sref="app.home" style="float: right">Cancel</a>
+					<a class="btn btn-red" ui-sref="app.users.manage_users.manage_patients.view_profile" style="float: right">Cancel</a>
 					<a class="btn btn-primary" ng-click="open('sm')" style="float: right; margin-right: 15px;">Save Changes</a>
 				</div>
 
@@ -161,7 +161,7 @@
 			<h5 style="font-size: 16px; margin-bottom: 0px;">Are you sure?</h5>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-primary" ng-click="ok()" ui-sref="app.users.view_my_profile">Confirm</button>
+			<button class="btn btn-primary" ng-click="ok()" ui-sref="app.users.manage_users.manage_patients.view_profile">Confirm</button>
 			<button class="btn btn-red" ng-click="cancel()">Cancel</button>
 		</div>
 	</script>

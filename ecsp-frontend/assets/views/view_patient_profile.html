@@ -1,4 +1,4 @@
-<div ng-controller="viewMyProfileCtrl" ui-view class="fade-in-up">
+<div ng-controller="viewPatientProfileCtrl" ui-view class="fade-in-up">
 
 	<section id="page-title">
 		<div class="row">
@@ -19,14 +19,14 @@
 						<label>
 							First Name
 						</label>
-						<input type="text" name="firstName" class="form-control" value="{{currentUser.name}}" readonly>
+						<input type="text" name="firstName" class="form-control" value="{{user.name}}" readonly>
 					</div>
 
 					<div class="form-group">
 						<label class="control-label">
 							Last Name
 						</label>
-						<input type="text" name="lastName" class="form-control" value="{{currentUser.lastName}}" readonly>
+						<input type="text" name="lastName" class="form-control" value="{{user.lastName}}" readonly>
 					</div>
 
 					<!-- Contact Information -->
@@ -77,8 +77,8 @@
 					</div>
 
 					<div class="form-group" style="margin-top: 15px;">
-						<a class="btn btn-default" ui-sref="app.home" style="float: right">Exit</a>
-						<a class="btn btn-primary" ui-sref="app.users.edit_my_profile" style="float: right; margin-right: 15px;">Edit Profile</a>
+						<a class="btn btn-default" ui-sref="app.users.manage_users.manage_patients" style="float: right">Back</a>
+						<a class="btn btn-primary" ui-sref="app.users.manage_users.manage_patients.edit_profile" style="float: right; margin-right: 15px;">Edit Profile</a>
 					</div>
 
 			</div>

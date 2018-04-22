@@ -21,9 +21,17 @@
 						<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-plus fa-stack-1x fa-inverse"></i> </span>
 						<br>
 						<br>
-						<h2 class="StepTitle">Add New User</h2>
-						<p class="text-small">
+
+						<!-- Show this button for Doctor user types -->
+						<h2 class="StepTitle" ng-if="currentUser.role == 'doctor'">Add New User</h2>
+						<p class="text-small" ng-if="currentUser.role == 'doctor'">
 							[Create a new patient or assistant]
+						</p>
+
+						<!-- Change this button for Assistant user types -->
+						<h2 class="StepTitle" ng-if="currentUser.role == 'assistant'">Add New Patient</h2>
+						<p class="text-small" ng-if="currentUser.role == 'assistant'">
+							[Create a new patient]
 						</p>
 					</div>
 				</a>
@@ -53,7 +61,7 @@
 		<!-- end: Manage Patients Button -->
 
 		<!-- start: Manange Assistants Button -->
-		<div class="col-sm-4">
+		<div class="col-sm-4" ng-if="currentUser.role != 'assistant'">
 			<div class="panel panel-white no-radius text-center">
 
 				<!-- Link to this page -->

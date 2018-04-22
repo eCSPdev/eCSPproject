@@ -61,14 +61,13 @@
 								<td>{{ patient.status }}</td>
 								<td> 
 									<!-- View or Edit Profile Button -->
-									<button type="button" class="btn btn-wide btn-default">
+									<button type="button" class="btn btn-wide btn-default" ng-click="getPatientProfile('view', patient.record)">
 										View
 									</button>
 									
-									<button type="button" class="btn btn-wide btn-primary">
+									<button type="button" class="btn btn-wide btn-primary" ng-click="getPatientProfile('edit', patient.record)">
 										Edit
 									</button>
-
 								</td>
 							</tr>
 						</tbody>

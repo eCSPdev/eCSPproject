@@ -161,6 +161,6 @@ class DoctorHandler:
                                                     lastname, officename, phone, status, email,
                                                     username, pssword, street, aptno,
                                                     city, st, country, zipcode)
-                return jsonify(Doctor = result), 201 #Verificar porque 201
+                return jsonify(History = result), 201 #Verificar porque 201
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400

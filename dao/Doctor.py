@@ -57,12 +57,12 @@ class DoctorDAO:
                                         "officename, phone, status, email, username, pssword,"\
                                         "street, aptno, city, st, country, zipcode)" \
                 "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
-                "returning doctorid;"
+                "returning historyid;"
         cursor.execute(query, (doctorid, licenseno, firstname, middlename, lastname,
                                         officename, phone, status, email, username, pssword,
                                         street, aptno, city, st, country, zipcode,))
-        doctorid = cursor.fetchone()[0]
+        historyid = cursor.fetchone()[0]
         self.conn.commit()
 
-        return doctorid
+        return historyid
 

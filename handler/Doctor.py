@@ -76,7 +76,7 @@ class DoctorHandler:
     def getDoctorByID(self, args):
         dao = DoctorDAO()
         did = args.get("doctorid")
-        row = dao.getAssistantByID(int(did))
+        row = dao.getDoctorByID(int(did))
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
@@ -113,10 +113,10 @@ class DoctorHandler:
                 if licenseno and firstname and middlename and lastname and officename and\
                         phone and status and email and username and pssword and addressid and\
                         street and aptno and city and st and country and zipcode:
-                    dao.UpdateDoctorInformationByID(doctorid, licenseno, firstname, middlename, lastname,
+                    dao.updateDoctorInfoByID(doctorid, licenseno, firstname, middlename, lastname,
                                                 officename, phone, status, email, username,
                                                 pssword)
-                    dao.UpdatePatientAddress(addressid, doctorid, street, aptno, city, st,
+                    dao.updateDoctorAddress(addressid, doctorid, street, aptno, city, st,
                                              country, zipcode)
                     result = self.build_doctorinformation_dict(doctorid, licenseno, firstname, middlename,
                                                     lastname, officename, phone, status, email,
@@ -154,7 +154,7 @@ class DoctorHandler:
             if doctorid and licenseno and firstname and middlename and lastname and \
                     officename and phone and status and email and username and pssword \
                     and street and aptno and city and st and country and zipcode:
-                dao.InsertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname,
+                dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname,
                                         officename, phone, status, email, username, pssword,
                                         street, aptno, city, st, country, zipcode)
                 result = self.build_doctorhistory_dict(doctorid, licenseno, firstname, middlename,

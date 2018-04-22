@@ -107,7 +107,10 @@ def getAllConsultationNotes():
 @app.route('/eCSP/Patient/ConsultationNotes', methods=['GET','POST'])
 def getConsultationNotesByID():
     if request.method == 'GET':
-        return ConsultationNotesHandler().getConsultationNotesByID(request.form)
+        if not request.args:
+            return jsonify(Error="No Patient ID Included."), 405
+        else:
+            return ConsultationNotesHandler().getConsultationNotesByID(request.form)
     if request.method == 'POST':
         return ConsultationNotesHandler().insertConsultationNotes(request.form)
     else:
@@ -129,7 +132,10 @@ def getAllInitialForm():
 @app.route('/eCSP/Patient/InitialForm', methods=['GET','POST'])
 def getInitialFormByID():
     if request.method == 'GET':
-        return InitialFormHandler().getInitialFormByID(request.form)
+        if not request.args:
+            return jsonify(Error="No Patient ID Included."), 405
+        else:
+            return InitialFormHandler().getInitialFormByID(request.form)
     if request.method == 'POST':
         return InitialFormHandler().insertInitialForm(request.form)
     else:
@@ -151,7 +157,10 @@ def getAllPrescription():
 @app.route('/eCSP/Patient/Prescription', methods=['GET','POST'])
 def getPrescriptionByID():
     if request.method == 'GET':
-        return PrescriptionHandler().getPrescriptionByID(request.form)
+        if not request.args:
+            return jsonify(Error="No Patient ID Included."), 405
+        else:
+            return PrescriptionHandler().getPrescriptionByID(request.form)
     if request.method == 'POST':
         return PrescriptionHandler().insertPrescription(request.form)
     else:
@@ -173,7 +182,10 @@ def getAllReferral():
 @app.route('/eCSP/Patient/Referral', methods=['GET','POST'])
 def getReferralByID():
     if request.method == 'GET':
-        return ReferralHandler().getReferralByID(request.form)
+        if not request.args:
+            return jsonify(Error="No Patient ID Included."), 405
+        else:
+            return ReferralHandler().getReferralByID(request.form)
     if request.method == 'POST':
         return ReferralHandler().insertReferral(request.form)
     else:
@@ -195,7 +207,10 @@ def getAllResult():
 @app.route('/eCSP/Patient/Result', methods=['GET','POST'])
 def getResultByID():
     if request.method == 'GET':
-        return ResultHandler().getResultByID(request.form)
+        if not request.args:
+            return jsonify(Error="No Patient ID Included."), 405
+        else:
+            return ResultHandler().getResultByID(request.form)
     if request.method == 'POST':
         return ResultHandler().insertResult(request.form)
     else:

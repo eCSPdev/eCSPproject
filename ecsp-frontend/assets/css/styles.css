@@ -422,7 +422,7 @@ h5.over-title {
 }
 @media (min-width: 768px) {
   .navbar .navbar-collapse {
-    margin-left: 260px;
+    /*margin-left: 260px;*/
     height: 65px !important;
   }
   .navbar .navbar-collapse .nav {
@@ -1502,7 +1502,7 @@ ul.sub-menu li ul.sub-menu li ul.sub-menu li a {
 @media (min-width: 992px) {
   .main-content {
     margin-top: 65px;
-    margin-left: 260px;
+/*    margin-left: 260px;*/
   }
   .app-navbar-fixed .main-content {
     margin-top: 0;
@@ -1515,8 +1515,8 @@ ul.sub-menu li ul.sub-menu li ul.sub-menu li a {
     clear: both;
   }
   .app-sidebar-closed .main-content {
-    margin-left: 70px;
-  }
+    /*margin-left: 70px;
+*/  }
 }
 @media (max-width: 991px) {
   .main-content {
@@ -1545,10 +1545,10 @@ ul.sub-menu li ul.sub-menu li ul.sub-menu li a {
 }
 @media (min-width: 992px) {
   #app > footer {
-    margin-left: 260px;
+/*    margin-left: 260px;*/
   }
   #app.app-sidebar-closed > footer {
-    margin-left: 70px;
+    /*margin-left: 70px;*/
   }
   #app.app-footer-fixed > footer {
     position: fixed;

@@ -39,6 +39,7 @@ app.constant('JS_REQUIRES', {
         'viewRecordsCtrl': 'assets/js/controllers/viewRecordsCtrl.js',
         'patientConsultationsCtrl': 'assets/js/controllers/patientConsultationsCtrl.js',
         'consultationDetailsCtrl': 'assets/js/controllers/consultationDetailsCtrl.js',
+        'loginCtrl': 'assets/js/controllers/loginCtrl.js',
         'iconsCtrl': 'assets/js/controllers/iconsCtrl.js',
         'vAccordionCtrl': 'assets/js/controllers/vAccordionCtrl.js',
         'ckeditorCtrl': 'assets/js/controllers/ckeditorCtrl.js',

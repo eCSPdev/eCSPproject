@@ -462,7 +462,8 @@
      abstract: true
  }).state('login.signin', {
      url: '/signin',
-     templateUrl: "assets/views/login.html"
+     templateUrl: "assets/views/login.html",
+     resolve: loadSequence('jquery-sparkline', 'loginCtrl')
  }).state('login.forgot', {
      url: '/forgot',
      templateUrl: "assets/views/login_forgot.html"

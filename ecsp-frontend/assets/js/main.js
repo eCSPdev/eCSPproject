@@ -27,18 +27,18 @@ app.run(['$rootScope', '$state', '$stateParams', '$trace',
 			layout: {
 				isNavbarFixed: true, //true if you want to initialize the template with fixed header
 				isSidebarFixed: false, // true if you want to initialize the template with fixed sidebar
-				isSidebarClosed: false, // true if you want to initialize the template with closed sidebar
+				isSidebarClosed: true, // true if you want to initialize the template with closed sidebar
 				isFooterFixed: true, // true if you want to initialize the template with fixed footer
 				theme: 'theme-1', // indicate the theme chosen for your project
 				logo: 'assets/images/ecsp-logo.png', // relative path of the project logo
 			}
 		};
-		$rootScope.user = {
-			name: 'Dr. Fulgencio',
-			lastName: 'Talavera',
-			job: 'ng-Dev',
-			picture: 'app/img/user/02.jpg'
-        };
+		// $rootScope.user = {
+		// 	name: 'Dr. Fulgencio',
+		// 	lastName: 'Talavera',
+		// 	job: 'ng-Dev',
+		// 	picture: 'app/img/user/02.jpg'
+  //       };
 
         //$trace.enable('TRANSITION');
 	}]);

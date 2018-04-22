@@ -40,13 +40,13 @@ class ConsultationNotesHandler:
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
-            consultationnote = self.build_consultationnoteslist_dict(row)
-            return jsonify(ConsultatioNote=consultationnote)
+            result = self.build_consultationnoteslist_dict(row)
+            return jsonify(ConsultatioNote=result)
 
     def insertConsultationNotes(self, form):
         dao = ConsultationNotesDAO()
         if len(form) != 5:
-            return jsonify(Error="Malformed update request"), 400
+            return jsonify(Error="Malformed insert request"), 400
         else:
             consultationnote = form['consultationnote']
             assistantid = form['assistantid']
@@ -58,4 +58,4 @@ class ConsultationNotesHandler:
                 result = self.build_cninsert_dict(consultationnote, assistantid, doctorid, dateofupload, patientid)
                 return jsonify(ConsultatioNote = result), 201 #Verificar porque 201
             else:
-                return jsonify(Error="Unexpected attributes in update request"), 400
+                return jsonify(Error="Unexpected attributes in insert request"), 400

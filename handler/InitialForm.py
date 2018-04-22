@@ -46,7 +46,7 @@ class InitialFormHandler:
     def insertInitialForm(self, form):
         dao = InitialFormDAO()
         if len(form) != 5:
-            return jsonify(Error="Malformed update request"), 400
+            return jsonify(Error="Malformed insert request"), 400
         else:
             initialform = form['initialform']
             assistantid = form['assistantid']
@@ -58,4 +58,4 @@ class InitialFormHandler:
                 result = self.build_ifinsert_dict(initialform, assistantid, doctorid, dateofupload, patientid)
                 return jsonify(InitialForm = result), 201 #Verificar porque 201
             else:
-                return jsonify(Error="Unexpected attributes in update request"), 400
+                return jsonify(Error="Unexpected attributes in insert request"), 400

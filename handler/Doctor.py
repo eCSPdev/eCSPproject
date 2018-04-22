@@ -87,7 +87,7 @@ class DoctorHandler:
         dao = DoctorDAO()
         did = args.get("doctorid")
         if not dao.getDoctorByID(did):
-            return jsonify(Error="Part not found."), 404
+            return jsonify(Error="Doctor not found."), 404
         else:
             if len(form) != 18:
                 return jsonify(Error="Malformed update request"), 400
@@ -132,7 +132,7 @@ class DoctorHandler:
     def insertDoctorHistory(self, form):
         dao = DoctorDAO()
         if len(form) != 17:
-            return jsonify(Error="Malformed update request"), 400
+            return jsonify(Error="Malformed insert request"), 400
         else:
             doctorid = form['doctorid']
             licenseno = form['liceseno']
@@ -163,4 +163,4 @@ class DoctorHandler:
                                                     city, st, country, zipcode)
                 return jsonify(Doctor = result), 201 #Verificar porque 201
             else:
-                return jsonify(Error="Unexpected attributes in update request"), 400
+                return jsonify(Error="Unexpected attributes in insert request"), 400

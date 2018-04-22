@@ -35,7 +35,7 @@ def DAlogin():
 def getDoctorByID():
     if request.method == 'GET':
         if not request.args:
-            return jsonify(Error="No Patient ID Included."), 405
+            return jsonify(Error="No Doctor ID Included."), 405
         else:
             return DoctorHandler().getDoctorByID(request.form)
     if request.method == 'PUT':
@@ -45,23 +45,26 @@ def getDoctorByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get an Assistant List
-@app.route('/eCSP/Doctor/AssistantList', methods=['GET'])
+@app.route('/eCSP/Doctor/AssistantList', methods=['GET', 'POST'])
 def getAllAssistant():
     if request.method == 'GET':
         return AssistantHandler().getAllAssistant()
+    elif request.method == 'POST':
+        return AssistantHandler().insertAssistant(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 #Get an Assistant Personal Information by Assistant ID
-@app.route('/eCSP/Doctor/Assistant/PersonalInformation', methods=['GET', 'PUT', 'POST'])
-@app.route('/eCSP/Assistant/PersonalInformation', methods=['GET', 'PUT', 'POST'])
+@app.route('/eCSP/Doctor/Assistant/PersonalInformation', methods=['GET', 'PUT'])
+@app.route('/eCSP/Assistant/PersonalInformation', methods=['GET', 'PUT'])
 def getAssistantByID():
     if request.method == 'GET':
-        return AssistantHandler().getAssistantByID(request.form)
+        if not request.args:
+            return jsonify(Error="No Assistant ID Included."), 405
+        else:
+            return AssistantHandler().getAssistantByID(request.form)
     if request.method == 'PUT':
         return AssistantHandler().updateAssistant(request.form)
-    if request.method == 'POST':
-        return AssistantHandler().insertAssistant(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -108,7 +111,7 @@ def getAllConsultationNotes():
 def getConsultationNotesByID():
     if request.method == 'GET':
         if not request.args:
-            return jsonify(Error="No Patient ID Included."), 405
+            return jsonify(Error="No Consultation Note ID Included."), 405
         else:
             return ConsultationNotesHandler().getConsultationNotesByID(request.form)
     if request.method == 'POST':
@@ -133,7 +136,7 @@ def getAllInitialForm():
 def getInitialFormByID():
     if request.method == 'GET':
         if not request.args:
-            return jsonify(Error="No Patient ID Included."), 405
+            return jsonify(Error="No Initial Form ID Included."), 405
         else:
             return InitialFormHandler().getInitialFormByID(request.form)
     if request.method == 'POST':
@@ -158,7 +161,7 @@ def getAllPrescription():
 def getPrescriptionByID():
     if request.method == 'GET':
         if not request.args:
-            return jsonify(Error="No Patient ID Included."), 405
+            return jsonify(Error="No Prescription ID Included."), 405
         else:
             return PrescriptionHandler().getPrescriptionByID(request.form)
     if request.method == 'POST':
@@ -183,7 +186,7 @@ def getAllReferral():
 def getReferralByID():
     if request.method == 'GET':
         if not request.args:
-            return jsonify(Error="No Patient ID Included."), 405
+            return jsonify(Error="No Referral ID Included."), 405
         else:
             return ReferralHandler().getReferralByID(request.form)
     if request.method == 'POST':
@@ -208,7 +211,7 @@ def getAllResult():
 def getResultByID():
     if request.method == 'GET':
         if not request.args:
-            return jsonify(Error="No Patient ID Included."), 405
+            return jsonify(Error="No Result ID Included."), 405
         else:
             return ResultHandler().getResultByID(request.form)
     if request.method == 'POST':

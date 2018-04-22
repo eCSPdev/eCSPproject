@@ -15,5 +15,7 @@ app.controller('addNewUserCtrl', ["$scope", "$rootScope", "$state", function ($s
       	}
     }
 
+    $scope.newUser = { };
+
 }]);
 

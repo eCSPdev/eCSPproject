@@ -13,193 +13,230 @@
 
 	<!-- start: Register an Assistant or Patient Form -->
 	<div class="container-fluid container-fullw bg-white">
-		<div class="row">
-			<div class="col-md-offset-2 col-md-8">
-				<fieldset>
-					<legend>
-						Add New User
-					</legend>
+		<form name="addNewUserForm" id="form1" novalidate ng-submit="form.submit(addNewUserForm)">
+			<div class="row">
+				<div class="col-md-offset-2 col-md-8">
+					<fieldset>
+						<legend>
+							Add New User
+						</legend>
 
-					<!-- User Type Selection -->
-					<div class="form-group" style="margin-bottom: 0px;">
-						<label>User Type<span class="symbol required" ng-if="currentUser.role == 'doctor'"></span></label>
-					</div>
-					<div class="panel-body" style="padding: 0px;">
-						<div class="radio clip-radio radio-primary">
-							<input type="radio" id="rdPatient" name="vertical" value="patient" checked="checked">
-							<label for="rdPatient">
-								Patient
+						<!-- User Type Selection -->
+						<div class="form-group" style="margin-bottom: 0px;">
+							<label>User Type<span class="symbol required" ng-if="currentUser.role == 'doctor'"></span></label>
+						</div>
+						<div class="panel-body" style="padding: 0px;">
+							<div class="radio clip-radio radio-primary">
+								<input type="radio" id="rdPatient" name="vertical" value="patient" checked="checked" ng-model="newUser.type" required>
+								<label for="rdPatient">
+									Patient
+								</label>
+							</div>
+							<div class="radio clip-radio radio-primary" ng-if="currentUser.role != 'assistant'">
+								<input type="radio" id="rdAssistant" name="vertical" value="assistant" ng-model="newUser.type" required>
+								<label for="rdAssistant">
+									Assistant
+								</label>
+							</div>
+						</div>
+
+						<!-- Personal Information -->
+						<!-- First name form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.firstName.$invalid && !addNewUserForm.firstName.$pristine, 'has-success':addNewUserForm.firstName.$valid }">
+							<label>
+								First Name <span class="symbol required"></span>
 							</label>
+
+							<!-- ng-pattern: Regular Expressions for Input -->
+							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="newUser.firstName" ng-pattern="/^\w+\D$/" required>
+							<span class="error text-small block" ng-if="addNewUserForm.firstName.$dirty && addNewUserForm.firstName.$invalid">Enter a valid first name.</span>
 						</div>
-						<div class="radio clip-radio radio-primary" ng-if="currentUser.role != 'assistant'">
-							<input type="radio" id="rdAssistant" name="vertical" value="assistant">
-							<label for="rdAssistant">
-								Assistant
+
+						<!-- Last name form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.lastName.$invalid && !addNewUserForm.lastName.$pristine, 'has-success':addNewUserForm.lastName.$valid }">
+							<label class="control-label">
+								Last Name <span class="symbol required"></span>
 							</label>
+							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="newUser.lastName" ng-pattern="/[a-zA-Z][a-zA-Z ]*/" required>
+							<span class="error text-small block" ng-if="addNewUserForm.lastName.$dirty && addNewUserForm.lastName.$invalid">Enter a valid last name.</span>
 						</div>
-					</div>
 
-					<!-- Personal Information -->
-					<div class="form-group">
-						<label>
-							First Name <span class="symbol required"></span>
-						</label>
-						<input type="text" name="firstName" class="form-control" placeholder="Enter first name">
-					</div>
-
-					<div class="form-group">
-						<label class="control-label">
-							Last Name <span class="symbol required"></span>
-						</label>
-						<input type="text" name="lastName" class="form-control" placeholder="Enter last name">
-					</div>
-
-					<div class="form-group" style="margin-bottom: 5px;">
-						<label class="block">
-							Gender
-						</label>
-						<div class="clip-radio radio-primary">
-							<input type="radio" id="female" name="gender" value="female" checked="checked">
-							<label for="female">
-								Female
+						<!-- Gender form selection and validation -->
+						<div class="form-group" style="margin-bottom: 5px;">
+							<label class="block">
+								Gender <span class="symbol required"></span>
 							</label>
-							<input type="radio" id="male" name="gender" value="male">
-							<label for="male">
-								Male
+							<div class="clip-radio radio-primary">
+								<input type="radio" id="female" name="gender" value="female" checked="checked" ng-model="newUser.gender" required>
+								<label for="female">
+									Female
+								</label>
+								<input type="radio" id="male" name="gender" value="male" ng-model="newUser.gender" required>
+								<label for="male">
+									Male
+								</label>
+							</div>
+						</div>			
+
+						<!-- Contact Information -->
+						<!-- Phone number form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.phoneNumber.$invalid && !addNewUserForm.phoneNumber.$pristine, 'has-success':addNewUserForm.phoneNumber.$valid }">
+							<label for="form-field-mask-2">
+								Phone Number <span class="symbol required"></span>
 							</label>
+							<div class="input-group">
+								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="newUser.phoneNumber" ng-pattern="/(^\d{10}$)/" required>
+								<span class="error text-small block" ng-if="addNewUserForm.phoneNumber.$dirty && addNewUserForm.phoneNumber.$invalid">Enter a valid phone number.</span>
+							</div>
 						</div>
-					</div>			
 
-					<!-- Contact Information -->
-					<div class="form-group">
-						<label for="form-field-mask-2">
-							Phone Number <span class="symbol required"></span>
-						</label>
-						<div class="input-group">
-							<input type="text" class="form-control" name="phoneNumber" placeholder="(xxx) xxx-xxxx" ui-mask="(xxx) xxx-xxxx"  ng-model="x">
+						<!-- Street address form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.addressLine1.$invalid && !addNewUserForm.addressLine1.$pristine, 'has-success':addNewUserForm.addressLine1.$valid }">
+							<label class="control-label">
+								Address Line #1 <span class="symbol required"></span>
+							</label>
+							<input type="text" name="addressLine1" class="form-control" placeholder="Enter address" ng-model="newUser.addressLine1" ng-pattern="/[\w\s]+/" required>
+							<span class="error text-small block" ng-if="addNewUserForm.addressLine1.$dirty && addNewUserForm.addressLine1.$invalid">Enter a valid address.</span>
+						</div>	
+
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.addressLine2.$invalid, 'has-success':addNewUserForm.addressLine2.$valid }">
+							<label class="control-label">
+								Address Line #2
+							</label>
+							<input type="text" name="addressLine2" class="form-control" placeholder="Enter address" ng-model="newUser.addressLine2" ng-pattern="/[\w\s]+/">
+							<span class="error text-small block" ng-if="addNewUserForm.addressLine2.$dirty && addNewUserForm.addressLine2.$invalid">Enter a valid address.</span>
 						</div>
-					</div>
 
-					<div class="form-group">
-						<label class="control-label">
-							Address Line #1 <span class="symbol required"></span>
-						</label>
-						<input type="text" name="addressLine1" class="form-control" placeholder="Enter address">
-					</div>	
-
-					<div class="form-group">
-						<label class="control-label">
-							Address Line #2
-						</label>
-						<input type="text" name="addressLine2" class="form-control" placeholder="Enter address">
-					</div>
-
-					<div class="form-group">
-						<label>
-							Choose country or region <span class="symbol required"></span>
-						</label>
-						<select name="countryRegion" class="form-control">
-							<option value="">-- None --</option>
-							<option value="AL">Alabama</option>
-							<option value="AK">Alaska</option>
-							<option value="AZ">Arizona</option>
-							<option value="AR">Arkansas</option>
-							<option value="CA">California</option>
-							<option value="CO">Colorado</option>
-							<option value="CT">Connecticut</option>
-							<option value="DE">Delaware</option>
-							<option value="FL">Florida</option>
-							<option value="GA">Georgia</option>
-							<option value="HI">Hawaii</option>
-							<option value="ID">Idaho</option>
-							<option value="IL">Illinois</option>
-							<option value="IN">Indiana</option>
-							<option value="IA">Iowa</option>
-							<option value="KS">Kansas</option>
-							<option value="KY">Kentucky</option>
-							<option value="LA">Louisiana</option>
-							<option value="ME">Maine</option>
-							<option value="MD">Maryland</option>
-							<option value="MA">Massachusetts</option>
-							<option value="MI">Michigan</option>
-							<option value="MN">Minnesota</option>
-							<option value="MS">Mississippi</option>
-							<option value="MO">Missouri</option>
-							<option value="MT">Montana</option>
-							<option value="NE">Nebraska</option>
-							<option value="NV">Nevada</option>
-							<option value="NH">New Hampshire</option>
-							<option value="NJ">New Jersey</option>
-							<option value="NM">New Mexico</option>
-							<option value="NY">New York</option>
-							<option value="NC">North Carolina</option>
-							<option value="ND">North Dakota</option>
-							<option value="OH">Ohio</option>
-							<option value="OK">Oklahoma</option>
-							<option value="OR">Oregon</option>
-							<option value="PA">Pennsylvania</option>
-							<option value="PR">Puerto Rico</option>
-							<option value="RI">Rhode Island</option>
-							<option value="SC">South Carolina</option>
-							<option value="SD">South Dakota</option>
-							<option value="TN">Tennessee</option>
-							<option value="TX">Texas</option>
-							<option value="UT">Utah</option>
-							<option value="VT">Vermont</option>
-							<option value="VA">Virginia</option>
-							<option value="WA">Washington</option>
-							<option value="WV">West Virginia</option>
-							<option value="WI">Wisconsin</option>
-							<option value="WY">Wyoming</option>
-						</select>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label">
-							Zip Code <span class="symbol required"></span>
-						</label>
-						<input type="text" name="zipCode" class="form-control" placeholder="Enter zipcode">
-					</div>	
-
-					<div class="form-group">
-						<label>
-							Email <span class="symbol required"></span>
-						</label>
-						<div class="form-group">
-							<input type="email" placeholder="Enter email" name="email" id="email" class="form-control">
+						<!-- Country or region form selection and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.countryRegion.$invalid && !addNewUserForm.countryRegion.$pristine, 'has-success': addNewUserForm.countryRegion.$valid }">
+							<label>
+								Choose country or region <span class="symbol required"></span>
+							</label>
+							<select name="countryRegion" class="form-control" ng-model="newUser.countryRegion" required>
+								<option value="">-- None --</option>
+								<option value="AL">Alabama</option>
+								<option value="AK">Alaska</option>
+								<option value="AZ">Arizona</option>
+								<option value="AR">Arkansas</option>
+								<option value="CA">California</option>
+								<option value="CO">Colorado</option>
+								<option value="CT">Connecticut</option>
+								<option value="DE">Delaware</option>
+								<option value="FL">Florida</option>
+								<option value="GA">Georgia</option>
+								<option value="HI">Hawaii</option>
+								<option value="ID">Idaho</option>
+								<option value="IL">Illinois</option>
+								<option value="IN">Indiana</option>
+								<option value="IA">Iowa</option>
+								<option value="KS">Kansas</option>
+								<option value="KY">Kentucky</option>
+								<option value="LA">Louisiana</option>
+								<option value="ME">Maine</option>
+								<option value="MD">Maryland</option>
+								<option value="MA">Massachusetts</option>
+								<option value="MI">Michigan</option>
+								<option value="MN">Minnesota</option>
+								<option value="MS">Mississippi</option>
+								<option value="MO">Missouri</option>
+								<option value="MT">Montana</option>
+								<option value="NE">Nebraska</option>
+								<option value="NV">Nevada</option>
+								<option value="NH">New Hampshire</option>
+								<option value="NJ">New Jersey</option>
+								<option value="NM">New Mexico</option>
+								<option value="NY">New York</option>
+								<option value="NC">North Carolina</option>
+								<option value="ND">North Dakota</option>
+								<option value="OH">Ohio</option>
+								<option value="OK">Oklahoma</option>
+								<option value="OR">Oregon</option>
+								<option value="PA">Pennsylvania</option>
+								<option value="PR">Puerto Rico</option>
+								<option value="RI">Rhode Island</option>
+								<option value="SC">South Carolina</option>
+								<option value="SD">South Dakota</option>
+								<option value="TN">Tennessee</option>
+								<option value="TX">Texas</option>
+								<option value="UT">Utah</option>
+								<option value="VT">Vermont</option>
+								<option value="VA">Virginia</option>
+								<option value="WA">Washington</option>
+								<option value="WV">West Virginia</option>
+								<option value="WI">Wisconsin</option>
+								<option value="WY">Wyoming</option>
+							</select>
 						</div>
-					</div>
 
-					<!-- Login Information -->
-					<div class="form-group">
-						<label>
-							Username <span class="symbol required"></span>
-						</label>
-						<div class="form-group">
-							<input type="text" placeholder="Enter a username" name="username" id="username" class="form-control">
+						<!-- City form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.city.$invalid && !addNewUserForm.city.$pristine, 'has-success':addNewUserForm.city.$valid }">
+							<label class="control-label">
+								City <span class="symbol required"></span>
+							</label>
+							<input type="text" name="city" class="form-control" placeholder="Enter city" ng-model="newUser.city" ng-pattern="/[a-zA-Z][a-zA-Z ]*/" required>
+							<span class="error text-small block" ng-if="addNewUserForm.city.$dirty && addNewUserForm.city.$invalid">Enter a valid city.</span>
 						</div>
-					</div>
 
-					<div class="form-group">
-						<label>
-							Password <span class="symbol required"></span>
-						</label>
-						<input type="password" class="form-control" placeholder="Enter a temporary password">
-					</div>
-					<div class="form-group">
-						<label>
-							Re-Type Password <span class="symbol required"></span>
-						</label>
-						<input type="password" placeholder="Re-type the password" name="password" id="password" class="form-control">
-					</div>
+						<!-- Zip code form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.zipCode.$invalid && !addNewUserForm.zipCode.$pristine, 'has-success':addNewUserForm.zipCode.$valid }">
+							<label class="control-label">
+								Zip Code <span class="symbol required"></span>
+							</label>
+							<input type="text" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="newUser.zipCode" ng-pattern="/(/^\d{5}$)|(/^\d{5}-\d{4}$)/" required>
+							<span class="error text-small block" ng-if="addNewUserForm.city.$dirty && addNewUserForm.city.$invalid">Enter a valid zip code.</span>
+						</div>	
 
-					<div class="form-group" style="margin-top: 15px;">
-						<a class="btn btn-red" ui-sref="app.users.manage_users" style="float: right">Cancel</a>
-						<a class="btn btn-primary" href="#" style="float: right; margin-right: 15px;">Submit</a>
-					</div>
-				</fieldset>
+						<!-- Email form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.email.$invalid && !addNewUserForm.email.$pristine, 'has-success':addNewUserForm.email.$valid }">
+							<label>
+								Email <span class="symbol required"></span>
+							</label>
+							<div class="form-group">
+								<input type="email" placeholder="Enter email" name="email" id="email" class="form-control" ng-model="newUser.email" ng-pattern="/.+@.+\..+/" required>
+								<span class="error text-small block" ng-if="addNewUserForm.email.$dirty && addNewUserForm.email.$invalid">Enter a valid email address.</span>
+							</div>
+						</div>
+
+						<!-- Login Information -->
+						<!-- Username form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.username.$invalid && !addNewUserForm.username.$pristine, 'has-success':addNewUserForm.username.$valid }">
+							<label>
+								Username <span class="symbol required"></span>
+							</label>
+							<div class="form-group">
+								<input type="text" placeholder="Enter a username" name="username" id="username" class="form-control" ng-model="newUser.username" ng-pattern="/^[-\w\.\$@\*\!]{1,30}$/" required>
+								<span class="error text-small block" ng-if="addNewUserForm.username.$dirty && addNewUserForm.username.$invalid">Enter a valid username.</span>
+							</div>
+						</div>
+
+						<!-- Password form input and validation -->
+						<div class="form-group" ng-class="{'has-error':addNewUserForm.password.$dirty && addNewUserForm.password.$invalid, 'has-success':addNewUserForm.password.$valid}">
+							<label class="control-label">
+								Password <span class="symbol required"></span>
+							</label>
+							<input type="password" placeholder="Enter a temporary password" class="form-control" name="password" ng-model="newUser.password" ng-pattern="/^(?=/^.{8,24}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/" required/>
+							<span class="error text-small block" ng-if="addNewUserForm.password.$dirty && addNewUserForm.password.$invalid && addNewUserForm.password.$error.required">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
+						</div>
+
+						<!-- Password confirmation form input and validation -->
+						<div class="form-group" ng-class="{'has-error':addNewUserForm.confirmPassword.$dirty && addNewUserForm.confirmPassword.$error.compareTo || addNewUserForm.confirmPassword.$dirty && addNewUserForm.confirmPassword.$invalid, 'has-success':addNewUserForm.confirmPassword.$valid}">
+							<label class="control-label">
+								Repeat Password <span class="symbol required"></span>
+							</label>
+							<input type="password" placeholder="Repeat temporary password" class="form-control" name="confirmPassword" ng-model="newUser.confirmPassword" ng-pattern="/^(?=/^.{8,25}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/" compare-to="newUser.password" required/>
+							<span class="error text-small block" ng-if="addNewUserForm.password.$dirty && addNewUserForm.password.$invalid && addNewUserForm.password.$error.required">Re-enter a valid password.</span>
+							<span class="error text-small block" ng-if="addNewUserForm.confirmPassword.$dirty && addNewUserForm.confirmPassword.$error.compareTo">Passwords do not match. Please try again.</span>
+						</div>
+
+						<!-- Action buttons -->
+						<div class="form-group" style="margin-top: 15px;">
+							<a class="btn btn-red" ui-sref="app.users.manage_users" style="float: right">Cancel</a>
+							<button class="btn btn-primary" type="submit" href="#" style="float: right; margin-right: 15px;">Submit</button>
+						</div>
+					</fieldset>
+				</div>
+				<!-- end: Edit Profile Button -->
+
 			</div>
-			<!-- end: Edit Profile Button -->
-
-		</div>
+		</form>
 	</div>

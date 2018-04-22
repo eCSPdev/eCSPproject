@@ -62,31 +62,28 @@ def getAssistantByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient List
-@app.route('/eCSP/Doctor/PatientList', methods=['GET'])
-@app.route('/eCSP/Assistant/PatientList', methods=['GET'])
+@app.route('/eCSP/Doctor/PatientList', methods=['GET', 'POST'])
+@app.route('/eCSP/Assistant/PatientList', methods=['GET', 'POST'])
 def getAllPatients():
     if request.method == 'GET':
         return PatientHandler().getAllPatients()
+    elif request.method == 'POST':
+        return PatientHandler().insertPatient(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 #Get a Patient Personal Information by PatientID
-@app.route('/eCSP/Doctor/Patient/PersonalInformation', methods=['GET', 'PUT', 'POST'])
-@app.route('/eCSP/Assistant/Patient/PersonalInformation', methods=['GET', 'PUT', 'POST'])
-@app.route('/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT', 'POST'])
+@app.route('/eCSP/Doctor/Patient/PersonalInformation', methods=['GET', 'PUT'])
+@app.route('/eCSP/Assistant/Patient/PersonalInformation', methods=['GET', 'PUT'])
+@app.route('/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT'])
 def getPatientByID():
     if request.method == 'GET':
-        print ('entre al get')
         if not request.args:
-            print ('no tengo args')
             return jsonify(Error="No Patient ID Included."), 405
         else:
-            print ('enviando args')
             return PatientHandler().getPatientByID(request.args)
     if request.method == 'PUT':
-        return AssistantHandler().updatePatient(request.form)
-    if request.method == 'POST':
-        return AssistantHandler().insertPatient(request.form)
+        return PatientHandler().updatePatientInformation(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 

@@ -20,7 +20,7 @@ class DoctorHandler:
         return result
 
 
-    def build_doctor_dict(self,row):
+    def build_doctorinformation_dict(self,row):
         result = {}
         result['doctorid'] = row[0]
         result['licenseno'] = row[1]
@@ -42,6 +42,28 @@ class DoctorHandler:
         result['zipcode'] = row[17]
         return result
 
+    def build_doctorhistory_dict(self,row):
+        result = {}
+        result['doctorid'] = row[0]
+        result['licenseno'] = row[1]
+        result['firstname'] = row[2]
+        result['middlename'] = row[3]
+        result['lastname'] = row[4]
+        result['officename'] = row[5]
+        result['phone'] = row[6]
+        result['status'] = row[7]
+        result['email'] = row[8]
+        result['username'] = row[9]
+        result['pssword'] = row[10]
+        result['street'] = row[11]
+        result['aptno'] = row[12]
+        result['city'] = row[13]
+        result['st'] = row[14]
+        result['country'] = row[15]
+        result['zipcode'] = row[16]
+        return result
+
+
     def getAllDoctor(self):
         dao = DoctorDAO()
         result = dao.getAllDoctor()
@@ -53,12 +75,12 @@ class DoctorHandler:
 
     def getDoctorByID(self, args):
         dao = DoctorDAO()
-        did = int(args.get("doctorid"))
-        row = dao.getAssistantByID(did)
+        did = args.get("doctorid")
+        row = dao.getAssistantByID(int(did))
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
-            doctor = self.build_doctor_dict(row)
+            doctor = self.build_doctorinformation_dict(row)
             return jsonify(Doctor = doctor)
 
     def updateDoctorInformation(self, args, form):
@@ -67,7 +89,7 @@ class DoctorHandler:
         if not dao.getDoctorByID(did):
             return jsonify(Error="Part not found."), 404
         else:
-            if len(args) != 18:
+            if len(form) != 18:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 doctorid = form['doctorid']
@@ -91,12 +113,12 @@ class DoctorHandler:
                 if licenseno and firstname and middlename and lastname and officename and\
                         phone and status and email and username and pssword and addressid and\
                         street and aptno and city and st and country and zipcode:
-                    dao.updateDoctorInformationByID(doctorid, licenseno, firstname, middlename, lastname,
+                    dao.UpdateDoctorInformationByID(doctorid, licenseno, firstname, middlename, lastname,
                                                 officename, phone, status, email, username,
                                                 pssword)
                     dao.UpdatePatientAddress(addressid, doctorid, street, aptno, city, st,
                                              country, zipcode)
-                    result = self.build_doctor_dict(doctorid, licenseno, firstname, middlename,
+                    result = self.build_doctorinformation_dict(doctorid, licenseno, firstname, middlename,
                                                     lastname, officename, phone, status, email,
                                                     username, pssword, addressid, street, aptno,
                                                     city, st, country, zipcode)
@@ -109,7 +131,7 @@ class DoctorHandler:
 
     def insertDoctorHistory(self, form):
         dao = DoctorDAO()
-        if len(form) != 18:
+        if len(form) != 17:
             return jsonify(Error="Malformed update request"), 400
         else:
             doctorid = form['doctorid']
@@ -123,7 +145,6 @@ class DoctorHandler:
             email = form['email']
             username = form['username']
             pssword = form['pssword']
-            addressid = form['addressid']
             street = form['street']
             aptno = form['aptno']
             city = form['city']
@@ -132,13 +153,13 @@ class DoctorHandler:
             zipcode = form['zipcode']
             if doctorid and licenseno and firstname and middlename and lastname and \
                     officename and phone and status and email and username and pssword \
-                    and addressid and street and aptno and city and st and country and zipcode:
-                dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname,
+                    and street and aptno and city and st and country and zipcode:
+                dao.InsertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname,
                                         officename, phone, status, email, username, pssword,
-                                        addressid, street, aptno, city, st, country, zipcode)
-                result = self.build_doctor_dict(doctorid, licenseno, firstname, middlename,
+                                        street, aptno, city, st, country, zipcode)
+                result = self.build_doctorhistory_dict(doctorid, licenseno, firstname, middlename,
                                                     lastname, officename, phone, status, email,
-                                                    username, pssword, addressid, street, aptno,
+                                                    username, pssword, street, aptno,
                                                     city, st, country, zipcode)
                 return jsonify(Doctor = result), 201 #Verificar porque 201
             else:

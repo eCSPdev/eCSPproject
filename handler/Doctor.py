@@ -68,8 +68,8 @@ class DoctorHandler:
         dao = DoctorDAO()
         result = dao.getAllDoctor()
         result_list = []
-        for r in result:
-            result = self.build_doctorlist_dict(r)
+        for row in result:
+            result = self.build_doctorlist_dict(row)
             result.append(result)
         return jsonify(Doctor=result_list)
 

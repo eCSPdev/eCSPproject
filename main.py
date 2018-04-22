@@ -97,7 +97,7 @@ def getPatientByID():
 @app.route('/eCSP/Patient/ConsultationNotesList', methods=['GET'])
 def getAllConsultationNotes():
     if request.method == 'GET':
-        return ConsultationNotesHandler().getAllColsultationNotes(request.form)
+        return ConsultationNotesHandler().getPatientConsultationNotes(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -119,7 +119,7 @@ def getConsultationNotesByID():
 @app.route('/eCSP/Patient/InitialFormList', methods=['GET'])
 def getAllInitialForm():
     if request.method == 'GET':
-        return InitialFormHandler().getAllInitialForm(request.form)
+        return InitialFormHandler().getPatientInitialForm(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 

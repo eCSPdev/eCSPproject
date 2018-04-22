@@ -24,8 +24,8 @@
 
     // APPLICATION ROUTES
     // -----------------------------------
-    // For any unmatched url, redirect to /home
     $urlRouterProvider.otherwise("/home");
+
     $locationProvider.hashPrefix('');
     //
     // Set up the states

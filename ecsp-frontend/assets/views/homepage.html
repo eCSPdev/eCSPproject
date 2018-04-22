@@ -10,7 +10,7 @@
 <!-- end: Homepage Title -->
 
 <!-- start: Main Buttons -->
-<div class="container-fluid container-fullw bg-white">
+<div class="container-fluid container-fullw bg-white" ng-controller="homepageCtrl">
 	<div class="row">
 
 		<!-- start: View Records Button -->
@@ -24,9 +24,17 @@
 						<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-folder-open fa-stack-1x fa-inverse"></i> </span>
 						<br>
 						<br>
-						<h2 class="StepTitle">View Records</h2>
-						<p class="text-small">
+
+						<!-- Show this button to Doctor and Assistant user types -->
+						<h2 class="StepTitle" ng-if="currentUser.role == 'doctor' || currentUser.role == 'assistant'">View Records</h2>
+						<p class="text-small" ng-if="currentUser.role == 'doctor' || currentUser.role == 'assistant'">
 							[Browse all patient medical records]
+						</p>
+
+						<!-- Show this button to Patient user types -->
+						<h2 class="StepTitle" ng-if="currentUser.role == 'patient'">View Your Record</h2>
+						<p class="text-small" ng-if="currentUser.role == 'patient'">
+							[Browse your medical record]
 						</p>
 					</div>
 				</div>
@@ -34,7 +42,7 @@
 			<!-- end: View Records Button -->
 
 			<!-- start: Manage Users (Patients and Assistants) Button -->
-			<div class="col-sm-4">
+			<div class="col-sm-4" ng-if="currentUser.role != 'patient'">
 				<div class="panel panel-white no-radius text-center">
 
 					<!-- Link to this page -->
@@ -44,9 +52,17 @@
 							<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
 							<br>
 							<br>
-							<h2 class="StepTitle">Manage Users</h2>
-							<p class="text-small">
+
+							<!-- Show this button to Doctor user types -->
+							<h2 class="StepTitle" ng-if="currentUser.role == 'doctor'">Manage Users</h2>
+							<p class="text-small" ng-if="currentUser.role == 'doctor'">
 								[View or edit eCSP user profiles]
+							</p>
+
+							<!-- Show this button to Assistant user types -->
+							<h2 class="StepTitle" ng-if="currentUser.role == 'assistant'">Manage Patients</h2>
+							<p class="text-small" ng-if="currentUser.role == 'assistant'">
+								[View or edit eCSP patient user profiles]
 							</p>
 						</div>
 					</a>
@@ -67,7 +83,7 @@
 							<br>
 							<h2 class="StepTitle">Edit Profile</h2>
 							<p class="text-small">
-								[Edit your user profile details] {{ currentUser.name }} {{ currentUser.lastName }}
+								[Edit your profile details]
 							</p>
 						</div>
 					</div>

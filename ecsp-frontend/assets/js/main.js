@@ -9,6 +9,9 @@ app.run(['$rootScope', '$state', '$stateParams', '$trace',
 		$rootScope.$state = $state;
 		$rootScope.$stateParams = $stateParams;
 
+		// Set login variable as "false" initially
+		$rootScope.isLoggedIn = false;
+
 		// GLOBAL APP SCOPE
 		// set below basic information
 		$rootScope.app = {
@@ -33,15 +36,9 @@ app.run(['$rootScope', '$state', '$stateParams', '$trace',
 				logo: 'assets/images/ecsp-logo.png', // relative path of the project logo
 			}
 		};
-		// $rootScope.user = {
-		// 	name: 'Dr. Fulgencio',
-		// 	lastName: 'Talavera',
-		// 	job: 'ng-Dev',
-		// 	picture: 'app/img/user/02.jpg'
-  //       };
 
-        //$trace.enable('TRANSITION');
 	}]);
+
 // translate config
 app.config(['$translateProvider',
 	function ($translateProvider) {

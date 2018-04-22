@@ -8,7 +8,7 @@
   	$scope.password = "";
 
   	/* Array of dummy user data */
-  	$scope.user = [{
+  	$rootScope.user = [{
   		role: 'doctor',
   		email: 'fulgencio.talavera@gmail.com',
   		username: 'fulgencio.talavera',
@@ -40,6 +40,7 @@
   		email: 'leslie.knope@gmail.com',
   		username: 'leslie.knope',
   		password: 'joeBidenRulz!',
+  		recordID: '12345',
   		name: 'Leslie',
   		lastName: 'Knope'
   	},
@@ -49,6 +50,7 @@
   		email: 'phillip.fry@gmail.com',
   		username: 'phillip.fry',
   		password: 'iLoveLeela@',
+  		recordID: '55554',
   		name: 'Phillip',
   		lastName: 'Fry'
   	}];
@@ -62,13 +64,12 @@
   	/* Function to validate login information */
   	$scope.validateLogin = function(usernameOrEmail, password) {
 
-  		console.log('here');
-  		for(var i = 0; i < $scope.user.length; i++) {
+  		for(var i = 0; i < $rootScope.user.length; i++) {
 
-  			if(usernameOrEmail == $scope.user[i].email || usernameOrEmail == $scope.user[i].username) {
+  			if(usernameOrEmail == $rootScope.user[i].email || usernameOrEmail == $rootScope.user[i].username) {
   				if(password == $scope.user[i].password) {
   					$rootScope.isLoggedIn = true;
-  					$rootScope.currentUser = $scope.user[i];
+  					$rootScope.currentUser = $rootScope.user[i];
 
   					$state.go('app.home');
   				}

@@ -2,7 +2,7 @@
 /** 
   * controllers used for the dashboard
 */
-app.controller('patientConsultationsCtrl', ["$scope", function ($scope) {
+app.controller('patientConsultationsCtrl', ["$scope", "$rootScope", function ($scope, $rootScope) {
 
 	$scope.sortType     = 'consultationDate'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
@@ -15,6 +15,8 @@ app.controller('patientConsultationsCtrl', ["$scope", function ($scope) {
 	{ consultationDate: 'October 2017', lastUpdated: '31 October 2016', updatedBy: 'Reyes, Adelaida' },
 	{ consultationDate: 'April 2018', lastUpdated: '21 April 2018', updatedBy: 'Cordero, Jacinto' }
 	];
+
+	$rootScope.currentRecord = { };
 
 	// getPatientConsultation() Function Definition
 	$scope.getPatientConsultation = function(consultationDate) {

@@ -2,7 +2,7 @@
 /** 
   * controllers used for the dashboard
 */
-app.controller('viewRecordsCtrl', ["$scope", function ($scope) {
+app.controller('viewRecordsCtrl', ["$scope", "$rootScope", "$state", function ($scope, $state, $rootScope) {
 
 	$scope.sortType     = 'status'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
@@ -16,10 +16,14 @@ app.controller('viewRecordsCtrl', ["$scope", function ($scope) {
 	{ name: 'González, Rigoberta', recordID: '321', status: 'Inactive', lastUpdated: '9 May 2017' }
 	];
 
+	$rootScope.chosenRecord = { };
+
 	// getPatientRecord() Function Definition
 	$scope.getPatientRecord = function(recordID) {
 
-		console.log('Record Number: ' + recordID);
+		$rootScope.chosenRecord = recordID;
+		console.log('Chosen Record: ' + $rootScope.chosenRecord);
+		$state.go("app.users.view_records.patient_consultations");
 	}
 
 }]);

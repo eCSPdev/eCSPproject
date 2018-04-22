@@ -17,14 +17,14 @@
 
 		<li class="dropdown current-user">
 			<a ui-sref="app.users.view_my_profile">
-				<i class="fa fa-user fa-inverse" alt="{{user.name}}"></i> 
-				<span class="username"> {{user.name}} {{user.lastName}} </i></span> 
+				<i class="fa fa-user fa-inverse"></i> 
+				<span class="username"> {{ currentUser.name }} {{ currentUser.lastName}} </i></span> 
 			</a>
 		</li>
 
 		<li class="dropdown current-user">
-			<a href class="dropdown-toggle"> 
-				<i class="fa fa-sign-out fa-inverse" alt="{{user.name}}"></i> 
+			<a ui-sref="login.signin"> 
+				<i class="fa fa-sign-out fa-inverse""></i> 
 				<span> Log Out </i></span> 
 			</a>
 		</li>

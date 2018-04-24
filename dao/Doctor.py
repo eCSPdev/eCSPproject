@@ -20,7 +20,7 @@ class DoctorDAO:
 
     def getDoctorByID(self,did):
         cursor = self.conn.cursor()
-        query = "select doctorid, firstname, middlename, lastname, officename,phone, " \
+        query = "select doctor.doctorid, firstname, middlename, lastname, officename,phone, " \
                 "status, email, username, pssword, addressid, street, aptno, city, st, country, zipcode " \
                 "from doctor " \
                 "inner join doctoraddress on doctor.doctorid = doctoraddress.doctorid " \

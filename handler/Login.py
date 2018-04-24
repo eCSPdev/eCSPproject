@@ -12,6 +12,8 @@ class LoginHandler:
     def validatePatient(self, args):
         username = args.get("username")
         pssword = args.get("pssword")
+        print('username : ', username)
+        print('pssword : ', pssword)
         dao = LoginDAO()
         row = dao.validatePatient(username, pssword)
         if not row:

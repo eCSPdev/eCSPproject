@@ -74,10 +74,11 @@ class DoctorHandler:
         return jsonify(Doctor=result_list)
 
     def getDoctorByID(self, args):
-        dao = DoctorDAO()
         did = args.get("doctorid")
-        row = dao.getDoctorByID(int(did))
-        if not row:
+        print ('doctor id : %s', did )
+        dao = DoctorDAO()
+        row = dao.getDoctorByID(did)
+        if row == None:
             return jsonify(Error="NOT FOUND"),404
         else:
             doctor = self.build_doctorinformation_dict(row)

@@ -77,7 +77,7 @@ class PatientsDAO:
                         email, username, pssword , insurancecompanyid):
         cursor = self.conn.cursor()
         query = "insert into patients (firstname, middlename, lastname, ssn, birthdate, gender, phone, " \
-                "status, email, username, pssword , insurancecompanyid)" \
+                "status, email, username, pssword, insurancecompanyid)" \
                 "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
                 "returning patientid;"
         cursor.execute(query, (firstname, middlename, lastname, ssn, birthdate, gender, phone, status,

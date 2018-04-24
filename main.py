@@ -22,8 +22,9 @@ def home():
 @app.route('/eCSP/PLogin', methods=['GET', 'POST'])
 def Plogin():
     if request.method == 'POST':
-        username = request.form['username']
-        row = LoginHandler().validatePatient(request.form)
+        username = request.args.get("username")
+       # print ('username : ', username )
+        row = LoginHandler().validatePatient(request.args)
         if not row:
             return jsonify(Error="NOT FOUND"), 404
         else:
@@ -84,9 +85,6 @@ def assistant_is_logged_in(f):
             return jsonify(Error="Unauthorized"), 405
     return wrap
 
-#######################################
-######### Second Draft ################
-#######################################
 
 #Get the Doctor Personal Information by Doctor ID
 @app.route('/eCSP/Doctor/PersonalInformation', methods=['GET', 'PUT'])
@@ -95,7 +93,7 @@ def getDoctorByID():
         if not request.args:
             return jsonify(Error="No Doctor ID Included."), 405
         else:
-            return DoctorHandler().getDoctorByID(request.form)
+            return DoctorHandler().getDoctorByID(request.args)
     if request.method == 'PUT':
         DoctorHandler().updateDoctorInformation(request.form)
         return DoctorHandler().updateDoctorInformation(request.form)
@@ -120,7 +118,7 @@ def getAssistantByID():
         if not request.args:
             return jsonify(Error="No Assistant ID Included."), 405
         else:
-            return AssistantHandler().getAssistantByID(request.form)
+            return AssistantHandler().getAssistantByID(request.args)
     if request.method == 'PUT':
         return AssistantHandler().updateAssistantInformation(request.form)
     else:
@@ -277,99 +275,6 @@ def getResultByID():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#######################################
-########## First Draft ################
-#######################################
-
-
-#Get an Assistant Personal Information by Assistant ID
-#@app.route('/eCSP/Assistant/PersonalInformation/<string:aid>')
-#@app.route('/eCSP/Doctor/Assistant/PersonalInformation/<string:aid>')
-#def getAssistantByID(aid):
-#    return AssistantHandler().getAssistantByID(aid)
-
-#Get Patient List
-#@app.route('/eCSP/Doctor/PatientList')
-#@app.route('/eCSP/Assistant/PatientList')
-#def getAllMedicalRecord():
-#    return MedicalRecordHandler().getAllMedicalRecord()
-
-#Get a Patient Personal Information by Record Number
-#@app.route('/eCSP/Patient/PersonalInformation/<string:pid>')
-#@app.route('/eCSP/Assistant/Patient/PersonalInformation/<string:pid>')
-#@app.route('/eCSP/Doctor/Patient/PersonalInformation/<string:pid>')
-#def getPatientByID(pid):
-#    return PatientHandler().getPatientByID(pid)
-
-#Get Patient Consultation Note List
-#@app.route('/eCSP/Doctor/ConsultationNotes/<string:rn>')
-#@app.route('/eCSP/Assistant/ConsultationNotes/<string:rn>')
-#@app.route('/eCSP/Patient/ConsultationNotes/<string:rn>')
-#def getAllConsultationNotes(rn):
-#    return ConsultationNotesHandler().getAllColsultationNotes(rn)
-
-#Get Patient Consultation Note Information
-#@app.route('/eCSP/Doctor/ConsultationNotes/<string:rn>/<string:nid>')
-#@app.route('/eCSP/Assistant/ConsultationNotes/<string:rn>/<string:nid>')
-#@app.route('/eCSP/Patient/ConsultationNotes/<string:rn>/<string:nid>')
-#def getConsultationNotesByID(rn, nid):
-#    return ConsultationNotesHandler().getConsultationNotesByID(rn, nid)
-
-#Get Patient Initial Form List
-#@app.route('/eCSP/Doctor/ConsultationNotes/<string:rn>')
-#@app.route('/eCSP/Assistant/ConsultationNotes/<string:rn>')
-#@app.route('/eCSP/Patient/ConsultationNotes/<string:rn>')
-#def getAllInitialForm(rn):
-#    return InitialFormHandler().getAllInitialForm(rn)
-
-#Get Patient Initial Form Information
-#@app.route('/eCSP/Doctor/InitialForm/<string:rn>/<string:ifid>')
-#@app.route('/eCSP/Assistant/InitialForm/<string:rn>/<string:ifid>')
-#@app.route('/eCSP/Patient/InitialForm/<string:rn>/<string:ifid>')
-#def getInitialFormByID(rn, ifid):
-#   return InitialFormHandler().getInitialFormByID(rn, ifid)
-
-#Get Patient Prescription List
-#@app.route('/eCSP/Doctor/Prescription/<string:rn>')
-#@app.route('/eCSP/Assistant/Prescription/<string:rn>')
-#@app.route('/eCSP/Patient/Prescription/<string:rn>')
-#def getAllPrescription(rn):
-#    return PrescriptionHandler().getAllPrescription(rn)
-
-#Get Patient Prescription Information
-#@app.route('/eCSP/Doctor/Prescription/<string:rn>/<string:pid>')
-#@app.route('/eCSP/Assistant/Prescription/<string:rn>/<string:pid>')
-#@app.route('/eCSP/Patient/Prescription/<string:rn>/<string:pid>')
-#def getPrescriptionByID(rn, pid):
-#    return PrescriptionHandler().getPrescriptionByID(rn, pid)
-
-#Get Patient Referral List
-#@app.route('/eCSP/Doctor/Referral/<string:rn>')
-#@app.route('/eCSP/Assistant/Referral/<string:rn>')
-#@app.route('/eCSP/Patient/Referral/<string:rn>')
-#def getAllReferral(rn):
-#    return ReferralHandler().getAllReferral(rn)
-
-#Get Patient Referral Information
-#@app.route('/eCSP/Doctor/Referral/<string:rn>/<string:rid>')
-#@app.route('/eCSP/Assistant/Referral/<string:rn>/<string:rid>')
-#@app.route('/eCSP/Patient/Referral/<string:rn>/<string:rid>')
-#def getReferralByID(rn, rid):
-#    return ReferralHandler().getReferralByID(rn, rid)
-
-#Get Patient Result List
-#@app.route('/eCSP/Doctor/Result/<string:rn>')
-#@app.route('/eCSP/Assistant/Result/<string:rn>')
-#@app.route('/eCSP/Patient/Result/<string:rn>')
-#def getAllResult(rn):
-#    return ResultHandler().getAllResult(rn)
-
-#Get Patient Result Information
-#@app.route('/eCSP/Doctor/Result/<string:rn>/<string:rid>')
-#app.route('/eCSP/Assistant/Result/<string:rn>/<string:rid>')
-#@app.route('/eCSP/Patient/Result/<string:rn>/<string:rid>')
-#def getResultByID(rn, rid):
-#    return ResultHandler().getResultByID(rn, rid)
 
 if __name__== '__main__':
     app.run()

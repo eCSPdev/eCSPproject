@@ -3,7 +3,6 @@ from functools import wraps
 from handler.Assistant import AssistantHandler
 from handler.Doctor import DoctorHandler
 from handler.Patient import PatientHandler
-from handler.MedicalRecord import MedicalRecordHandler
 from handler.ConsultationNotes import ConsultationNotesHandler
 from handler.InitialForm import InitialFormHandler
 from handler.Prescription import PrescriptionHandler
@@ -44,7 +43,7 @@ def patient_is_logged_in(f):
             return jsonify(Error="Unauthorized"), 405
     return wrap
 
-@app.route('/eCSP/PLogout')
+@app.route('/eCSP/Logout')
 @patient_is_logged_in
 def logout():
     session.clear()
@@ -69,23 +68,17 @@ def doctor_is_logged_in(f):
     @wraps(f)
     def wrap(*args, **kwargs):
         if 'logged_in' in session:
-            if session.get('role') == "doctor":
+            if session.get('role') == 'doctor':
                 return f(*args, **kwargs)
         else:
             return jsonify(Error="Unauthorized"), 405
     return wrap
 
-@app.route('/eCSP/DALogout')
-@doctor_is_logged_in
-def logout():
-    session.clear()
-    return True
-
 def assistant_is_logged_in(f):
     @wraps(f)
     def wrap(*args, **kwargs):
         if 'logged_in' in session:
-            if session.get('role') == "assistant":
+            if session.get('role') == 'assistant':
                 return f(*args, **kwargs)
         else:
             return jsonify(Error="Unauthorized"), 405

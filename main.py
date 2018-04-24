@@ -18,9 +18,12 @@ app.debuger = True
 def home():
     return 'INDEX'
 
-@app.route('/eCSP/PLogin')
+@app.route('/eCSP/PLogin', methods=['GET'])
 def Plogin():
-    return 'Patient Login Not Currently Available'
+    if request.method == 'GET':
+        return PatientLogin().getAllAssistant()
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 @app.route('/eCSP/DALogin')
 def DAlogin():

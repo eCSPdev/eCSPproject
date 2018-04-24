@@ -29,12 +29,13 @@ def Plogin():
             return jsonify(Error="NOT FOUND"), 404
         else:
             session['logged_in'] = True
+            session['role'] = 'patient'
             session['username'] = username
             return row
     else:
         return jsonify(Error="Method not allowed."), 405
 
-def is_logged_in(f):
+def patient_is_logged_in(f):
     @wraps(f)
     def wrap(*args, **kwargs):
         if 'logged_in' in session:
@@ -43,8 +44,8 @@ def is_logged_in(f):
             return jsonify(Error="Unauthorized"), 405
     return wrap
 
-@app.route('/eCSP/Logout')
-@is_logged_in
+@app.route('/eCSP/PLogout')
+@patient_is_logged_in
 def logout():
     session.clear()
     return True
@@ -53,15 +54,42 @@ def logout():
 def DAlogin():
     if request.method == 'POST':
         username = request.form['username']
-        row = LoginHandler().validateAdmin(request.form)
-        if not row:
+        rle = LoginHandler().validateAdmin(request.form)
+        if not rle:
             return jsonify(Error="NOT FOUND"), 404
         else:
             session['logged_in'] = True
+            session['role'] = rle.get('rle') #no se si se puede
             session['username'] = username
-            return row
+            return rle
     else:
         return jsonify(Error="Method not allowed."), 405
+
+def doctor_is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            if session.get('role') == "doctor":
+                return f(*args, **kwargs)
+        else:
+            return jsonify(Error="Unauthorized"), 405
+    return wrap
+
+@app.route('/eCSP/DALogout')
+@doctor_is_logged_in
+def logout():
+    session.clear()
+    return True
+
+def assistant_is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            if session.get('role') == "assistant":
+                return f(*args, **kwargs)
+        else:
+            return jsonify(Error="Unauthorized"), 405
+    return wrap
 
 #######################################
 ######### Second Draft ################
@@ -101,7 +129,7 @@ def getAssistantByID():
         else:
             return AssistantHandler().getAssistantByID(request.form)
     if request.method == 'PUT':
-        return AssistantHandler().updateAssistant(request.form)
+        return AssistantHandler().updateAssistantInformation(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -187,7 +215,7 @@ def getInitialFormByID():
 @app.route('/eCSP/Patient/PrescriptionList', methods=['GET'])
 def getAllPrescription():
     if request.method == 'GET':
-        return PrescriptionHandler().getAllPrescription(request.form)
+        return PrescriptionHandler().getPatientPrescription(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -212,7 +240,7 @@ def getPrescriptionByID():
 @app.route('/eCSP/Patient/ReferralList', methods=['GET'])
 def getAllReferral():
     if request.method == 'GET':
-        return ReferralHandler().getAllReferral(request.form)
+        return ReferralHandler().getPatientReferral(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -237,7 +265,7 @@ def getReferralByID():
 @app.route('/eCSP/Patient/ResultList', methods=['GET'])
 def getAllResult():
     if request.method == 'GET':
-        return ResultHandler().getAllResult(request.form)
+        return ResultHandler().getPatientResult(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 

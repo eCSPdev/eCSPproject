@@ -18,7 +18,7 @@ class LoginHandler:
             return jsonify(Error="NOT FOUND"),404
         else:
             result = self.build_login_dict(row)
-            return jsonify(ConsultatioNote=result)
+            return jsonify(user=result)
 
     def validateAdmin(self, args):
         username = args.get("username")
@@ -29,4 +29,4 @@ class LoginHandler:
             return jsonify(Error="NOT FOUND"), 404
         else:
             result = self.build_login_dict(row)
-            return jsonify(ConsultatioNote=result)
+            return jsonify(User=result)

@@ -21,7 +21,7 @@ class LoginDAO:
 
     def validateAdmin(self, username, pssword):
         cursor = self.conn.cursor()
-        query = "select a.username, a.r as rle" \
+        query = "select a.username as username, a.r as rle" \
                 "from" \
                 "((select username, pssword, 'doctor'" \
                 "from doctor)" \

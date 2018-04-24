@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, session, render_template
+from functools import wraps
 from handler.Assistant import AssistantHandler
 from handler.Doctor import DoctorHandler
 from handler.Patient import PatientHandler
@@ -8,6 +9,7 @@ from handler.InitialForm import InitialFormHandler
 from handler.Prescription import PrescriptionHandler
 from handler.Referral import ReferralHandler
 from handler.Result import ResultHandler
+from handler.Login import LoginHandler
 
 app = Flask(__name__)
 app.debuger = True
@@ -18,16 +20,48 @@ app.debuger = True
 def home():
     return 'INDEX'
 
-@app.route('/eCSP/PLogin', methods=['GET'])
+@app.route('/eCSP/PLogin', methods=['GET', 'POST'])
 def Plogin():
-    if request.method == 'GET':
-        return PatientLogin().getAllAssistant()
+    if request.method == 'POST':
+        username = request.form['username']
+        row = LoginHandler().validatePatient(request.form)
+        if not row:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            session['logged_in'] = True
+            session['username'] = username
+            return row
     else:
         return jsonify(Error="Method not allowed."), 405
 
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            return jsonify(Error="Unauthorized"), 405
+    return wrap
+
+@app.route('/eCSP/Logout')
+@is_logged_in
+def logout():
+    session.clear()
+    return True
+
 @app.route('/eCSP/DALogin')
 def DAlogin():
-    return 'Doctor and Assistant Login Not Currently Available'
+    if request.method == 'POST':
+        username = request.form['username']
+        row = LoginHandler().validateAdmin(request.form)
+        if not row:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            session['logged_in'] = True
+            session['username'] = username
+            return row
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 #######################################
 ######### Second Draft ################

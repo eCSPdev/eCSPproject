@@ -1502,7 +1502,7 @@ ul.sub-menu li ul.sub-menu li ul.sub-menu li a {
 @media (min-width: 992px) {
   .main-content {
     margin-top: 65px;
-/*    margin-left: 260px;*/
+    /*    margin-left: 260px;*/
   }
   .app-navbar-fixed .main-content {
     margin-top: 0;
@@ -1516,7 +1516,7 @@ ul.sub-menu li ul.sub-menu li ul.sub-menu li a {
   }
   .app-sidebar-closed .main-content {
     /*margin-left: 70px;
-*/  }
+  */  }
 }
 @media (max-width: 991px) {
   .main-content {
@@ -1545,7 +1545,7 @@ ul.sub-menu li ul.sub-menu li ul.sub-menu li a {
 }
 @media (min-width: 992px) {
   #app > footer {
-/*    margin-left: 260px;*/
+    /*    margin-left: 260px;*/
   }
   #app.app-sidebar-closed > footer {
     /*margin-left: 70px;*/
@@ -9345,7 +9345,7 @@ nav.links a {
 
 /* ---------------------------------------------------------------------- */
 /*  Form Wizard
- /* ---------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------- */
 .swMain > ul {
   display: table;
   list-style: none;
@@ -11315,4 +11315,13 @@ td.small-width {
 
 [date-picker] .disabled.active, [date-picker] .disabled.now {
   color: #ffffff !important;
+}
+
+
+
+
+@media (min-width: 768px) {
+  .two-buttons {
+    margin-left: 10%;
+  }
 }

@@ -14,7 +14,7 @@
 	<div class="row">
 
 		<!-- start: View Records Button -->
-		<div class="col-sm-4">
+		<div class="col-sm-4" ng-class="{ 'two-buttons': (currentUser.role == 'patient') }">
 			<div class="panel panel-white no-radius text-center">
 
 				<!-- Link to this page -->
@@ -59,11 +59,6 @@
 								[View or edit eCSP user profiles]
 							</p>
 
-							<!-- Show this button to Assistant user types -->
-							<h2 class="StepTitle" ng-if="currentUser.role == 'assistant'">Manage Patients</h2>
-							<p class="text-small" ng-if="currentUser.role == 'assistant'">
-								[View or edit eCSP patient user profiles]
-							</p>
 						</div>
 					</a>
 				</div>
@@ -71,7 +66,7 @@
 			<!-- end: Manage Users Button -->
 
 			<!-- start: Edit Profile Button -->
-			<div class="col-sm-4">
+			<div class="col-sm-4" ng-class="{ 'two-buttons': (currentUser.role == 'patient') }">
 				<div class="panel panel-white no-radius text-center">
 
 					<!-- Link to this page -->

@@ -8,78 +8,80 @@
 		</div>
 	</section>
 
-	<div ng-controller="manageUsersCtrl">
+	<div class="container-fluid container-fullw bg-white" ng-controller="manageUsersCtrl">
+		<div class="row">
 
-		<!-- start: Add New User Button -->
-		<div class="col-sm-4">
-			<div class="panel panel-white no-radius text-center">
+			<!-- start: Add New User Button -->
+			<div class="col-sm-4" ng-class="{ 'two-buttons': (currentUser.role == 'assistant') }">
+				<div class="panel panel-white no-radius text-center">
 
-				<!-- Link to this page -->
-				<a ui-sref="app.users.manage_users.add_new_user">
+					<!-- Link to this page -->
+					<a ui-sref="app.users.manage_users.add_new_user">
 
-					<div class="panel-body">
-						<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-plus fa-stack-1x fa-inverse"></i> </span>
-						<br>
-						<br>
+						<div class="panel-body">
+							<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-plus fa-stack-1x fa-inverse"></i> </span>
+							<br>
+							<br>
 
-						<!-- Show this button for Doctor user types -->
-						<h2 class="StepTitle" ng-if="currentUser.role == 'doctor'">Add New User</h2>
-						<p class="text-small" ng-if="currentUser.role == 'doctor'">
-							[Create a new patient or assistant]
-						</p>
+							<!-- Show this button for Doctor user types -->
+							<h2 class="StepTitle" ng-if="currentUser.role == 'doctor'">Add New User</h2>
+							<p class="text-small" ng-if="currentUser.role == 'doctor'">
+								[Create a new patient or assistant]
+							</p>
 
-						<!-- Change this button for Assistant user types -->
-						<h2 class="StepTitle" ng-if="currentUser.role == 'assistant'">Add New Patient</h2>
-						<p class="text-small" ng-if="currentUser.role == 'assistant'">
-							[Create a new patient]
-						</p>
-					</div>
-				</a>
+							<!-- Change this button for Assistant user types -->
+							<h2 class="StepTitle" ng-if="currentUser.role == 'assistant'">Add New Patient</h2>
+							<p class="text-small" ng-if="currentUser.role == 'assistant'">
+								[Create a new patient]
+							</p>
+						</div>
+					</a>
+				</div>
 			</div>
-		</div>
-		<!-- end: Add New User Button -->
+			<!-- end: Add New User Button -->
 
-		<!-- start: Manage Patients Button -->
-		<div class="col-sm-4">
-			<div class="panel panel-white no-radius text-center">
+			<!-- start: Manage Patients Button -->
+			<div class="col-sm-4"  ng-class="{ 'two-buttons': (currentUser.role == 'assistant') }">
+				<div class="panel panel-white no-radius text-center">
 
-				<!-- Link to this page -->
-				<a ui-sref="app.users.manage_users.manage_patients">
+					<!-- Link to this page -->
+					<a ui-sref="app.users.manage_users.manage_patients">
 
-					<div class="panel-body">
-						<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-user-md fa-stack-1x fa-inverse"></i> </span>
-						<br>
-						<br>
-						<h2 class="StepTitle">Manage Patients</h2>
-						<p class="text-small">
-							[View or edit patient profiles]
-						</p>
-					</div>
-				</a>
+						<div class="panel-body">
+							<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-user-md fa-stack-1x fa-inverse"></i> </span>
+							<br>
+							<br>
+							<h2 class="StepTitle">Manage Patients</h2>
+							<p class="text-small">
+								[View or edit patient profiles]
+							</p>
+						</div>
+					</a>
+				</div>
 			</div>
-		</div>
-		<!-- end: Manage Patients Button -->
+			<!-- end: Manage Patients Button -->
 
-		<!-- start: Manange Assistants Button -->
-		<div class="col-sm-4" ng-if="currentUser.role != 'assistant'">
-			<div class="panel panel-white no-radius text-center">
+			<!-- start: Manange Assistants Button -->
+			<div class="col-sm-4" ng-if="currentUser.role != 'assistant'">
+				<div class="panel panel-white no-radius text-center">
 
-				<!-- Link to this page -->
-				<a ui-sref="app.users.manage_users.manage_assistants">
+					<!-- Link to this page -->
+					<a ui-sref="app.users.manage_users.manage_assistants">
 
-					<div class="panel-body">
-						<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
-						<br>
-						<br>
-						<h2 class="StepTitle">Manage Assistants</h2>
-						<p class="text-small">
-							[View or edit assistant profiles]
-						</p>
-					</div>
-				</a>
+						<div class="panel-body">
+							<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
+							<br>
+							<br>
+							<h2 class="StepTitle">Manage Assistants</h2>
+							<p class="text-small">
+								[View or edit assistant profiles]
+							</p>
+						</div>
+					</a>
+				</div>
 			</div>
+			<!-- end: Manage Patients Button -->
 		</div>
-		<!-- end: Manage Patients Button -->
 
 	</div>
 </div>

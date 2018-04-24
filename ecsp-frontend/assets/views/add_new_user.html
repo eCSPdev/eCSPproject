@@ -13,7 +13,7 @@
 
 	<!-- start: Register an Assistant or Patient Form -->
 	<div class="container-fluid container-fullw bg-white">
-		<form name="addNewUserForm" id="form1" novalidate ng-submit="form.submit(addNewUserForm)">
+		<form name="addNewUserForm" id="form1" novalidate>
 			<div class="row">
 				<div class="col-md-offset-2 col-md-8">
 					<fieldset>
@@ -23,18 +23,15 @@
 
 						<!-- User Type Selection -->
 						<div class="form-group" style="margin-bottom: 0px;">
-							<label>User Type<span class="symbol required" ng-if="currentUser.role == 'doctor'"></span></label>
-						</div>
-						<div class="panel-body" style="padding: 0px;">
+							<label>User Type<span class="symbol required"></span></label>
+
 							<div class="radio clip-radio radio-primary">
-								<input type="radio" id="rdPatient" name="vertical" value="patient" checked="checked" ng-model="newUser.type" required>
+								<input type="radio" id="rdPatient" name="vertical1" value="patient" ng-model="newUser.type" required>
 								<label for="rdPatient">
 									Patient
 								</label>
-							</div>
-							<div class="radio clip-radio radio-primary" ng-if="currentUser.role != 'assistant'">
-								<input type="radio" id="rdAssistant" name="vertical" value="assistant" ng-model="newUser.type" required>
-								<label for="rdAssistant">
+								<input type="radio" id="rdAssistant" name="vertical2" value="assistant" ng-if="currentUser.role != 'assistant'" ng-model="newUser.type" required>
+								<label for="rdAssistant" ng-if="currentUser.role != 'assistant'">
 									Assistant
 								</label>
 							</div>
@@ -48,7 +45,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="newUser.firstName" ng-pattern="/^\w+\D$/" required>
+							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="newUser.firstName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="addNewUserForm.firstName.$dirty && addNewUserForm.firstName.$invalid">Enter a valid first name.</span>
 						</div>
 
@@ -57,7 +54,7 @@
 							<label class="control-label">
 								Last Name <span class="symbol required"></span>
 							</label>
-							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="newUser.lastName" ng-pattern="/[a-zA-Z][a-zA-Z ]*/" required>
+							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="newUser.lastName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="addNewUserForm.lastName.$dirty && addNewUserForm.lastName.$invalid">Enter a valid last name.</span>
 						</div>
 
@@ -85,22 +82,22 @@
 								Phone Number <span class="symbol required"></span>
 							</label>
 							<div class="input-group">
-								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="newUser.phoneNumber" ng-pattern="/(^\d{10}$)/" required>
+								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="newUser.phoneNumber" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" ng-max-length="12" required>
 								<span class="error text-small block" ng-if="addNewUserForm.phoneNumber.$dirty && addNewUserForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>
 
 						<!-- Street address form input and validation -->
 						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.addressLine1.$invalid && !addNewUserForm.addressLine1.$pristine, 'has-success':addNewUserForm.addressLine1.$valid }">
-							<label class="control-label">
+							<label>
 								Address Line #1 <span class="symbol required"></span>
 							</label>
 							<input type="text" name="addressLine1" class="form-control" placeholder="Enter address" ng-model="newUser.addressLine1" ng-pattern="/[\w\s]+/" required>
 							<span class="error text-small block" ng-if="addNewUserForm.addressLine1.$dirty && addNewUserForm.addressLine1.$invalid">Enter a valid address.</span>
 						</div>	
 
-						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.addressLine2.$invalid, 'has-success':addNewUserForm.addressLine2.$valid }">
-							<label class="control-label">
+						<div class="form-group">
+							<label>
 								Address Line #2
 							</label>
 							<input type="text" name="addressLine2" class="form-control" placeholder="Enter address" ng-model="newUser.addressLine2" ng-pattern="/[\w\s]+/">
@@ -170,19 +167,19 @@
 
 						<!-- City form input and validation -->
 						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.city.$invalid && !addNewUserForm.city.$pristine, 'has-success':addNewUserForm.city.$valid }">
-							<label class="control-label">
+							<label>
 								City <span class="symbol required"></span>
 							</label>
-							<input type="text" name="city" class="form-control" placeholder="Enter city" ng-model="newUser.city" ng-pattern="/[a-zA-Z][a-zA-Z ]*/" required>
+							<input type="text" name="city" class="form-control" placeholder="Enter city" ng-model="newUser.city" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="addNewUserForm.city.$dirty && addNewUserForm.city.$invalid">Enter a valid city.</span>
 						</div>
 
 						<!-- Zip code form input and validation -->
 						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.zipCode.$invalid && !addNewUserForm.zipCode.$pristine, 'has-success':addNewUserForm.zipCode.$valid }">
-							<label class="control-label">
+							<label>
 								Zip Code <span class="symbol required"></span>
 							</label>
-							<input type="text" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="newUser.zipCode" ng-pattern="/(/^\d{5}$)|(/^\d{5}-\d{4}$)/" required>
+							<input type="number" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="newUser.zipCode" maxlength="5" minlength="5" required>
 							<span class="error text-small block" ng-if="addNewUserForm.city.$dirty && addNewUserForm.city.$invalid">Enter a valid zip code.</span>
 						</div>	
 
@@ -211,19 +208,19 @@
 
 						<!-- Password form input and validation -->
 						<div class="form-group" ng-class="{'has-error':addNewUserForm.password.$dirty && addNewUserForm.password.$invalid, 'has-success':addNewUserForm.password.$valid}">
-							<label class="control-label">
+							<label>
 								Password <span class="symbol required"></span>
 							</label>
-							<input type="password" placeholder="Enter a temporary password" class="form-control" name="password" ng-model="newUser.password" ng-pattern="/^(?=/^.{8,24}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/" required/>
+							<input type="password" placeholder="Enter a temporary password" class="form-control" name="password" ng-model="newUser.password" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/" required/>
 							<span class="error text-small block" ng-if="addNewUserForm.password.$dirty && addNewUserForm.password.$invalid && addNewUserForm.password.$error.required">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
 						</div>
 
 						<!-- Password confirmation form input and validation -->
 						<div class="form-group" ng-class="{'has-error':addNewUserForm.confirmPassword.$dirty && addNewUserForm.confirmPassword.$error.compareTo || addNewUserForm.confirmPassword.$dirty && addNewUserForm.confirmPassword.$invalid, 'has-success':addNewUserForm.confirmPassword.$valid}">
-							<label class="control-label">
+							<label>
 								Repeat Password <span class="symbol required"></span>
 							</label>
-							<input type="password" placeholder="Repeat temporary password" class="form-control" name="confirmPassword" ng-model="newUser.confirmPassword" ng-pattern="/^(?=/^.{8,25}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/" compare-to="newUser.password" required/>
+							<input type="password" placeholder="Repeat temporary password" class="form-control" name="confirmPassword" ng-model="newUser.confirmPassword" compare-to="newUser.password" required/>
 							<span class="error text-small block" ng-if="addNewUserForm.password.$dirty && addNewUserForm.password.$invalid && addNewUserForm.password.$error.required">Re-enter a valid password.</span>
 							<span class="error text-small block" ng-if="addNewUserForm.confirmPassword.$dirty && addNewUserForm.confirmPassword.$error.compareTo">Passwords do not match. Please try again.</span>
 						</div>
@@ -231,7 +228,7 @@
 						<!-- Action buttons -->
 						<div class="form-group" style="margin-top: 15px;">
 							<a class="btn btn-red" ui-sref="app.users.manage_users" style="float: right">Cancel</a>
-							<button class="btn btn-primary" type="submit" href="#" style="float: right; margin-right: 15px;">Submit</button>
+							<button class="btn btn-primary" type="submit" ng-click="addUser();" ng-disabled="addNewUserForm.$invalid || !newUser.gender || !newUser.type" style="float: right; margin-right: 15px;">Submit</button>
 						</div>
 					</fieldset>
 				</div>

@@ -17,5 +17,15 @@ app.controller('addNewUserCtrl', ["$scope", "$rootScope", "$state", function ($s
 
     $scope.newUser = { };
 
+    $scope.addUser = function() {
+      console.log($scope.newUser);
+      if ($scope.newUser.type == 'patient') {
+        $state.go('app.users.manage_users.manage_patients');
+      }
+      else {
+        $state.go('app.users.manage_users.manage_assistants');
+      }
+    }
+
 }]);
 

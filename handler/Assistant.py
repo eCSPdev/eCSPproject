@@ -54,18 +54,19 @@ class AssistantHandler:
         result['zipcode'] = zipcode
         return result
 
-    def new_assistant_dict(self, assistantid, firstname, middlename, lastname, officename, phone, status,
-                           email, username, street, aptno, city, st, country, zipcode):
+    def new_assistant_dict(self, assistantid, firstname, middlename, lastname, phone, status, email, username,
+                           pssword, addressid, street, aptno, city, st, country, zipcode):
         result = {}
         result['assistantid'] = assistantid
         result['firstname'] = firstname
         result['middlename'] = middlename
         result['lastname'] = lastname
-        result['officename'] = officename
         result['phone'] = phone
         result['status'] = status
         result['email'] = email
         result['username'] = username
+        result['pssword'] = pssword
+        result['addressid'] = addressid
         result['street'] = street
         result['aptno'] = aptno
         result['city'] = city
@@ -97,7 +98,7 @@ class AssistantHandler:
 
     def getAllAssistant(self):
         dao = AssistantDAO()
-        result = dao.getAllAssistant()
+        result = dao.getAllAssistants()
         result_list = []
         for row in result:
             result = self.build_assistantlist_dict(row)
@@ -115,7 +116,7 @@ class AssistantHandler:
             return jsonify(Assistant = result)
 
     def insertAssistant(self, form):
-        if len(form) != 15:
+        if len(form) != 14:
             return jsonify(Error="Malformed post request"), 400
         else:
             firstname = form['firstname']
@@ -126,7 +127,6 @@ class AssistantHandler:
             email = form['email']
             username = form['username']
             pssword = form['pssword']
-            addressid = form['addressid']
             street = form['street']
             aptno = form['aptno']
             city = form['city']
@@ -134,16 +134,13 @@ class AssistantHandler:
             country = form['country']
             zipcode = form['zipcode']
 
-            if firstname and middlename and lastname and phone and status \
-                    and email and username and pssword and street and aptno and city and st and country \
-                    and zipcode:
+            if firstname and lastname and phone and status and username and pssword and street and aptno and city \
+                    and country and zipcode:
                 dao = AssistantDAO()
-
-                assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone,
-                                             status, email, username, pssword)
+                assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone, email, username, pssword)
                 addressid = dao.insertAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
-                result = self.build_assistantformation_dict(assistantid, firstname, middlename, lastname, phone, status,
-                                               email, username, pssword, addressid, street, aptno, city, st, country, zipcode)
+                result = self.new_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
+                                       email, username, pssword, addressid, street, aptno, city, st, country, zipcode)
                 return jsonify(Assistant=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
@@ -172,16 +169,13 @@ class AssistantHandler:
                 st = form['st']
                 country = form['country']
                 zipcode = form['zipcode']
-                if assistantid and firstname and lastname and\
-                        phone and status and username and\
-                        street and aptno and city and st and country and zipcode:
-                    dao.updateAssistantInfoByID(assistantid, firstname, middlename, lastname,
-                                                phone, status, email, username)
-                    dao.updateAssistantAddress(assistantid, street, aptno, city, st,
-                                             country, zipcode)
-                    result = self.update_assistant_dict(assistantid, firstname, middlename, lastname,
-                                                     phone, status, email, username, street, aptno,
-                                                    city, st, country, zipcode)
+                if assistantid and firstname and lastname and phone and status and username and street and aptno \
+                        and city and st and country and zipcode:
+                    dao.updateAssistantInfoByID(assistantid, firstname, middlename, lastname, phone, status,
+                                                email, username)
+                    dao.updateAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
+                    result = self.update_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
+                                                        email, username, street, aptno, city, st, country, zipcode)
                     return jsonify(Assistant = result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400

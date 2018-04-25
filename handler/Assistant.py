@@ -58,7 +58,7 @@ class AssistantHandler:
 
     def getAllAssistant(self):
         dao = AssistantDAO()
-        result = dao.getAllAssistant()
+        result = dao.getAllAssistants()
         result_list = []
         for row in result:
             result = self.build_assistantlist_dict(row)
@@ -76,7 +76,7 @@ class AssistantHandler:
             return jsonify(Assistant = result)
 
     def insertAssistant(self, form):
-        if len(form) != 16:
+        if len(form) != 14:
             return jsonify(Error="Malformed post request"), 400
         else:
             firstname = form['firstname']
@@ -87,7 +87,6 @@ class AssistantHandler:
             email = form['email']
             username = form['username']
             pssword = form['pssword']
-            addressid = form['addressid']
             street = form['street']
             aptno = form['aptno']
             city = form['city']
@@ -95,17 +94,14 @@ class AssistantHandler:
             country = form['country']
             zipcode = form['zipcode']
 
-            if firstname and middlename and lastname and phone and status \
-                    and email and username and pssword and street and aptno and city and st and country \
-                    and zipcode:
+            if firstname and lastname and phone and status and username and pssword and street and aptno and city \
+                    and country and zipcode:
                 dao = AssistantDAO()
 
-                assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone, status,
-                                       email, username, pssword)
-                addressid = dao.insertAssistantAddress(street, aptno, city, st, country, zipcode)
+                assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone, email, username, pssword)
+                addressid = dao.insertAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
                 result = self.build_assistantformation_dict(assistantid, firstname, middlename, lastname, phone, status,
-                                       email, username, pssword, addressid, street, aptno, city, st, country,
-                                       zipcode)
+                                       email, username, pssword, addressid, street, aptno, city, st, country, zipcode)
                 return jsonify(Assistant=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400

@@ -23,7 +23,7 @@ def home():
 def Plogin():
     if request.method == 'POST':
         username = request.args.get("username")
-       # print ('username : ', username )
+        print ('username : ', username )
         row = LoginHandler().validatePatient(request.args)
         if not row:
             return jsonify(Error="NOT FOUND"), 404

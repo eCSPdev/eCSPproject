@@ -9,11 +9,10 @@ class LoginDAO:
 
     def validatePatient(self, username, pssword):
         cursor = self.conn.cursor()
-        query = "select username " \
+        query = "select username, 'patient' " \
                 "from patients " \
-                "where (username = %s and pssword = %s) " \
-                "or (email = %s and pssword = %s);"
-        cursor.execute(query, (username, pssword, ))
+                "where username = %s and pssword;"
+        cursor.execute(query, (username, str(pssword),))
         result = []
         for row in cursor:
             result.append(row)

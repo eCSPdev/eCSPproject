@@ -19,14 +19,13 @@ class PatientHandler:
         result['email'] = row[9]
         result['username'] = row[10]
         result['Password'] = row[11]
-        result['recordno'] = row[12]
-        result['consultationnoteid'] = row[13]
-        result['prescriptionid'] = row[14]
-        result['referralid'] = row[15]
-        result['resultid'] = row[16]
-        result['initialformid'] = row[17]
-        result['insurancecompanyid'] = row[18]
-        result['companyname'] = row[19]
+        result['insurancecompanyname'] = row[12]
+        result['recordno'] = row[13]
+        result['consultationnoteid'] = row[14]
+        result['prescriptionid'] = row[15]
+        result['referralid'] = row[16]
+        result['resultid'] = row[17]
+        result['initialformid'] = row[18]
         return result
 
     def build_patientinfo_Dict(self,row):
@@ -43,72 +42,69 @@ class PatientHandler:
         result['email'] = row[9]
         result['username'] = row[10]
         result['Password'] = row[11]
-        result['addressid'] = row[12]
-        result['street'] = row[13]
-        result['aptno'] = row[14]
-        result['city'] = row[15]
-        result['st'] = row[16]
-        result['country'] = row[17]
-        result['zipcode'] = row[18]
-        result['recordno'] = row[19]
-        result['consultationnoteid'] = row[20]
-        result['prescriptionid'] = row[21]
-        result['referralid'] = row[22]
-        result['resultid'] = row[23]
-        result['initialformid'] = row[24]
-        result['insurancecompanyid'] = row[25]
-        result['companyname'] = row[26]
+        result['insurancecompanyname'] = row[12]
+        result['addressid'] = row[13]
+        result['street'] = row[14]
+        result['aptno'] = row[15]
+        result['city'] = row[16]
+        result['st'] = row[17]
+        result['country'] = row[18]
+        result['zipcode'] = row[19]
+        result['recordno'] = row[20]
+        result['consultationnoteid'] = row[21]
+        result['prescriptionid'] = row[22]
+        result['referralid'] = row[23]
+        result['resultid'] = row[24]
+        result['initialformid'] = row[25]
         return result
 
-    def update_patient_Dict(self,row):
+    def update_patient_Dict(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
+                            email, username, insurancecompanyname, street, aptno, city, st, country, zipcode):
         result = {}
-        result['patientid'] = row[0]
-        result['firstname'] = row[1]
-        result['middlename'] = row[2]
-        result['lastname'] = row[3]
-        result['ssn'] = row[4]
-        result['birthdate'] = row[5]
-        result['gender'] = row[6]
-        result['phone'] = row[7]
-        result['status'] = row[8]
-        result['email'] = row[9]
-        result['username'] = row[10]
-        result['Password'] = row[11]
-        result['addressid'] = row[12]
-        result['street'] = row[13]
-        result['aptno'] = row[14]
-        result['city'] = row[15]
-        result['st'] = row[16]
-        result['country'] = row[17]
-        result['zipcode'] = row[18]
-        result['insurancecompanyid'] = row[19]
-        result['companyname'] = row[20]
+        result['patientid'] = patientid
+        result['firstname'] = firstname
+        result['middlename'] = middlename
+        result['lastname'] = lastname
+        result['ssn'] = ssn
+        result['birthdate'] = birthdate
+        result['gender'] = gender
+        result['phone'] = phone
+        result['status'] = status
+        result['email'] = email
+        result['username'] = username
+        result['insurancecompanyname'] = insurancecompanyname
+        result['street'] = street
+        result['aptno'] = aptno
+        result['city'] = city
+        result['st'] = st
+        result['country'] = country
+        result['zipcode'] = zipcode
         return result
 
-    def new_patient_Dict(self, row):
+    def new_patient_Dict(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
+                         email, username, pssword, addressid, street, aptno, city, st, country,zipcode,
+                         insurancecompanyname, recordno):
         result = {}
-        result['patientid'] = row[0]
-        result['firstname'] = row[1]
-        result['middlename'] = row[2]
-        result['lastname'] = row[3]
-        result['ssn'] = row[4]
-        result['birthdate'] = row[5]
-        result['gender'] = row[6]
-        result['phone'] = row[7]
-        result['status'] = row[8]
-        result['email'] = row[9]
-        result['username'] = row[10]
-        result['Password'] = row[11]
-        result['addressid'] = row[12]
-        result['street'] = row[13]
-        result['aptno'] = row[14]
-        result['city'] = row[15]
-        result['st'] = row[16]
-        result['country'] = row[17]
-        result['zipcode'] = row[18]
-        result['insurancecompanyid'] = row[19]
-        result['companyname'] = row[20]
-        result['recordno'] = row[21]
+        result['patientid'] = patientid
+        result['firstname'] = firstname
+        result['middlename'] = middlename
+        result['lastname'] = lastname
+        result['ssn'] = ssn
+        result['birthdate'] = birthdate
+        result['gender'] = gender
+        result['phone'] = phone
+        result['email'] = email
+        result['username'] = username
+        result['Password'] = pssword
+        result['addressid'] = addressid
+        result['street'] = street
+        result['aptno'] = aptno
+        result['city'] = city
+        result['st'] = st
+        result['country'] = country
+        result['zipcode'] = zipcode
+        result['insurancecompanyname'] = insurancecompanyname
+        result['recordno'] = recordno
         return result
 
     def getAllPatients(self):
@@ -129,15 +125,27 @@ class PatientHandler:
             patient = self.build_patientinfo_Dict(row) #mapToDict() turns returned array of arrays to an array of maps
             return jsonify(Patient=patient)
 
-    def updatePatientInformation(self, args, form):
-        pid = args.get("patientid")
+    def updatePatientInformation(self, form):
+        # print('Im in Update Method')
+        # pidargs = args.get("patientid")
+        # print('patient id args : ', pidargs)
+        # if not form:
+        #     print ('form is empty')
+        # else:
+        #     patientid = form['patientid']
+        #     print('form patient id', patientid)
+        #
+        # return 'INDEX'
         dao = PatientsDAO()
-        if not dao.getPatientByID(pid):
+        patientid = form['patientid']
+        row = dao.getPatientByID(patientid)
+        if row == None :
             return jsonify(Error="Patient not found."), 404
         else:
-            if len(form) != 21:
+            if len(form) != 18:
                 return jsonify(Error="Malformed update request"), 400
             else:
+                print('length of form : ', len(form))
                 patientid = form['patientid']
                 firstname = form['firstname']
                 middlename = form['middlename']
@@ -149,44 +157,37 @@ class PatientHandler:
                 status = form['status']
                 email = form['email']
                 username = form['username']
-                pssword = form['pssword']
-                addressid = form['addressid']
+                insurancecompanyname = form['insurancecompanyname']
                 street = form['street']
                 aptno = form['aptno']
                 city = form['city']
                 st = form['st']
                 country = form['country']
                 zipcode = form['zipcode']
-                insurancecompanyid = form['insurancecompanyid']
-                companyname = form['companyname']
 
-                if patientid and firstname and middlename and lastname and ssn and birthdate and gender and phone and status \
-                        and email and username and pssword and addressid and street and aptno and city and st and country \
-                        and zipcode and insurancecompanyid and companyname:
-
+                #PROBAR SOLO LOS QUE NO PUEDEN SER NULOS
+                if patientid and firstname and lastname and ssn and birthdate and phone and status \
+                        and username and street and aptno and city and country and zipcode:
+                    print("CALLING DAO HERE")
                     dao.updatePatientInfoByID(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status, email,
-                               username, pssword)
-                    dao.UpdatePatientAddress(addressid, patientid, street, aptno, city, st, country, zipcode)
+                               username, insurancecompanyname)
+                    dao.updatePatientAddress(patientid, street, aptno, city, st, country, zipcode)
 
-                    newinsurancecompanyid = dao.getInsuranceCompanyID(companyname)
-                    if newinsurancecompanyid == None:
-                        return jsonify(Error="INSURANCE COMPANY NOT FOUND"), 404
-                    else:
-                        result = dao.updatePatientInsuranceCompany(newinsurancecompanyid, patientid)
-                        if result == None:
-                            return jsonify(Error="UPDATE ERROR"), 404
-
-                    result = self.update_patient_Dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status, email,
-                               username, pssword, addressid, street, aptno, city, st, country, zipcode, insurancecompanyid, companyname)
+                    result = self.update_patient_Dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
+                                email, username, insurancecompanyname, street, aptno, city, st, country, zipcode)
                     return jsonify(Patient=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
 
+    def updatePatientPassword(self):
+        return 'IN PROCESS YET'
+
     def insertPatient(self, form):
-        if len(form) != 22:
+        if len(form) != 19:
             return jsonify(Error="Malformed post request"), 400
         else:
-            recordno = form['recordno']
+            print('length of form : ', len(form))
+            print('form : ', form)
             firstname = form['firstname']
             middlename = form['middlename']
             lastname = form['lastname']
@@ -194,37 +195,38 @@ class PatientHandler:
             birthdate = form['birthdate']
             gender = form['gender']
             phone = form['phone']
-            status = form['status']
             email = form['email']
             username = form['username']
             pssword = form['pssword']
+            insurancecompanyname = form['insurancecompanyname']
             street = form['street']
             aptno = form['aptno']
             city = form['city']
             st = form['st']
             country = form['country']
             zipcode = form['zipcode']
-            insurancecompanyid = form['insurancecompanyid']
-            companyname = form['companyname']
             type = form['type']
-            if recordno and firstname and middlename and lastname and ssn and birthdate and gender and phone and status \
-                    and email and username and pssword and street and aptno and city and st and country \
-                    and zipcode and insurancecompanyid and companyname and type:
+            recordno = form['recordno']
+            if firstname and lastname and ssn and birthdate and phone and username \
+                    and pssword and street and aptno and city and country and zipcode \
+                    and insurancecompanyname and type and recordno:
                 dao = PatientsDAO()
-
-                patientid = dao.insertPatientInfo(firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
-                                       email, username, pssword, insurancecompanyid)
-                addressid = dao.insertPatientAddress(street, aptno, city, st, country, zipcode)
-
+                patientid = dao.insertPatientInfo(firstname, middlename, lastname, ssn, birthdate, gender, phone,
+                                       email, username, pssword, insurancecompanyname)
+                print('zipcode : ', zipcode)
+                addressid = dao.insertPatientAddress(patientid, street, aptno, city, st, country, zipcode)
                 dao.insertMedicalRecord(recordno, patientid)
-
                 visit_time = time.time()
                 visitdate = datetime.datetime.fromtimestamp(visit_time).strftime('%Y-%m-%d %H:%M:%S')
                 dao.insertVisit(recordno, patientid, visitdate, type)
-
-                result = self.new_patient_Dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
+                result = self.new_patient_Dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                        email, username, pssword, addressid, street, aptno, city, st, country,
-                                       zipcode, insurancecompanyid, companyname, recordno)
+                                       zipcode, insurancecompanyname, recordno)
                 return jsonify(Part=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+
+    #PENDING
+    def verifyPatient(self, firstname, lastname, ssn, birthdate, gender, status):
+        dao = PatientsDAO()
+        result = dao.VerifyPatient(firstname, lastname, ssn, birthdate, gender, status)

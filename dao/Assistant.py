@@ -1,20 +1,32 @@
+from config.dbconfig import pg_config
+import psycopg2
+
 class AssistantDAO:
-    def __init__(self):  # Generates hardwired parameters by default on AssistantDAO initialization
-        P1 = ['CC100', 'Coralis', 'Camacho', '7871234567',True, 'Coraliscamacho1@upr.edu', '872g73g92']
-        P2 = ['LS101', 'Luis', 'Santiago', '7872345678', True, 'Luis.santiago56@upr.edu', '8afadvaz5q34']
-        self.data = []
-        self.data.append(P1)
-        self.data.append(P2)
 
-    def getAllAssistant(self):
-        return self.data
+    def __init__(self):
+        connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+            pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
 
-    def getAssistantByID(self,aid):
+    def getAllAssistants(self):
+        cursor = self.conn.cursor()
+        query = "select assistantid, firstname, middlename, lastname, phone, status, email, username, pssword " \
+                "from assistants;"
+        cursor.execute(query)
         result = []
-        for r in self.data:
-            if aid == r[0]:
-                result.append(r)
-        if not result:
-            return None
-        else:
-            return result
+        for row in cursor:
+            result.append(row)
+
+        print(result)
+        return result
+
+    def getDoctorByID(self,did):
+        cursor = self.conn.cursor()
+        query = "select assistants.assistantid, firstname, middlename, lastname, phone, " \
+                "status, email, username, pssword, addressid, street, aptno, city, st, country, zipcode " \
+                "from assistants " \
+                "inner join assistantaddress on assistants.assistantid = assistantaddress.assistantid " \
+                "where assistants.assistantid = %s;"
+        cursor.execute(query, (did,))
+        result = cursor.fetchone()
+        return result

@@ -164,7 +164,10 @@ def getPatientByID():
 @app.route('/eCSP/Patient/ConsultationNotesList', methods=['GET'])
 def getAllConsultationNotes():
     if request.method == 'GET':
-        return ConsultationNotesHandler().getPatientConsultationNotes(request.form)
+        if not request.args:
+            return jsonify(Error="No Doctor ID Included."), 405
+        else:
+            return ConsultationNotesHandler().getPatientConsultationNotes(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -177,9 +180,9 @@ def getConsultationNotesByID():
         if not request.args:
             return jsonify(Error="No Consultation Note ID Included."), 405
         else:
-            return ConsultationNotesHandler().getConsultationNotesByID(request.form)
+            return ConsultationNotesHandler().getConsultationNotesByID(request.args)
     if request.method == 'POST':
-        return ConsultationNotesHandler().insertConsultationNotes(request.form)
+        return ConsultationNotesHandler().insertConsultationNotes(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -189,7 +192,10 @@ def getConsultationNotesByID():
 @app.route('/eCSP/Patient/InitialFormList', methods=['GET'])
 def getAllInitialForm():
     if request.method == 'GET':
-        return InitialFormHandler().getPatientInitialForm(request.form)
+        if not request.args:
+            return jsonify(Error="No Doctor ID Included."), 405
+        else:
+            return InitialFormHandler().getPatientInitialForm(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -202,9 +208,9 @@ def getInitialFormByID():
         if not request.args:
             return jsonify(Error="No Initial Form ID Included."), 405
         else:
-            return InitialFormHandler().getInitialFormByID(request.form)
+            return InitialFormHandler().getInitialFormByID(request.args)
     if request.method == 'POST':
-        return InitialFormHandler().insertInitialForm(request.form)
+        return InitialFormHandler().insertInitialForm(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -214,7 +220,7 @@ def getInitialFormByID():
 @app.route('/eCSP/Patient/PrescriptionList', methods=['GET'])
 def getAllPrescription():
     if request.method == 'GET':
-        return PrescriptionHandler().getPatientPrescription(request.form)
+        return PrescriptionHandler().getPatientPrescription(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -227,9 +233,9 @@ def getPrescriptionByID():
         if not request.args:
             return jsonify(Error="No Prescription ID Included."), 405
         else:
-            return PrescriptionHandler().getPrescriptionByID(request.form)
+            return PrescriptionHandler().getPrescriptionByID(request.args)
     if request.method == 'POST':
-        return PrescriptionHandler().insertPrescription(request.form)
+        return PrescriptionHandler().insertPrescription(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -239,7 +245,7 @@ def getPrescriptionByID():
 @app.route('/eCSP/Patient/ReferralList', methods=['GET'])
 def getAllReferral():
     if request.method == 'GET':
-        return ReferralHandler().getPatientReferral(request.form)
+        return ReferralHandler().getPatientReferral(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -252,9 +258,9 @@ def getReferralByID():
         if not request.args:
             return jsonify(Error="No Referral ID Included."), 405
         else:
-            return ReferralHandler().getReferralByID(request.form)
+            return ReferralHandler().getReferralByID(request.args)
     if request.method == 'POST':
-        return ReferralHandler().insertReferral(request.form)
+        return ReferralHandler().insertReferral(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -264,7 +270,7 @@ def getReferralByID():
 @app.route('/eCSP/Patient/ResultList', methods=['GET'])
 def getAllResult():
     if request.method == 'GET':
-        return ResultHandler().getPatientResult(request.form)
+        return ResultHandler().getPatientResult(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -277,9 +283,9 @@ def getResultByID():
         if not request.args:
             return jsonify(Error="No Result ID Included."), 405
         else:
-            return ResultHandler().getResultByID(request.form)
+            return ResultHandler().getResultByID(request.args)
     if request.method == 'POST':
-        return ResultHandler().insertResult(request.form)
+        return ResultHandler().insertResult(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 

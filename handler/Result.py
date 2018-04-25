@@ -13,13 +13,13 @@ class ResultHandler:
         result['patientid'] = row[5]
         return result
 
-    def build_resinsert_dict(self,row):
+    def build_resinsert_dict(self, result, assistantid, doctorid, dateofupload, patientid):
         result = {}
-        result['result'] = row[0]
-        result['assistantid'] = row[1]
-        result['doctorid'] = row[2]
-        result['dateofupload'] = row[3]
-        result['patientid'] = row[4]
+        result['result'] = result
+        result['assistantid'] = assistantid
+        result['doctorid'] = doctorid
+        result['dateofupload'] = dateofupload
+        result['patientid'] = patientid
         return result
 
     def getPatientResult(self, args):
@@ -53,9 +53,9 @@ class ResultHandler:
             doctorid = form['doctorid']
             dateofupload = form['dateofupload']
             patientid = form['patientid']
-            if result and assistantid and doctorid and dateofupload and patientid:
+            if result and dateofupload :
                 dao.insertReferral(result, assistantid, doctorid, dateofupload, patientid)
                 result = self.build_refinsert_dict(result, assistantid, doctorid, dateofupload, patientid)
-                return jsonify(Referral = result), 201 #Verificar porque 201
+                return jsonify(Referral = result), 201
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400

@@ -75,7 +75,7 @@ class DoctorHandler:
 
     def getDoctorByID(self, args):
         did = args.get("doctorid")
-        print ('doctor id : %s', did )
+        print ('doctor id : ', did )
         dao = DoctorDAO()
         row = dao.getDoctorByID(did)
         if row == None:

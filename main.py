@@ -23,13 +23,13 @@ def home():
 def Plogin():
     if request.method == 'POST':
         username = request.args.get("username")
-        print ('username : ', username )
+        print ('Mainusername : ', username )
         row = LoginHandler().validatePatient(request.args)
         if not row:
             return jsonify(Error="NOT FOUND"), 404
         else:
             session['logged_in'] = True
-            session['role'] = 'patient'
+            #session['role'] = 'patient'
             session['username'] = username
             return row
     else:

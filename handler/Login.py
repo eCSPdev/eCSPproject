@@ -9,9 +9,9 @@ class LoginHandler:
         result['rle'] = row[1]
         return result
 
-    def validatePatient(self, args):
-        username = args.get("username")
-        pssword = args.get("pssword")
+    def validatePatient(self, form):
+        username = form['username']
+        pssword = form['pssword']
         print('username : ', username)
         print('pssword : ', pssword)
         dao = LoginDAO()

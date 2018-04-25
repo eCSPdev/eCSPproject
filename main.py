@@ -95,7 +95,6 @@ def getDoctorByID():
         else:
             return DoctorHandler().getDoctorByID(request.args)
     if request.method == 'PUT':
-        DoctorHandler().updateDoctorInformation(request.form)
         return DoctorHandler().updateDoctorInformation(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405

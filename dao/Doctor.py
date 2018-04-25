@@ -20,7 +20,7 @@ class DoctorDAO:
 
     def getDoctorByID(self,did):
         cursor = self.conn.cursor()
-        query = "select doctor.doctorid, firstname, middlename, lastname, officename, phone, " \
+        query = "select doctor.doctorid, licenseno, firstname, middlename, lastname, officename, phone, " \
                 "status, email, username, pssword, addressid, street, aptno, city, st, country, zipcode " \
                 "from doctor " \
                 "inner join doctoraddress on doctor.doctorid = doctoraddress.doctorid " \
@@ -29,23 +29,26 @@ class DoctorDAO:
         result = cursor.fetchone()
         return result
 
-    def updateDoctorInfoByID(self, doctorid, licenseno, firstname, middlename, lastname,
-                                                officename, phone, status, email, username,
-                                                pssword):
+    def updateDoctorInfoByID(self, doctorid, licenseno, firstname, middlename, lastname, officename, phone, status,
+                             email, username):
         cursor = self.conn.cursor()
-        query = "update doctor set firstname=%s, middlename=%s, lastname=%s, officename=%s, phone=%s, " \
-                "status=%s, email=%s, username=%s, pssword=%s where doctorid=%s;"
-        cursor.execute(query, ( doctorid, licenseno, firstname, middlename, lastname,
-                                                officename, phone, status, email, username,
-                                                pssword, doctorid, ))
+        query = "update doctor " \
+                "set licenseno=%s, firstname=%s, middlename=%s, lastname=%s, officename=%s, phone=%s, status=%s, " \
+                    "email=%s, username=%s " \
+                "where doctorid=%s;"
+        cursor.execute(query, ( licenseno, firstname, middlename, lastname, officename, phone, status,
+                                email, username, doctorid, ))
         self.conn.commit()
         return doctorid
 
-    def updateDoctorAddress(self, addressid, doctorid, street, aptno, city, st, country, zipcode):
+    def updateDoctorAddress(self, doctorid, street, aptno, city, st, country, zipcode):
         cursor = self.conn.cursor()
-        query = "update doctoraddress set street=%s, aptno=%s, city=%s, st=%s, country=%s, zipcode=%s " \
-                "where doctorid=%s and addressid=%s;"
-        cursor.execute(query, (street, aptno, city, st, country, zipcode, doctorid, addressid,))
+        query = "update doctoraddress " \
+                "set street=%s, aptno=%s, city=%s, st=%s, country=%s, zipcode=%s " \
+                "where doctorid=%s" \
+                "returning addressid;"
+        cursor.execute(query, (street, aptno, city, st, country, zipcode, doctorid,))
+        addressid = cursor.fetchone()[0]
         self.conn.commit()
         return addressid
 

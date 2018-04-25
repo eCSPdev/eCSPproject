@@ -126,16 +126,6 @@ class PatientHandler:
             return jsonify(Patient=patient)
 
     def updatePatientInformation(self, form):
-        # print('Im in Update Method')
-        # pidargs = args.get("patientid")
-        # print('patient id args : ', pidargs)
-        # if not form:
-        #     print ('form is empty')
-        # else:
-        #     patientid = form['patientid']
-        #     print('form patient id', patientid)
-        #
-        # return 'INDEX'
         dao = PatientsDAO()
         patientid = form['patientid']
         row = dao.getPatientByID(patientid)
@@ -207,7 +197,7 @@ class PatientHandler:
             zipcode = form['zipcode']
             type = form['type']
             recordno = form['recordno']
-            if firstname and lastname and ssn and birthdate and phone and username \
+            if firstname and lastname and ssn and birthdate and phone and username and pssword\
                     and pssword and street and aptno and city and country and zipcode \
                     and insurancecompanyname and type and recordno:
                 dao = PatientsDAO()

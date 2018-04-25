@@ -58,9 +58,6 @@
   	/* Token to determine if a user is logged in */
   	$rootScope.isLoggedIn = false;
 
-  	/* Currently logged in user */
-  	$rootScope.currentUser = { };
-
   	/* Function to validate login information */
   	$scope.validateLogin = function(usernameOrEmail, password) {
 

@@ -11,6 +11,22 @@
         $state.go('login.signin');
     }
 
+    $scope.chosenPatient = {
+      firstName: 'Leslie', 
+      middleName: 'Anne', 
+      lastName: 'Knope', 
+      insuranceCompany: '',
+      phoneNumber: '308-321-0092', 
+      addressLine1: 'Winfree Apartments Apt. 123', 
+      addressLine2: '',
+      countryRegion: 'United States',
+      state: 'IN',
+      city: 'Pawnee',
+      countryRegion: 'US',
+      zipCode: '00213',
+      email: ''
+    };
+
   	// open() Function Definition
     $scope.open = function (size) {
 

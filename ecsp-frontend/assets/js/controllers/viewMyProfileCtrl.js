@@ -9,5 +9,22 @@
   		$state.go('login.signin');
   	}
 
+
+  	/* Currently logged in user */
+  	$scope.thisUser = { 
+      firstName: 'Fulgencio',
+      middleName: '',
+      lastName: 'Talavera',
+      phoneNumber: '(787) 452-1244',
+      addressLine1: 'HC-73 1232 Bo. Molina',
+      addressLine2: 'Apt. #212',
+      state: 'PR',
+      city: 'Fajardo',
+      countryRegion: 'Puerto Rico',
+      zipCode: '00738',
+      email: 'fulgencio.talavera@gmail.com'
+      
+    };
+
   }]);
 

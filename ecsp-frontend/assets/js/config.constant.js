@@ -44,6 +44,7 @@ app.constant('JS_REQUIRES', {
         'patientConsultationsCtrl': 'assets/js/controllers/patientConsultationsCtrl.js',
         'consultationDetailsCtrl': 'assets/js/controllers/consultationDetailsCtrl.js',
         'loginCtrl': 'assets/js/controllers/loginCtrl.js',
+        'partialViewCtrl': 'assets/js/controllers/partialViewCtrl.js',
         'iconsCtrl': 'assets/js/controllers/iconsCtrl.js',
         'ngTableCtrl': 'assets/js/controllers/ngTableCtrl.js',
         'toasterCtrl': 'assets/js/controllers/toasterCtrl.js',

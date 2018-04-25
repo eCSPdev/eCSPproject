@@ -15,5 +15,21 @@
       	}
     }
 
+    $scope.thisAssistant = 
+    {
+      firstName: 'Francisco', 
+      middleName: '', 
+      lastName: 'Castillo', 
+      phoneNumber: '315-120-1123', 
+      addressLine1: 'One Batch St. Penny-Dime Avenue', 
+      addressLine2: 'Apartment 404',
+      countryRegion: 'United States',
+      state: 'NY',
+      city: 'New York City',
+      countryRegion: 'US',
+      zipCode: '10012',
+      email: 'frank.castle@gmail.com'
+    };
+
   }]);
 

@@ -19,14 +19,21 @@
 						<label>
 							First Name
 						</label>
-						<input type="text" name="firstName" class="form-control" value="{{currentUser.name}}" readonly>
+						<input type="text" name="firstName" class="form-control" value="{{thisUser.firstName}}" readonly>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">
+							Middle Name
+						</label>
+						<input type="text" name="middleName" class="form-control" value="{{thisUser.middleName}}" readonly>
 					</div>
 
 					<div class="form-group">
 						<label class="control-label">
 							Last Name
 						</label>
-						<input type="text" name="lastName" class="form-control" value="{{currentUser.lastName}}" readonly>
+						<input type="text" name="lastName" class="form-control" value="{{thisUser.lastName}}" readonly>
 					</div>
 
 					<!-- Contact Information -->
@@ -35,36 +42,57 @@
 							Phone Number
 						</label>
 						<div class="input-group">
-							<input type="text" class="form-control" name="phoneNumber" value="(787) 452-1244" readonly>
+							<input type="text" class="form-control" name="phoneNumber" value="{{ thisUser.phoneNumber }}" readonly>
 						</div>
+					</div>
+
+					<div class="form-group" ng-if="currentUser.role == 'patient'">
+						<label class="control-label">
+							Insurance Company
+						</label>
+						<input type="text" name="insuranceCompany" class="form-control" value="{{thisUser.insuranceCompany}}" readonly>
 					</div>
 
 					<div class="form-group">
 						<label class="control-label">
 							Address Line #1
 						</label>
-						<input type="text" name="addressLine1" class="form-control" value="HC-73 1232 Bo. Molina" readonly> 
+						<input type="text" name="addressLine1" class="form-control" value="{{ thisUser.addressLine1 }}" readonly> 
 					</div>	
 
 					<div class="form-group">
 						<label class="control-label">
 							Address Line #2
 						</label>
-						<input type="text" name="addressLine2" class="form-control" value="Apt. #212" readonly>
+						<input type="text" name="addressLine2" class="form-control" value="{{ thisUser.addressLine2 }}" readonly>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">
+							State
+						</label>
+						<input type="text" name="state" class="form-control" value="{{thisUser.state}}" readonly>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">
+							City
+						</label>
+						<input type="text" name="city" class="form-control" value="{{thisUser.city}}" readonly>
 					</div>
 
 					<div class="form-group">
 						<label class="control-label">
 							Country or Region
 						</label>
-						<input type="text" name="countryRegion" class="form-control" value="Puerto Rico" readonly>
+						<input type="text" name="countryRegion" class="form-control" value="{{thisUser.countryRegion}}" readonly>
 					</div>
 
 					<div class="form-group">
 						<label class="control-label">
 							Zip Code
 						</label>
-						<input type="text" name="zipCode" class="form-control" value="00736" readonly>
+						<input type="text" name="zipCode" class="form-control" value="{{thisUser.zipCode}}" readonly>
 					</div>	
 
 					<div class="form-group">
@@ -72,7 +100,7 @@
 							Email
 						</label>
 						<div class="form-group">
-							<input type="email" value="fulgencio.talavera@gmail.com" name="email" id="email" class="form-control" readonly>
+							<input type="email" value="{{thisUser.email}}" name="email" class="form-control" readonly>
 						</div>
 					</div>
 

@@ -25,7 +25,7 @@
 
 	// create the list of patients
 	$scope.patients = [
-	{ name: 'Cordero, Jacinto', record: '123', status: 'Active' },
+	{ name: 'Knope, Leslie', record: '123', status: 'Active' },
 	{ name: 'Melendez, Teófilo', record: '456', status: 'Inactive' },
 	{ name: 'Reyes, Adelaida', record: '789', status: 'Active' },
 	{ name: 'González, Rigoberta', record: '321', status: 'Inactive' }

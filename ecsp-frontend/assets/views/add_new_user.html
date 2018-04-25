@@ -49,6 +49,17 @@
 							<span class="error text-small block" ng-if="addNewUserForm.firstName.$dirty && addNewUserForm.firstName.$invalid">Enter a valid first name.</span>
 						</div>
 
+						<!-- Middle name form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.middleName.$invalid, 'has-success':addNewUserForm.middleName.$valid }">
+							<label>
+								Middle Name
+							</label>
+
+							<!-- ng-pattern: Regular Expressions for Input -->
+							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="newUser.middleName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/">
+							<span class="error text-small block" ng-if="addNewUserForm.middleName.$dirty && addNewUserForm.middleName.$invalid">Enter a valid middle name.</span>
+						</div>
+
 						<!-- Last name form input and validation -->
 						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.lastName.$invalid && !addNewUserForm.lastName.$pristine, 'has-success':addNewUserForm.lastName.$valid }">
 							<label class="control-label">
@@ -73,7 +84,16 @@
 									Male
 								</label>
 							</div>
-						</div>			
+						</div>
+
+						<!-- Insurance company form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.insuranceCompany.$invalid, 'has-success':addNewUserForm.insuranceCompany.$valid }">
+							<label>
+								Insurance Company
+							</label>
+							<input type="text" name="insuranceCompany" class="form-control" placeholder="Enter insurance company" ng-model="newUser.insuranceCompany" ng-pattern="/[\w\s]+/">
+							<span class="error text-small block" ng-if="addNewUserForm.insuranceCompany.$dirty && addNewUserForm.insuranceCompany.$invalid">Enter a valid insurance company name.</span>
+						</div>	
 
 						<!-- Contact Information -->
 						<!-- Phone number form input and validation -->
@@ -104,13 +124,14 @@
 							<span class="error text-small block" ng-if="addNewUserForm.addressLine2.$dirty && addNewUserForm.addressLine2.$invalid">Enter a valid address.</span>
 						</div>
 
-						<!-- Country or region form selection and validation -->
-						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.countryRegion.$invalid && !addNewUserForm.countryRegion.$pristine, 'has-success': addNewUserForm.countryRegion.$valid }">
+						<!-- State form selection and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.state.$invalid, 'has-success': addNewUserForm.state.$valid }">
 							<label>
-								Choose country or region <span class="symbol required"></span>
+								State
 							</label>
-							<select name="countryRegion" class="form-control" ng-model="newUser.countryRegion" required>
+							<select name="state" class="form-control" ng-model="newUser.state">
 								<option value="">-- None --</option>
+								<option value="PR">Puerto Rico</option>
 								<option value="AL">Alabama</option>
 								<option value="AK">Alaska</option>
 								<option value="AZ">Arizona</option>
@@ -149,7 +170,6 @@
 								<option value="OK">Oklahoma</option>
 								<option value="OR">Oregon</option>
 								<option value="PA">Pennsylvania</option>
-								<option value="PR">Puerto Rico</option>
 								<option value="RI">Rhode Island</option>
 								<option value="SC">South Carolina</option>
 								<option value="SD">South Dakota</option>
@@ -174,6 +194,15 @@
 							<span class="error text-small block" ng-if="addNewUserForm.city.$dirty && addNewUserForm.city.$invalid">Enter a valid city.</span>
 						</div>
 
+						<!-- Country or Region form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.countryRegion.$invalid && !addNewUserForm.countryRegion.$pristine, 'has-success':addNewUserForm.countryRegion.$valid }">
+							<label>
+								Country or Region <span class="symbol required"></span>
+							</label>
+							<input type="text" name="countryRegion" class="form-control" placeholder="Enter country or region" ng-model="newUser.countryRegion" ng-pattern="/[\w\s]+/" required>
+							<span class="error text-small block" ng-if="addNewUserForm.countryRegion.$dirty && addNewUserForm.countryRegion.$invalid">Enter a valid country or region.</span>
+						</div>	
+
 						<!-- Zip code form input and validation -->
 						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.zipCode.$invalid && !addNewUserForm.zipCode.$pristine, 'has-success':addNewUserForm.zipCode.$valid }">
 							<label>
@@ -184,12 +213,12 @@
 						</div>	
 
 						<!-- Email form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.email.$invalid && !addNewUserForm.email.$pristine, 'has-success':addNewUserForm.email.$valid }">
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.email.$invalid, 'has-success':addNewUserForm.email.$valid }">
 							<label>
-								Email <span class="symbol required"></span>
+								Email
 							</label>
 							<div class="form-group">
-								<input type="email" placeholder="Enter email" name="email" id="email" class="form-control" ng-model="newUser.email" ng-pattern="/.+@.+\..+/" required>
+								<input type="email" placeholder="Enter email" name="email" id="email" class="form-control" ng-model="newUser.email" ng-pattern="/.+@.+\..+/">
 								<span class="error text-small block" ng-if="addNewUserForm.email.$dirty && addNewUserForm.email.$invalid">Enter a valid email address.</span>
 							</div>
 						</div>

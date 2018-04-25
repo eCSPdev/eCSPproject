@@ -24,7 +24,7 @@
 
 	// create the list of assistants
 	$scope.assistants = [
-	{ name: 'Rodríguez, Magali', employeeID: '1', status: 'Active' },
+	{ name: 'Castillo, Francisco', employeeID: '1', status: 'Active' },
 	{ name: 'Méndez, Benzeno', employeeID: '2', status: 'Inactive' },
 	{ name: 'Hernández, Santa', employeeID: '3', status: 'Active' },
 	{ name: 'Suárez, Roberto', employeeID: '4', status: 'Inactive' }

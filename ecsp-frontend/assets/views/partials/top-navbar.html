@@ -13,7 +13,7 @@
 	<!-- end: eCSP Logo and Title -->
 
 	<!-- start: Current User Profile and Log Out Buttons -->
-	<ul class="nav navbar-right" ct-fullheight="window" data-ct-fullheight-exclusion="header" data-ct-fullheight-if="isSmallDevice">
+	<ul class="nav navbar-right" ct-fullheight="window" data-ct-fullheight-exclusion="header" data-ct-fullheight-if="isSmallDevice" ng-if="isLoggedIn == true">
 
 		<li class="dropdown current-user">
 			<a ui-sref="app.users.view_my_profile">

@@ -11,68 +11,89 @@
 
 	<!-- start: Edit Patient User Profile -->
 	<div class="container-fluid container-fullw bg-white">
-		<form name="editAssistantForm" id="form1" novalidate>
+		<form name="editPatientForm" id="form1" novalidate>
 			<div class="row">
 				<div class="col-md-offset-2 col-md-8">
 					<fieldset>
 
 						<!-- Personal Information -->
 						<!-- First name form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': editAssistantForm.firstName.$invalid && !editAssistantForm.firstName.$pristine, 'has-success':editAssistantForm.firstName.$valid }">
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.firstName.$invalid && !editPatientForm.firstName.$pristine, 'has-success':editPatientForm.firstName.$valid }">
 							<label>
 								First Name <span class="symbol required"></span>
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="newUser.firstName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
-							<span class="error text-small block" ng-if="editAssistantForm.firstName.$dirty && editAssistantForm.firstName.$invalid">Enter a valid first name.</span>
+							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="chosenPatient.firstName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<span class="error text-small block" ng-if="editPatientForm.firstName.$dirty && editPatientForm.firstName.$invalid">Enter a valid first name.</span>
+						</div>
+
+						<!-- Middle name form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.middleName.$invalid, 'has-success':editPatientForm.middleName.$valid }">
+							<label class='control-label'>
+								Middle Name
+							</label>
+
+							<!-- ng-pattern: Regular Expressions for Input -->
+							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="chosenPatient.middleName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/">
+							<span class="error text-small block" ng-if="editPatientForm.middleName.$dirty && editPatientForm.middleName.$invalid">Enter a valid middle name.</span>
 						</div>
 
 						<!-- Last name form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': editAssistantForm.lastName.$invalid && !editAssistantForm.lastName.$pristine, 'has-success':editAssistantForm.lastName.$valid }">
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.lastName.$invalid && !editPatientForm.lastName.$pristine, 'has-success':editPatientForm.lastName.$valid }">
 							<label class="control-label">
 								Last Name <span class="symbol required"></span>
 							</label>
-							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="newUser.lastName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
-							<span class="error text-small block" ng-if="editAssistantForm.lastName.$dirty && editAssistantForm.lastName.$invalid">Enter a valid last name.</span>
-						</div>		
+							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="chosenPatient.lastName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<span class="error text-small block" ng-if="editPatientForm.lastName.$dirty && editPatientForm.lastName.$invalid">Enter a valid last name.</span>
+						</div>	
+
+						<!-- Insurance company form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.insuranceCompany.$invalid, 'has-success':editPatientForm.insuranceCompany.$valid }">
+							<label>
+								Insurance Company
+							</label>
+							<input type="text" name="insuranceCompany" class="form-control" placeholder="Enter insurance company" ng-model="chosenPatient.insuranceCompany" ng-pattern="/[\w\s]+/">
+							<span class="error text-small block" ng-if="editPatientForm.insuranceCompany.$dirty && editPatientForm.insuranceCompany.$invalid">Enter a valid insurance company name.</span>
+						</div>
 
 						<!-- Contact Information -->
 						<!-- Phone number form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': editAssistantForm.phoneNumber.$invalid && !editAssistantForm.phoneNumber.$pristine, 'has-success':editAssistantForm.phoneNumber.$valid }">
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.phoneNumber.$invalid && !editPatientForm.phoneNumber.$pristine, 'has-success':editPatientForm.phoneNumber.$valid }">
 							<label for="form-field-mask-2">
 								Phone Number <span class="symbol required"></span>
 							</label>
 							<div class="input-group">
-								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="newUser.phoneNumber" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" ng-max-length="12" required>
-								<span class="error text-small block" ng-if="editAssistantForm.phoneNumber.$dirty && editAssistantForm.phoneNumber.$invalid">Enter a valid phone number.</span>
+								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="chosenPatient.phoneNumber" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" ng-max-length="12" required>
+								<span class="error text-small block" ng-if="editPatientForm.phoneNumber.$dirty && editPatientForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>
 
 						<!-- Street address form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': editAssistantForm.addressLine1.$invalid && !editAssistantForm.addressLine1.$pristine, 'has-success':editAssistantForm.addressLine1.$valid }">
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.addressLine1.$invalid && !editPatientForm.addressLine1.$pristine, 'has-success':editPatientForm.addressLine1.$valid }">
 							<label>
 								Address Line #1 <span class="symbol required"></span>
 							</label>
-							<input type="text" name="addressLine1" class="form-control" placeholder="Enter address" ng-model="newUser.addressLine1" ng-pattern="/[\w\s]+/" required>
-							<span class="error text-small block" ng-if="editAssistantForm.addressLine1.$dirty && editAssistantForm.addressLine1.$invalid">Enter a valid address.</span>
+							<input type="text" name="addressLine1" class="form-control" placeholder="Enter address" ng-model="chosenPatient.addressLine1" ng-pattern="/[\w\s]+/" required>
+							<span class="error text-small block" ng-if="editPatientForm.addressLine1.$dirty && editPatientForm.addressLine1.$invalid">Enter a valid address.</span>
 						</div>	
 
-						<div class="form-group">
-							<label>
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.addressLine2.$invalid, 'has-success':editPatientForm.addressLine2.$valid }">
+							<label class='control-label'>
 								Address Line #2
 							</label>
-							<input type="text" name="addressLine2" class="form-control" placeholder="Enter address" ng-model="newUser.addressLine2" ng-pattern="/[\w\s]+/">
-							<span class="error text-small block" ng-if="editAssistantForm.addressLine2.$dirty && editAssistantForm.addressLine2.$invalid">Enter a valid address.</span>
+							<input type="text" name="addressLine2" class="form-control" placeholder="Enter address" ng-model="chosenPatient.addressLine2" ng-pattern="/[\w\s]+/">
+							<span class="error text-small block" ng-if="editPatientForm.addressLine2.$dirty && editPatientForm.addressLine2.$invalid">Enter a valid address.</span>
 						</div>
 
-						<!-- Country or region form selection and validation -->
-						<div class="form-group" ng-class="{ 'has-error': editAssistantForm.countryRegion.$invalid && !editAssistantForm.countryRegion.$pristine, 'has-success': editAssistantForm.countryRegion.$valid }">
+						<!-- State form selection and validation -->
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.state.$invalid, 'has-success': editPatientForm.state.$valid }">
 							<label>
-								Country or region <span class="symbol required"></span>
+								State <span class="symbol required"></span>
 							</label>
-							<select name="countryRegion" class="form-control" ng-model="newUser.countryRegion" required>
+							<select name="state" class="form-control" ng-model="chosenPatient.state" required>
 								<option value="">-- None --</option>
+								<option value="PR">Puerto Rico</option>
 								<option value="AL">Alabama</option>
 								<option value="AK">Alaska</option>
 								<option value="AZ">Arizona</option>
@@ -111,7 +132,6 @@
 								<option value="OK">Oklahoma</option>
 								<option value="OR">Oregon</option>
 								<option value="PA">Pennsylvania</option>
-								<option value="PR">Puerto Rico</option>
 								<option value="RI">Rhode Island</option>
 								<option value="SC">South Carolina</option>
 								<option value="SD">South Dakota</option>
@@ -128,31 +148,40 @@
 						</div>
 
 						<!-- City form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': editAssistantForm.city.$invalid && !editAssistantForm.city.$pristine, 'has-success':editAssistantForm.city.$valid }">
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.city.$invalid && !editPatientForm.city.$pristine, 'has-success':editPatientForm.city.$valid }">
 							<label>
 								City <span class="symbol required"></span>
 							</label>
-							<input type="text" name="city" class="form-control" placeholder="Enter city" ng-model="newUser.city" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
-							<span class="error text-small block" ng-if="editAssistantForm.city.$dirty && editAssistantForm.city.$invalid">Enter a valid city.</span>
+							<input type="text" name="city" class="form-control" placeholder="Enter city" ng-model="chosenPatient.city" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<span class="error text-small block" ng-if="editPatientForm.city.$dirty && editPatientForm.city.$invalid">Enter a valid city.</span>
+						</div>
+
+						<!-- Country or Region form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.countryRegion.$invalid && !editPatientForm.countryRegion.$pristine, 'has-success':editPatientForm.countryRegion.$valid }">
+							<label>
+								Country or Region <span class="symbol required"></span>
+							</label>
+							<input type="text" name="countryRegion" class="form-control" placeholder="Enter country or region" ng-model="chosenPatient.countryRegion" ng-pattern="/[\w\s]+/" required>
+							<span class="error text-small block" ng-if="editPatientForm.countryRegion.$dirty && editPatientForm.countryRegion.$invalid">Enter a valid country or region.</span>
 						</div>
 
 						<!-- Zip code form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': editAssistantForm.zipCode.$invalid && !editAssistantForm.zipCode.$pristine, 'has-success':editAssistantForm.zipCode.$valid }">
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.zipCode.$invalid && !editPatientForm.zipCode.$pristine, 'has-success':editPatientForm.zipCode.$valid }">
 							<label>
 								Zip Code <span class="symbol required"></span>
 							</label>
-							<input type="number" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="newUser.zipCode" maxlength="5" minlength="5" required>
-							<span class="error text-small block" ng-if="editAssistantForm.city.$dirty && editAssistantForm.city.$invalid">Enter a valid zip code.</span>
+							<input type="text" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="chosenPatient.zipCode" maxlength="5" minlength="5" required>
+							<span class="error text-small block" ng-if="editPatientForm.city.$dirty && editPatientForm.city.$invalid">Enter a valid zip code.</span>
 						</div>	
 
 						<!-- Email form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': editAssistantForm.email.$invalid && !editAssistantForm.email.$pristine, 'has-success':editAssistantForm.email.$valid }">
-							<label>
-								Email <span class="symbol required"></span>
+						<div class="form-group" ng-class="{ 'has-error': editPatientForm.email.$invalid && !editPatientForm.email.$pristine, 'has-success':editPatientForm.email.$valid }">
+							<label class='control-label'>
+								Email
 							</label>
 							<div class="form-group">
-								<input type="email" placeholder="Enter email" name="email" id="email" class="form-control" ng-model="newUser.email" ng-pattern="/.+@.+\..+/" required>
-								<span class="error text-small block" ng-if="editAssistantForm.email.$dirty && editAssistantForm.email.$invalid">Enter a valid email address.</span>
+								<input type="email" placeholder="Enter email" name="email" class="form-control" ng-model="newUser.email" ng-pattern="/.+@.+\..+/">
+								<span class="error text-small block" ng-if="editPatientForm.email.$dirty && editPatientForm.email.$invalid">Enter a valid email address.</span>
 							</div>
 						</div>
 

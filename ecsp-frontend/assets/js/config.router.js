@@ -52,7 +52,7 @@
     }).state('app.users.contact', {
         url: "/contactUs",
         templateUrl: "assets/views/contact_page.html",
-        resolve: loadSequence('jquery-sparkline', 'ngMap', 'mapsCtrl'),
+        resolve: loadSequence('jquery-sparkline', 'ngMap', 'mapsCtrl', 'partialViewCtrl'),
         title: 'Contact Page',
         ncyBreadcrumb: {
             label: 'Contact Us'

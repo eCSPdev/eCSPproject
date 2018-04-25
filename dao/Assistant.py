@@ -20,14 +20,14 @@ class AssistantDAO:
         print(result)
         return result
 
-    def getAssistantByID(self,did):
+    def getAssistantByID(self,assistantid):
         cursor = self.conn.cursor()
         query = "select assistants.assistantid, firstname, middlename, lastname, phone, " \
                 "status, email, username, pssword, addressid, street, aptno, city, st, country, zipcode " \
                 "from assistants " \
                 "inner join assistantaddress on assistants.assistantid = assistantaddress.assistantid " \
                 "where assistants.assistantid = %s;"
-        cursor.execute(query, (did,))
+        cursor.execute(query, (assistantid,))
         result = cursor.fetchone()
         return result
 
@@ -44,7 +44,7 @@ class AssistantDAO:
 
     def updateAssistantAddress(self, assistantid, street, aptno, city, st, country, zipcode):
         cursor = self.conn.cursor()
-        query = "update assitantaddress " \
+        query = "update assistantaddress " \
                 "set street=%s, aptno=%s, city=%s, st=%s, country=%s, zipcode=%s " \
                 "where assistantid=%s " \
                 "returning addressid;"

@@ -101,8 +101,7 @@ class AssistantHandler:
         result = dao.getAllAssistants()
         result_list = []
         for row in result:
-            result = self.build_assistantlist_dict(row)
-            result.append(result)
+            result_list.append(self.build_assistantlist_dict(row))
         return jsonify(Assistant=result_list)
 
     def getAssistantByID(self, args):
@@ -145,10 +144,10 @@ class AssistantHandler:
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
-    def updateAssistantInformation(self, args, form):
+    def updateAssistantInformation(self, form):
         dao = AssistantDAO()
-        aid = args.get("assistantid")
-        row = dao.getAssistantByID(aid)
+        assistantid = form['assistantid']
+        row = dao.getAssistantByID(assistantid)
         if row == None:
             return jsonify(Error="Assistant not found."), 404
         else:
@@ -170,7 +169,7 @@ class AssistantHandler:
                 country = form['country']
                 zipcode = form['zipcode']
                 if assistantid and firstname and lastname and phone and status and username and street and aptno \
-                        and city and st and country and zipcode:
+                        and city and country and zipcode:
                     dao.updateAssistantInfoByID(assistantid, firstname, middlename, lastname, phone, status,
                                                 email, username)
                     dao.updateAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)

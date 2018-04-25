@@ -85,14 +85,35 @@ class DoctorHandler:
         result['zipcode'] = zipcode
         return result
 
+    def new_doctor_dict(self, doctorid, firstname, middlename, lastname, officename, phone, status, email,
+                           username, pssword, addressid, street, aptno, city, st, country, zipcode):
+        result = {}
+        result['doctorid'] = doctorid
+        result['firstname'] = firstname
+        result['middlename'] = middlename
+        result['lastname'] = lastname
+        result['officename'] = officename
+        result['phone'] = phone
+        result['status'] = status
+        result['email'] = email
+        result['username'] = username
+        result['pssword'] = pssword
+        result['addressid'] = addressid
+        result['street'] = street
+        result['aptno'] = aptno
+        result['city'] = city
+        result['st'] = st
+        result['country'] = country
+        result['zipcode'] = zipcode
+        return result
+
 
     def getAllDoctor(self):
         dao = DoctorDAO()
         result = dao.getAllDoctor()
         result_list = []
         for row in result:
-            result = self.build_doctorlist_dict(row)
-            result.append(result)
+            result_list.append(self.build_doctorlist_dict(row))
         return jsonify(Doctor=result_list)
 
     def getDoctorByID(self, args):
@@ -149,7 +170,7 @@ class DoctorHandler:
         else:
             print('length of form : ', len(form))
             print('form : ', form)
-            licenseno = form['liceseno']
+            licenseno = form['licenseno']
             firstname = form['firstname']
             middlename = form['middlename']
             lastname = form['lastname']
@@ -165,11 +186,11 @@ class DoctorHandler:
             st = form['st']
             country = form['country']
             zipcode = form['zipcode']
-            if licenseno and firstname and lastname and officename and phone and status and username and pssword\
+            if licenseno and firstname and lastname and officename and phone and status and username and pssword \
                     and street and aptno and city and country and zipcode:
                 dao = DoctorDAO()
                 doctorid = dao.insertDoctorInfo(licenseno, firstname, middlename, lastname, officename, phone,
-                                             status, email, username, pssword)
+                                             email, username, pssword)
                 addressid = dao.insertDoctorAddress(doctorid, street, aptno, city, st, country, zipcode)
 
                 result = self.new_doctor_dict(doctorid, firstname, middlename, lastname, officename, phone, status,

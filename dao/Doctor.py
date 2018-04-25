@@ -52,6 +52,31 @@ class DoctorDAO:
         self.conn.commit()
         return addressid
 
+    def insertDoctorInfo(self, licenseno, firstname, middlename, lastname, officename, phone, email, username, pssword):
+        status = True
+        cursor = self.conn.cursor()
+        query = "insert into doctor (licenseno, firstname, middlename, lastname, officename, phone, status, email, username, pssword) " \
+                "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
+                "returning doctorid;"
+        cursor.execute(query, (licenseno, firstname, middlename, lastname, officename, phone, status, email, username, pssword,))
+        doctorid = cursor.fetchone()[0]
+        self.conn.commit()
+        print('new doctor id : ', doctorid)
+        return doctorid
+        # print('Insertando un nuevo asistente')
+
+    def insertDoctorAddress(self, doctorid, street, aptno, city, st, country, zipcode):
+        cursor = self.conn.cursor()
+        query = "insert into doctoraddress (doctorid, street, aptno, city, st, country, zipcode) " \
+                "values (%s,%s,%s,%s,%s,%s,%s) " \
+                "returning addressid;"
+        cursor.execute(query, (doctorid, street, aptno, city, st, country, zipcode,))
+        addressid = cursor.fetchone()[0]
+        self.conn.commit()
+        print('new address id : ', addressid)
+        return addressid
+        # print('Insertando un nuevo address')
+
     def insertDoctorHistory(self, doctorid, licenseno, firstname, middlename, lastname,
                                         officename, phone, status, email, username, pssword,
                                         street, aptno, city, st, country, zipcode):

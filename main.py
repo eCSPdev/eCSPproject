@@ -85,6 +85,15 @@ def assistant_is_logged_in(f):
             return jsonify(Error="Unauthorized"), 405
     return wrap
 
+#Get a Doctor List
+@app.route('/eCSP/Doctor/DoctorList', methods=['GET', 'POST'])
+def getAllDoctor():
+    if request.method == 'GET':
+        return DoctorHandler().getAllDoctor()
+    elif request.method == 'POST':
+        return DoctorHandler().insertDoctor(request.form)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 #Get the Doctor Personal Information by Doctor ID
 @app.route('/eCSP/Doctor/PersonalInformation', methods=['GET', 'PUT'])

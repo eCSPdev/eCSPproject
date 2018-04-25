@@ -13,19 +13,19 @@ class InitialFormHandler:
         result['patientid'] = row[5]
         return result
 
-    def build_ifinsert_dict(self,row):
+    def build_ifinsert_dict(self, initialform, assistantid, doctorid, dateofupload, patientid):
         result = {}
-        result['initialform'] = row[0]
-        result['assistantid'] = row[1]
-        result['doctorid'] = row[2]
-        result['dateofupload'] = row[3]
-        result['patientid'] = row[4]
+        result['initialform'] = initialform
+        result['assistantid'] = assistantid
+        result['doctorid'] = doctorid
+        result['dateofupload'] = dateofupload
+        result['patientid'] = patientid
         return result
 
     def getPatientInitialForm(self, args):
         pid = args.get("patientid")
         dao = InitialFormDAO()
-        initialform_list = dao.getAllInitialFormByPatient(pid)
+        initialform_list = dao.getPatientInitialForm(pid)
         result_list = []
         for row in initialform_list:
             result = self.build_initialformlist_dict(row)
@@ -36,7 +36,7 @@ class InitialFormHandler:
         pid = args.get("patientid")
         nid = args.get("initialformid")
         dao = InitialFormDAO()
-        row = dao.getInitialFormByID(int(pid), int(nid))
+        row = dao.getInitialFormByID(pid, nid)
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
@@ -53,7 +53,7 @@ class InitialFormHandler:
             doctorid = form['doctorid']
             dateofupload = form['dateofupload']
             patientid = form['patientid']
-            if initialform and assistantid and doctorid and dateofupload and patientid:
+            if initialform and dateofupload:
                 dao.insertInitialForm(initialform, assistantid, doctorid, dateofupload, patientid)
                 result = self.build_ifinsert_dict(initialform, assistantid, doctorid, dateofupload, patientid)
                 return jsonify(InitialForm = result), 201 #Verificar porque 201

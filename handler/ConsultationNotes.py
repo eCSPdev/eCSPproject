@@ -13,13 +13,13 @@ class ConsultationNotesHandler:
         result['patientid'] = row[5]
         return result
 
-    def build_cninsert_dict(self,row):
+    def build_cninsert_dict(self,consultationnote, assistantid, doctorid, dateofupload, patientid):
         result = {}
-        result['consultationnote'] = row[0]
-        result['assistantid'] = row[1]
-        result['doctorid'] = row[2]
-        result['dateofupload'] = row[3]
-        result['patientid'] = row[4]
+        result['consultationnote'] = consultationnote
+        result['assistantid'] = assistantid
+        result['doctorid'] = doctorid
+        result['dateofupload'] = dateofupload
+        result['patientid'] = patientid
         return result
 
     def getPatientConsultationNotes(self, args):
@@ -36,7 +36,7 @@ class ConsultationNotesHandler:
         pid = args.get("patientid")
         nid = args.get("consultationnoteid")
         dao = ConsultationNotesDAO()
-        row = dao.getConsultationNotesByID(int(pid), int(nid))
+        row = dao.getConsultationNotesByID(pid, nid)
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
@@ -53,9 +53,9 @@ class ConsultationNotesHandler:
             doctorid = form['doctorid']
             dateofupload = form['dateofupload']
             patientid = form['patientid']
-            if consultationnote and assistantid and doctorid and dateofupload and patientid:
+            if (consultationnote and dateofupload) :
                 dao.insertConsultationNotes(consultationnote, assistantid, doctorid, dateofupload, patientid)
                 result = self.build_cninsert_dict(consultationnote, assistantid, doctorid, dateofupload, patientid)
-                return jsonify(ConsultatioNote = result), 201 #Verificar porque 201
+                return jsonify(ConsultatioNote = result), 201
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400

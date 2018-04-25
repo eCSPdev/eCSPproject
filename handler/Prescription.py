@@ -13,19 +13,19 @@ class PrescriptionHandler:
         result['patientid'] = row[5]
         return result
 
-    def build_presinsert_dict(self,row):
+    def build_presinsert_dict(self, prescription, assistantid, doctorid, dateofupload, patientid):
         result = {}
-        result['prescription'] = row[0]
-        result['assistantid'] = row[1]
-        result['doctorid'] = row[2]
-        result['dateofupload'] = row[3]
-        result['patientid'] = row[4]
+        result['prescription'] = prescription
+        result['assistantid'] = assistantid
+        result['doctorid'] = doctorid
+        result['dateofupload'] = dateofupload
+        result['patientid'] = patientid
         return result
 
     def getPatientPrescription(self, args):
         pid = args.get("patientid")
         dao = PrescriptionDAO()
-        prescription_list = dao.getAllPrescription(pid)
+        prescription_list = dao.getPatientPrescription(pid)
         result_list = []
         for row in prescription_list:
             result = self.build_prescriptionlist_dict(row)
@@ -36,7 +36,7 @@ class PrescriptionHandler:
         pid = args.get("patientid")
         preid = args.get("prescriptionid")
         dao = PrescriptionDAO()
-        row = dao.getPrescriptionByID(int(pid), int(preid))
+        row = dao.getPrescriptionByID(pid, preid)
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
@@ -53,7 +53,7 @@ class PrescriptionHandler:
             doctorid = form['doctorid']
             dateofupload = form['dateofupload']
             patientid = form['patientid']
-            if prescription and assistantid and doctorid and dateofupload and patientid:
+            if prescription and dateofupload :
                 dao.insertPrescription(prescription, assistantid, doctorid, dateofupload, patientid)
                 result = self.build_presinsert_dict(prescription, assistantid, doctorid, dateofupload, patientid)
                 return jsonify(Prescription = result), 201 #Verificar porque 201

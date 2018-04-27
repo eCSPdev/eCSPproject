@@ -89,8 +89,8 @@ class DoctorDAO:
         cursor.execute(query, (doctorid, licenseno, firstname, middlename, lastname,
                                         officename, phone, status, email, username, pssword,
                                         street, aptno, city, st, country, zipcode,))
-        historyid = cursor.fetchone()[0]
         self.conn.commit()
+        historyid = cursor.fetchone()[0]
 
         return historyid
 

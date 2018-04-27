@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, session, render_template
+from flask import Flask, jsonify, request, make_response
 from functools import wraps
 from handler.Assistant import AssistantHandler
 from handler.Doctor import DoctorHandler
@@ -10,8 +10,11 @@ from handler.Referral import ReferralHandler
 from handler.Result import ResultHandler
 from handler.Login import LoginHandler
 
+import jwt
+import datetime
+
 app = Flask(__name__)
-app.debuger = True
+
 
 @app.route('/')
 @app.route('/eCSP')
@@ -19,71 +22,25 @@ app.debuger = True
 def home():
     return 'INDEX'
 
-@app.route('/eCSP/PLogin', methods=['GET', 'POST'])
-def Plogin():
-    if request.method == 'POST':
-        username = request.args.get("username")
-        print ('Mainusername : ', username )
-        row = LoginHandler().validatePatient(request.args)
-        if not row:
-            return jsonify(Error="NOT FOUND"), 404
+@app.route('/eCSP/PLogin')
+def plogin():
+    if request.method == 'GET':
+        print('entro')
+        username = request.args.get('username')
+        validate = LoginHandler().validatePatient(request.args)
+        if not validate:
+            return jsonify(Error="Invalid Username or password"), 401
         else:
-            session['logged_in'] = True
-            #session['role'] = 'patient'
-            session['username'] = username
-            return row
+            #token =
+            return jsonify("success")
     else:
         return jsonify(Error="Method not allowed."), 405
 
-def patient_is_logged_in(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return f(*args, **kwargs)
-        else:
-            return jsonify(Error="Unauthorized"), 405
-    return wrap
 
-@app.route('/eCSP/Logout')
-@patient_is_logged_in
-def logout():
-    session.clear()
-    return True
 
-@app.route('/eCSP/DALogin')
-def DAlogin():
-    if request.method == 'POST':
-        username = request.form['username']
-        rle = LoginHandler().validateAdmin(request.form)
-        if not rle:
-            return jsonify(Error="NOT FOUND"), 404
-        else:
-            session['logged_in'] = True
-            session['role'] = rle.get('rle') #no se si se puede
-            session['username'] = username
-            return rle
-    else:
-        return jsonify(Error="Method not allowed."), 405
+#@app.route('/eCSP/Logout')
 
-def doctor_is_logged_in(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            if session.get('role') == 'doctor':
-                return f(*args, **kwargs)
-        else:
-            return jsonify(Error="Unauthorized"), 405
-    return wrap
-
-def assistant_is_logged_in(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            if session.get('role') == 'assistant':
-                return f(*args, **kwargs)
-        else:
-            return jsonify(Error="Unauthorized"), 405
-    return wrap
+#@app.route('/eCSP/DALogin')
 
 #Get a Doctor List
 @app.route('/eCSP/Doctor/DoctorList', methods=['GET', 'POST'])
@@ -117,7 +74,8 @@ def getAllAssistant():
         return AssistantHandler().insertAssistant(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
-
+"""fbxfgbxfgnx
+"""
 #Get an Assistant Personal Information by Assistant ID
 @app.route('/eCSP/Doctor/Assistant/PersonalInformation', methods=['GET', 'PUT'])
 @app.route('/eCSP/Assistant/PersonalInformation', methods=['GET', 'PUT'])

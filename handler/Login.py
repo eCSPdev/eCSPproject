@@ -6,14 +6,14 @@ class LoginHandler:
     def build_login_dict(self, row):
         result = {}
         result['username'] = row[0]
-        result['rle'] = row[1]
         return result
 
     def validatePatient(self, form):
+        #print ('entro1')
         username = form['username']
         pssword = form['pssword']
-        print('username : ', username)
-        print('pssword : ', pssword)
+        #print('username : ', username)
+        #print('pssword : ', pssword)
         dao = LoginDAO()
         row = dao.validatePatient(username, pssword)
         if not row:

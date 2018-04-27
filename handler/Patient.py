@@ -126,48 +126,51 @@ class PatientHandler:
             return jsonify(Patient=patient)
 
     def updatePatientInformation(self, form):
-        dao = PatientsDAO()
-        patientid = form['patientid']
-        row = dao.getPatientByID(patientid)
-        if row == None :
-            return jsonify(Error="Patient not found."), 404
-        else:
-            if len(form) != 18:
-                return jsonify(Error="Malformed update request"), 400
+        try:
+            dao = PatientsDAO()
+            patientid = form['patientid']
+            row = dao.getPatientByID(patientid)
+            if row == None :
+                return jsonify(Error="Patient not found."), 404
             else:
-                print('length of form : ', len(form))
-                patientid = form['patientid']
-                firstname = form['firstname']
-                middlename = form['middlename']
-                lastname = form['lastname']
-                ssn = form['ssn']
-                birthdate = form['birthdate']
-                gender = form['gender']
-                phone = form['phone']
-                status = form['status']
-                email = form['email']
-                username = form['username']
-                insurancecompanyname = form['insurancecompanyname']
-                street = form['street']
-                aptno = form['aptno']
-                city = form['city']
-                st = form['st']
-                country = form['country']
-                zipcode = form['zipcode']
-
-                #PROBAR SOLO LOS QUE NO PUEDEN SER NULOS
-                if patientid and firstname and lastname and ssn and birthdate and phone and status \
-                        and username and street and aptno and city and country and zipcode:
-                    print("CALLING DAO HERE")
-                    dao.updatePatientInfoByID(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status, email,
-                               username, insurancecompanyname)
-                    dao.updatePatientAddress(patientid, street, aptno, city, st, country, zipcode)
-
-                    result = self.update_patient_Dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
-                                email, username, insurancecompanyname, street, aptno, city, st, country, zipcode)
-                    return jsonify(Patient=result), 200
+                if len(form) != 18:
+                    return jsonify(Error="Malformed update request"), 400
                 else:
-                    return jsonify(Error="Unexpected attributes in update request"), 400
+                    print('length of form : ', len(form))
+                    patientid = form['patientid']
+                    firstname = form['firstname']
+                    middlename = form['middlename']
+                    lastname = form['lastname']
+                    ssn = form['ssn']
+                    birthdate = form['birthdate']
+                    gender = form['gender']
+                    phone = form['phone']
+                    status = form['status']
+                    email = form['email']
+                    username = form['username']
+                    insurancecompanyname = form['insurancecompanyname']
+                    street = form['street']
+                    aptno = form['aptno']
+                    city = form['city']
+                    st = form['st']
+                    country = form['country']
+                    zipcode = form['zipcode']
+
+                    #PROBAR SOLO LOS QUE NO PUEDEN SER NULOS
+                    if patientid and firstname and lastname and ssn and birthdate and phone and status \
+                            and username and street and aptno and city and country and zipcode:
+                        print("CALLING DAO HERE")
+                        dao.updatePatientInfoByID(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status, email,
+                                   username, insurancecompanyname)
+                        dao.updatePatientAddress(patientid, street, aptno, city, st, country, zipcode)
+
+                        result = self.update_patient_Dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
+                                    email, username, insurancecompanyname, street, aptno, city, st, country, zipcode)
+                        return jsonify(Patient=result), 200
+                    else:
+                        return jsonify(Error="Unexpected attributes in update request"), 400
+        except Exception as ex:
+            print('{}'.format(ex))
 
     def updatePatientPassword(self):
         return 'IN PROCESS YET'

@@ -17,7 +17,7 @@ class LoginHandler:
 
     def build_FEinfo_dict(self, username, token):
         result = {}
-        print ('estoy en el diccionario')
+        #print ('estoy en el diccionario')
         result['username'] = username
         result['token'] = token.decode('UTF-8')
         #result ('diccionario : ', result)

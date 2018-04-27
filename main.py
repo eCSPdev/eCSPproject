@@ -15,6 +15,19 @@ import datetime
 
 app = Flask(__name__)
 
+app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.args.get('token')
+        print('token', token)
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+        except:
+            return jsonify(Error="Invalid Token"), 403
+        return f(*args, **kwargs)
+    return decorated
 
 @app.route('/')
 @app.route('/eCSP')
@@ -22,29 +35,44 @@ app = Flask(__name__)
 def home():
     return 'INDEX'
 
-@app.route('/eCSP/PLogin')
+@app.route('/eCSP/PLogin', methods = ['GET'])
 def plogin():
     if request.method == 'GET':
-        print('entro')
+        print('Login')
         username = request.args.get('username')
         validate = LoginHandler().validatePatient(request.args)
         if not validate:
             return jsonify(Error="Invalid Username or password"), 401
         else:
-            #token =
-            return jsonify("success")
+            token = jwt.encode({'user' : username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+            print('token : ', token)
+            return LoginHandler().build_dict(username, token)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 
-
 #@app.route('/eCSP/Logout')
 
-#@app.route('/eCSP/DALogin')
+@app.route('/eCSP/DALogin', methods = ['GET'])
+def DAlogin():
+    if request.method == 'GET':
+        print('Login')
+        username = request.args.get('username')
+        validate = LoginHandler().validateAdmin(request.args)
+        if not validate:
+            return jsonify(Error="Invalid Username or password"), 401
+        else:
+            token = jwt.encode({'user' : username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+            return LoginHandler().build_dict(username, token)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 
 #Get a Doctor List
 @app.route('/eCSP/Doctor/DoctorList', methods=['GET', 'POST'])
+@token_required
 def getAllDoctor():
+    print('getalldoctorlist')
     if request.method == 'GET':
         return DoctorHandler().getAllDoctor()
     elif request.method == 'POST':

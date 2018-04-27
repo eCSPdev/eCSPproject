@@ -17,21 +17,30 @@ class LoginDAO:
         result = []
         for row in cursor:
             result.append(row)
-        print('result : ', result)
         return result
 
-    def validateAdmin(self, username, pssword):
+    def validateDoctor(self, username, pssword):
         cursor = self.conn.cursor()
-        query = "select a.username as username, a.r as rle " \
-                "from " \
-                "((select username, pssword, 'doctor' " \
-                "from doctor) " \
-                "union " \
-                "(select username, pssword, 'assistant' " \
-                "from assistants)) as a " \
-                "where a.username=%s and a.pssword=%s "
-        cursor.execute(query, (username, pssword, ))
+        query = "select username " \
+                "from doctor " \
+                "where (username = %s and pssword = %s) " \
+                "or (email = %s and pssword = %s); "
+        cursor.execute(query, (username, pssword, username, pssword))
         result = []
         for row in cursor:
             result.append(row)
+        print(result)
+        return result
+
+    def validateAssistant(self, username, pssword):
+        cursor = self.conn.cursor()
+        query = "select username " \
+                "from assistants " \
+                "where (username = %s and pssword = %s) " \
+                "or (email = %s and pssword = %s); "
+        cursor.execute(query, (username, pssword, username, pssword))
+        result = []
+        for row in cursor:
+            result.append(row)
+        #print(result)
         return result

@@ -55,7 +55,7 @@ class LoginHandler:
             return result
 
     def build_dict(self, username, token):
-        print ('username : ', username)
-        print ('token : ', token)
+        #print ('username : ', username)
+        #print ('token : ', token)
         result = self.build_FEinfo_dict(username, token)
         return jsonify(user = result)

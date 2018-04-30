@@ -29,7 +29,7 @@ class LoginDAO:
         result = []
         for row in cursor:
             result.append(row)
-        print(result)
+        #print(result)
         return result
 
     def validateAssistant(self, username, pssword):

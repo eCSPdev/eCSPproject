@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, make_response
+from flask import Flask, jsonify, request, Blueprint
 from functools import wraps
 from handler.Assistant import AssistantHandler
 from handler.Doctor import DoctorHandler
@@ -9,19 +9,21 @@ from handler.Prescription import PrescriptionHandler
 from handler.Referral import ReferralHandler
 from handler.Result import ResultHandler
 from handler.Login import LoginHandler
+from handler.RoleBase import RoleBase
 
 import jwt
 import datetime
 
 app = Flask(__name__)
-
 app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
+
+
 
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.args.get('token')
-        print('token', token)
+        #print('token', token)
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'])
         except:
@@ -29,23 +31,32 @@ def token_required(f):
         return f(*args, **kwargs)
     return decorated
 
-@app.route('/')
+@app.before_request
+def before_execute():
+    print ('Estoy en el before')
+    #print ('path', request.path)
+    user = RoleBase().validate(request.path, request.args)
+    print ('user', user)
+    #print (request.args.get('username'))
+
+
+
 @app.route('/eCSP')
 @app.route('/eCSP/Home')
 def home():
     return 'INDEX'
 
-@app.route('/eCSP/PLogin', methods = ['GET'])
+@app.route('/Patient/eCSP/Login', methods = ['GET'])
 def plogin():
     if request.method == 'GET':
-        print('Login')
+        #print('Login')
         username = request.args.get('username')
         validate = LoginHandler().validatePatient(request.args)
         if not validate:
             return jsonify(Error="Invalid Username or password"), 401
         else:
             token = jwt.encode({'user' : username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
-            print('token : ', token)
+            #print('token : ', token)
             return LoginHandler().build_dict(username, token)
     else:
         return jsonify(Error="Method not allowed."), 405
@@ -53,10 +64,11 @@ def plogin():
 
 #@app.route('/eCSP/Logout')
 
-@app.route('/eCSP/DALogin', methods = ['GET'])
+@app.route('/Doctor/eCSP/Login', methods = ['GET'])
+@app.route('/Assistant/eCSP/Login', methods = ['GET'])
 def DAlogin():
     if request.method == 'GET':
-        print('Login')
+        #print('Login')
         username = request.args.get('username')
         validate = LoginHandler().validateAdmin(request.args)
         if not validate:
@@ -69,8 +81,8 @@ def DAlogin():
 
 
 #Get a Doctor List
-@app.route('/eCSP/Doctor/DoctorList', methods=['GET', 'POST'])
-@token_required
+@app.route('/Doctor/eCSP/DoctorList', methods=['GET', 'POST'])
+#@token_required
 def getAllDoctor():
     print('getalldoctorlist')
     if request.method == 'GET':
@@ -81,7 +93,7 @@ def getAllDoctor():
         return jsonify(Error="Method not allowed."), 405
 
 #Get the Doctor Personal Information by Doctor ID
-@app.route('/eCSP/Doctor/PersonalInformation', methods=['GET', 'PUT'])
+@app.route('/Doctor/eCSP/Doctor/PersonalInformation', methods=['GET', 'PUT'])
 def getDoctorByID():
     if request.method == 'GET':
         if not request.args:
@@ -94,7 +106,7 @@ def getDoctorByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get an Assistant List
-@app.route('/eCSP/Doctor/AssistantList', methods=['GET', 'POST'])
+@app.route('/Doctor/eCSP/Doctor/AssistantList', methods=['GET', 'POST'])
 def getAllAssistant():
     if request.method == 'GET':
         return AssistantHandler().getAllAssistant()
@@ -102,8 +114,8 @@ def getAllAssistant():
         return AssistantHandler().insertAssistant(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
-"""fbxfgbxfgnx
-"""
+
+
 #Get an Assistant Personal Information by Assistant ID
 @app.route('/eCSP/Doctor/Assistant/PersonalInformation', methods=['GET', 'PUT'])
 @app.route('/eCSP/Assistant/PersonalInformation', methods=['GET', 'PUT'])

@@ -10,14 +10,12 @@ module.exports = function(grunt) {
 
     // We need our bower components in order to develop
     gtx.alias('build:standardversion', ['compass:standardversion', 'clean:standardversion', 'copy:standardversion', 'concat:standardversion', 'cssmin:standardversion', 'uglify:standardversion']);
-    gtx.alias('build:rtlversion', ['compass:rtlversion', 'clean:rtlversion', 'copy:rtlversion', 'concat:rtlversion', 'cssmin:rtlversion', 'uglify:rtlversion']);
 
     gtx.alias('release', ['bower-install-simple', 'build:dev', 'bump-commit']);
 
 
     // --- Development tasks
     gtx.alias('build:standardcss', ['compass:standardversion']);
-    gtx.alias('build:rtlcss', ['compass:rtlversion']);
 
     gtx.finalise();
 };

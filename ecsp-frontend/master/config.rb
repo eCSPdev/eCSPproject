@@ -6,13 +6,13 @@
 
 http_path = "/"
 
-css_dir = "STANDARD/assets/css"
+css_dir = "assets/css"
 
-sass_dir = "STANDARD/master/sass"
+sass_dir = "master/sass"
 
-images_dir = "STANDARD/assets/images"
+images_dir = "assets/images"
 
-javascripts_dir = "STANDARD/assets/js"
+javascripts_dir = "assets/js"
 
 line_comments = false
 # You can select your preferred output style here (can be overridden via the command line):

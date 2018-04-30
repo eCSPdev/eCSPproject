@@ -1,4 +1,3 @@
 module.exports = {
-  standardversion: ['standardversion/*'],
-  rtlversion: ['rtlversion/*']
+  standardversion: ['standardversion/*']
 };

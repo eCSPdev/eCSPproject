@@ -105,8 +105,8 @@ header .navbar-collapse .navbar-right .dot-badge {
     background-color: #007aff;
   }
   header .navbar-collapse .navbar-right .current-user a i {
-    color: #ffffff !important;
-    background: rgba(0, 122, 255, 0.3);
+    color: #0279ff !important;
+    background: #ffffff;
   }
 }
 header .dropdown-off-sidebar {

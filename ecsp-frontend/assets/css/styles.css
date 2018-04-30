@@ -373,11 +373,11 @@ h5.over-title {
     width: 260px;
   }
 }
-@media (min-width: 992px) {
+/*@media (min-width: 992px) {
   .navbar .navbar-header {
     border-right: 1px solid #c8c7cc;
   }
-}
+}*/
 .navbar .navbar-header a {
   line-height: 65px;
   height: 65px;
@@ -390,7 +390,7 @@ h5.over-title {
   margin-top: -6px;
 }
 .navbar .navbar-header .menu-toggler {
-  margin-right: 60px;
+  margin-right: 10px;
   padding: 0 15px;
   font-size: 17px;
   color: #c8c7cc;
@@ -740,8 +740,8 @@ h5.over-title {
     left: 0;
     position: absolute;
     right: 0;
-    top: 0;
-    font-size: 0;
+    top: 75px;
+    /*font-size: 0;*/
     line-height: 0px;
     float: none;
     margin-top: 0;
@@ -761,9 +761,9 @@ h5.over-title {
     width: 39px;
     border-radius: 20%;
   }
-  .navbar .navbar-right > li.current-user.open i, .navbar .navbar-right > li.current-user a:hover i {
+/*  .navbar .navbar-right > li.current-user.open i, .navbar .navbar-right > li.current-user a:hover i {
     opacity: 0;
-  }
+  }*/
 }
 .navbar .navbar-right .dropdown-menu:before {
   top: -11px;

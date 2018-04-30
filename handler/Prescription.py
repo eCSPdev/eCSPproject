@@ -53,9 +53,13 @@ class PrescriptionHandler:
             doctorid = form['doctorid']
             dateofupload = form['dateofupload']
             patientid = form['patientid']
-            if prescription and dateofupload :
-                dao.insertPrescription(prescription, assistantid, doctorid, dateofupload, patientid)
-                result = self.build_presinsert_dict(prescription, assistantid, doctorid, dateofupload, patientid)
-                return jsonify(Prescription = result), 201 #Verificar porque 201
+            recordno = form['recordno']
+            if prescription and dateofupload and recordno:
+                if dao.verifyRecordno(recordno) != None:
+                    dao.insertPrescription(prescription, assistantid, doctorid, dateofupload, patientid)
+                    result = self.build_presinsert_dict(prescription, assistantid, doctorid, dateofupload, patientid)
+                    return jsonify(Prescription = result), 201 #Verificar porque 201
+                else:
+                    return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400

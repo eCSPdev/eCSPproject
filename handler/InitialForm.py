@@ -53,9 +53,13 @@ class InitialFormHandler:
             doctorid = form['doctorid']
             dateofupload = form['dateofupload']
             patientid = form['patientid']
-            if initialform and dateofupload:
-                dao.insertInitialForm(initialform, assistantid, doctorid, dateofupload, patientid)
-                result = self.build_ifinsert_dict(initialform, assistantid, doctorid, dateofupload, patientid)
-                return jsonify(InitialForm = result), 201 #Verificar porque 201
+            recordno = form['recordno']
+            if initialform and dateofupload and recordno:
+                if dao.verifyRecordno(recordno) != None:
+                    dao.insertInitialForm(initialform, assistantid, doctorid, dateofupload, patientid)
+                    result = self.build_ifinsert_dict(initialform, assistantid, doctorid, dateofupload, patientid)
+                    return jsonify(InitialForm = result), 201 #Verificar porque 201
+                else:
+                    return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400

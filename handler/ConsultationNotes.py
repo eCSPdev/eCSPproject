@@ -11,15 +11,18 @@ class ConsultationNotesHandler:
         result['doctorid'] = row[2]
         result['dateofupload'] = row[4]
         result['patientid'] = row[5]
+        result['recordno'] = row[6]
         return result
 
-    def build_cninsert_dict(self,consultationnote, assistantid, doctorid, dateofupload, patientid):
+    def build_cninsert_dict(self, consultationnoteid, consultationnote, assistantid, doctorid, dateofupload, patientid, recordno):
         result = {}
+        result['consultationnoteid'] = consultationnoteid
         result['consultationnote'] = consultationnote
         result['assistantid'] = assistantid
         result['doctorid'] = doctorid
         result['dateofupload'] = dateofupload
         result['patientid'] = patientid
+        result['recordno'] = recordno
         return result
 
     def getPatientConsultationNotes(self, args):
@@ -45,7 +48,7 @@ class ConsultationNotesHandler:
 
     def insertConsultationNotes(self, form):
         dao = ConsultationNotesDAO()
-        if len(form) != 5:
+        if len(form) != 6:
             return jsonify(Error="Malformed insert request"), 400
         else:
             consultationnote = form['consultationnote']
@@ -53,9 +56,16 @@ class ConsultationNotesHandler:
             doctorid = form['doctorid']
             dateofupload = form['dateofupload']
             patientid = form['patientid']
-            if (consultationnote and dateofupload) :
-                dao.insertConsultationNotes(consultationnote, assistantid, doctorid, dateofupload, patientid)
-                result = self.build_cninsert_dict(consultationnote, assistantid, doctorid, dateofupload, patientid)
-                return jsonify(ConsultatioNote = result), 201
+            recordno = form['recordno']
+            if (consultationnote and dateofupload and recordno):
+
+                if dao.verifyRecordno(recordno) != None:
+                    consultationnoteid = dao.insertConsultationNotes(consultationnote, assistantid, doctorid, dateofupload,
+                                                                     patientid, recordno)
+                    result = self.build_cninsert_dict(consultationnoteid, consultationnote, assistantid, doctorid,
+                                                      dateofupload, patientid, recordno)
+                    return jsonify(Success="Consultation Node inserted.", ConsultatioNote = result), 201
+                else:
+                    return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400

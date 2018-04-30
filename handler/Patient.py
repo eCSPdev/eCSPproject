@@ -1,11 +1,13 @@
 from flask import jsonify, request
 from dao.Patient import PatientsDAO
+from dao.Doctor import DoctorDAO
+from dao.Assistant import AssistantDAO
 import datetime, time
 
 ## Luis Santiago ##
 class PatientHandler:
 
-    def build_patientlist_Dict(self,row):
+    def build_patientlist_dict(self, row):
         result = {}
         result['patientid'] = row[0]
         result['firstname'] = row[1]
@@ -21,14 +23,14 @@ class PatientHandler:
         result['Password'] = row[11]
         result['insurancecompanyname'] = row[12]
         result['recordno'] = row[13]
-        result['consultationnoteid'] = row[14]
-        result['prescriptionid'] = row[15]
-        result['referralid'] = row[16]
-        result['resultid'] = row[17]
-        result['initialformid'] = row[18]
+        # result['consultationnoteid'] = row[14]
+        # result['prescriptionid'] = row[15]
+        # result['referralid'] = row[16]
+        # result['resultid'] = row[17]
+        # result['initialformid'] = row[18]
         return result
 
-    def build_patientinfo_Dict(self,row):
+    def build_patientinfo_dict(self, row):
         result = {}
         result['patientid'] = row[0]
         result['firstname'] = row[1]
@@ -51,15 +53,15 @@ class PatientHandler:
         result['country'] = row[18]
         result['zipcode'] = row[19]
         result['recordno'] = row[20]
-        result['consultationnoteid'] = row[21]
-        result['prescriptionid'] = row[22]
-        result['referralid'] = row[23]
-        result['resultid'] = row[24]
-        result['initialformid'] = row[25]
+        # result['consultationnoteid'] = row[21]
+        # result['prescriptionid'] = row[22]
+        # result['referralid'] = row[23]
+        # result['resultid'] = row[24]
+        # result['initialformid'] = row[25]
         return result
 
-    def update_patient_Dict(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
-                            email, username, insurancecompanyname, street, aptno, city, st, country, zipcode):
+    def update_patient_dict(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
+                            email, insurancecompanyname, street, aptno, city, st, country, zipcode):
         result = {}
         result['patientid'] = patientid
         result['firstname'] = firstname
@@ -71,7 +73,6 @@ class PatientHandler:
         result['phone'] = phone
         result['status'] = status
         result['email'] = email
-        result['username'] = username
         result['insurancecompanyname'] = insurancecompanyname
         result['street'] = street
         result['aptno'] = aptno
@@ -81,8 +82,8 @@ class PatientHandler:
         result['zipcode'] = zipcode
         return result
 
-    def new_patient_Dict(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
-                         email, username, pssword, addressid, street, aptno, city, st, country,zipcode,
+    def new_patient_dict(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
+                         email, username, pssword, addressid, street, aptno, city, st, country, zipcode,
                          insurancecompanyname, recordno):
         result = {}
         result['patientid'] = patientid
@@ -107,12 +108,68 @@ class PatientHandler:
         result['recordno'] = recordno
         return result
 
+    def verify_existantpatient_dict(self, row):
+        result = {}
+        result['patientid'] = row[0]
+        result['firstname'] = row[1]
+        result['middlename'] = row[2]
+        result['lastname'] = row[3]
+        result['ssn'] = row[4]
+        result['birthdate'] = row[5]
+        result['gender'] = row[6]
+        result['phone'] = row[7]
+        result['status'] = row[8]
+        result['email'] = row[9]
+        result['username'] = row[10]
+        result['Password'] = row[11]
+        result['insurancecompanyname'] = row[12]
+        result['addressid'] = row[13]
+        result['street'] = row[14]
+        result['aptno'] = row[15]
+        result['city'] = row[16]
+        result['st'] = row[17]
+        result['country'] = row[18]
+        result['zipcode'] = row[19]
+        result['recordno'] = row[20]
+        return result
+
+    def patient_byrecordno_dict(self, row):
+        result = {}
+        result['patientid'] = row[0]
+        result['firstname'] = row[1]
+        result['middlename'] = row[2]
+        result['lastname'] = row[3]
+        result['ssn'] = row[4]
+        result['birthdate'] = row[5]
+        result['gender'] = row[6]
+        result['phone'] = row[7]
+        result['status'] = row[8]
+        result['email'] = row[9]
+        result['username'] = row[10]
+        result['Password'] = row[11]
+        result['insurancecompanyname'] = row[12]
+        result['addressid'] = row[13]
+        result['street'] = row[14]
+        result['aptno'] = row[15]
+        result['city'] = row[16]
+        result['st'] = row[17]
+        result['country'] = row[18]
+        result['zipcode'] = row[19]
+        result['recordno'] = row[20]
+        # result['consultationnoteid'] = row[21]
+        # result['prescriptionid'] = row[22]
+        # result['referralid'] = row[23]
+        # result['resultid'] = row[24]
+        # result['initialformid'] = row[25]
+        return result
+
     def getAllPatients(self):
         dao = PatientsDAO()
         patient_list = dao.getAllPatients()
+        print('patient_list : ',patient_list)
         result_list = []
         for row in patient_list:
-            result_list.append(self.build_patientlist_Dict(row)) #mapToDict() turns returned array of arrays to an array of maps
+            result_list.append(self.build_patientlist_dict(row)) #mapToDict() turns returned array of arrays to an array of maps
         return jsonify(Patient=result_list)
 
     def getPatientByID(self, args):
@@ -122,8 +179,17 @@ class PatientHandler:
         if row == None:
             return jsonify(Error="Patient NOT FOUND"),404
         else:
-            patient = self.build_patientinfo_Dict(row) #mapToDict() turns returned array of arrays to an array of maps
+            patient = self.build_patientinfo_dict(row) #mapToDict() turns returned array of arrays to an array of maps
             return jsonify(Patient=patient)
+
+    def getPatientToken(self, patientid):
+
+        dao = PatientsDAO()
+        token = dao.getPatientToken(int(patientid))
+        if token == None:
+            return jsonify(Error="Token NOT FOUND for that Patient ID")
+        else:
+            return jsonify(Token=token)
 
     def updatePatientInformation(self, form):
         dao = PatientsDAO()
@@ -132,7 +198,7 @@ class PatientHandler:
         if row == None :
             return jsonify(Error="Patient not found."), 404
         else:
-            if len(form) != 18:
+            if len(form) != 17:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 print('length of form : ', len(form))
@@ -146,7 +212,6 @@ class PatientHandler:
                 phone = form['phone']
                 status = form['status']
                 email = form['email']
-                username = form['username']
                 insurancecompanyname = form['insurancecompanyname']
                 street = form['street']
                 aptno = form['aptno']
@@ -157,14 +222,14 @@ class PatientHandler:
 
                 #PROBAR SOLO LOS QUE NO PUEDEN SER NULOS
                 if patientid and firstname and lastname and ssn and birthdate and phone and status \
-                        and username and street and aptno and city and country and zipcode:
+                        and street and aptno and city and country and zipcode:
                     print("CALLING DAO HERE")
                     dao.updatePatientInfoByID(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status, email,
-                               username, insurancecompanyname)
+                               insurancecompanyname)
                     dao.updatePatientAddress(patientid, street, aptno, city, st, country, zipcode)
 
-                    result = self.update_patient_Dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
-                                email, username, insurancecompanyname, street, aptno, city, st, country, zipcode)
+                    result = self.update_patient_dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
+                                email, insurancecompanyname, street, aptno, city, st, country, zipcode)
                     return jsonify(Patient=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
@@ -173,11 +238,9 @@ class PatientHandler:
         return 'IN PROCESS YET'
 
     def insertPatient(self, form):
-        if len(form) != 19:
+        if len(form) != 20:
             return jsonify(Error="Malformed post request"), 400
         else:
-            print('length of form : ', len(form))
-            print('form : ', form)
             firstname = form['firstname']
             middlename = form['middlename']
             lastname = form['lastname']
@@ -197,26 +260,66 @@ class PatientHandler:
             zipcode = form['zipcode']
             type = form['type']
             recordno = form['recordno']
+
+            #Verify if cirtical(not null) info is complete
             if firstname and lastname and ssn and birthdate and phone and username and pssword\
-                    and pssword and street and aptno and city and country and zipcode \
-                    and insurancecompanyname and type and recordno:
+                    and street and aptno and city and country and zipcode and insurancecompanyname \
+                    and type and recordno:
+
                 dao = PatientsDAO()
-                patientid = dao.insertPatientInfo(firstname, middlename, lastname, ssn, birthdate, gender, phone,
-                                       email, username, pssword, insurancecompanyname)
-                print('zipcode : ', zipcode)
-                addressid = dao.insertPatientAddress(patientid, street, aptno, city, st, country, zipcode)
-                dao.insertMedicalRecord(recordno, patientid)
-                visit_time = time.time()
-                visitdate = datetime.datetime.fromtimestamp(visit_time).strftime('%Y-%m-%d %H:%M:%S')
-                dao.insertVisit(recordno, patientid, visitdate, type)
-                result = self.new_patient_Dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
-                                       email, username, pssword, addressid, street, aptno, city, st, country,
-                                       zipcode, insurancecompanyname, recordno)
-                return jsonify(Part=result), 201
+                doctordao = DoctorDAO()
+                assistantdao = AssistantDAO()
+
+                #verify if a patient exist with this information
+                existantpatient_list = dao.verifyPatient(firstname, middlename, lastname, ssn, birthdate)
+                #no patient exist with this information
+                if not existantpatient_list:
+
+                    #verify if the record number is already taken
+                    if dao.getMedicalRecordByRecordno(recordno) == None:
+
+                        #verify if username already exist
+                        if dao.verifyUsername(username) == None \
+                                and doctordao.verifyUsername(username) == None \
+                                and assistantdao.verifyUsername(username) == None:
+
+                            #record number and username is not taken yet, Patient can be inserted
+                            patientid = dao.insertPatientInfo(firstname, middlename, lastname, ssn, birthdate, gender, phone,
+                                                   email, username, pssword, insurancecompanyname)
+                            addressid = dao.insertPatientAddress(patientid, street, aptno, city, st, country, zipcode)
+                            dao.insertMedicalRecord(recordno, patientid)
+                            visit_time = time.time()
+                            visitdate = datetime.datetime.fromtimestamp(visit_time).strftime('%Y-%m-%d %H:%M:%S')
+                            dao.insertVisit(recordno, patientid, visitdate, type)
+
+                            result = self.new_patient_dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
+                                                   email, username, pssword, addressid, street, aptno, city, st, country,
+                                                   zipcode, insurancecompanyname, recordno)
+                            return jsonify(Success="Patient added correctly", New_Patient=result), 201
+
+                            # return jsonify(Success="Patient added correctly")
+
+                        #username already exist
+                        else:
+                            return jsonify(Error="Username is already taken.")
+
+                    #record number already taken
+                    else:
+
+                        #get patient info with this record number
+                        patient = dao.getPatientByRecordno(recordno)
+                        result = self.patient_byrecordno_dict(patient)
+                        return jsonify(Error="Record Number is already taken.", Patient=result)
+
+                #a patient with this info already exists
+                else:
+
+                    #return patient or patients with this critical information
+                    result_list = []
+                    for row in existantpatient_list:
+                        result_list.append(self.verify_existantpatient_dict(row))
+                    return jsonify(Error="A Patient with this information already exist.", Patients=result_list)
+
+            #some critical information missing
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
-
-    #PENDING
-    def verifyPatient(self, firstname, lastname, ssn, birthdate, gender, status):
-        dao = PatientsDAO()
-        result = dao.VerifyPatient(firstname, lastname, ssn, birthdate, gender, status)

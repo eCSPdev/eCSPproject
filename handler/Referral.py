@@ -53,9 +53,13 @@ class ReferralHandler:
             doctorid = form['doctorid']
             dateofupload = form['dateofupload']
             patientid = form['patientid']
-            if referral and dateofupload :
-                dao.insertReferral(referral, assistantid, doctorid, dateofupload, patientid)
-                result = self.build_refinsert_dict(referral, assistantid, doctorid, dateofupload, patientid)
-                return jsonify(Referral = result), 201
+            recordno = form['recordno']
+            if referral and dateofupload and recordno:
+                if dao.verifyRecordno(recordno) != None:
+                    dao.insertReferral(referral, assistantid, doctorid, dateofupload, patientid)
+                    result = self.build_refinsert_dict(referral, assistantid, doctorid, dateofupload, patientid)
+                    return jsonify(Referral = result), 201
+                else:
+                    return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400

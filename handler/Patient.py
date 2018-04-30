@@ -192,6 +192,7 @@ class PatientHandler:
             return jsonify(Token=token)
 
     def updatePatientInformation(self, form):
+
         dao = PatientsDAO()
         patientid = form['patientid']
         row = dao.getPatientByID(patientid)

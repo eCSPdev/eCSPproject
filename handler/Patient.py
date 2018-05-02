@@ -163,6 +163,11 @@ class PatientHandler:
         # result['initialformid'] = row[25]
         return result
 
+    def update_patient_pssword_dict(self, row):
+        result = {}
+        result['patientid'] = row[0]
+        return result
+
     def getAllPatients(self):
         dao = PatientsDAO()
         patient_list = dao.getAllPatients()
@@ -235,8 +240,23 @@ class PatientHandler:
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
 
-    def updatePatientPassword(self):
-        return 'IN PROCESS YET'
+    def updatePatientPssword(self, form):
+        dao = PatientsDAO()
+        patientid = form["patientid"]
+        if not dao.getPatientByID(patientid):
+            return jsonify(Error="Patient not found."), 404
+        else:
+            if len(form) != 2:
+                return jsonify(Error="Malformed update request"), 400
+            else:
+                pssword = form['pssword']
+                if pssword:
+                    dao.updatePatientPssword(patientid, pssword)
+                    result = self.update_patient_pssword_dict(patientid)
+                    return jsonify(Patient=result), 200
+                else:
+                    return jsonify(Error="Unexpected attributes in update request"), 400
+
 
     def insertPatient(self, form):
         if len(form) != 20:

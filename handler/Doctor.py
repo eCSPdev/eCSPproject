@@ -129,6 +129,11 @@ class DoctorHandler:
         result['zipcode'] = row[16]
         return result
 
+    def update_doctor_pssword_dict(self, row):
+        result = {}
+        result['doctorid'] = row[0]
+        return result
+
     def getAllDoctor(self):
         dao = DoctorDAO()
         result = dao.getAllDoctor()
@@ -183,8 +188,9 @@ class DoctorHandler:
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
 
-    def insertDoctor(self, form):
 
+
+    def insertDoctor(self, form):
         if len(form) != 16:
             return jsonify(Error="Malformed post request"), 400
         else:
@@ -244,8 +250,22 @@ class DoctorHandler:
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
-    def updateDoctorPssword(self):
-        return 'IN PROCESS YET'
+    def updateDoctorPssword(self, form):
+        dao = DoctorDAO()
+        doctorid = form["doctorid"]
+        if not dao.getDoctorByID(doctorid):
+            return jsonify(Error="Doctor not found."), 404
+        else:
+            if len(form) != 2:
+                return jsonify(Error="Malformed update request"), 400
+            else:
+                pssword = form['pssword']
+                if pssword:
+                    dao.updateDoctorPssword(doctorid, pssword)
+                    result = self.update_doctor_pssword_dict(doctorid)
+                    return jsonify(Doctor=result), 200
+                else:
+                    return jsonify(Error="Unexpected attributes in update request"), 400
 
 ########## Doctor History #############
 #Para hacerle insert al history del Doctor

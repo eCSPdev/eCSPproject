@@ -27,6 +27,8 @@ class PrescriptionHandler:
         dao = PrescriptionDAO()
         prescription_list = dao.getPatientPrescription(pid)
         result_list = []
+        if not prescription_list:
+            return jsonify(Error="NOT FOUND"),404
         for row in prescription_list:
             result = self.build_prescriptionlist_dict(row)
             result_list.append(result) #mapToDict() turns returned array of arrays to an array of maps
@@ -40,7 +42,7 @@ class PrescriptionHandler:
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
-            result = self.build_prescriptionlist_dict(row)
+            result = self.build_prescriptionlist_dict(row[0])
             return jsonify(Prescription=result)
 
     def insertPrescription(self, form):

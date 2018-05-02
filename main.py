@@ -19,10 +19,11 @@ app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 
 
 
-def token_required(f):
+"""def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.args.get('token')
+        print ('estoy verificando el token')
         #print('token', token)
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'])
@@ -30,62 +31,68 @@ def token_required(f):
             return jsonify(Error="Invalid Token"), 403
         return f(*args, **kwargs)
     return decorated
+"""
 
 @app.before_request
 def before_execute():
-    print ('Estoy en el before')
+    print ('BEFORE_EXECUTE')
     #print ('path', request.path)
-    user = RoleBase().validate(request.path, request.args)
-    print ('user', user)
+    validate = RoleBase().validate(request.path, request.args)
+    #print ('user', validate)
+    if validate != True:
+        return validate
     #print (request.args.get('username'))
 
-
-
-@app.route('/eCSP')
-@app.route('/eCSP/Home')
-def home():
-    return 'INDEX'
 
 @app.route('/Patient/eCSP/Login', methods = ['GET'])
 def plogin():
     if request.method == 'GET':
-        #print('Login')
+        print('PLOGIN')
         username = request.args.get('username')
-        validate = LoginHandler().validatePatient(request.args)
-        if not validate:
+        role = LoginHandler().validatePatient(request.args)
+        if not role == 0:
             return jsonify(Error="Invalid Username or password"), 401
         else:
-            token = jwt.encode({'user' : username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+            token = jwt.encode({'user' : username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=120)}, app.config['SECRET_KEY'])
             #print('token : ', token)
-            return LoginHandler().build_dict(username, token)
+            return LoginHandler().updateLogInformation(username, token, role)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 
-#@app.route('/eCSP/Logout')
+@app.route('/Patient/eCSP/Logout', )
+@app.route('/Assistant/eCSP/Logout')
+@app.route('/Doctor/eCSP/Logout')
+def Logout():
+    print ('LOGOUT')
+    return jsonify(Status="Success")
+
 
 @app.route('/Doctor/eCSP/Login', methods = ['GET'])
 @app.route('/Assistant/eCSP/Login', methods = ['GET'])
 def DAlogin():
     if request.method == 'GET':
-        #print('Login')
+        print('Doctor & Assistant Login')
         username = request.args.get('username')
-        validate = LoginHandler().validateAdmin(request.args)
-        if not validate:
+        #print('username : ', username)
+        role = LoginHandler().validateAdmin(request.args)
+        #print ('role : ', role)
+        if role != 1 and role != 2:
+            #print ('estoy dentro del if')
             return jsonify(Error="Invalid Username or password"), 401
         else:
+            #print('estoy dentro del if')
             token = jwt.encode({'user' : username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
-            return LoginHandler().build_dict(username, token)
+            return LoginHandler().updateLogInformation(username, token, role)
     else:
         return jsonify(Error="Method not allowed."), 405
-
 
 #Get a Doctor List
 @app.route('/Doctor/eCSP/DoctorList', methods=['GET', 'POST'])
 #@token_required
 def getAllDoctor():
-    print('getalldoctorlist')
     if request.method == 'GET':
+        print('GET - GETDOCTORLIST')
         return DoctorHandler().getAllDoctor()
     elif request.method == 'POST':
         return DoctorHandler().insertDoctor(request.form)
@@ -93,9 +100,10 @@ def getAllDoctor():
         return jsonify(Error="Method not allowed."), 405
 
 #Get the Doctor Personal Information by Doctor ID
-@app.route('/Doctor/eCSP/Doctor/PersonalInformation', methods=['GET', 'PUT'])
+@app.route('/Doctor/eCSP/PersonalInformation', methods=['GET', 'PUT'])
 def getDoctorByID():
     if request.method == 'GET':
+        print('GET - GETDOCTORBYID')
         if not request.args:
             return jsonify(Error="No Doctor ID Included."), 405
         else:
@@ -106,9 +114,10 @@ def getDoctorByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get an Assistant List
-@app.route('/Doctor/eCSP/Doctor/AssistantList', methods=['GET', 'POST'])
+@app.route('/Doctor/eCSP/AssistantList', methods=['GET', 'POST'])
 def getAllAssistant():
     if request.method == 'GET':
+        print('GET - GETASSISTANTLIST')
         return AssistantHandler().getAllAssistant()
     elif request.method == 'POST':
         return AssistantHandler().insertAssistant(request.form)
@@ -117,10 +126,11 @@ def getAllAssistant():
 
 
 #Get an Assistant Personal Information by Assistant ID
-@app.route('/eCSP/Doctor/Assistant/PersonalInformation', methods=['GET', 'PUT'])
-@app.route('/eCSP/Assistant/PersonalInformation', methods=['GET', 'PUT'])
+@app.route('/Doctor/eCSP/Assistant/PersonalInformation', methods=['GET', 'PUT'])
+@app.route('/Assistant/eCSP/PersonalInformation', methods=['GET', 'PUT'])
 def getAssistantByID():
     if request.method == 'GET':
+        print('GET - GETASSISTANTBYID')
         if not request.args:
             return jsonify(Error="No Assistant ID Included."), 405
         else:
@@ -131,10 +141,11 @@ def getAssistantByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient List
-@app.route('/eCSP/Doctor/PatientList', methods=['GET', 'POST'])
-@app.route('/eCSP/Assistant/PatientList', methods=['GET', 'POST'])
+@app.route('/Doctor/eCSP/PatientList', methods=['GET', 'POST'])
+@app.route('/Assistant/eCSP/PatientList', methods=['GET', 'POST'])
 def getAllPatients():
     if request.method == 'GET':
+        print('GET - GETPATIENTLIST')
         return PatientHandler().getAllPatients()
     elif request.method == 'POST':
         return PatientHandler().insertPatient(request.form)
@@ -142,11 +153,12 @@ def getAllPatients():
         return jsonify(Error="Method not allowed."), 405
 
 #Get a Patient Personal Information by PatientID
-@app.route('/eCSP/Doctor/Patient/PersonalInformation', methods=['GET', 'PUT'])
-@app.route('/eCSP/Assistant/Patient/PersonalInformation', methods=['GET', 'PUT'])
-@app.route('/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT'])
+@app.route('/Doctor/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT'])
+@app.route('/Assistant/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT'])
+@app.route('/Patient/eCSP/PersonalInformation', methods=['GET', 'PUT'])
 def getPatientByID():
     if request.method == 'GET':
+        print('GET - GETPATIENTBYID')
         if not request.args:
             return jsonify(Error="No Patient ID Included."), 405
         else:
@@ -157,24 +169,26 @@ def getPatientByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Consultation Note List
-@app.route('/eCSP/Doctor/Patient/ConsultationNotesList', methods=['GET'])
-@app.route('/eCSP/Assistant/Patient/ConsultationNotesList', methods=['GET'])
-@app.route('/eCSP/Patient/ConsultationNotesList', methods=['GET'])
+@app.route('/Doctor/eCSP/Patient/ConsultationNotesList', methods=['GET'])
+@app.route('/Assistant/eCSP/Patient/ConsultationNotesList', methods=['GET'])
+@app.route('/Patient/eCSP/ConsultationNotesList', methods=['GET'])
 def getAllConsultationNotes():
     if request.method == 'GET':
+        print('GET - GETALLCONSULTATIONNOTES')
         if not request.args:
-            return jsonify(Error="No Doctor ID Included."), 405
+            return jsonify(Error="ID Included."), 405
         else:
             return ConsultationNotesHandler().getPatientConsultationNotes(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Consultation Note Information
-@app.route('/eCSP/Doctor/Patient/ConsultationNotes', methods=['GET','POST'])
-@app.route('/eCSP/Assistant/Patient/ConsultationNotes', methods=['GET','POST'])
-@app.route('/eCSP/Patient/ConsultationNotes', methods=['GET','POST'])
+@app.route('/Doctor/eCSP/Patient/ConsultationNotes', methods=['GET','POST'])
+@app.route('/Assistant/eCSP/Patient/ConsultationNotes', methods=['GET','POST'])
+@app.route('/Patient/eCSP/ConsultationNotes', methods=['GET','POST'])
 def getConsultationNotesByID():
     if request.method == 'GET':
+        print('GET - GETCONSULTATIONNOTEBYID')
         if not request.args:
             return jsonify(Error="No Consultation Note ID Included."), 405
         else:
@@ -185,11 +199,12 @@ def getConsultationNotesByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Initial Form List
-@app.route('/eCSP/Doctor/Patient/InitialFormList', methods=['GET'])
-@app.route('/eCSP/Assistant/Patient/InitialFormList', methods=['GET'])
-@app.route('/eCSP/Patient/InitialFormList', methods=['GET'])
+@app.route('/Doctor/eCSP/Patient/InitialFormList', methods=['GET'])
+@app.route('/Assistant/eCSP/Patient/InitialFormList', methods=['GET'])
+@app.route('/Patient/eCSP/InitialFormList', methods=['GET'])
 def getAllInitialForm():
     if request.method == 'GET':
+        print('GET - GETALLINITIALFORM')
         if not request.args:
             return jsonify(Error="No Doctor ID Included."), 405
         else:
@@ -198,11 +213,12 @@ def getAllInitialForm():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Initial Form Information
-@app.route('/eCSP/Doctor/Patient/InitialForm', methods=['GET','POST'])
-@app.route('/eCSP/Assistant/Patient/InitialForm', methods=['GET','POST'])
-@app.route('/eCSP/Patient/InitialForm', methods=['GET','POST'])
+@app.route('/Doctor/eCSP/Patient/InitialForm', methods=['GET','POST'])
+@app.route('/Assistant/eCSP/Patient/InitialForm', methods=['GET','POST'])
+@app.route('/Patient/eCSP/InitialForm', methods=['GET','POST'])
 def getInitialFormByID():
     if request.method == 'GET':
+        print('GET - GETINITIALFORMBYID')
         if not request.args:
             return jsonify(Error="No Initial Form ID Included."), 405
         else:
@@ -213,21 +229,23 @@ def getInitialFormByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Prescription List
-@app.route('/eCSP/Doctor/Patient/PrescriptionList', methods=['GET'])
-@app.route('/eCSP/Assistant/Patient/PrescriptionList', methods=['GET'])
-@app.route('/eCSP/Patient/PrescriptionList', methods=['GET'])
+@app.route('/Doctor/eCSP/Patient/PrescriptionList', methods=['GET'])
+@app.route('/Assistant/eCSP/Patient/PrescriptionList', methods=['GET'])
+@app.route('/Patient/eCSP/PrescriptionList', methods=['GET'])
 def getAllPrescription():
     if request.method == 'GET':
+        print('GET - GETALLPRESCRIPTIONS')
         return PrescriptionHandler().getPatientPrescription(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Prescription Information
-@app.route('/eCSP/Doctor/Patient/Prescription', methods=['GET','POST'])
-@app.route('/eCSP/Assistant/Patient/Prescription', methods=['GET','POST'])
-@app.route('/eCSP/Patient/Prescription', methods=['GET','POST'])
+@app.route('/Doctor/eCSP/Patient/Prescription', methods=['GET','POST'])
+@app.route('/Assistant/eCSP/Patient/Prescription', methods=['GET','POST'])
+@app.route('/Patient/eCSP/Prescription', methods=['GET','POST'])
 def getPrescriptionByID():
     if request.method == 'GET':
+        print('GET - GETPRESCRIPTIONBYID')
         if not request.args:
             return jsonify(Error="No Prescription ID Included."), 405
         else:
@@ -238,21 +256,23 @@ def getPrescriptionByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Referral List
-@app.route('/eCSP/Doctor/Patient/ReferralList', methods=['GET'])
-@app.route('/eCSP/Assistant/Patient/ReferralList', methods=['GET'])
-@app.route('/eCSP/Patient/ReferralList', methods=['GET'])
+@app.route('/Doctor/eCSP/Patient/ReferralList', methods=['GET'])
+@app.route('/Assistant/eCSP/Patient/ReferralList', methods=['GET'])
+@app.route('/Patient/eCSP/ReferralList', methods=['GET'])
 def getAllReferral():
     if request.method == 'GET':
+        print('GET - GETALLREFERRAL')
         return ReferralHandler().getPatientReferral(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Referral Information
-@app.route('/eCSP/Doctor/Patient/Referral', methods=['GET','POST'])
-@app.route('/eCSP/Assistant/Patient/Referral', methods=['GET','POST'])
-@app.route('/eCSP/Patient/Referral', methods=['GET','POST'])
+@app.route('/Doctor/eCSP/Patient/Referral', methods=['GET','POST'])
+@app.route('/Assistant/eCSP/Patient/Referral', methods=['GET','POST'])
+@app.route('/Patient/eCSP/Referral', methods=['GET','POST'])
 def getReferralByID():
     if request.method == 'GET':
+        print('GET - GETREFERRALBYID')
         if not request.args:
             return jsonify(Error="No Referral ID Included."), 405
         else:
@@ -263,21 +283,23 @@ def getReferralByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Result List
-@app.route('/eCSP/Doctor/Patient/ResultList', methods=['GET'])
-@app.route('/eCSP/Assistant/Patient/ResultList', methods=['GET'])
-@app.route('/eCSP/Patient/ResultList', methods=['GET'])
+@app.route('/Doctor/eCSP/Patient/ResultList', methods=['GET'])
+@app.route('/Assistant/eCSP/Patient/ResultList', methods=['GET'])
+@app.route('/Patient/eCSP/ResultList', methods=['GET'])
 def getAllResult():
     if request.method == 'GET':
+        print('GET - GETALLRESULTS')
         return ResultHandler().getPatientResult(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Result Information
-@app.route('/eCSP/Doctor/Patient/Result', methods=['GET','POST'])
-@app.route('/eCSP/Assistant/Patient/Result', methods=['GET','POST'])
-@app.route('/eCSP/Patient/Result', methods=['GET','POST'])
+@app.route('/Patient/eCSP/Doctor/Result', methods=['GET','POST'])
+@app.route('/Assistant/eCSP/Patient/Result', methods=['GET','POST'])
+@app.route('/Patient/eCSP/Result', methods=['GET','POST'])
 def getResultByID():
     if request.method == 'GET':
+        print('GET - GETRESULTBYID')
         if not request.args:
             return jsonify(Error="No Result ID Included."), 405
         else:

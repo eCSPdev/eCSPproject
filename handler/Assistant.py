@@ -115,6 +115,10 @@ class AssistantHandler:
         result['zipcode'] = row[14]
         return result
 
+    def update_assistant_pssword_dict(self, row):
+        result = {}
+        result['assistantid'] = row[0]
+        return result
 
     def getAllAssistant(self):
         dao = AssistantDAO()
@@ -222,6 +226,24 @@ class AssistantHandler:
                     return jsonify(Assistant = result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
+
+    def updateAssistantPssword(self, form):
+        dao = AssistantDAO()
+        assistantid = form["assistantid"]
+        if not dao.getAssistantByID(assistantid):
+            return jsonify(Error="Assistant not found."), 404
+        else:
+            if len(form) != 2:
+                return jsonify(Error="Malformed update request"), 400
+            else:
+                pssword = form['pssword']
+                if pssword:
+                    dao.updateAssistantPssword(assistantid, pssword)
+                    result = self.update_assistant_pssword_dict(assistantid)
+                    return jsonify(Assistant=result), 200
+                else:
+                    return jsonify(Error="Unexpected attributes in update request"), 400
+
 
 ########## Assistant History #############
 #Para hacerle insert al history del Asistente

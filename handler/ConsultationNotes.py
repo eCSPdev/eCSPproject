@@ -5,6 +5,7 @@ class ConsultationNotesHandler:
 
     def build_consultationnoteslist_dict(self,row):
         result = {}
+        print(row)
         result['consultationnoteid'] = row[0]
         result['consultationnote'] = row[1]
         result['assistantid'] = row[2]
@@ -26,10 +27,13 @@ class ConsultationNotesHandler:
         return result
 
     def getPatientConsultationNotes(self, args):
+        print('estoy en el CN List')
         pid = args.get("patientid")
         dao = ConsultationNotesDAO()
         consultationnotes_list = dao.getPatientConsultationNotes(pid)
         result_list = []
+        if not consultationnotes_list:
+            return jsonify(Error="NOT FOUND"),404
         for row in consultationnotes_list:
             result = self.build_consultationnoteslist_dict(row)
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
@@ -43,7 +47,7 @@ class ConsultationNotesHandler:
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
-            result = self.build_consultationnoteslist_dict(row)
+            result = self.build_consultationnoteslist_dict(row[0])
             return jsonify(ConsultatioNote=result)
 
     def insertConsultationNotes(self, form):

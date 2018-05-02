@@ -27,6 +27,8 @@ class InitialFormHandler:
         dao = InitialFormDAO()
         initialform_list = dao.getPatientInitialForm(pid)
         result_list = []
+        if not initialform_list:
+            return jsonify(Error="NOT FOUND"),404
         for row in initialform_list:
             result = self.build_initialformlist_dict(row)
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
@@ -40,7 +42,7 @@ class InitialFormHandler:
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
-            result = self.build_initialformlist_dict(row)
+            result = self.build_initialformlist_dict(row[0])
             return jsonify(ConsultatioNote=result)
 
     def insertInitialForm(self, form):

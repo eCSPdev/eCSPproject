@@ -27,6 +27,8 @@ class ResultHandler:
         dao = ResultDAO()
         result_list = dao.getPatientResult(int(pid))
         list = []
+        if not result_list:
+            return jsonify(Error="NOT FOUND"),404
         for row in result_list:
             result = self.build_resultlist_dict(row)
             list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
@@ -36,11 +38,11 @@ class ResultHandler:
         pid = args.get("patientid")
         resid = args.get("resultid")
         dao = ResultDAO()
-        row = dao.getResultByID(int(pid), int(resid))
+        row = dao.getResultByID(pid, resid)
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
-            result = self.build_resultlist_dict(row)
+            result = self.build_resultlist_dict(row[0])
             return jsonify(Result=result)
 
     def insertResult(self, form):

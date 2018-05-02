@@ -137,6 +137,33 @@ class AssistantDAO:
             self.conn.close()
             print("Connection closed.")
 
+    def updateAssistantPssword(self, assistantid, pssword):
+        try:
+            connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+                pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+            self.conn = psycopg2._connect(connection_url)
+
+            try:
+                cursor = self.conn.cursor()
+                query = "update assistants " \
+                        "set pssword=%s " \
+                        "where assistantid=%s " \
+                        "returning assistantid; "
+                cursor.execute(query, (pssword, assistantid,))
+                assistantid = cursor.fetchone()[0]
+                self.conn.commit()
+                return assistantid
+            except Exception as e:
+                print("Query failed : ", e)
+                return e
+        except Exception as e:
+            print("Error connecting to database.")
+            return e
+        finally:
+            self.conn.close()
+            print("Connection closed.")
+
+
     def insertAssistantInfo(self, firstname, middlename, lastname, phone, email, username, pssword):
         status = True
         try:

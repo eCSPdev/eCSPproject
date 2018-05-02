@@ -525,3 +525,29 @@ class PatientsDAO:
         finally:
             self.conn.close()
             print("Connection closed.")
+
+    def updatePatientPssword(self, patientid, pssword):
+        try:
+            connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+                pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+            self.conn = psycopg2._connect(connection_url)
+
+            try:
+                cursor = self.conn.cursor()
+                query = "update patients " \
+                        "set pssword=%s " \
+                        "where patientid=%s " \
+                        "returning patientid; "
+                cursor.execute(query, (pssword, patientid,))
+                patientid = cursor.fetchone()[0]
+                self.conn.commit()
+                return patientid
+            except Exception as e:
+                print("Query failed : ", e)
+                return e
+        except Exception as e:
+            print("Error connecting to database.")
+            return e
+        finally:
+            self.conn.close()
+            print("Connection closed.")

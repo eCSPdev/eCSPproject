@@ -19,7 +19,7 @@ class LoginHandler:
         result = {}
         #print ('estoy en el diccionario')
         result['username'] = username
-        result['token'] = token.decode('UTF-8')
+        result['token'] = token
         #result ('diccionario : ', result)
         return result
 
@@ -30,10 +30,10 @@ class LoginHandler:
         dao = LoginDAO()
         row = dao.validatePatient(username, pssword)
         if not row:
-            return False
+            return None
         else:
             result = self.build_PLogin_dict(row)
-            return result
+            return 0
 
     def validateAdmin(self, form):
         print ('Admin login')
@@ -46,16 +46,39 @@ class LoginHandler:
             if not assistant:
                 return None
             else:
-                rle = 1
+                rle = '1'
                 result = self.build_ALogin_dict(assistant[0], rle)
-                return result
+                return int(1)
         else:
-            rle = 2
+            #print('estoy en el role de doctor')
+            rle = '2'
             result = self.build_ALogin_dict(doctor[0], rle)
-            return result
+            return 2
 
     def build_dict(self, username, token):
         #print ('username : ', username)
         #print ('token : ', token)
         result = self.build_FEinfo_dict(username, token)
         return jsonify(user = result)
+
+    def updateLogInformation(self, username, t, role):
+        print ('updating ...')
+        dao = LoginDAO()
+        logged = True
+        token = t.decode('UTF-8')
+        if username :
+            print("CALLING DAO HERE")
+            if role == 0:
+                dao.updateloggedPatient(username, token, logged)
+                result = self.build_FEinfo_dict(username, token)
+                return jsonify(Patient=result), 200
+            if role == 1:
+                dao.updateloggedAssistant(username, token, logged)
+                result = self.build_FEinfo_dict(username, token)
+                return jsonify(Patient=result), 200
+            if role == 2:
+                dao.updateloggedDoctor(username, token, logged)
+                result = self.build_FEinfo_dict(username, token)
+                return jsonify(Patient=result), 200
+            else:
+                return jsonify(Error="Invalid user"), 400

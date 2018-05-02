@@ -12,7 +12,9 @@ class ConsultationNotesDAO:
         query = "select * " \
                 "from consultationnotes " \
                 "where patientid = %s ; "
+        cursor.execute(query, (pid,))
         result = []
+        #print ('result : ', result)
         for row in cursor:
             result.append(row)
         print('result : ', result)

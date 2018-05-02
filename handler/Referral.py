@@ -27,6 +27,8 @@ class ReferralHandler:
         dao = ReferralDAO()
         referral_list = dao.getPatientReferral(int(pid))
         result_list = []
+        if not referral_list:
+            return jsonify(Error="NOT FOUND"),404
         for row in referral_list:
             result = self.build_referrallist_dict(row)
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
@@ -36,11 +38,11 @@ class ReferralHandler:
         pid = args.get("patientid")
         refid = args.get("referralid")
         dao = ReferralDAO()
-        row = dao.getReferralByID(int(pid), int(refid))
+        row = dao.getReferralByID(pid, refid)
         if not row:
             return jsonify(Error="NOT FOUND"),404
         else:
-            result = self.build_referrallist_dict(row)
+            result = self.build_referrallist_dict(row[0])
             return jsonify(Referral=result)
 
     def insertReferral(self, form):

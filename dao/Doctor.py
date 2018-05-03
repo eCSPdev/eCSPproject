@@ -96,7 +96,7 @@ class DoctorDAO:
                             "email=%s " \
                         "where doctorid=%s;"
                 cursor.execute(query, ( licenseno, firstname, middlename, lastname, officename, phone, status,
-                                        email, doctorid, ))
+                                        email,  doctorid, ))
                 self.conn.commit()
                 return doctorid
             except Exception as e:

@@ -153,12 +153,13 @@ class DoctorHandler:
             return jsonify(Doctor = doctor)
 
     def updateDoctorInformation(self,form):
+        print ('estoy en el update')
         dao = DoctorDAO()
         doctorid = form["doctorid"]
         if not dao.getDoctorByID(doctorid):
             return jsonify(Error="Doctor not found."), 404
         else:
-            if len(form) != 15:
+            if len(form) != 17:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 doctorid = form['doctorid']
@@ -176,6 +177,7 @@ class DoctorHandler:
                 st = form['st']
                 country = form['country']
                 zipcode = form['zipcode']
+                print('estoy antes del if')
                 if doctorid and licenseno and firstname and lastname and officename and phone and status \
                         and street and aptno and city and country and zipcode:
                     dao.updateDoctorInfoByID(doctorid, licenseno, firstname, middlename, lastname, officename, phone,

@@ -53,7 +53,7 @@ def plogin():
         if not role == 0:
             return jsonify(Error="Invalid Username or password"), 401
         else:
-            token = jwt.encode({'user' : username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=120)}, app.config['SECRET_KEY'])
+            token = jwt.encode({'user' : username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(hours=8)}, app.config['SECRET_KEY'])
             #print('token : ', token)
             return LoginHandler().updateLogInformation(username, token, role)
     else:
@@ -109,7 +109,7 @@ def getDoctorByID():
         else:
             return DoctorHandler().getDoctorByID(request.args)
     if request.method == 'PUT':
-        return DoctorHandler().updateDoctorInformation(request.form)
+        return DoctorHandler().updateDoctorInformation(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -136,7 +136,7 @@ def getAssistantByID():
         else:
             return AssistantHandler().getAssistantByID(request.args)
     if request.method == 'PUT':
-        return AssistantHandler().updateAssistantInformation(request.form)
+        return AssistantHandler().updateAssistantInformation(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -164,7 +164,8 @@ def getPatientByID():
         else:
             return PatientHandler().getPatientByID(request.args)
     if request.method == 'PUT':
-        return PatientHandler().updatePatientInformation(request.form)
+        print ('PUT - Patient Personal Information')
+        return PatientHandler().updatePatientInformation(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 

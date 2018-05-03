@@ -189,7 +189,8 @@ class PatientsDAO:
             print("Connection closed.")
 
     def updatePatientInfoByID(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status, email,
-                               username, insurancecompanyname):
+                               insurancecompanyname):
+        print ('estoy en el update query')
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -197,9 +198,9 @@ class PatientsDAO:
             try:
                 cursor = self.conn.cursor()
                 query = "update patients set firstname=%s, middlename=%s, lastname=%s, ssn=%s, birthdate=%s, gender=%s, phone=%s, " \
-                        "status=%s, email=%s, username=%s, insurancecompanyname=%s where patientid=%s;"
+                        "status=%s, email=%s, insurancecompanyname=%s where patientid=%s;"
                 cursor.execute(query, ( firstname, middlename, lastname, ssn, birthdate, gender, phone, status, email,
-                                       username, insurancecompanyname, patientid, ))
+                                       insurancecompanyname, patientid, ))
                 self.conn.commit()
                 print('estoy dentro del update patient info')
                 return patientid

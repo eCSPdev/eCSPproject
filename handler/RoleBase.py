@@ -36,6 +36,8 @@ class RoleBase:
             except Exception as e:
                 print("Any username : ", e)
                 return e
+            if path == '/' :
+                return True
             ### Exception - Login Routes ###
             if p[3] == 'Login':
                 validate = True
@@ -164,7 +166,8 @@ class RoleBase:
             return e
 
     def validateroute(self, path):
-        if path == '/Patient/eCSP/Login' or \
+        if path == '/' or \
+            path == '/Patient/eCSP/Login' or \
             path == '/Doctor/eCSP/Login' or \
             path == '/Assistant/eCSP/Login' or \
             path == '/Patient/eCSP/Logout' or \

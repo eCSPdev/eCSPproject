@@ -1,0 +1,214 @@
+from flask import jsonify, request
+from dao.RoleBase import RoleBaseDAO
+
+import os, sys
+import jwt
+
+class RoleBase:
+
+    ### Rutina para separar el path ###
+    def splitall(self, path):
+        allparts = []
+        while 1:
+            parts = os.path.split(path)
+            if parts[0] == path:  # sentinel for absolute paths
+                allparts.insert(0, parts[0])
+                break
+            elif parts[1] == path:  # sentinel for relative paths
+                allparts.insert(0, parts[1])
+                break
+            else:
+                path = parts[0]
+                allparts.insert(0, parts[1])
+        return allparts
+
+    def validate(self, path, form):
+        try:
+            #### Validating Path ####
+            vpath = self.validateroute(path)
+            if vpath != True:
+                return jsonify(Error="Invalid Route"), 400 #Bad Request
+            p = self.splitall(path)
+            validate = False
+            #### Check if Form contain the username ####
+            try:
+                username = form['username']
+            except Exception as e:
+                print("Any username : ", e)
+                return e
+            ### Exception - Login Routes ###
+            if p[3] == 'Login':
+                validate = True
+            ### Exception - Logout Routes ###
+            elif p[3] == 'Logout' :
+                try:
+                    token = form['token']
+                except Exception as e:
+                    print("Any token : ", e)
+                    return e
+                ### Validating User ###
+                vUser = self.validateUser(p[1], username, token, form)
+                if vUser != True:
+                    return vUser
+                Logout = self.Logout(p[1], username)
+                if Logout != True:
+                    return Logout
+                else:
+                    validate = True
+            ### Other Routes ###
+            else:
+                vRequest = True
+                if p[1] == 'assistant':
+                    vRequest = self.validateRequest(path, username, form)
+                if vRequest == False:
+                    return jsonify(Error="Invalid Request"), 400 #Bad Request
+                try:
+                    token = form['token']
+                except Exception as e:
+                    print("Any token : ", e)
+                    return e
+                vUser = self.validateUser(p[1], username, token, form)
+                if vUser != True:
+                    return vUser
+            return validate
+        except:
+            return jsonify(Error = "Error Validating User"), 400 #Bad Request
+
+
+    def Logout(self, role, username):
+        dao = RoleBaseDAO()
+        if role == 'Patient':
+            logged = False
+            dao.updateloggedPatient(username, logged)
+            return True
+        elif role == 'Assistant':
+            logged = False
+            dao.updateloggedAssistant(username, logged)
+            return True
+        elif role == 'Doctor':
+            logged = False
+            dao.updateloggedDoctor(username, logged)
+            return True
+        else:
+            return jsonify(Error="Invalid Role or Not currently Logged in"), 401 #Unauthorized
+
+    def validateUser(self, role, username, token, form):
+        dao = RoleBaseDAO()
+        ### Patient Role ###
+        if role == 'Patient':
+            patient = dao.validatePatient(username)
+            if not patient:
+                return jsonify(Error="Invalid Username"), 401 #Unauthorized
+            pusername = patient[0][0]
+            ptoken = patient[0][1]
+            plogged = patient[0][2]
+            pid = patient [0][3]
+            patientid = form['patientid']
+            if str(pid) != str(patientid):
+                return jsonify(Error="Unauthorized patient ID"), 401 #Unauthorized
+            if pusername != username:
+                return jsonify(Error="Invalid Username"), 400 #Bad Request
+            if ptoken != token or self.validateToken(ptoken) != True :
+                return jsonify(Error="Invalid Token"), 400 #Bad Request
+            if plogged != True:
+                return jsonify(Error="Not currently Logged in"), 401 #Unauthorized
+        ### Assistant Role ###
+        elif role == 'Assistant':
+            assistant = dao.validateAssistant(username)
+            if not assistant:
+                return jsonify(Error="Invalid Username"), 400 #Bad Request
+            ausername = assistant[0][0]
+            atoken = assistant[0][1]
+            alogged = assistant[0][2]
+            if ausername != username:
+                return jsonify(Error="Invalid Username"), 400 #Bad Request
+            if atoken != token or self.validateToken(atoken) != True:
+                return jsonify(Error="Invalid Token"), 400 #Bad Request
+            if alogged != True:
+                return jsonify(Error="Not currently Logged in"), 401 #Unauthorized
+        ### Doctor Role ###
+        elif role == 'Doctor':
+            doctor = dao.validateDoctor(username)
+            if not doctor:
+                return jsonify(Error="Invalid Username"), 400 #Bad Request
+            dusername = doctor[0][0]
+            dtoken = doctor[0][1]
+            dlogged = doctor[0][2]
+            if dusername != username:
+                return jsonify(Error="Invalid Username"), 400 #Bad Request
+            if dtoken != token or self.validateToken(dtoken) != True :
+                return jsonify(Error="Invalid Token"), 400 #Bad Request
+            if dlogged != True:
+                return jsonify(Error="Not currently Logged in"), 401 #Unauthorized
+        else:
+            return jsonify(Error="Invalid Role"), 401 #Unauthorized
+
+    def validateToken(self, token):
+        try:
+            data = jwt.decode(token, 'thisisthesecretkey')
+            return True
+        except:
+            return False
+
+    def validateRequest(self, path, username, form):
+        try:
+            dao = RoleBaseDAO()
+            if path == '/Assistant/eCSP/PersonalInformation':
+                assistantid = form['assistantid']
+                assistantRequest = dao.validateAID(username, assistantid)
+                if not assistantRequest:
+                    return False
+            return True
+        except Exception as e:
+            print("Any token : ", e)
+            return e
+
+    def validateroute(self, path):
+        if path == '/Patient/eCSP/Login' or \
+            path == '/Doctor/eCSP/Login' or \
+            path == '/Assistant/eCSP/Login' or \
+            path == '/Patient/eCSP/Logout' or \
+            path == '/Assistant/eCSP/Logout' or \
+            path == '/Doctor/eCSP/Logout' or \
+            path == '/Doctor/eCSP/DoctorList' or \
+            path == '/Doctor/eCSP/PersonalInformation' or \
+            path == '/Doctor/eCSP/AssistantList' or \
+            path == '/Doctor/eCSP/Assistant/PersonalInformation' or \
+            path == '/Assistant/eCSP/PersonalInformation' or \
+            path == '/Doctor/eCSP/PatientList' or \
+            path == '/Assistant/eCSP/PatientList' or \
+            path == '/Doctor/eCSP/Patient/PersonalInformation' or \
+            path == '/Assistant/eCSP/Patient/PersonalInformation' or \
+            path == '/Patient/eCSP/PersonalInformation' or \
+            path == '/Doctor/eCSP/Patient/ConsultationNotesList' or \
+            path == '/Assistant/eCSP/Patient/ConsultationNotesList' or \
+            path == '/Patient/eCSP/ConsultationNotesList' or \
+            path == '/Doctor/eCSP/Patient/ConsultationNotes' or \
+            path == '/Assistant/eCSP/Patient/ConsultationNotes' or \
+            path == '/Patient/eCSP/ConsultationNotes' or \
+            path == '/Doctor/eCSP/Patient/InitialFormList' or \
+            path == '/Assistant/eCSP/Patient/InitialFormList' or \
+            path == '/Patient/eCSP/InitialFormList' or \
+            path == '/Doctor/eCSP/Patient/InitialForm' or \
+            path == '/Assistant/eCSP/Patient/InitialForm' or \
+            path == '/Patient/eCSP/InitialForm' or \
+            path == '/Doctor/eCSP/Patient/PrescriptionList' or \
+            path == '/Assistant/eCSP/Patient/PrescriptionList' or \
+            path == '/Patient/eCSP/PrescriptionList' or \
+            path == '/Doctor/eCSP/Patient/Prescription' or \
+            path == '/Assistant/eCSP/Patient/Prescription' or \
+            path == '/Patient/eCSP/Prescription' or \
+            path == '/Doctor/eCSP/Patient/ReferralList' or \
+            path == '/Assistant/eCSP/Patient/ReferralList' or \
+            path == '/Patient/eCSP/ReferralList' or \
+            path == '/Doctor/eCSP/Patient/Referral' or \
+            path == '/Assistant/eCSP/Patient/Referral' or \
+            path == '/Patient/eCSP/Referral' or \
+            path == '/Doctor/eCSP/Patient/ResultList' or \
+            path == '/Assistant/eCSP/Patient/ResultList' or \
+            path == '/Patient/eCSP/ResultList' or \
+            path == '/Doctor/eCSP/Patient/Result' or \
+            path == '/Assistant/eCSP/Patient/Result' or \
+            path == '/Patient/eCSP/Result':
+            return True
+        return False

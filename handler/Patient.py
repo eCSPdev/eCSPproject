@@ -197,17 +197,20 @@ class PatientHandler:
             return jsonify(Token=token)
 
     def updatePatientInformation(self, form):
-
+        print ('Estoy en el update')
         dao = PatientsDAO()
+        #print ('antes del DAO')
+        print('form : ', form)
         patientid = form['patientid']
+        print ('patientid : ', patientid)
         row = dao.getPatientByID(patientid)
+        print ('estoy antes del primer if')
         if row == None :
             return jsonify(Error="Patient not found."), 404
         else:
-            if len(form) != 17:
+            if len(form) != 19:
                 return jsonify(Error="Malformed update request"), 400
             else:
-                print('length of form : ', len(form))
                 patientid = form['patientid']
                 firstname = form['firstname']
                 middlename = form['middlename']
@@ -219,13 +222,20 @@ class PatientHandler:
                 status = form['status']
                 email = form['email']
                 insurancecompanyname = form['insurancecompanyname']
+                print (insurancecompanyname)
                 street = form['street']
+                print (street)
                 aptno = form['aptno']
+                print(aptno)
                 city = form['city']
+                print (city)
                 st = form['st']
+                print (st)
                 country = form['country']
+                print (country)
                 zipcode = form['zipcode']
-
+                print (zipcode)
+                print ('antes del segundo if')
                 #PROBAR SOLO LOS QUE NO PUEDEN SER NULOS
                 if patientid and firstname and lastname and ssn and birthdate and phone and status \
                         and street and aptno and city and country and zipcode:

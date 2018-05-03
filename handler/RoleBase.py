@@ -6,6 +6,7 @@ import jwt
 
 class RoleBase:
 
+    ### Rutina para separar el path ###
     def splitall(self, path):
         allparts = []
         while 1:
@@ -22,53 +23,57 @@ class RoleBase:
         return allparts
 
     def validate(self, path, form):
-        #valida el path
-        vpath = self.validateroute(path)
-        if vpath != True:
-            return jsonify(Error="Invalid Route"), 405
-        p = self.splitall(path)
-        validate = False
-        #verifica si el username esta en el form
         try:
-            username = form['username']
-        except Exception as e:
-            print("Any username : ", e)
-            return e
-        #print (p[3])
-        #Login
-        if p[3] == 'Login':
-            #print ('User : ', p[1])
-            #print ('Action : ', p[3])
-            validate = True
-        #Logout
-        elif p[3] == 'Logout' :
+            #### Validating Path ####
+            vpath = self.validateroute(path)
+            if vpath != True:
+                return jsonify(Error="Invalid Route"), 400 #Bad Request
+            p = self.splitall(path)
+            validate = False
+            #### Check if Form contain the username ####
             try:
-                token = form['token']
+                username = form['username']
             except Exception as e:
-                print("Any token : ", e)
+                print("Any username : ", e)
                 return e
-            #print('token : ', token)
-            vUser = self.validateUser(p[1], username, token)
-            if vUser != True:
-                return vUser
-            Logout = self.Logout(p[1], username)
-            #print ('result : ', vRoleLog)
-            if Logout != True:
-                return Logout
-            else:
+            ### Exception - Login Routes ###
+            if p[3] == 'Login':
                 validate = True
-        else:
-            print ('Validando ... ')
-            try:
-                token = form['token']
-            except Exception as e:
-                print("Any token : ", e)
-                return e
-            #print('token : ', token)
-            vUser = self.validateUser(p[1], username, token)
-            if vUser != True:
-                return vUser
-        return validate
+            ### Exception - Logout Routes ###
+            elif p[3] == 'Logout' :
+                try:
+                    token = form['token']
+                except Exception as e:
+                    print("Any token : ", e)
+                    return e
+                ### Validating User ###
+                vUser = self.validateUser(p[1], username, token, form)
+                if vUser != True:
+                    return vUser
+                Logout = self.Logout(p[1], username)
+                if Logout != True:
+                    return Logout
+                else:
+                    validate = True
+            ### Other Routes ###
+            else:
+                vRequest = True
+                if p[1] == 'assistant':
+                    vRequest = self.validateRequest(path, username, form)
+                if vRequest == False:
+                    return jsonify(Error="Invalid Request"), 400 #Bad Request
+                try:
+                    token = form['token']
+                except Exception as e:
+                    print("Any token : ", e)
+                    return e
+                vUser = self.validateUser(p[1], username, token, form)
+                if vUser != True:
+                    return vUser
+            return validate
+        except:
+            return jsonify(Error = "Error Validating User"), 400 #Bad Request
+
 
     def Logout(self, role, username):
         dao = RoleBaseDAO()
@@ -81,74 +86,82 @@ class RoleBase:
             dao.updateloggedAssistant(username, logged)
             return True
         elif role == 'Doctor':
-            #print ('estoy en el validate del doctor')
             logged = False
             dao.updateloggedDoctor(username, logged)
             return True
         else:
-            return jsonify(Error="Invalid Role or Not currently Logged in"), 405
+            return jsonify(Error="Invalid Role or Not currently Logged in"), 401 #Unauthorized
 
-    def validateUser(self, role, username, token):
+    def validateUser(self, role, username, token, form):
         dao = RoleBaseDAO()
+        ### Patient Role ###
         if role == 'Patient':
             patient = dao.validatePatient(username)
             if not patient:
-                return jsonify(Error="Invalid Username"), 405
+                return jsonify(Error="Invalid Username"), 401 #Unauthorized
             pusername = patient[0][0]
             ptoken = patient[0][1]
             plogged = patient[0][2]
-
+            pid = patient [0][3]
+            patientid = form['patientid']
+            if str(pid) != str(patientid):
+                return jsonify(Error="Unauthorized patient ID"), 401 #Unauthorized
             if pusername != username:
-                return jsonify(Error="Invalid Username"), 405
+                return jsonify(Error="Invalid Username"), 400 #Bad Request
             if ptoken != token or self.validateToken(ptoken) != True :
-                #print('token : ', token)
-                #print('ptoken : ', ptoken)
-                return jsonify(Error="Invalid Token"), 405
+                return jsonify(Error="Invalid Token"), 400 #Bad Request
             if plogged != True:
-                return jsonify(Error="Not currently Logged in"), 405
-
+                return jsonify(Error="Not currently Logged in"), 401 #Unauthorized
+        ### Assistant Role ###
         elif role == 'Assistant':
             assistant = dao.validateAssistant(username)
             if not assistant:
-                return jsonify(Error="Invalid Username"), 405
+                return jsonify(Error="Invalid Username"), 400 #Bad Request
             ausername = assistant[0][0]
             atoken = assistant[0][1]
             alogged = assistant[0][2]
             if ausername != username:
-                return jsonify(Error="Invalid Username"), 405
-            if atoken != token or self.validateToken(atoken) != True :
-                return jsonify(Error="Invalid Token"), 405
+                return jsonify(Error="Invalid Username"), 400 #Bad Request
+            if atoken != token or self.validateToken(atoken) != True:
+                return jsonify(Error="Invalid Token"), 400 #Bad Request
             if alogged != True:
-                return jsonify(Error="Not currently Logged in"), 405
-
+                return jsonify(Error="Not currently Logged in"), 401 #Unauthorized
+        ### Doctor Role ###
         elif role == 'Doctor':
-            #print('estoy en el validate del doctor')
             doctor = dao.validateDoctor(username)
             if not doctor:
-                return jsonify(Error="Invalid Username"), 405
+                return jsonify(Error="Invalid Username"), 400 #Bad Request
             dusername = doctor[0][0]
             dtoken = doctor[0][1]
             dlogged = doctor[0][2]
             if dusername != username:
-                return jsonify(Error="Invalid Username"), 405
+                return jsonify(Error="Invalid Username"), 400 #Bad Request
             if dtoken != token or self.validateToken(dtoken) != True :
-                return jsonify(Error="Invalid Token"), 403
+                return jsonify(Error="Invalid Token"), 400 #Bad Request
             if dlogged != True:
-                return jsonify(Error="Not currently Logged in"), 405
+                return jsonify(Error="Not currently Logged in"), 401 #Unauthorized
         else:
-            return jsonify(Error="Invalid Role"), 405
+            return jsonify(Error="Invalid Role"), 401 #Unauthorized
 
     def validateToken(self, token):
-        #print('estoy verificando el token')
-        # print('token', token)
         try:
-            #print('validate token : ')
             data = jwt.decode(token, 'thisisthesecretkey')
-            #print ('validate token : True')
             return True
         except:
-            #print('validate token : False')
             return False
+
+    def validateRequest(self, path, username, form):
+        try:
+            dao = RoleBaseDAO()
+            if path == '/Assistant/eCSP/PersonalInformation':
+                assistantid = form['assistantid']
+                assistantRequest = dao.validateAID(username, assistantid)
+                if not assistantRequest:
+                    return False
+            return True
+        except Exception as e:
+            print("Any token : ", e)
+            return e
 
     def validateroute(self, path):
         if path == '/Patient/eCSP/Login' or \

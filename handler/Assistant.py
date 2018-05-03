@@ -200,7 +200,7 @@ class AssistantHandler:
         if row == None:
             return jsonify(Error="Assistant not found."), 404
         else:
-            if len(form) != 13:
+            if len(form) != 15:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 assistantid = form['assistantid']

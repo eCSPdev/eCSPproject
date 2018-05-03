@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from dao.InitialForm import InitialFormDAO
+from dao.s3connection import s3Connection
 
 class InitialFormHandler:
 
@@ -13,13 +14,15 @@ class InitialFormHandler:
         result['patientid'] = row[5]
         return result
 
-    def build_ifinsert_dict(self, initialform, assistantid, doctorid, dateofupload, patientid):
+    def build_ifinsert_dict(self, initialformid, initialformlink, assistantid, doctorid, dateofupload, patientid, recordno):
         result = {}
-        result['initialform'] = initialform
+        result['initialformid'] = initialformid
+        result['initialform'] = initialformlink
         result['assistantid'] = assistantid
         result['doctorid'] = doctorid
         result['dateofupload'] = dateofupload
         result['patientid'] = patientid
+        result['recordno'] = recordno
         return result
 
     def getPatientInitialForm(self, args):
@@ -56,10 +59,15 @@ class InitialFormHandler:
             dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
+            targetlocation = "initialforms/"
             if initialform and dateofupload and recordno:
                 if dao.verifyRecordno(recordno) != None:
-                    dao.insertInitialForm(initialform, assistantid, doctorid, dateofupload, patientid)
-                    result = self.build_ifinsert_dict(initialform, assistantid, doctorid, dateofupload, patientid)
+
+                    s3 = s3Connection()
+                    initialformlink = s3.uploadfile(initialform,targetlocation)  # returns the url after storing it
+
+                    initialformid = dao.insertInitialForm(initialformlink, assistantid, doctorid, dateofupload, patientid, recordno)
+                    result = self.build_ifinsert_dict(initialformid, initialformlink, assistantid, doctorid, dateofupload, patientid, recordno)
                     return jsonify(InitialForm = result), 201 #Verificar porque 201
                 else:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400

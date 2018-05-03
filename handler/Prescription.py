@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from dao.Prescription import PrescriptionDAO
+from dao.s3connection import s3Connection
 
 class PrescriptionHandler:
 
@@ -13,13 +14,15 @@ class PrescriptionHandler:
         result['patientid'] = row[5]
         return result
 
-    def build_presinsert_dict(self, prescription, assistantid, doctorid, dateofupload, patientid):
+    def build_presinsert_dict(self, prescriptionid, prescriptionlink, assistantid, doctorid, dateofupload, patientid, recordno):
         result = {}
-        result['prescription'] = prescription
+        result['prescriptionid'] = prescriptionid
+        result['prescription'] = prescriptionlink
         result['assistantid'] = assistantid
         result['doctorid'] = doctorid
         result['dateofupload'] = dateofupload
         result['patientid'] = patientid
+        result['recordno'] = recordno
         return result
 
     def getPatientPrescription(self, args):
@@ -56,10 +59,15 @@ class PrescriptionHandler:
             dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
+            targetlocation = "prescriptions/"
             if prescription and dateofupload and recordno:
                 if dao.verifyRecordno(recordno) != None:
-                    dao.insertPrescription(prescription, assistantid, doctorid, dateofupload, patientid)
-                    result = self.build_presinsert_dict(prescription, assistantid, doctorid, dateofupload, patientid)
+
+                    s3 = s3Connection()
+                    prescriptionlink = s3.uploadfile(prescription, targetlocation)  # returns the url after storing it
+
+                    prescriptionid = dao.insertPrescription(prescriptionlink, assistantid, doctorid, dateofupload, patientid, recordno)
+                    result = self.build_presinsert_dict(prescriptionid, prescriptionlink, assistantid, doctorid, dateofupload, patientid, recordno)
                     return jsonify(Prescription = result), 201 #Verificar porque 201
                 else:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400

@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from dao.Referral import ReferralDAO
+from dao.s3connection import s3Connection
 
 class ReferralHandler:
 
@@ -13,13 +14,15 @@ class ReferralHandler:
         result['patientid'] = row[5]
         return result
 
-    def build_refinsert_dict(self,referral, assistantid, doctorid, dateofupload, patientid):
+    def build_refinsert_dict(self,referralid, referrallink, assistantid, doctorid, dateofupload, patientid, recordno):
         result = {}
-        result['referral'] = referral
+        result['referralid'] = referralid
+        result['referral'] = referrallink
         result['assistantid'] = assistantid
         result['doctorid'] = doctorid
         result['dateofupload'] = dateofupload
         result['patientid'] = patientid
+        result['recordno'] = recordno
         return result
 
     def getPatientReferral(self, args):
@@ -56,10 +59,16 @@ class ReferralHandler:
             dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
+            targetlocation = 'referrals/'
             if referral and dateofupload and recordno:
                 if dao.verifyRecordno(recordno) != None:
-                    dao.insertReferral(referral, assistantid, doctorid, dateofupload, patientid)
-                    result = self.build_refinsert_dict(referral, assistantid, doctorid, dateofupload, patientid)
+
+                    # insert the file in s3
+                    s3 = s3Connection()
+                    referrallink = s3.uploadfile(referral,targetlocation)  # returns the url after storing it
+
+                    referralid = dao.insertReferral(referral, assistantid, doctorid, dateofupload, patientid, recordno)
+                    result = self.build_refinsert_dict(referralid, referrallink, assistantid, doctorid, dateofupload, patientid, recordno)
                     return jsonify(Referral = result), 201
                 else:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400

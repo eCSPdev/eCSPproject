@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from dao.Result import ResultDAO
+from dao.s3connection import s3Connection
 
 class ResultHandler:
 
@@ -56,10 +57,16 @@ class ResultHandler:
             dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
+            targetlocation = 'results/'
             if result and dateofupload and recordno:
                 if dao.verifyRecordno(recordno) != None:
-                    dao.insertReferral(result, assistantid, doctorid, dateofupload, patientid)
-                    result = self.build_refinsert_dict(result, assistantid, doctorid, dateofupload, patientid)
+
+                    # insert the file in s3
+                    s3 = s3Connection()
+                    resultlink = s3.uploadfile(result,targetlocation)  # returns the url after storing it
+
+                    resultid = dao.insertReferral(resultlink, assistantid, doctorid, dateofupload, patientid, recordno)
+                    result = self.build_refinsert_dict(resultid, resultlink, assistantid, doctorid, dateofupload, patientid, recordno)
                     return jsonify(Referral = result), 201
                 else:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400

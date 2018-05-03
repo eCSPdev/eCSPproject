@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from dao.ConsultationNotes import ConsultationNotesDAO
+from dao.s3connection import s3Connection
 
 class ConsultationNotesHandler:
 
@@ -15,10 +16,11 @@ class ConsultationNotesHandler:
         result['recordno'] = row[6]
         return result
 
-    def build_cninsert_dict(self, consultationnoteid, consultationnote, assistantid, doctorid, dateofupload, patientid, recordno):
+    def build_cninsert_dict(self, consultationnoteid, consultationnotelink, assistantid, doctorid,
+                                                      dateofupload, patientid, recordno):
         result = {}
         result['consultationnoteid'] = consultationnoteid
-        result['consultationnote'] = consultationnote
+        result['consultationnote'] = consultationnotelink
         result['assistantid'] = assistantid
         result['doctorid'] = doctorid
         result['dateofupload'] = dateofupload
@@ -55,18 +57,23 @@ class ConsultationNotesHandler:
         if len(form) != 6:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            consultationnote = form['consultationnote']
+            consultationnote = form['consultationnote']     #this is the file to insert
             assistantid = form['assistantid']
             doctorid = form['doctorid']
             dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
+            targetlocation = 'consultationnotes/'          #this is the location folder on the bucket
             if (consultationnote and dateofupload and recordno):
 
                 if dao.verifyRecordno(recordno) != None:
-                    consultationnoteid = dao.insertConsultationNotes(consultationnote, assistantid, doctorid, dateofupload,
+                    #insert the file in s3
+                    s3 = s3Connection()
+                    consultationnotelink = s3.uploadfile(consultationnote,targetlocation) #returns the url after storing it
+
+                    consultationnoteid = dao.insertConsultationNotes(consultationnotelink, assistantid, doctorid, dateofupload,
                                                                      patientid, recordno)
-                    result = self.build_cninsert_dict(consultationnoteid, consultationnote, assistantid, doctorid,
+                    result = self.build_cninsert_dict(consultationnoteid, consultationnotelink, assistantid, doctorid,
                                                       dateofupload, patientid, recordno)
                     return jsonify(Success="Consultation Node inserted.", ConsultatioNote = result), 201
                 else:

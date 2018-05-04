@@ -61,6 +61,30 @@ class AssistantDAO:
             self.conn.close()
             print("Connection closed.")
 
+    def getPsswordByID(self, assistantid):
+        try:
+            connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+                pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+            self.conn = psycopg2._connect(connection_url)
+
+            try:
+                cursor = self.conn.cursor()
+                query = "select pssword " \
+                        "from assistants " \
+                        "where assistantid = %s;"
+                cursor.execute(query, (assistantid,))
+                result = cursor.fetchone()
+                return result
+            except Exception as e:
+                print("Query failed : ", e)
+                return e
+        except Exception as e:
+            print("Error connecting to database.")
+            return e
+        finally:
+            self.conn.close()
+            print("Connection closed.")
+
     def verifyUsername(self, username):
 
         try:
@@ -217,9 +241,8 @@ class AssistantDAO:
             self.conn.close()
             print("Connection closed.")
 
-    def insertAssistantHistory(self, assistantid, firstname, middlename, lastname,
-                                        phone, status, email, username, pssword,
-                                        street, aptno, city, st, country, zipcode):
+    def insertAssistantHistory(self, assistantid, firstname, middlename, lastname, phone, status, email, username,
+                               pssword, street, aptno, city, st, country, zipcode, changesdate):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -227,13 +250,13 @@ class AssistantDAO:
 
             try:
                 cursor = self.conn.cursor()
-                query = "insert into assistanthistory (assisantid, firstname, middlename, lastname, phone, status, email, " \
-                                                        "username, pssword, street, aptno, city, st, country, zipcode) " \
-                        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
+                query = "insert into assistanthistory (assistantid, firstname, middlename, lastname, phone, status, " \
+                                                        "email, username, pssword, street, aptno, city, st, country, " \
+                                                        "zipcode, changesdate) " \
+                        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
                         "returning historyid;"
-                cursor.execute(query, (assistantid,firstname, middlename, lastname,
-                                                phone, status, email, username, pssword,
-                                                street, aptno, city, st, country, zipcode,))
+                cursor.execute(query, (assistantid, firstname, middlename, lastname, phone, status, email, username,
+                               pssword, street, aptno, city, st, country, zipcode, changesdate,))
                 historyid = cursor.fetchone()[0]
                 self.conn.commit()
 

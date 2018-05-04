@@ -43,7 +43,6 @@ def before_execute():
         return validate
     #print (request.args.get('username'))
 
-
 @app.route('/Patient/eCSP/Login', methods = ['GET'])
 def plogin():
     if request.method == 'GET':

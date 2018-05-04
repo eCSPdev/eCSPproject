@@ -223,6 +223,8 @@ class PatientHandler:
                 email = form['email']
                 insurancecompanyname = form['insurancecompanyname']
                 print (insurancecompanyname)
+                username = ['username']
+                pssword = ['pssword']
                 street = form['street']
                 print (street)
                 aptno = form['aptno']
@@ -236,6 +238,10 @@ class PatientHandler:
                 zipcode = form['zipcode']
                 print (zipcode)
                 print ('antes del segundo if')
+
+                if pssword == None:
+                    pssword = dao.getPsswordById(patientid)
+
                 #PROBAR SOLO LOS QUE NO PUEDEN SER NULOS
                 if patientid and firstname and lastname and ssn and birthdate and phone and status \
                         and street and aptno and city and country and zipcode:
@@ -243,6 +249,13 @@ class PatientHandler:
                     dao.updatePatientInfoByID(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status, email,
                                insurancecompanyname)
                     dao.updatePatientAddress(patientid, street, aptno, city, st, country, zipcode)
+
+            # History
+                    changes_time = time.time()
+                    changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                    dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
+                                            status, email, username, pssword, insurancecompanyname, street, aptno, city,
+                                            st, country, zipcode, changesdate)
 
                     result = self.update_patient_dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
                                 email, insurancecompanyname, street, aptno, city, st, country, zipcode)
@@ -279,6 +292,7 @@ class PatientHandler:
             birthdate = form['birthdate']
             gender = form['gender']
             phone = form['phone']
+            status = form['status']
             email = form['email']
             username = form['username']
             pssword = form['pssword']
@@ -322,6 +336,11 @@ class PatientHandler:
                             visit_time = time.time()
                             visitdate = datetime.datetime.fromtimestamp(visit_time).strftime('%Y-%m-%d %H:%M:%S')
                             dao.insertVisit(recordno, patientid, visitdate, type)
+
+                #History
+                            dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender,
+                                                     phone, status, email, username, pssword, insurancecompanyname, street,
+                                                     aptno, city, st, country, zipcode, visitdate)
 
                             result = self.new_patient_dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                                    email, username, pssword, addressid, street, aptno, city, st, country,

@@ -161,6 +161,30 @@ class PatientsDAO:
             self.conn.close()
             print("Connection closed.")
 
+    def getPsswordByID(self, patientid):
+        try:
+            connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+                pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+            self.conn = psycopg2._connect(connection_url)
+
+            try:
+                cursor = self.conn.cursor()
+                query = "select pssword " \
+                        "from patients " \
+                        "where patientid = %s;"
+                cursor.execute(query, (patientid,))
+                result = cursor.fetchone()
+                return result
+            except Exception as e:
+                print("Query failed : ", e)
+                return e
+        except Exception as e:
+            print("Error connecting to database.")
+            return e
+        finally:
+            self.conn.close()
+            print("Connection closed.")
+
 
     def verifyUsername(self, username):
         try:
@@ -365,6 +389,38 @@ class PatientsDAO:
             return e
         finally:
             # self.conn.close()
+            print("Connection closed.")
+
+    def insertPatientHistory(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
+                                            status, email, username, pssword, insurancecompanyname, street, aptno, city,
+                                            st, country, zipcode, changesdate):
+        try:
+            connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+                pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+            self.conn = psycopg2._connect(connection_url)
+
+            try:
+                cursor = self.conn.cursor()
+                query = "insert into patienthistory (patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, " \
+                                                    "status, email, username, pssword, insurancecompanyname, street, aptno, city, " \
+                                                    "st, country, zipcode, changesdate)" \
+                        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
+                        "returning historyid;"
+                cursor.execute(query, (patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
+                                            status, email, username, pssword, insurancecompanyname, street, aptno, city,
+                                            st, country, zipcode, changesdate))
+                historyid = cursor.fetchone()[0]
+                self.conn.commit()
+
+                return historyid
+            except Exception as e:
+                print("Query failed : ", e)
+                return e
+        except Exception as e:
+            print("Error connecting to database.")
+            return e
+        finally:
+            self.conn.close()
             print("Connection closed.")
 
     def insertVisit(self, recordno, patientid, visitdate, type):

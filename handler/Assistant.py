@@ -2,6 +2,7 @@ from flask import jsonify, request
 from dao.Doctor import DoctorDAO
 from dao.Patient import PatientsDAO
 from dao.Assistant import AssistantDAO
+import datetime, time
 
 class AssistantHandler:
 
@@ -176,6 +177,13 @@ class AssistantHandler:
                         # license number and username is not taken yet, Doctor can be inserted
                         assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone, email, username, pssword)
                         addressid = dao.insertAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
+
+                        changes_time = time.time()
+                        changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                        dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
+                                                   email, username, pssword, street, aptno, city, st, country, zipcode,
+                                                   changesdate)
+
                         result = self.new_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
                                                email, username, pssword, addressid, street, aptno, city, st, country, zipcode)
                         return jsonify(Success="Assistant added correctly", Assistant=result), 201
@@ -210,17 +218,31 @@ class AssistantHandler:
                 phone = form['phone']
                 status = form['status']
                 email = form['email']
+                username = form['username']
+                pssword = form['pssword']
                 street = form['street']
                 aptno = form['aptno']
                 city = form['city']
                 st = form['st']
                 country = form['country']
                 zipcode = form['zipcode']
+
+                if pssword == None:
+                    pssword = dao.getPsswordById(assistantid)
+
                 if assistantid and firstname and lastname and phone and status and street and aptno \
                         and city and country and zipcode:
                     dao.updateAssistantInfoByID(assistantid, firstname, middlename, lastname, phone, status,
-                                                email)
+                                                email, username, pssword)
                     dao.updateAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
+
+            #History
+                    changes_time = time.time()
+                    changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                    dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
+                                             email, username, pssword, street, aptno, city, st, country, zipcode,
+                                             changesdate)
+
                     result = self.update_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
                                                         email, street, aptno, city, st, country, zipcode)
                     return jsonify(Assistant = result), 200

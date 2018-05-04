@@ -98,7 +98,8 @@ def getAllDoctor():
         print('GET - GETDOCTORLIST')
         return DoctorHandler().getAllDoctor()
     elif request.method == 'POST':
-        return DoctorHandler().insertDoctor(request.form)
+        path = request.path
+        return DoctorHandler().insertDoctor(request.form, path)
     else:
         return jsonify(Error="Method not allowed."), 405
 

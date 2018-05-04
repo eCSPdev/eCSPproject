@@ -110,7 +110,7 @@ class AssistantDAO:
             print("Connection closed.")
 
     def updateAssistantInfoByID(self, assistantid, firstname, middlename, lastname, phone, status,
-                             email):
+                             email, pssword):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -242,7 +242,7 @@ class AssistantDAO:
             print("Connection closed.")
 
     def insertAssistantHistory(self, assistantid, firstname, middlename, lastname, phone, status, email, username,
-                               pssword, street, aptno, city, st, country, zipcode, changesdate):
+                               pssword, street, aptno, city, st, country, zipcode, changesdate, DoctorSign):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -252,11 +252,11 @@ class AssistantDAO:
                 cursor = self.conn.cursor()
                 query = "insert into assistanthistory (assistantid, firstname, middlename, lastname, phone, status, " \
                                                         "email, username, pssword, street, aptno, city, st, country, " \
-                                                        "zipcode, changesdate) " \
-                        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
+                                                        "zipcode, changesdate, doctorid) " \
+                        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
                         "returning historyid;"
                 cursor.execute(query, (assistantid, firstname, middlename, lastname, phone, status, email, username,
-                               pssword, street, aptno, city, st, country, zipcode, changesdate,))
+                               pssword, street, aptno, city, st, country, zipcode, changesdate, DoctorSign))
                 historyid = cursor.fetchone()[0]
                 self.conn.commit()
 

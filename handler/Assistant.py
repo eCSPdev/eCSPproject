@@ -2,6 +2,7 @@ from flask import jsonify, request
 from dao.Doctor import DoctorDAO
 from dao.Patient import PatientsDAO
 from dao.Assistant import AssistantDAO
+from handler.RoleBase import RoleBase
 import datetime, time
 
 class AssistantHandler:
@@ -201,14 +202,21 @@ class AssistantHandler:
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
-    def updateAssistantInformation(self, form):
+    def updateAssistantInformation(self, form, path):
+        # A-adido
+        pathlist = RoleBase().splitall(path)
+        role = pathlist[1]
+        DoctorSign = None
+        if role == 'Doctor':
+            DoctorSign = form['username']
+        #
         dao = AssistantDAO()
         assistantid = form['assistantid']
         row = dao.getAssistantByID(assistantid)
         if row == None:
             return jsonify(Error="Assistant not found."), 404
         else:
-            if len(form) != 15:
+            if len(form) != 17:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 assistantid = form['assistantid']
@@ -228,7 +236,7 @@ class AssistantHandler:
                 zipcode = form['zipcode']
 
                 if pssword == None:
-                    pssword = dao.getPsswordById(assistantid)
+                    pssword = dao.getPsswordByID(assistantid)
 
                 if assistantid and firstname and lastname and phone and status and street and aptno \
                         and city and country and zipcode:
@@ -239,9 +247,10 @@ class AssistantHandler:
             #History
                     changes_time = time.time()
                     changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                    ## Modificado (... , DoctorSign)
                     dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
                                              email, username, pssword, street, aptno, city, st, country, zipcode,
-                                             changesdate)
+                                             changesdate, DoctorSign)
 
                     result = self.update_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
                                                         email, street, aptno, city, st, country, zipcode)

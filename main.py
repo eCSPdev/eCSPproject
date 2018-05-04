@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, Blueprint
+from flask import Flask, jsonify, request, render_template
 from functools import wraps
 from handler.Assistant import AssistantHandler
 from handler.Doctor import DoctorHandler
@@ -16,7 +16,6 @@ import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
-
 
 
 """def token_required(f):
@@ -42,6 +41,11 @@ def before_execute():
     if validate != True:
         return validate
     #print (request.args.get('username'))
+
+@app.route('/')
+def home():
+    print ('Estoy en el HOME')
+    return render_template('index.html')
 
 @app.route('/Patient/eCSP/Login', methods = ['GET'])
 def plogin():

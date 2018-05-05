@@ -24,6 +24,8 @@ class RoleBase:
 
     def validate(self, path, form):
         try:
+            if path == '/':
+                return True
             #### Validating Path ####
             vpath = self.validateroute(path)
             if vpath != True:
@@ -164,7 +166,8 @@ class RoleBase:
             return e
 
     def validateroute(self, path):
-        if path == '/Patient/eCSP/Login' or \
+        if path == '/' or \
+            path == '/Patient/eCSP/Login' or \
             path == '/Doctor/eCSP/Login' or \
             path == '/Assistant/eCSP/Login' or \
             path == '/Patient/eCSP/Logout' or \

@@ -28,6 +28,7 @@
   "license": "Envato REGULAR LICENSE",
   "dependencies": {
     "@uirouter/angularjs": "^1.0.15",
+    "easyimage": "^3.1.0",
     "npm": "^5.8.0"
   },
   "devDependencies": {

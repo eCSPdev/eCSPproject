@@ -59,6 +59,30 @@ class DoctorDAO:
             self.conn.close()
             print("Connection closed.")
 
+    def getPsswordByID(self, doctorid):
+        try:
+            connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+                pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+            self.conn = psycopg2._connect(connection_url)
+
+            try:
+                cursor = self.conn.cursor()
+                query = "select pssword " \
+                        "from doctor " \
+                        "where doctorid = %s;"
+                cursor.execute(query, (doctorid,))
+                result = cursor.fetchone()
+                return result
+            except Exception as e:
+                print("Query failed : ", e)
+                return e
+        except Exception as e:
+            print("Error connecting to database.")
+            return e
+        finally:
+            self.conn.close()
+            print("Connection closed.")
+
     def verifyUsername(self, username):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
@@ -217,7 +241,7 @@ class DoctorDAO:
 
     def insertDoctorHistory(self, doctorid, licenseno, firstname, middlename, lastname,
                                         officename, phone, status, email, username, pssword,
-                                        street, aptno, city, st, country, zipcode):
+                                        street, aptno, city, st, country, zipcode, changesdate):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -227,12 +251,12 @@ class DoctorDAO:
                 cursor = self.conn.cursor()
                 query = "insert into doctorhistory (doctorid, licenseno, firstname, middlename, lastname, "\
                                                 "officename, phone, status, email, username, pssword,"\
-                                                "street, aptno, city, st, country, zipcode)" \
+                                                "street, aptno, city, st, country, zipcode, changesdate)" \
                         "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
                         "returning historyid;"
                 cursor.execute(query, (doctorid, licenseno, firstname, middlename, lastname,
                                                 officename, phone, status, email, username, pssword,
-                                                street, aptno, city, st, country, zipcode,))
+                                                street, aptno, city, st, country, zipcode, changesdate,))
                 historyid = cursor.fetchone()[0]
                 self.conn.commit()
 

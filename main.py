@@ -18,7 +18,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 
 
-
 """def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -141,7 +140,8 @@ def getAssistantByID():
         else:
             return AssistantHandler().getAssistantByID(request.args)
     if request.method == 'PUT':
-        return AssistantHandler().updateAssistantInformation(request.args)
+        path = request.path
+        return AssistantHandler().updateAssistantInformation(request.args, path)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -170,7 +170,8 @@ def getPatientByID():
             return PatientHandler().getPatientByID(request.args)
     if request.method == 'PUT':
         print ('PUT - Patient Personal Information')
-        return PatientHandler().updatePatientInformation(request.args)
+        path = request.path
+        return PatientHandler().updatePatientInformation(request.args, path)
     else:
         return jsonify(Error="Method not allowed."), 405
 

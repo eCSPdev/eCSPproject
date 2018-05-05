@@ -2,6 +2,7 @@ from flask import jsonify, request
 from dao.Patient import PatientsDAO
 from dao.Doctor import DoctorDAO
 from dao.Assistant import AssistantDAO
+from handler.RoleBase import RoleBase
 import datetime, time
 
 ## Luis Santiago ##
@@ -196,7 +197,17 @@ class PatientHandler:
         else:
             return jsonify(Token=token)
 
-    def updatePatientInformation(self, form):
+    def updatePatientInformation(self, form, path):
+        # A-adido
+        pathlist = RoleBase().splitall(path)
+        role = pathlist[1]
+        DoctorSign = None
+        AssistantSign = None
+        if role == 'Doctor':
+            DoctorSign = form['username']
+        elif role == 'Assistant':
+            AssistantSign = form['username']
+        #
         print ('Estoy en el update')
         dao = PatientsDAO()
         #print ('antes del DAO')
@@ -253,9 +264,10 @@ class PatientHandler:
             # History
                     changes_time = time.time()
                     changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                    # Modificado (... , AssistantSign, DoctorSign)
                     dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                             status, email, username, pssword, insurancecompanyname, street, aptno, city,
-                                            st, country, zipcode, changesdate)
+                                            st, country, zipcode, changesdate, AssistantSign, DoctorSign)
 
                     result = self.update_patient_dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
                                 email, insurancecompanyname, street, aptno, city, st, country, zipcode)

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, Blueprint
+from flask import Flask, jsonify, request, Blueprint, render_template
 from functools import wraps
 from handler.Assistant import AssistantHandler
 from handler.Doctor import DoctorHandler
@@ -18,7 +18,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 
 
-
 """def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -33,15 +32,21 @@ app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
     return decorated
 """
 
-@app.before_request
-def before_execute():
-    print ('BEFORE_EXECUTE')
-    #print ('path', request.path)
-    validate = RoleBase().validate(request.path, request.args)
-    #print ('user', validate)
-    if validate != True:
-        return validate
-    #print (request.args.get('username'))
+# @app.before_request
+# def before_execute():
+#     print ('BEFORE_EXECUTE')
+#     #print ('path', request.path)
+#     validate = RoleBase().validate(request.path, request.args)
+#     #print ('user', validate)
+#     if validate != True:
+#         return validate
+#     #print (request.args.get('username'))
+
+# attempt at loading index.html
+@app.route('/')
+def index():
+    return render_template('index.html')
+#
 
 @app.route('/Patient/eCSP/Login', methods = ['GET'])
 def plogin():
@@ -135,7 +140,8 @@ def getAssistantByID():
         else:
             return AssistantHandler().getAssistantByID(request.args)
     if request.method == 'PUT':
-        return AssistantHandler().updateAssistantInformation(request.args)
+        path = request.path
+        return AssistantHandler().updateAssistantInformation(request.args, path)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -164,7 +170,8 @@ def getPatientByID():
             return PatientHandler().getPatientByID(request.args)
     if request.method == 'PUT':
         print ('PUT - Patient Personal Information')
-        return PatientHandler().updatePatientInformation(request.args)
+        path = request.path
+        return PatientHandler().updatePatientInformation(request.args, path)
     else:
         return jsonify(Error="Method not allowed."), 405
 

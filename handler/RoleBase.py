@@ -24,6 +24,8 @@ class RoleBase:
 
     def validate(self, path, form):
         try:
+            if path == '/':
+                return True
             #### Validating Path ####
             vpath = self.validateroute(path)
             if vpath != True:
@@ -36,8 +38,6 @@ class RoleBase:
             except Exception as e:
                 print("Any username : ", e)
                 return e
-            if path == '/' :
-                return True
             ### Exception - Login Routes ###
             if p[3] == 'Login':
                 validate = True

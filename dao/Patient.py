@@ -393,7 +393,7 @@ class PatientsDAO:
 
     def insertPatientHistory(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                             status, email, username, pssword, insurancecompanyname, street, aptno, city,
-                                            st, country, zipcode, changesdate):
+                                            st, country, zipcode, changesdate , AssistantSign, DoctorSign):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -403,12 +403,12 @@ class PatientsDAO:
                 cursor = self.conn.cursor()
                 query = "insert into patienthistory (patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, " \
                                                     "status, email, username, pssword, insurancecompanyname, street, aptno, city, " \
-                                                    "st, country, zipcode, changesdate)" \
-                        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
+                                                    "st, country, zipcode, changesdate, assistantid, doctorid)" \
+                        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
                         "returning historyid;"
                 cursor.execute(query, (patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                             status, email, username, pssword, insurancecompanyname, street, aptno, city,
-                                            st, country, zipcode, changesdate))
+                                            st, country, zipcode, changesdate, AssistantSign, DoctorSign))
                 historyid = cursor.fetchone()[0]
                 self.conn.commit()
 

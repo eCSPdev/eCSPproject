@@ -183,7 +183,7 @@ class DoctorHandler:
                 print('estoy antes del if')
 
                 if pssword == None:
-                    pssword = dao.getPsswordById(doctorid)
+                    pssword = dao.getPsswordByID(doctorid)
 
 
                 if doctorid and licenseno and firstname and lastname and officename and phone and status \

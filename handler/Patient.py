@@ -240,7 +240,7 @@ class PatientHandler:
                 print ('antes del segundo if')
 
                 if pssword == None:
-                    pssword = dao.getPsswordById(patientid)
+                    pssword = dao.getPsswordByID(patientid)
 
                 #PROBAR SOLO LOS QUE NO PUEDEN SER NULOS
                 if patientid and firstname and lastname and ssn and birthdate and phone and status \

@@ -228,7 +228,7 @@ class AssistantHandler:
                 zipcode = form['zipcode']
 
                 if pssword == None:
-                    pssword = dao.getPsswordById(assistantid)
+                    pssword = dao.getPsswordByID(assistantid)
 
                 if assistantid and firstname and lastname and phone and status and street and aptno \
                         and city and country and zipcode:

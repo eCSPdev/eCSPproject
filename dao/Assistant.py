@@ -110,7 +110,7 @@ class AssistantDAO:
             print("Connection closed.")
 
     def updateAssistantInfoByID(self, assistantid, firstname, middlename, lastname, phone, status,
-                             email, pssword):
+                             email, username, pssword):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])

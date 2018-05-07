@@ -5,8 +5,8 @@
 /**
  * Config for the router
  */
- app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$ocLazyLoadProvider', 'hola',
-    function ($stateProvider, $locationProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $ocLazyLoadProvider, hola) {
+ app.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$ocLazyLoadProvider', 'JS_REQUIRES',
+    function ($stateProvider, $locationProvider, $urlRouterProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $ocLazyLoadProvider, jsRequires) {
 
         app.controller = $controllerProvider.register;
         app.directive = $compileProvider.directive;
@@ -21,7 +21,7 @@
     $ocLazyLoadProvider.config({
         debug: false,
         events: true,
-        modules: hola.modules
+        modules: jsRequires.modules
     });
 
     // APPLICATION ROUTES
@@ -224,12 +224,12 @@
          }
 
          function requiredData(name) {
-             if (hola.modules)
-                 for (var m in hola.modules)
-                     if (hola.modules[m].name && hola.modules[m].name === name) {
-                         return hola.modules[m];
+             if (jsRequires.modules)
+                 for (var m in jsRequires.modules)
+                     if (jsRequires.modules[m].name && jsRequires.modules[m].name === name) {
+                         return jsRequires.modules[m];
                      }
-                     return hola.scripts && hola.scripts[name];
+                     return jsRequires.scripts && jsRequires.scripts[name];
                  }
              }]
          };

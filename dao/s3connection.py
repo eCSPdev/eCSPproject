@@ -1,3 +1,5 @@
+import boto3 as boto3
+
 from config.s3config import s3_config
 import boto
 import boto.s3.connection

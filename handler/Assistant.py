@@ -13,11 +13,11 @@ class AssistantHandler:
         result['firstname'] = row[1]
         result['middlename'] = row[2]
         result['lastname'] = row[3]
-        result['phone'] = row[4]
+        #result['phone'] = row[4]
         result['status'] = row[5]
-        result['email'] = row[6]
+        #result['email'] = row[6]
         result['username'] = row[7]
-        result['pssword'] = row[8]
+        #result['pssword'] = row[8]
         return result
 
     def build_assistantinfo_dict(self,row):

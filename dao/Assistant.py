@@ -119,10 +119,10 @@ class AssistantDAO:
             try:
                 cursor = self.conn.cursor()
                 query = "update assistants " \
-                        "set firstname=%s, middlename=%s, lastname=%s, phone=%s, status=%s, email=%s " \
+                        "set firstname=%s, middlename=%s, lastname=%s, phone=%s, status=%s, email=%s, username=%s, pssword=%s " \
                         "where assistantid=%s;"
-                cursor.execute(query, ( firstname, middlename, lastname, phone, status,
-                                        email, assistantid, ))
+                cursor.execute(query, ( firstname, middlename, lastname, phone, status, email, username, pssword,
+                                        assistantid, ))
                 self.conn.commit()
                 return assistantid
             except Exception as e:
@@ -187,6 +187,30 @@ class AssistantDAO:
             self.conn.close()
             print("Connection closed.")
 
+    def updateAssistantStatus(self, assistantid, status, deactivationdate, daysofgrace):
+        try:
+            print('estoy en el status')
+            connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+                pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+            self.conn = psycopg2._connect(connection_url)
+
+            try:
+                cursor = self.conn.cursor()
+                query = "update assistants " \
+                        "set status=%s, deactivationdate=%s, daysofgrace=%s " \
+                        "where assistantid=%s;"
+                cursor.execute(query, ( status, deactivationdate, daysofgrace, assistantid, ))
+                self.conn.commit()
+                return assistantid
+            except Exception as e:
+                print("Query failed : ", e)
+                return e
+        except Exception as e:
+            print("Error connecting to database.")
+            return e
+        finally:
+            self.conn.close()
+            print("Connection closed.")
 
     def insertAssistantInfo(self, firstname, middlename, lastname, phone, email, username, pssword):
         status = True
@@ -242,7 +266,7 @@ class AssistantDAO:
             print("Connection closed.")
 
     def insertAssistantHistory(self, assistantid, firstname, middlename, lastname, phone, status, email, username,
-                               pssword, street, aptno, city, st, country, zipcode, changesdate, DoctorSign):
+                               pssword, street, aptno, city, st, country, zipcode,  dateofchanges, DoctorSign, deactivationdate, daysofgrace):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -252,16 +276,17 @@ class AssistantDAO:
                 cursor = self.conn.cursor()
                 query = "insert into assistanthistory (assistantid, firstname, middlename, lastname, phone, status, " \
                                                         "email, username, pssword, street, aptno, city, st, country, " \
-                                                        "zipcode, changesdate, doctorid) " \
-                        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
+                                                        "zipcode,  dateofchanges, doctorusername, deactivationdate, daysofgrace) " \
+                        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
                         "returning historyid;"
                 cursor.execute(query, (assistantid, firstname, middlename, lastname, phone, status, email, username,
-                               pssword, street, aptno, city, st, country, zipcode, changesdate, DoctorSign))
+                               pssword, street, aptno, city, st, country, zipcode,  dateofchanges, DoctorSign, deactivationdate, daysofgrace))
                 historyid = cursor.fetchone()[0]
                 self.conn.commit()
 
                 return historyid
             except Exception as e:
+                print ('estoy en el history')
                 print("Query failed : ", e)
                 return e
         except Exception as e:

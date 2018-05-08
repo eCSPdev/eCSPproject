@@ -45,6 +45,7 @@ class PatientsDAO:
             print("Connection closed.")
 
     def getPatientByID(self,pid):
+        print ('estoy en el dao')
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -213,7 +214,7 @@ class PatientsDAO:
             print("Connection closed.")
 
     def updatePatientInfoByID(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status, email,
-                               insurancecompanyname):
+                               insurancecompanyname, username, pssword):
         print ('estoy en el update query')
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
@@ -222,9 +223,9 @@ class PatientsDAO:
             try:
                 cursor = self.conn.cursor()
                 query = "update patients set firstname=%s, middlename=%s, lastname=%s, ssn=%s, birthdate=%s, gender=%s, phone=%s, " \
-                        "status=%s, email=%s, insurancecompanyname=%s where patientid=%s;"
+                        "status=%s, email=%s, insurancecompanyname=%s, username=%s, pssword=%s where patientid=%s;"
                 cursor.execute(query, ( firstname, middlename, lastname, ssn, birthdate, gender, phone, status, email,
-                                       insurancecompanyname, patientid, ))
+                                       insurancecompanyname, username, pssword, patientid, ))
                 self.conn.commit()
                 print('estoy dentro del update patient info')
                 return patientid
@@ -393,7 +394,7 @@ class PatientsDAO:
 
     def insertPatientHistory(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                             status, email, username, pssword, insurancecompanyname, street, aptno, city,
-                                            st, country, zipcode, changesdate , AssistantSign, DoctorSign):
+                                            st, country, zipcode, dateofchanges , AssistantSign, DoctorSign, deactivationdate, daysofgrace):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -403,12 +404,13 @@ class PatientsDAO:
                 cursor = self.conn.cursor()
                 query = "insert into patienthistory (patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, " \
                                                     "status, email, username, pssword, insurancecompanyname, street, aptno, city, " \
-                                                    "st, country, zipcode, changesdate, assistantid, doctorid)" \
-                        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
+                                                    "st, country, zipcode, dateofchanges, assistantusername, doctorusername, " \
+                                                    "deactivationdate, daysofgrace)" \
+                        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
                         "returning historyid;"
                 cursor.execute(query, (patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                             status, email, username, pssword, insurancecompanyname, street, aptno, city,
-                                            st, country, zipcode, changesdate, AssistantSign, DoctorSign))
+                                            st, country, zipcode, dateofchanges, AssistantSign, DoctorSign, deactivationdate, daysofgrace))
                 historyid = cursor.fetchone()[0]
                 self.conn.commit()
 
@@ -597,6 +599,30 @@ class PatientsDAO:
                         "returning patientid; "
                 cursor.execute(query, (pssword, patientid,))
                 patientid = cursor.fetchone()[0]
+                self.conn.commit()
+                return patientid
+            except Exception as e:
+                print("Query failed : ", e)
+                return e
+        except Exception as e:
+            print("Error connecting to database.")
+            return e
+        finally:
+            self.conn.close()
+            print("Connection closed.")
+
+    def updatePatientStatus(self, patientid, status, deactivationdate):
+        try:
+            connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+                pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+            self.conn = psycopg2._connect(connection_url)
+
+            try:
+                cursor = self.conn.cursor()
+                query = "update patients " \
+                        "set status=%s, deactivationdate=%s " \
+                        "where patientid=%s;"
+                cursor.execute(query, ( status, deactivationdate, patientid, ))
                 self.conn.commit()
                 return patientid
             except Exception as e:

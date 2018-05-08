@@ -70,7 +70,7 @@ class RoleBase:
                     print("Any token : ", e)
                     return e
                 vUser = self.validateUser(p[1], username, token, form)
-                if vUser != True:
+                if vUser != True :
                     return vUser
             return validate
         except:
@@ -176,6 +176,12 @@ class RoleBase:
             path == '/Doctor/eCSP/DoctorList' or \
             path == '/Doctor/eCSP/PersonalInformation' or \
             path == '/Doctor/eCSP/AssistantList' or \
+            path == '/Doctor/eCSP/Assistant/Deactivate' or \
+            path == '/Doctor/eCSP/Assistant/Activate' or \
+            path == '/Doctor/eCSP/Patient/Deactivate' or \
+            path == '/Assistant/eCSP/Patient/Deactivate' or \
+            path == '/Doctor/eCSP/Patient/Activate' or \
+            path == '/Assistant/eCSP/Patient/Activate' or \
             path == '/Doctor/eCSP/Assistant/PersonalInformation' or \
             path == '/Assistant/eCSP/PersonalInformation' or \
             path == '/Doctor/eCSP/PatientList' or \

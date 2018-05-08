@@ -1,7 +1,0 @@
-.idea/
-*.iml
-bower_components/
-node_modules/
-!.gitkeep
-.DS_Store
-npm-debug.log

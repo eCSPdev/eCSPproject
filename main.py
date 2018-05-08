@@ -43,6 +43,7 @@ app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 #     #print (request.args.get('username'))
 
 # attempt at loading index.html
+
 @app.route('/')
 def index():
     return render_template('index.html')

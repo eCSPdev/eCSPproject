@@ -2,7 +2,7 @@
 /** 
   * controllers used for the dashboard
   */
-  app.controller('manageAssistantsCtrl', ["$scope", "$rootScope", "$state", "NgTableParams", function ($scope, $rootScope, $state, NgTableParams) {
+  app.controller('manageAssistantsCtrl', ["$scope", "$rootScope", "$state", "$http", "NgTableParams", function ($scope, $rootScope, $state, $http, NgTableParams) {
 
 	$scope.sortType     = 'status'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
@@ -22,25 +22,37 @@
     // Assistant that is being managed
     $rootScope.chosenAssistant = "";
 
-	// create the list of assistants
-	$scope.assistants = [
-	{ name: 'Castillo, Francisco', employeeID: '1', status: 'Active' },
-	{ name: 'Méndez, Benzeno', employeeID: '2', status: 'Inactive' },
-	{ name: 'Hernández, Santa', employeeID: '3', status: 'Active' },
-	{ name: 'Suárez, Roberto', employeeID: '4', status: 'Inactive' },
-	{ name: 'Castillo, Francisco', employeeID: '11', status: 'Active' },
-	{ name: 'Méndez, Benzeno', employeeID: '21', status: 'Inactive' },
-	{ name: 'Hernández, Santa', employeeID: '31', status: 'Active' },
-	{ name: 'Suárez, Roberto', employeeID: '41', status: 'Inactive' },
-	{ name: 'Castillo, Francisco', employeeID: '13', status: 'Active' },
-	{ name: 'Méndez, Benzeno', employeeID: '23', status: 'Inactive' },
-	{ name: 'Hernández, Santa', employeeID: '33', status: 'Active' },
-	{ name: 'Suárez, Roberto', employeeID: '43', status: 'Inactive' },
-	{ name: 'Castillo, Francisco', employeeID: '12', status: 'Active' },
-	{ name: 'Méndez, Benzeno', employeeID: '22', status: 'Inactive' },
-	{ name: 'Hernández, Santa', employeeID: '32', status: 'Active' },
-	{ name: 'Suárez, Roberto', employeeID: '42', status: 'Inactive' }
-	];
+    /* HTTP GET Request: getAllAssistant() */
+    /* Get list of all assistants */
+    $http.get('/Doctor/eCSP/AssistantList') 
+    .then(function success(response) {
+    	console.log(response.status);
+		
+		// Populate the list of assistants
+        $scope.assistants = response.data.Assistant; 
+
+        // Declaration of table parameters
+		$scope.tableParams = new NgTableParams({
+        	// Show first page
+        	page: 1, 
+
+        	// Count per page
+        	count: 10,
+
+        	// initial sort order
+        	sorting: {
+        		name: "asc"
+        	}
+    	}, {
+    		// Array with information to display in table ($data in HTML)
+            // Length of data
+            total: $scope.assistants.length, 
+            dataset: $scope.assistants
+        });
+
+	}, function error(response) {
+		console.log(response);
+	});
 
 	$scope.getAssistantProfile = function(button, employeeID) {
 
@@ -54,18 +66,4 @@
 			$state.go('app.users.manage_users.manage_assistants.edit_profile');
 		}
 	}
-
-	// Declaration of table parameters
-	$scope.tableParams = new NgTableParams({
-        page: 1, // show first page
-        count: 5, // count per page
-        // initial sort order
-        sorting: {
-        	name: "asc"
-        }
-    }, {
-    		// Array with information to display in table ($data in HTML)
-            total: $scope.assistants.length, // length of data
-            dataset: $scope.assistants
-        });
 }]);

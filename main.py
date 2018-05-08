@@ -44,6 +44,8 @@ app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 
 # attempt at loading index.html
 
+#Load and render 'index.html'
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -64,7 +66,7 @@ def plogin():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-
+#Logout
 @app.route('/Patient/eCSP/Logout', )
 @app.route('/Assistant/eCSP/Logout')
 @app.route('/Doctor/eCSP/Logout')
@@ -72,7 +74,7 @@ def Logout():
     print ('LOGOUT')
     return jsonify(Status="Success")
 
-
+#Login
 @app.route('/Doctor/eCSP/Login', methods = ['GET'])
 @app.route('/Assistant/eCSP/Login', methods = ['GET'])
 def DAlogin():

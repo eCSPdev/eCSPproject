@@ -143,7 +143,7 @@ class DoctorDAO:
                 cursor = self.conn.cursor()
                 query = "update doctoraddress " \
                         "set street=%s, aptno=%s, city=%s, st=%s, country=%s, zipcode=%s " \
-                        "where doctorid=%s" \
+                        "where doctorid=%s " \
                         "returning addressid;"
                 cursor.execute(query, (street, aptno, city, st, country, zipcode, doctorid,))
                 addressid = cursor.fetchone()[0]

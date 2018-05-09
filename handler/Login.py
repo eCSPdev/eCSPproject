@@ -51,10 +51,13 @@ class LoginHandler:
     def validateAdmin(self, form):
         print ('Admin login')
         username = form['username']
+        print(form['username'])
         pssword = form['pssword']
+        print(form['pssword'])
         dao = LoginDAO()
         doctor = dao.validateDoctor(username, pssword)
         assistant = dao.validateAssistant(username, pssword)
+        print('AFTER LoginDAO')
         if not doctor:
             if not assistant:
                 return None
@@ -117,10 +120,10 @@ class LoginHandler:
             if role == 1:
                 dao.updateloggedAssistant(username, token, logged)
                 result = self.build_FEinfo_dict(username, token, 'Assistant')
-                return jsonify(Patient=result), 200
+                return jsonify(Assistant=result), 200
             if role == 2:
                 dao.updateloggedDoctor(username, token, logged)
                 result = self.build_FEinfo_dict(username, token, 'Doctor')
-                return jsonify(Patient=result), 200
+                return jsonify(Doctor=result), 200
             else:
                 return jsonify(Error="Invalid user"), 400

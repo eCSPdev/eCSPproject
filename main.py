@@ -42,15 +42,12 @@ app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 #         return validate
 #     #print (request.args.get('username'))
 
-# attempt at loading index.html
-
 #Load and render 'index.html'
-
 @app.route('/')
 def index():
     return render_template('index.html')
-#
 
+#Patient login
 @app.route('/Patient/eCSP/Login', methods = ['GET'])
 def plogin():
     if request.method == 'GET':
@@ -81,9 +78,9 @@ def DAlogin():
     if request.method == 'GET':
         print('Doctor & Assistant Login')
         username = request.args.get('username')
-        #print('username : ', username)
+        print('username : ', username)
         role = LoginHandler().validateAdmin(request.args)
-        #print ('role : ', role)
+        print ('role : ', role)
         if role != 1 and role != 2:
             #print ('estoy dentro del if')
             return jsonify(Error="Invalid Username or password"), 401

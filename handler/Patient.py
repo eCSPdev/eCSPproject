@@ -4,6 +4,7 @@ from dao.Doctor import DoctorDAO
 from dao.Assistant import AssistantDAO
 from handler.RoleBase import RoleBase
 import datetime, time
+import uuid
 
 ## Luis Santiago ##
 class PatientHandler:
@@ -401,7 +402,7 @@ class PatientHandler:
                         if dao.verifyUsername(username) == None \
                                 and doctordao.verifyUsername(username) == None \
                                 and assistantdao.verifyUsername(username) == None:
-
+                            # patientid = uuid.uuid4()
                             #record number and username is not taken yet, Patient can be inserted
                             patientid = dao.insertPatientInfo(firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                                    email, username, pssword, insurancecompanyname)

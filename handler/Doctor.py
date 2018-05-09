@@ -3,6 +3,7 @@ from dao.Doctor import DoctorDAO
 from dao.Patient import PatientsDAO
 from dao.Assistant import AssistantDAO
 import datetime, time
+import uuid
 
 ## Coralis Camacho##
 class DoctorHandler:
@@ -244,6 +245,7 @@ class DoctorHandler:
                             and patientdao.verifyUsername(username) == None \
                             and assistantdao.verifyUsername(username) == None:
 
+                        #doctorid = uuid.uuid4()
                         # license number and username is not taken yet, Doctor can be inserted
                         doctorid = dao.insertDoctorInfo(licenseno, firstname, middlename, lastname, officename, phone,
                                                      email, username, pssword)

@@ -14,7 +14,7 @@ from handler.RoleBase import RoleBase
 import jwt
 import datetime
 
-app = Flask(__name__)
+application = app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 
 
@@ -362,4 +362,4 @@ def getResultByID():
 
 
 if __name__== '__main__':
-    app.run()
+    app.run(debug=True)

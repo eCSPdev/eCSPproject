@@ -23,10 +23,16 @@
 	// Patient that is being managed
 	$rootScope.chosenPatient = "";
 
+	// TODO
+	// Change variable to rootScope to reflect currently logged in user !
+	$scope.username = 'fulgencio.talavera';
+
 	/* HTTP GET Request: getAllPatients() */
     /* Get list of all patients */
-    $http.get('/Doctor/eCSP/PatientList') 
+    $http.get('/Doctor/eCSP/PatientList?username=%s, token=%s', $scope.username, $scope.token) 
     .then(function success(response) {
+    	console.log(response.data);
+    	console.log($scope.username);
     	console.log(response.status);
 		
 		// Populate the list of patients

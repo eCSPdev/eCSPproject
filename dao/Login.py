@@ -38,6 +38,7 @@ class LoginDAO:
 
     def validateDoctor(self, username, pssword):
         try:
+            print('validateDoctor')
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
             self.conn = psycopg2._connect(connection_url)
@@ -65,6 +66,7 @@ class LoginDAO:
 
     def validateAssistant(self, username, pssword):
         try:
+            print('validateAssistant')
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
             self.conn = psycopg2._connect(connection_url)

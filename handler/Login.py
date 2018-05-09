@@ -16,11 +16,12 @@ class LoginHandler:
         result['rle'] = rle
         return result
 
-    def build_FEinfo_dict(self, username, token):
+    def build_FEinfo_dict(self, username, token, role):
         result = {}
         #print ('estoy en el diccionario')
         result['username'] = username
         result['token'] = token
+        result['role'] = role
         #result ('diccionario : ', result)
         return result
 
@@ -111,15 +112,15 @@ class LoginHandler:
             print("CALLING DAO HERE")
             if role == 0:
                 dao.updateloggedPatient(username, token, logged)
-                result = self.build_FEinfo_dict(username, token)
+                result = self.build_FEinfo_dict(username, token, 'Patient')
                 return jsonify(Patient=result), 200
             if role == 1:
                 dao.updateloggedAssistant(username, token, logged)
-                result = self.build_FEinfo_dict(username, token)
+                result = self.build_FEinfo_dict(username, token, 'Assistant')
                 return jsonify(Patient=result), 200
             if role == 2:
                 dao.updateloggedDoctor(username, token, logged)
-                result = self.build_FEinfo_dict(username, token)
+                result = self.build_FEinfo_dict(username, token, 'Doctor')
                 return jsonify(Patient=result), 200
             else:
                 return jsonify(Error="Invalid user"), 400

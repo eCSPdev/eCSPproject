@@ -190,8 +190,12 @@
        abstract: true
    }).state('login.signin', {
        url: '/login',
-       templateUrl: "/static/assets/views/login.html",
-       resolve: loadSequence('loginCtrl')
+       templateUrl: "/static/assets/views/patient_login.html",
+       resolve: loadSequence('patientLoginCtrl')
+   }).state('login.admin_signin', {
+       url: '/adminLogin',
+       templateUrl: "/static/assets/views/admin_login.html",
+       resolve: loadSequence('adminLoginCtrl')
    });
 
 

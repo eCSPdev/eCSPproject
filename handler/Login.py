@@ -51,10 +51,13 @@ class LoginHandler:
     def validateAdmin(self, form):
         print ('Admin login')
         username = form['username']
+        print(form['username'])
         pssword = form['pssword']
+        print(form['pssword'])
         dao = LoginDAO()
         doctor = dao.validateDoctor(username, pssword)
         assistant = dao.validateAssistant(username, pssword)
+        print('AFTER LoginDAO')
         if not doctor:
             if not assistant:
                 return None

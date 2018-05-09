@@ -117,10 +117,10 @@ class LoginHandler:
             if role == 1:
                 dao.updateloggedAssistant(username, token, logged)
                 result = self.build_FEinfo_dict(username, token, 'Assistant')
-                return jsonify(Patient=result), 200
+                return jsonify(Assistant=result), 200
             if role == 2:
                 dao.updateloggedDoctor(username, token, logged)
                 result = self.build_FEinfo_dict(username, token, 'Doctor')
-                return jsonify(Patient=result), 200
+                return jsonify(Doctor=result), 200
             else:
                 return jsonify(Error="Invalid user"), 400

@@ -2,7 +2,7 @@
 /** 
   * controllers used for the dashboard
   */
-  app.controller('managePatientsCtrl', ["$scope", "$rootScope", "$state", "NgTableParams", function ($scope, $rootScope, $state, NgTableParams) {
+  app.controller('managePatientsCtrl', ["$scope", "$rootScope", "$state", "$http", "NgTableParams", function ($scope, $rootScope, $state, $http, NgTableParams) {
 
 	$scope.sortType     = 'status'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
@@ -23,25 +23,43 @@
 	// Patient that is being managed
 	$rootScope.chosenPatient = "";
 
-	// create the list of patients
-	$scope.patients = [
-	{ name: 'Knope, Leslie', record: '123', status: 'Active' },
-	{ name: 'Melendez, Teófilo', record: '456', status: 'Inactive' },
-	{ name: 'Reyes, Adelaida', record: '789', status: 'Active' },
-	{ name: 'González, Rigoberta', record: '321', status: 'Inactive' },
-	{ name: 'Knope, Leslie', record: '1233', status: 'Active' },
-	{ name: 'Melendez, Teófilo', record: '4563', status: 'Inactive' },
-	{ name: 'Reyes, Adelaida', record: '7893', status: 'Active' },
-	{ name: 'González, Rigoberta', record: '3213', status: 'Inactive' },
-	{ name: 'Knope, Leslie', record: '1231', status: 'Active' },
-	{ name: 'Melendez, Teófilo', record: '4561', status: 'Inactive' },
-	{ name: 'Reyes, Adelaida', record: '7891', status: 'Active' },
-	{ name: 'González, Rigoberta', record: '3214', status: 'Inactive' },
-	{ name: 'Knope, Leslie', record: '1234', status: 'Active' },
-	{ name: 'Melendez, Teófilo', record: '4564', status: 'Inactive' },
-	{ name: 'Reyes, Adelaida', record: '7894', status: 'Active' },
-	{ name: 'González, Rigoberta', record: '3212', status: 'Inactive' }
-	];
+	// TODO
+	// Change variable to rootScope to reflect currently logged in user !
+	$scope.username = 'fulgencio.talavera';
+
+	/* HTTP GET Request: getAllPatients() */
+    /* Get list of all patients */
+    $http.get('/Doctor/eCSP/PatientList?username=%s, token=%s', $scope.username, $scope.token) 
+    .then(function success(response) {
+    	console.log(response.data);
+    	console.log($scope.username);
+    	console.log(response.status);
+		
+		// Populate the list of patients
+        $scope.patients = response.data.Patient; 
+
+        // Declaration of table parameters
+		$scope.tableParams = new NgTableParams({
+        	// Show first page
+        	page: 1, 
+
+        	// Count per page
+        	count: 10,
+
+        	// initial sort order
+        	sorting: {
+        		name: "asc"
+        	}
+    	}, {
+    		// Array with information to display in table ($data in HTML)
+            // Length of data
+            total: $scope.patients.length, 
+            dataset: $scope.patients
+        });
+
+	}, function error(response) {
+		console.log(response);
+	});
 
 	$scope.getPatientProfile = function(button, recordID) {
 
@@ -55,21 +73,4 @@
 			$state.go('app.users.manage_users.manage_patients.edit_profile');
 		}
 	}
-
-// Declaration of table parameters
-$scope.tableParams = new NgTableParams({
-        page: 1, // show first page
-        count: 5, // count per page
-        // initial sort order
-        sorting: {
-        	name: "asc"
-        }
-    }, {
-    		// Array with information to display in table ($data in HTML)
-            total: $scope.patients.length, // length of data
-            dataset: $scope.patients
-        });
-
-
 }]);
-

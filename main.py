@@ -43,6 +43,9 @@ app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 #     #print (request.args.get('username'))
 
 # attempt at loading index.html
+
+#Load and render 'index.html'
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -63,7 +66,7 @@ def plogin():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-
+#Logout
 @app.route('/Patient/eCSP/Logout', )
 @app.route('/Assistant/eCSP/Logout')
 @app.route('/Doctor/eCSP/Logout')
@@ -71,7 +74,7 @@ def Logout():
     print ('LOGOUT')
     return jsonify(Status="Success")
 
-
+#Login
 @app.route('/Doctor/eCSP/Login', methods = ['GET'])
 @app.route('/Assistant/eCSP/Login', methods = ['GET'])
 def DAlogin():
@@ -117,6 +120,25 @@ def getDoctorByID():
     else:
         return jsonify(Error="Method not allowed."), 405
 
+#Deactivate Assistant Status
+@app.route('/Doctor/eCSP/Assistant/Deactivate', methods = ['PUT'])
+def deactivateAssistantStatus():
+    if request.method == 'PUT':
+        status = False
+        print('estoy en el deactivate assistant')
+        return AssistantHandler().manageAssistantStatus(request.args, status)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#Activate Assistant Status
+@app.route('/Doctor/eCSP/Assistant/Activate', methods = ['PUT'])
+def activateAssistantStatus():
+    if request.method == 'PUT':
+        status = True
+        return AssistantHandler().manageAssistantStatus(request.args, status)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 #Get an Assistant List
 @app.route('/Doctor/eCSP/AssistantList', methods=['GET', 'POST'])
 def getAllAssistant():
@@ -124,7 +146,7 @@ def getAllAssistant():
         print('GET - GETASSISTANTLIST')
         return AssistantHandler().getAllAssistant()
     elif request.method == 'POST':
-        return AssistantHandler().insertAssistant(request.form)
+        return AssistantHandler().insertAssistant(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -142,6 +164,28 @@ def getAssistantByID():
     if request.method == 'PUT':
         path = request.path
         return AssistantHandler().updateAssistantInformation(request.args, path)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#Deactivate Patient Status
+@app.route('/Doctor/eCSP/Patient/Deactivate', methods = ['PUT'])
+@app.route('/Assistant/eCSP/Patient/Deactivate', methods = ['PUT'])
+def deactivatePatientStatus():
+    if request.method == 'PUT':
+        path = request.path
+        status = False
+        return PatientHandler().managePatientStatus(request.args, path, status)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#Activate Patient Status
+@app.route('/Doctor/eCSP/Patient/Activate', methods = ['PUT'])
+@app.route('/Assistant/eCSP/Patient/Activate', methods = ['PUT'])
+def activatePatientStatus():
+    if request.method == 'PUT':
+        path = request.path
+        status = True
+        return PatientHandler().managePatientStatus(request.args, path, status)
     else:
         return jsonify(Error="Method not allowed."), 405
 

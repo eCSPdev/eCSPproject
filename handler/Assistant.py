@@ -14,11 +14,11 @@ class AssistantHandler:
         result['firstname'] = row[1]
         result['middlename'] = row[2]
         result['lastname'] = row[3]
-        result['phone'] = row[4]
+        #result['phone'] = row[4]
         result['status'] = row[5]
-        result['email'] = row[6]
+        #result['email'] = row[6]
         result['username'] = row[7]
-        result['pssword'] = row[8]
+        #result['pssword'] = row[8]
         return result
 
     def build_assistantinfo_dict(self,row):
@@ -142,7 +142,8 @@ class AssistantHandler:
             return jsonify(Assistant = result)
 
     def insertAssistant(self, form):
-        if len(form) != 14:
+        DoctorSign = form['username']
+        if len(form) != 16: # 15 del asistente + el username y token del doctor activo
             return jsonify(Error="Malformed post request"), 400
         else:
             firstname = form['firstname']
@@ -151,7 +152,7 @@ class AssistantHandler:
             phone = form['phone']
             status = form['status']
             email = form['email']
-            username = form['username']
+            username = form['assistantusername']
             pssword = form['pssword']
             street = form['street']
             aptno = form['aptno']
@@ -159,6 +160,8 @@ class AssistantHandler:
             st = form['st']
             country = form['country']
             zipcode = form['zipcode']
+            deactivationdate = None
+            daysofgrace = None
 
             if firstname and lastname and phone and status and username and pssword and street and aptno and city \
                     and country and zipcode:
@@ -186,7 +189,7 @@ class AssistantHandler:
                         changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                         dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
                                                    email, username, pssword, street, aptno, city, st, country, zipcode,
-                                                   changesdate)
+                                                   changesdate, DoctorSign, deactivationdate, daysofgrace)
 
                         result = self.new_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
                                                email, username, pssword, addressid, street, aptno, city, st, country, zipcode)
@@ -229,7 +232,7 @@ class AssistantHandler:
                 phone = form['phone']
                 status = form['status']
                 email = form['email']
-                username = form['username']
+                username = form['assistantusername']
                 pssword = form['pssword']
                 street = form['street']
                 aptno = form['aptno']
@@ -237,6 +240,8 @@ class AssistantHandler:
                 st = form['st']
                 country = form['country']
                 zipcode = form['zipcode']
+                deactivationdate = None
+                daysofgrace = None
 
                 if pssword == None:
                     pssword = dao.getPsswordByID(assistantid)
@@ -249,12 +254,12 @@ class AssistantHandler:
 
             #History
                     changes_time = time.time()
-                    changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
 
+                    dateofchanges = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                     ## Modificado (... , DoctorSign)
                     dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
                                              email, username, pssword, street, aptno, city, st, country, zipcode,
-                                             changesdate, DoctorSign)
+                                               dateofchanges, DoctorSign, deactivationdate, daysofgrace)
 
                     result = self.update_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
                                                         email, street, aptno, city, st, country, zipcode)
@@ -278,6 +283,55 @@ class AssistantHandler:
                     return jsonify(Assistant=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
+
+    def manageAssistantStatus(self, form, status):
+        print('estoy en el manageAssistantStatus')
+        DoctorSign = form['username']
+        dao = AssistantDAO()
+        assistantid = form["assistantid"]
+        assistant = dao.getAssistantByID(assistantid)
+        print ('Assistant : ', assistant)
+        if not assistant:
+            return jsonify(Error="Assistant not found."), 404
+        else:
+            if len(form) != 4: #username, token, assistantid, deactivationdays
+                return jsonify(Error="Malformed update request"), 400
+            else:
+                firstname = assistant[1]
+                middlename = assistant[2]
+                lastname = assistant[3]
+                phone = assistant[4]
+                email = assistant[6]
+                username = assistant[7]
+                pssword = assistant[8]
+                street = assistant[10]
+                aptno = assistant[11]
+                city = assistant[12]
+                st = assistant[13]
+                country = assistant[14]
+                zipcode = assistant[15]
+                changes_time = time.time()
+                print('status', status)
+                if status == True:
+                    daysofgrace = None
+                    deactivationdate = None
+                else:
+                    daysofgrace = form['daysofgrace']
+                    print ('days fo grace : ', daysofgrace)
+                    date = datetime.datetime.fromtimestamp(changes_time)
+                    print('date', date)
+                    deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
+                    print('deactivationdate : ', deactivationdate)
+                dao.updateAssistantStatus(assistantid, status, deactivationdate, daysofgrace)
+                # History
+                changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                ## Modificado (... , DoctorSign)
+                dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
+                                           email, username, pssword, street, aptno, city, st, country, zipcode,
+                                           changesdate, DoctorSign, deactivationdate, daysofgrace) #hay que a-adir al history el campo de deactivationdays
+                result = self.update_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
+                                                    email, street, aptno, city, st, country, zipcode)
+                return jsonify(Assistant=result), 200
 
 
 ########## Assistant History #############

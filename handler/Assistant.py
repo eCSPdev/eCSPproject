@@ -4,6 +4,7 @@ from dao.Patient import PatientsDAO
 from dao.Assistant import AssistantDAO
 from handler.RoleBase import RoleBase
 import datetime, time
+import uuid
 
 class AssistantHandler:
 
@@ -175,6 +176,8 @@ class AssistantHandler:
                     if dao.verifyUsername(username) == None \
                             and patientdao.verifyUsername(username) == None \
                             and doctordao.verifyUsername(username) == None:
+
+                        # assistantid = uuid.uuid4()
                         # license number and username is not taken yet, Doctor can be inserted
                         assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone, email, username, pssword)
                         addressid = dao.insertAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
@@ -247,6 +250,7 @@ class AssistantHandler:
             #History
                     changes_time = time.time()
                     changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+
                     ## Modificado (... , DoctorSign)
                     dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
                                              email, username, pssword, street, aptno, city, st, country, zipcode,

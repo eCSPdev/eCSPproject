@@ -52,7 +52,7 @@ def plogin():
     if request.method == 'GET':
         username = request.args.get('username')
         token = (jwt.encode({'user': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=8)},
-                           app.config['SECRET_KEY'])).decode('UTF-8')
+                            application.config['SECRET_KEY'])).decode('UTF-8')
         result = LoginHandler().validatePatient(request.args, token)
         return result
     else:
@@ -73,7 +73,7 @@ def DAlogin():
     if request.method == 'GET':
         username = request.args.get('username')
         token = (jwt.encode({'user': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=8)},
-                           app.config['SECRET_KEY'])).decode('UTF-8')
+                            application.config['SECRET_KEY'])).decode('UTF-8')
         result = LoginHandler().validateAdmin(request.args, token)
         return result
     else:

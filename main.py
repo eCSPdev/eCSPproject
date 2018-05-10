@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, Blueprint, render_template
+from flask import Flask, render_template, request, jsonify
 from functools import wraps
 from handler.Assistant import AssistantHandler
 from handler.Doctor import DoctorHandler
@@ -14,23 +14,22 @@ from handler.RoleBase import RoleBase
 import jwt
 import datetime
 
-application = app = Flask(__name__)
-app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
+application = Flask(__name__)
+application.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 
 
-"""def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.args.get('token')
-        print ('estoy verificando el token')
-        #print('token', token)
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-        except:
-            return jsonify(Error="Invalid Token"), 403
-        return f(*args, **kwargs)
-    return decorated
-"""
+# def token_required(f):
+#     @wraps(f)
+#     def decorated(*args, **kwargs):
+#         token = request.args.get('token')
+#         print ('estoy verificando el token')
+#         #print('token', token)
+#         try:
+#             data = jwt.decode(token, app.config['SECRET_KEY'])
+#         except:
+#             return jsonify(Error="Invalid Token"), 403
+#         return f(*args, **kwargs)
+#     return decorated
 
 # @app.before_request
 # def before_execute():
@@ -43,12 +42,12 @@ app.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 #     #print (request.args.get('username'))
 
 #Load and render 'index.html'
-@app.route('/')
+@application.route('/')
 def index():
     return render_template('index.html')
 
 #Patient login
-@app.route('/Patient/eCSP/Login', methods = ['GET'])
+@application.route('/Patient/eCSP/Login', methods = ['GET'])
 def plogin():
     if request.method == 'GET':
         print('PLOGIN')
@@ -64,16 +63,16 @@ def plogin():
         return jsonify(Error="Method not allowed."), 405
 
 #Logout
-@app.route('/Patient/eCSP/Logout', )
-@app.route('/Assistant/eCSP/Logout')
-@app.route('/Doctor/eCSP/Logout')
+@application.route('/Patient/eCSP/Logout', )
+@application.route('/Assistant/eCSP/Logout')
+@application.route('/Doctor/eCSP/Logout')
 def Logout():
     print ('LOGOUT')
     return jsonify(Status="Success")
 
 #Login
-@app.route('/Doctor/eCSP/Login', methods = ['GET'])
-@app.route('/Assistant/eCSP/Login', methods = ['GET'])
+@application.route('/Doctor/eCSP/Login', methods = ['GET'])
+@application.route('/Assistant/eCSP/Login', methods = ['GET'])
 def DAlogin():
     if request.method == 'GET':
         print('Doctor & Assistant Login')
@@ -92,7 +91,7 @@ def DAlogin():
         return jsonify(Error="Method not allowed."), 405
 
 #Get a Doctor List
-@app.route('/Doctor/eCSP/DoctorList', methods=['GET', 'POST'])
+@application.route('/Doctor/eCSP/DoctorList', methods=['GET', 'POST'])
 #@token_required
 def getAllDoctor():
     if request.method == 'GET':
@@ -104,7 +103,7 @@ def getAllDoctor():
         return jsonify(Error="Method not allowed."), 405
 
 #Get the Doctor Personal Information by Doctor ID
-@app.route('/Doctor/eCSP/PersonalInformation', methods=['GET', 'PUT'])
+@application.route('/Doctor/eCSP/PersonalInformation', methods=['GET', 'PUT'])
 def getDoctorByID():
     if request.method == 'GET':
         print('GET - GETDOCTORBYID')
@@ -118,7 +117,7 @@ def getDoctorByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Deactivate Assistant Status
-@app.route('/Doctor/eCSP/Assistant/Deactivate', methods = ['PUT'])
+@application.route('/Doctor/eCSP/Assistant/Deactivate', methods = ['PUT'])
 def deactivateAssistantStatus():
     if request.method == 'PUT':
         status = False
@@ -128,7 +127,7 @@ def deactivateAssistantStatus():
         return jsonify(Error="Method not allowed."), 405
 
 #Activate Assistant Status
-@app.route('/Doctor/eCSP/Assistant/Activate', methods = ['PUT'])
+@application.route('/Doctor/eCSP/Assistant/Activate', methods = ['PUT'])
 def activateAssistantStatus():
     if request.method == 'PUT':
         status = True
@@ -137,7 +136,7 @@ def activateAssistantStatus():
         return jsonify(Error="Method not allowed."), 405
 
 #Get an Assistant List
-@app.route('/Doctor/eCSP/AssistantList', methods=['GET', 'POST'])
+@application.route('/Doctor/eCSP/AssistantList', methods=['GET', 'POST'])
 def getAllAssistant():
     if request.method == 'GET':
         print('GET - GETASSISTANTLIST')
@@ -149,8 +148,8 @@ def getAllAssistant():
 
 
 #Get an Assistant Personal Information by Assistant ID
-@app.route('/Doctor/eCSP/Assistant/PersonalInformation', methods=['GET', 'PUT'])
-@app.route('/Assistant/eCSP/PersonalInformation', methods=['GET', 'PUT'])
+@application.route('/Doctor/eCSP/Assistant/PersonalInformation', methods=['GET', 'PUT'])
+@application.route('/Assistant/eCSP/PersonalInformation', methods=['GET', 'PUT'])
 def getAssistantByID():
     if request.method == 'GET':
         print('GET - GETASSISTANTBYID')
@@ -165,8 +164,8 @@ def getAssistantByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Deactivate Patient Status
-@app.route('/Doctor/eCSP/Patient/Deactivate', methods = ['PUT'])
-@app.route('/Assistant/eCSP/Patient/Deactivate', methods = ['PUT'])
+@application.route('/Doctor/eCSP/Patient/Deactivate', methods = ['PUT'])
+@application.route('/Assistant/eCSP/Patient/Deactivate', methods = ['PUT'])
 def deactivatePatientStatus():
     if request.method == 'PUT':
         path = request.path
@@ -176,8 +175,8 @@ def deactivatePatientStatus():
         return jsonify(Error="Method not allowed."), 405
 
 #Activate Patient Status
-@app.route('/Doctor/eCSP/Patient/Activate', methods = ['PUT'])
-@app.route('/Assistant/eCSP/Patient/Activate', methods = ['PUT'])
+@application.route('/Doctor/eCSP/Patient/Activate', methods = ['PUT'])
+@application.route('/Assistant/eCSP/Patient/Activate', methods = ['PUT'])
 def activatePatientStatus():
     if request.method == 'PUT':
         path = request.path
@@ -187,8 +186,8 @@ def activatePatientStatus():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient List
-@app.route('/Doctor/eCSP/PatientList', methods=['GET', 'POST'])
-@app.route('/Assistant/eCSP/PatientList', methods=['GET', 'POST'])
+@application.route('/Doctor/eCSP/PatientList', methods=['GET', 'POST'])
+@application.route('/Assistant/eCSP/PatientList', methods=['GET', 'POST'])
 def getAllPatients():
     if request.method == 'GET':
         print('GET - GETPATIENTLIST')
@@ -199,9 +198,9 @@ def getAllPatients():
         return jsonify(Error="Method not allowed."), 405
 
 #Get a Patient Personal Information by PatientID
-@app.route('/Doctor/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT'])
-@app.route('/Assistant/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT'])
-@app.route('/Patient/eCSP/PersonalInformation', methods=['GET', 'PUT'])
+@application.route('/Doctor/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT'])
+@application.route('/Assistant/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT'])
+@application.route('/Patient/eCSP/PersonalInformation', methods=['GET', 'PUT'])
 def getPatientByID():
     if request.method == 'GET':
         print('GET - GETPATIENTBYID')
@@ -217,9 +216,9 @@ def getPatientByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Consultation Note List
-@app.route('/Doctor/eCSP/Patient/ConsultationNotesList', methods=['GET'])
-@app.route('/Assistant/eCSP/Patient/ConsultationNotesList', methods=['GET'])
-@app.route('/Patient/eCSP/ConsultationNotesList', methods=['GET'])
+@application.route('/Doctor/eCSP/Patient/ConsultationNotesList', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/ConsultationNotesList', methods=['GET'])
+@application.route('/Patient/eCSP/ConsultationNotesList', methods=['GET'])
 def getAllConsultationNotes():
     if request.method == 'GET':
         print('GET - GETALLCONSULTATIONNOTES')
@@ -231,9 +230,9 @@ def getAllConsultationNotes():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Consultation Note Information
-@app.route('/Doctor/eCSP/Patient/ConsultationNotes', methods=['GET','POST'])
-@app.route('/Assistant/eCSP/Patient/ConsultationNotes', methods=['GET','POST'])
-@app.route('/Patient/eCSP/ConsultationNotes', methods=['GET','POST'])
+@application.route('/Doctor/eCSP/Patient/ConsultationNotes', methods=['GET','POST'])
+@application.route('/Assistant/eCSP/Patient/ConsultationNotes', methods=['GET','POST'])
+@application.route('/Patient/eCSP/ConsultationNotes', methods=['GET','POST'])
 def getConsultationNotesByID():
     if request.method == 'GET':
         print('GET - GETCONSULTATIONNOTEBYID')
@@ -247,9 +246,9 @@ def getConsultationNotesByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Initial Form List
-@app.route('/Doctor/eCSP/Patient/InitialFormList', methods=['GET'])
-@app.route('/Assistant/eCSP/Patient/InitialFormList', methods=['GET'])
-@app.route('/Patient/eCSP/InitialFormList', methods=['GET'])
+@application.route('/Doctor/eCSP/Patient/InitialFormList', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/InitialFormList', methods=['GET'])
+@application.route('/Patient/eCSP/InitialFormList', methods=['GET'])
 def getAllInitialForm():
     if request.method == 'GET':
         print('GET - GETALLINITIALFORM')
@@ -261,9 +260,9 @@ def getAllInitialForm():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Initial Form Information
-@app.route('/Doctor/eCSP/Patient/InitialForm', methods=['GET','POST'])
-@app.route('/Assistant/eCSP/Patient/InitialForm', methods=['GET','POST'])
-@app.route('/Patient/eCSP/InitialForm', methods=['GET','POST'])
+@application.route('/Doctor/eCSP/Patient/InitialForm', methods=['GET','POST'])
+@application.route('/Assistant/eCSP/Patient/InitialForm', methods=['GET','POST'])
+@application.route('/Patient/eCSP/InitialForm', methods=['GET','POST'])
 def getInitialFormByID():
     if request.method == 'GET':
         print('GET - GETINITIALFORMBYID')
@@ -277,9 +276,9 @@ def getInitialFormByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Prescription List
-@app.route('/Doctor/eCSP/Patient/PrescriptionList', methods=['GET'])
-@app.route('/Assistant/eCSP/Patient/PrescriptionList', methods=['GET'])
-@app.route('/Patient/eCSP/PrescriptionList', methods=['GET'])
+@application.route('/Doctor/eCSP/Patient/PrescriptionList', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/PrescriptionList', methods=['GET'])
+@application.route('/Patient/eCSP/PrescriptionList', methods=['GET'])
 def getAllPrescription():
     if request.method == 'GET':
         print('GET - GETALLPRESCRIPTIONS')
@@ -288,9 +287,9 @@ def getAllPrescription():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Prescription Information
-@app.route('/Doctor/eCSP/Patient/Prescription', methods=['GET','POST'])
-@app.route('/Assistant/eCSP/Patient/Prescription', methods=['GET','POST'])
-@app.route('/Patient/eCSP/Prescription', methods=['GET','POST'])
+@application.route('/Doctor/eCSP/Patient/Prescription', methods=['GET','POST'])
+@application.route('/Assistant/eCSP/Patient/Prescription', methods=['GET','POST'])
+@application.route('/Patient/eCSP/Prescription', methods=['GET','POST'])
 def getPrescriptionByID():
     if request.method == 'GET':
         print('GET - GETPRESCRIPTIONBYID')
@@ -304,9 +303,9 @@ def getPrescriptionByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Referral List
-@app.route('/Doctor/eCSP/Patient/ReferralList', methods=['GET'])
-@app.route('/Assistant/eCSP/Patient/ReferralList', methods=['GET'])
-@app.route('/Patient/eCSP/ReferralList', methods=['GET'])
+@application.route('/Doctor/eCSP/Patient/ReferralList', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/ReferralList', methods=['GET'])
+@application.route('/Patient/eCSP/ReferralList', methods=['GET'])
 def getAllReferral():
     if request.method == 'GET':
         print('GET - GETALLREFERRAL')
@@ -315,9 +314,9 @@ def getAllReferral():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Referral Information
-@app.route('/Doctor/eCSP/Patient/Referral', methods=['GET','POST'])
-@app.route('/Assistant/eCSP/Patient/Referral', methods=['GET','POST'])
-@app.route('/Patient/eCSP/Referral', methods=['GET','POST'])
+@application.route('/Doctor/eCSP/Patient/Referral', methods=['GET','POST'])
+@application.route('/Assistant/eCSP/Patient/Referral', methods=['GET','POST'])
+@application.route('/Patient/eCSP/Referral', methods=['GET','POST'])
 def getReferralByID():
     if request.method == 'GET':
         print('GET - GETREFERRALBYID')
@@ -331,9 +330,9 @@ def getReferralByID():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Result List
-@app.route('/Doctor/eCSP/Patient/ResultList', methods=['GET'])
-@app.route('/Assistant/eCSP/Patient/ResultList', methods=['GET'])
-@app.route('/Patient/eCSP/ResultList', methods=['GET'])
+@application.route('/Doctor/eCSP/Patient/ResultList', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/ResultList', methods=['GET'])
+@application.route('/Patient/eCSP/ResultList', methods=['GET'])
 def getAllResult():
     if request.method == 'GET':
         print('GET - GETALLRESULTS')
@@ -342,9 +341,9 @@ def getAllResult():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Result Information
-@app.route('/Patient/eCSP/Doctor/Result', methods=['GET','POST'])
-@app.route('/Assistant/eCSP/Patient/Result', methods=['GET','POST'])
-@app.route('/Patient/eCSP/Result', methods=['GET','POST'])
+@application.route('/Patient/eCSP/Doctor/Result', methods=['GET','POST'])
+@application.route('/Assistant/eCSP/Patient/Result', methods=['GET','POST'])
+@application.route('/Patient/eCSP/Result', methods=['GET','POST'])
 def getResultByID():
     if request.method == 'GET':
         print('GET - GETRESULTBYID')
@@ -359,4 +358,4 @@ def getResultByID():
 
 
 if __name__== '__main__':
-    app.run(debug=True)
+    application.run(debug=True)

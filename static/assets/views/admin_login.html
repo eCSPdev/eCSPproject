@@ -5,32 +5,44 @@
 
         <!-- start: Admin (Doctor and Assistant) Login Form -->
         <div class="box-login">
-            <div>
             <form class="form-login">
                 <fieldset>
                     <legend style="top: -20px; font-size: 20px;">
                         <img src="static/assets/images/ecsp-logo.png" alt="{{app.name}}" width="25" height="45" style="margin-right: 10px;"> Welcome to eCSP
                     </legend>
-                    <div class="form-group">
-                        <span class="input-icon">
-                            <input type="text" class="form-control" ng-model="usernameOrEmail" placeholder="Username or Email" style="margin-top: 25px;" autofocus>
-                            <i class="fa fa-user"></i>
-                        </span>
+                    <div>
+                        <label style="margin-right: 10px;margin-top:10px;font-size:14px;color: #007aff;margin-left:40px;"><span class="symbol required"></span>Login as:</label>
+                        <div class="radio clip-radio radio-primary">
+                            <input type="radio" id="rdDoctor" value="doctor" ng-model="credentials.role" required>
+                            <label for="rdDoctor" style="font-size: 13px;margin-right: 10px;">
+                                Doctor
+                            </label>
+                            <input type="radio" id="rdAssistant" value="assistant" ng-model="credentials.role" required>
+                            <label for="rdAssistant" style="font-size: 13px">
+                                Assistant
+                            </label>
+                        </div>
                     </div>
-                    <div class="form-group form-actions">
-                        <span class="input-icon">
-                            <input type="password" class="form-control password" ng-model="password" placeholder="Password">
-                            <i class="fa fa-lock"></i>
-                        </span>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary pull-right" ng-click="validateLogin(usernameOrEmail, password)">
-                            Login <i class="fa fa-arrow-circle-right"></i>
-                        </button>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
+                        <div class="form-group" style="margin-top: 5px;">
+                            <span class="input-icon">
+                                <input type="text" class="form-control" ng-model="credentials.username" placeholder="Username" style="margin-top: 25px;" autofocus>
+                                <i class="fa fa-user"></i>
+                            </span>
+                        </div>
+                        <div class="form-group form-actions">
+                            <span class="input-icon">
+                                <input type="password" class="form-control password" ng-model="credentials.password" placeholder="Password">
+                                <i class="fa fa-lock"></i>
+                            </span>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary pull-right" ng-click="validateLogin(credentials.username, credentials.password, credentials.role)" ng-disabled="!credentials.username || !credentials.password || !credentials.role">
+                                Login <i class="fa fa-arrow-circle-right"></i>
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
 
             <!-- start: eCSP Information -->
             <div class="copyright">

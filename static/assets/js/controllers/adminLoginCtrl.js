@@ -4,8 +4,7 @@
   */
   app.controller('adminLoginCtrl', ["$scope", "$rootScope", "$state", "$http", function ($scope, $rootScope, $state, $http) {
 
-  	$scope.usernameOrEmail = "";
-  	$scope.password = "";
+  	$scope.credentials = {};
 
   	/* Token to determine if a user is logged in */
   	$rootScope.isLoggedIn = false;
@@ -13,39 +12,51 @@
     /* Variable used to store username, token, and role of logged in user */
     $rootScope.currentUser = {};
 
-  	/* Function to validate login information */
-  	$scope.validateLogin = function(usernameOrEmail, password) {
+    /* Function to validate Admin login information */
+    $scope.validateLogin = function(username, password, role) {
+      if(role == 'doctor') {
+        /* HTTP POST Request: DAlogin() */
+        /* Doctor login */
+        $http.get('/Doctor/eCSP/Login?username=' + username + '&pssword=' + password)
+        .then(function success(response) {
 
-      /* HTTP POST Request: DAlogin() */
-      /* Doctor login */
-      $http.get('/Doctor/eCSP/Login?username=' + usernameOrEmail + '&pssword=' + password)
-      .then(function success(response) {
-        console.log(response.data);
+          $rootScope.currentUser.username = response.data.Doctor.username;
+          $rootScope.currentUser.token = response.data.Doctor.token;
+          $rootScope.currentUser.role = response.data.Doctor.role;
 
-        // TODO
-        // $rootScope.currentUser.username = ;
+          $rootScope.isLoggedIn = true;
 
-      }, function error(response) {
-        console.log(response);
-      });
+          // Redirect to homepage
+          $state.go('app.home');
 
-   //    for(var i = 0; i < $rootScope.user.length; i++) {
+        }, function error(response) {
+          console.log(response);
+          alert('Invalid username or password. Please try again.');
+          $scope.credentials.password = '';
+        });
+      }
 
-   //     if(usernameOrEmail == $rootScope.user[i].email || usernameOrEmail == $rootScope.user[i].username) {
-   //      if(password == $scope.user[i].password) {
-   //       $rootScope.isLoggedIn = true;
-   //       $rootScope.currentUser = $rootScope.user[i];
+      else {
+        /* HTTP POST Request: DAlogin*/
+        /* Assistant login */
+        $http.get('/Assistant/eCSP/Login?username=' + username + '&pssword=' + password)
+        .then(function success(response) {
 
-   //       $state.go('app.home');
-   //     }
-   //   }
-   // }
+          $rootScope.currentUser.username = response.data.Assistant.username;
+          $rootScope.currentUser.token = response.data.Assistant.token;
+          $rootScope.currentUser.role = response.data.Assistant.role;
 
-   // if($rootScope.isLoggedIn == false) {
-   //   alert("Username or password is incorrect. Please try again.");
-   //   $scope.password = "";
-   // }
+          $rootScope.isLoggedIn = true;
+
+          // Redirect to homepage
+          $state.go('app.home');
+
+        }, function error(response) {
+          console.log(response);
+          alert('Invalid username or password. Please try again.');
+          $scope.credentials.password = '';
+        });
+      }
  };
-
 }]);
 

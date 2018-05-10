@@ -4,16 +4,43 @@ import datetime, time
 
 class LoginHandler:
 
-    def build_PLogin_dict(self, row):
+    def build_PLogin_dict(self, row, token):
         result = {}
         result['username'] = row[0]
-        result['rle'] = 0
+        result['status'] = row[1]
+        result['deactivationdate'] = row[2]
+        result['firstname'] = row[3]
+        result['middlename'] = row[4]
+        result['lastname'] = row[5]
+        result['token'] = token
+        result['rle'] = 'Patient'
+        print (result)
         return result
 
-    def build_ALogin_dict(self, row, rle):
+    def build_ALogin_dict(self, row, token):
         result = {}
         result['username'] = row[0]
-        result['rle'] = rle
+        result['status'] = row[1]
+        result['deactivationdate'] = row[2]
+        result['firstname'] = row[3]
+        result['middlename'] = row[4]
+        result['lastname'] = row[5]
+        result['token'] = token
+        result['rle'] = 'Assistant'
+        print (result)
+        return result
+
+    def build_DLogin_dict(self, row, token):
+        result = {}
+        result['username'] = row[0]
+        result['status'] = row[1]
+        result['deactivationdate'] = row[2]
+        result['firstname'] = row[3]
+        result['middlename'] = row[4]
+        result['lastname'] = row[5]
+        result['token'] = token
+        result['rle'] = 'Doctor'
+        print (result)
         return result
 
     def build_FEinfo_dict(self, username, token, role):
@@ -25,80 +52,79 @@ class LoginHandler:
         #result ('diccionario : ', result)
         return result
 
-    def validatePatient(self, form):
+    def validatePatient(self, form, token):
         print ('Patient login')
         username = form['username']
         pssword = form['pssword']
         dao = LoginDAO()
-        row = dao.validatePatient(username, pssword)
-        print('row : ', row)
-        status = row[0][1]
-        print('status : ', status)
-        deactivationdate = row[0][2].strftime('%Y-%m-%d %H:%M:%S')
-        now_time = time.time()
-        today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
-        print ('deactivationdate : ', deactivationdate)
-        print('dateofchanges : ', today)
-        if not row:
-            return None
-        elif status == True or today <= deactivationdate :
-            print ('estoy validando')
-            result = self.build_PLogin_dict(row)
-            return 0
+        patient = dao.validatePatient(username, pssword)
+        status = patient[1]
+        if patient == None:
+            return jsonify(Error="Invalid Username or Password"), 400
+        if status == True:
+            result = self.build_PLogin_dict(patient, token)
+            self.updateLogInformation(username, token, 'Patient')
+            return jsonify(Patient = result)
         else:
-            return None
+            deactivationdate = patient[2].strftime('%Y-%m-%d %H:%M:%S')
+            now_time = time.time()
+            today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
+            if today <= deactivationdate:
+                result = self.build_PLogin_dict(patient, token)
+                self.updateLogInformation(username, token, 'Patient')
+                return jsonify(Patient=result)
+            else:
+                return jsonify(Error="Expited Account"), 400
 
-    def validateAdmin(self, form):
+
+    def validateAdmin(self, form, token):
         print ('Admin login')
         username = form['username']
-        print(form['username'])
         pssword = form['pssword']
-        print(form['pssword'])
         dao = LoginDAO()
         doctor = dao.validateDoctor(username, pssword)
         assistant = dao.validateAssistant(username, pssword)
-        print('AFTER LoginDAO')
         if not doctor:
             if not assistant:
-                return None
+                return jsonify(Error="Invalid Username or Password"), 400
             else:
-                print ('Assistant')
-                rle = '1'
-                print('row : ', assistant)
-                status = assistant[0][1]
+                status = assistant[1]
                 print('status : ', status)
                 if status == True :
-                    result = self.build_ALogin_dict(assistant[0], rle)
-                    return int(1)
+                    result = self.build_ALogin_dict(assistant, token)
+                    self.updateLogInformation(username, token, 'Assistant')
+                    return jsonify(Assistant=result)
                 else:
-                    deactivationdate = assistant[0][2].strftime('%Y-%m-%d %H:%M:%S')
+                    deactivationdate = assistant[2].strftime('%Y-%m-%d %H:%M:%S')
                     now_time = time.time()
                     today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
                     print('deactivationdate : ', deactivationdate)
                     print('dateofchanges : ', today)
                     if today <= deactivationdate:
-                        return int(1)
+                        result = self.build_ALogin_dict(assistant, token)
+                        self.updateLogInformation(username, token, 'Assistant')
+                        return jsonify(Assistant=result)
                     else:
-                        return None
+                        return jsonify(Error="Expired Account"), 400
         else:
-            print ('Doctor')
-            print('row : ', doctor)
-            status = doctor[0][1]
+            status = doctor[1]
             print('status : ', status)
             if status == True:
-                rle = '2'
-                result = self.build_ALogin_dict(doctor[0], rle)
-                return int(2)
+                result = self.build_DLogin_dict(doctor, token)
+                self.updateLogInformation(username, token, 'Doctor')
+                return jsonify(Doctor=result)
             else:
-                deactivationdate = assistant[0][2].strftime('%Y-%m-%d %H:%M:%S')
+                deactivationdate = doctor[2].strftime('%Y-%m-%d %H:%M:%S')
                 now_time = time.time()
                 today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
                 print('deactivationdate : ', deactivationdate)
                 print('dateofchanges : ', today)
                 if today <= deactivationdate:
-                    return int(2)
+                    result = self.build_DLogin_dict(doctor, token)
+                    self.updateLogInformation(username, token, 'Doctor')
+                    return jsonify(Doctor=result)
                 else:
-                    return None
+                    return jsonify(Error="Expired Account"), 400
 
     def build_dict(self, username, token):
         #print ('username : ', username)
@@ -106,24 +132,23 @@ class LoginHandler:
         result = self.build_FEinfo_dict(username, token)
         return jsonify(user = result)
 
-    def updateLogInformation(self, username, t, role):
+    def updateLogInformation(self, username, token, role):
         print ('updating ...')
         dao = LoginDAO()
         logged = True
-        token = t.decode('UTF-8')
         if username :
             print("CALLING DAO HERE")
-            if role == 0:
+            if role == 'Patient':
                 dao.updateloggedPatient(username, token, logged)
-                result = self.build_FEinfo_dict(username, token, 'Patient')
-                return jsonify(Patient=result), 200
-            if role == 1:
+                #result = self.build_FEinfo_dict(username, token, 'Patient',firstname, middlename, lastname)
+                return
+            if role == 'Assistant':
                 dao.updateloggedAssistant(username, token, logged)
-                result = self.build_FEinfo_dict(username, token, 'Assistant')
-                return jsonify(Assistant=result), 200
-            if role == 2:
+                #result = self.build_FEinfo_dict(username, token, 'Assistant',firstname, middlename, lastname)
+                return
+            if role == 'Doctor':
                 dao.updateloggedDoctor(username, token, logged)
-                result = self.build_FEinfo_dict(username, token, 'Doctor')
-                return jsonify(Doctor=result), 200
+                #result = self.build_FEinfo_dict(username, token, 'Doctor',firstname, middlename, lastname)
+                return
             else:
                 return jsonify(Error="Invalid user"), 400

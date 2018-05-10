@@ -51,15 +51,11 @@ def index():
 @app.route('/Patient/eCSP/Login', methods = ['GET'])
 def plogin():
     if request.method == 'GET':
-        print('PLOGIN')
         username = request.args.get('username')
-        role = LoginHandler().validatePatient(request.args)
-        if not role == 0:
-            return jsonify(Error="Invalid Username or password"), 401
-        else:
-            token = jwt.encode({'user' : username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(hours=8)}, app.config['SECRET_KEY'])
-            #print('token : ', token)
-            return LoginHandler().updateLogInformation(username, token, role)
+        token = (jwt.encode({'user': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=8)},
+                           app.config['SECRET_KEY'])).decode('UTF-8')
+        result = LoginHandler().validatePatient(request.args, token)
+        return result
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -76,18 +72,11 @@ def Logout():
 @app.route('/Assistant/eCSP/Login', methods = ['GET'])
 def DAlogin():
     if request.method == 'GET':
-        print('Doctor & Assistant Login')
         username = request.args.get('username')
-        print('username : ', username)
-        role = LoginHandler().validateAdmin(request.args)
-        print ('role : ', role)
-        if role != 1 and role != 2:
-            #print ('estoy dentro del if')
-            return jsonify(Error="Invalid Username or password"), 401
-        else:
-            #print('estoy dentro del if')
-            token = jwt.encode({'user' : username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
-            return LoginHandler().updateLogInformation(username, token, role)
+        token = (jwt.encode({'user': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=8)},
+                           app.config['SECRET_KEY'])).decode('UTF-8')
+        result = LoginHandler().validateAdmin(request.args, token)
+        return result
     else:
         return jsonify(Error="Method not allowed."), 405
 

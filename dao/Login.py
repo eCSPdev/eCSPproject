@@ -16,14 +16,12 @@ class LoginDAO:
             self.conn = psycopg2._connect(connection_url)
             try:
                 cursor = self.conn.cursor()
-                query = "select username, status, deactivationdate " \
+                query = "select username, status, deactivationdate, firstname, middlename, lastname " \
                         "from patients " \
                         "where (username = %s and pssword = %s) " \
                         "or (email = %s and pssword = %s);"
                 cursor.execute(query, (username, pssword, username, pssword, ))
-                result = []
-                for row in cursor:
-                    result.append(row)
+                result = cursor.fetchone()
                 return result
             except Exception as e:
                 print("Query failed : ", e)
@@ -44,14 +42,12 @@ class LoginDAO:
             self.conn = psycopg2._connect(connection_url)
             try:
                 cursor = self.conn.cursor()
-                query = "select username, status, deactivationdate " \
+                query = "select username, status, deactivationdate, firstname, middlename, lastname " \
                         "from doctor " \
                         "where (username = %s and pssword = %s) " \
                         "or (email = %s and pssword = %s); "
                 cursor.execute(query, (username, pssword, username, pssword))
-                result = []
-                for row in cursor:
-                    result.append(row)
+                result = cursor.fetchone()
                 #print(result)
                 return result
             except Exception as e:
@@ -72,15 +68,13 @@ class LoginDAO:
             self.conn = psycopg2._connect(connection_url)
             try:
                 cursor = self.conn.cursor()
-                query = "select username, status, deactivationdate " \
+                query = "select username, status, deactivationdate, firstname, middlename, lastname " \
                         "from assistants " \
                         "where (username = %s and pssword = %s) " \
                         "or (email = %s and pssword = %s); "
                 cursor.execute(query, (username, pssword, username, pssword))
-                result = []
-                for row in cursor:
-                    result.append(row)
-                #print(result)
+                result = cursor.fetchone()
+                print(result)
                 return result
             except Exception as e:
                 print("Query failed : ", e)

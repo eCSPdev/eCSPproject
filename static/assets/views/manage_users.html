@@ -12,7 +12,7 @@
 		<div class="row">
 
 			<!-- start: Add New User Button -->
-			<div class="col-sm-4" ng-class="{ 'two-buttons': (currentUser.role == 'assistant') }">
+			<div class="col-sm-4" ng-class="{ 'two-buttons': (currentUser.role == 'Assistant') }">
 				<div class="panel panel-white no-radius text-center">
 
 					<!-- Link to this page -->
@@ -24,14 +24,14 @@
 							<br>
 
 							<!-- Show this button for Doctor user types -->
-							<h2 class="StepTitle" ng-if="currentUser.role == 'doctor'">Add New User</h2>
-							<p class="text-small" ng-if="currentUser.role == 'doctor'">
+							<h2 class="StepTitle" ng-if="currentUser.role == 'Doctor'">Add New User</h2>
+							<p class="text-small" ng-if="currentUser.role == 'Doctor'">
 								[Create a new patient or assistant]
 							</p>
 
 							<!-- Change this button for Assistant user types -->
-							<h2 class="StepTitle" ng-if="currentUser.role == 'assistant'">Add New Patient</h2>
-							<p class="text-small" ng-if="currentUser.role == 'assistant'">
+							<h2 class="StepTitle" ng-if="currentUser.role == 'Assistant'">Add New Patient</h2>
+							<p class="text-small" ng-if="currentUser.role == 'Assistant'">
 								[Create a new patient]
 							</p>
 						</div>
@@ -41,7 +41,7 @@
 			<!-- end: Add New User Button -->
 
 			<!-- start: Manage Patients Button -->
-			<div class="col-sm-4"  ng-class="{ 'two-buttons': (currentUser.role == 'assistant') }">
+			<div class="col-sm-4"  ng-class="{ 'two-buttons': (currentUser.role == 'Assistant') }">
 				<div class="panel panel-white no-radius text-center">
 
 					<!-- Link to this page -->
@@ -62,7 +62,7 @@
 			<!-- end: Manage Patients Button -->
 
 			<!-- start: Manange Assistants Button -->
-			<div class="col-sm-4" ng-if="currentUser.role != 'assistant'">
+			<div class="col-sm-4" ng-if="currentUser.role != 'Assistant'">
 				<div class="panel panel-white no-radius text-center">
 
 					<!-- Link to this page -->

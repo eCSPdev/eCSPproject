@@ -13,18 +13,18 @@
                     </legend>
                     <div class="form-group">
                         <span class="input-icon">
-                            <input type="text" class="form-control" ng-model="usernameOrEmail" placeholder="Username or Email" style="margin-top: 25px;" autofocus>
+                            <input type="text" class="form-control" ng-model="credentials.username" placeholder="Username" style="margin-top: 25px;" autofocus>
                             <i class="fa fa-user"></i>
                         </span>
                     </div>
                     <div class="form-group form-actions">
                         <span class="input-icon">
-                            <input type="password" class="form-control password" ng-model="password" placeholder="Password">
+                            <input type="password" class="form-control password" ng-model="credentials.password" placeholder="Password">
                             <i class="fa fa-lock"></i>
                         </span>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary pull-right" ng-click="validateLogin(usernameOrEmail, password)">
+                        <button type="submit" class="btn btn-primary pull-right" ng-click="validateLogin(credentials.username, credentials.password)" ng-disabled="!credentials.username || !credentials.password">
                             Login <i class="fa fa-arrow-circle-right"></i>
                         </button>
                     </div>

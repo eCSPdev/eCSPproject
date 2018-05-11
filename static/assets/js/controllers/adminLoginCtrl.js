@@ -22,7 +22,7 @@
 
           $rootScope.currentUser.username = response.data.Doctor.username;
           $rootScope.currentUser.token = response.data.Doctor.token;
-          $rootScope.currentUser.role = response.data.Doctor.role;
+          $rootScope.currentUser.role = response.data.Doctor.rle;
 
           $rootScope.isLoggedIn = true;
 
@@ -44,7 +44,7 @@
 
           $rootScope.currentUser.username = response.data.Assistant.username;
           $rootScope.currentUser.token = response.data.Assistant.token;
-          $rootScope.currentUser.role = response.data.Assistant.role;
+          $rootScope.currentUser.role = response.data.Assistant.rle;
 
           $rootScope.isLoggedIn = true;
 

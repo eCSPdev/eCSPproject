@@ -12,11 +12,11 @@ app.controller('homepageCtrl', ["$scope", "$rootScope", "$state", function($scop
 
     $scope.nextState = " ";
 
-    if($rootScope.currentUser.role == "Doctor" || $rootScope.currentUser.role == "Assistant") {
+    if($rootScope.currentUser.role == 'Doctor' || $rootScope.currentUser.role == 'Assistant') {
             $scope.nextState = "app.users.view_records";
     }
 
-    else if($rootScope.currentUser.role == "Patient") {
+    else if($rootScope.currentUser.role == 'Patient') {
             $scope.nextState = "app.users.consultation_details";
     }
 

@@ -24,11 +24,14 @@
           
           $rootScope.currentUser.username = response.data.Patient.username;
           $rootScope.currentUser.token = response.data.Patient.token;
-          $rootScope.currentUser.role = response.data.Patient.role;
+          $rootScope.currentUser.role = response.data.Patient.rle;
+
+          $rootScope.currentUser.firstname = response.data.Patient.firstname;
 
           $rootScope.isLoggedIn = true;
 
-          console.log($rootScope.currentUser);
+          // Redirect to homepage
+          $state.go('app.home');
 
         }, function error(response) {
           console.log(response);

@@ -13,6 +13,7 @@ class LoginHandler:
         result['middlename'] = row[4]
         result['lastname'] = row[5]
         result['token'] = token
+        result['patientid'] = row[6]
         result['rle'] = 'Patient'
         print (result)
         return result
@@ -26,6 +27,7 @@ class LoginHandler:
         result['middlename'] = row[4]
         result['lastname'] = row[5]
         result['token'] = token
+        result['assistantid'] = row[6]
         result['rle'] = 'Assistant'
         print (result)
         return result
@@ -39,6 +41,7 @@ class LoginHandler:
         result['middlename'] = row[4]
         result['lastname'] = row[5]
         result['token'] = token
+        result['doctorid'] = row[6]
         result['rle'] = 'Doctor'
         print (result)
         return result

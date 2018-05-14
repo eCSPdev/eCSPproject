@@ -16,7 +16,7 @@ class LoginDAO:
             self.conn = psycopg2._connect(connection_url)
             try:
                 cursor = self.conn.cursor()
-                query = "select username, status, deactivationdate, firstname, middlename, lastname " \
+                query = "select username, status, deactivationdate, firstname, middlename, lastname, patientid " \
                         "from patients " \
                         "where (username = %s and pssword = %s) " \
                         "or (email = %s and pssword = %s);"
@@ -42,7 +42,7 @@ class LoginDAO:
             self.conn = psycopg2._connect(connection_url)
             try:
                 cursor = self.conn.cursor()
-                query = "select username, status, deactivationdate, firstname, middlename, lastname " \
+                query = "select username, status, deactivationdate, firstname, middlename, lastname, doctorid " \
                         "from doctor " \
                         "where (username = %s and pssword = %s) " \
                         "or (email = %s and pssword = %s); "
@@ -68,7 +68,7 @@ class LoginDAO:
             self.conn = psycopg2._connect(connection_url)
             try:
                 cursor = self.conn.cursor()
-                query = "select username, status, deactivationdate, firstname, middlename, lastname " \
+                query = "select username, status, deactivationdate, firstname, middlename, lastname,assistantid " \
                         "from assistants " \
                         "where (username = %s and pssword = %s) " \
                         "or (email = %s and pssword = %s); "

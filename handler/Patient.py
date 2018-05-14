@@ -383,7 +383,7 @@ class PatientHandler:
 
             #Verify if cirtical(not null) info is complete
             if firstname and lastname and ssn and birthdate and phone and username and pssword\
-                    and street and aptno and city and country and zipcode and insurancecompanyname \
+                    and street and aptno and city and country and zipcode \
                     and type and recordno:
 
                 dao = PatientsDAO()

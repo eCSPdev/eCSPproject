@@ -163,7 +163,7 @@ class AssistantHandler:
             deactivationdate = None
             daysofgrace = None
 
-            if firstname and lastname and phone and status and username and pssword and street and aptno and city \
+            if firstname and lastname and phone and status and username and pssword and street and city \
                     and country and zipcode:
 
                 dao = AssistantDAO()
@@ -246,7 +246,7 @@ class AssistantHandler:
                 if pssword == None:
                     pssword = dao.getPsswordByID(assistantid)
 
-                if assistantid and firstname and lastname and phone and status and street and aptno \
+                if assistantid and firstname and lastname and phone and status and street \
                         and city and country and zipcode:
                     dao.updateAssistantInfoByID(assistantid, firstname, middlename, lastname, phone, status,
                                                 email, username, pssword)

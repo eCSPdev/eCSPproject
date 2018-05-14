@@ -10,15 +10,15 @@
                     <legend style="top: -20px; font-size: 20px;">
                         <img src="static/assets/images/ecsp-logo.png" alt="{{app.name}}" width="25" height="45" style="margin-right: 10px;"> Welcome to eCSP
                     </legend>
-                    <div>
-                        <label style="margin-right: 10px;margin-top:10px;font-size:14px;color: #007aff;margin-left:40px;"><span class="symbol required"></span>Login as:</label>
-                        <div class="radio clip-radio radio-primary">
+                    <div style="margin-bottom:-5px;">
+                        <label style="margin-right: 10px;font-size:14px;color: #0079ff;margin-bottom:0px;"><span class="symbol required" style="margin-right:5px;"></span>Login as:</label>
+                        <div class="radio clip-radio radio-primary" style="display:inline-flex;">
                             <input type="radio" id="rdDoctor" value="doctor" ng-model="credentials.role" required>
-                            <label for="rdDoctor" style="font-size: 13px;margin-right: 10px;">
+                            <label for="rdDoctor" style="font-size:13px;margin-right:10px;color:#383737">
                                 Doctor
                             </label>
                             <input type="radio" id="rdAssistant" value="assistant" ng-model="credentials.role" required>
-                            <label for="rdAssistant" style="font-size: 13px">
+                            <label for="rdAssistant" style="font-size:13px;color:#383737">
                                 Assistant
                             </label>
                         </div>

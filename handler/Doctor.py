@@ -188,7 +188,7 @@ class DoctorHandler:
 
 
                 if doctorid and licenseno and firstname and lastname and officename and phone and status \
-                        and street and aptno and city and country and zipcode and pssword:
+                        and street and city and country and zipcode and pssword:
 
                     dao.updateDoctorInfoByID(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
                                              status, email)
@@ -230,7 +230,7 @@ class DoctorHandler:
             country = form['country']
             zipcode = form['zipcode']
             if licenseno and firstname and lastname and officename and phone and status and username and pssword \
-                    and street and aptno and city and country and zipcode:
+                    and street and city and country and zipcode:
                 dao = DoctorDAO()
                 patientdao = PatientsDAO()
                 assistantdao = AssistantDAO()
@@ -323,7 +323,7 @@ class DoctorHandler:
             country = form['country']
             zipcode = form['zipcode']
             if doctorid and licenseno and firstname and lastname and officename and phone and status and username and \
-                    pssword and street and aptno and city and country and zipcode:
+                    pssword and street and city and country and zipcode:
                 dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone, status,
                                         email, username, pssword, street, aptno, city, st, country, zipcode)
                 result = self.build_doctorhistory_dict(doctorid, licenseno, firstname, middlename, lastname, officename,

@@ -24,7 +24,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="chosenPatient.firstName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="thisPatient.firstname" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="editPatientForm.firstName.$dirty && editPatientForm.firstName.$invalid">Enter a valid first name.</span>
 						</div>
 
@@ -35,7 +35,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="chosenPatient.middleName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/">
+							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="thisPatient.middlename" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/">
 							<span class="error text-small block" ng-if="editPatientForm.middleName.$dirty && editPatientForm.middleName.$invalid">Enter a valid middle name.</span>
 						</div>
 
@@ -44,7 +44,7 @@
 							<label class="control-label">
 								Last Name <span class="symbol required"></span>
 							</label>
-							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="chosenPatient.lastName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="thisPatient.lastname" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="editPatientForm.lastName.$dirty && editPatientForm.lastName.$invalid">Enter a valid last name.</span>
 						</div>	
 
@@ -53,7 +53,7 @@
 							<label>
 								Insurance Company
 							</label>
-							<input type="text" name="insuranceCompany" class="form-control" placeholder="Enter insurance company" ng-model="chosenPatient.insuranceCompany" ng-pattern="/[\w\s]+/">
+							<input type="text" name="insuranceCompany" class="form-control" placeholder="Enter insurance company" ng-model="thisPatient.insurancecompanyname" ng-pattern="/[\w\s]+/">
 							<span class="error text-small block" ng-if="editPatientForm.insuranceCompany.$dirty && editPatientForm.insuranceCompany.$invalid">Enter a valid insurance company name.</span>
 						</div>
 
@@ -64,7 +64,7 @@
 								Phone Number <span class="symbol required"></span>
 							</label>
 							<div class="input-group">
-								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="chosenPatient.phoneNumber" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" ng-max-length="12" required>
+								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="thisPatient.phone" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" ng-max-length="12" required>
 								<span class="error text-small block" ng-if="editPatientForm.phoneNumber.$dirty && editPatientForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>
@@ -74,7 +74,7 @@
 							<label>
 								Address Line #1 <span class="symbol required"></span>
 							</label>
-							<input type="text" name="addressLine1" class="form-control" placeholder="Enter address" ng-model="chosenPatient.addressLine1" ng-pattern="/[\w\s]+/" required>
+							<input type="text" name="addressLine1" class="form-control" placeholder="Enter address" ng-model="thisPatient.street" ng-pattern="/[\w\s]+/" required>
 							<span class="error text-small block" ng-if="editPatientForm.addressLine1.$dirty && editPatientForm.addressLine1.$invalid">Enter a valid address.</span>
 						</div>	
 
@@ -82,68 +82,68 @@
 							<label class='control-label'>
 								Address Line #2
 							</label>
-							<input type="text" name="addressLine2" class="form-control" placeholder="Enter address" ng-model="chosenPatient.addressLine2" ng-pattern="/[\w\s]+/">
+							<input type="text" name="addressLine2" class="form-control" placeholder="Enter address" ng-model="thisPatient.aptno" ng-pattern="/[\w\s]+/">
 							<span class="error text-small block" ng-if="editPatientForm.addressLine2.$dirty && editPatientForm.addressLine2.$invalid">Enter a valid address.</span>
 						</div>
 
 						<!-- State form selection and validation -->
 						<div class="form-group" ng-class="{ 'has-error': editPatientForm.state.$invalid, 'has-success': editPatientForm.state.$valid }">
 							<label>
-								State <span class="symbol required"></span>
+								State
 							</label>
-							<select name="state" class="cs-select cs-skin-elastic" ng-model="chosenPatient.state" required>
+							<select name="state" class="cs-select cs-skin-elastic" ng-model="thisPatient.st">
 								<option value="">-- None --</option>
-								<option value="PR">Puerto Rico</option>
-								<option value="AL">Alabama</option>
-								<option value="AK">Alaska</option>
-								<option value="AZ">Arizona</option>
-								<option value="AR">Arkansas</option>
-								<option value="CA">California</option>
-								<option value="CO">Colorado</option>
-								<option value="CT">Connecticut</option>
-								<option value="DE">Delaware</option>
-								<option value="FL">Florida</option>
-								<option value="GA">Georgia</option>
-								<option value="HI">Hawaii</option>
-								<option value="ID">Idaho</option>
-								<option value="IL">Illinois</option>
-								<option value="IN">Indiana</option>
-								<option value="IA">Iowa</option>
-								<option value="KS">Kansas</option>
-								<option value="KY">Kentucky</option>
-								<option value="LA">Louisiana</option>
-								<option value="ME">Maine</option>
-								<option value="MD">Maryland</option>
-								<option value="MA">Massachusetts</option>
-								<option value="MI">Michigan</option>
-								<option value="MN">Minnesota</option>
-								<option value="MS">Mississippi</option>
-								<option value="MO">Missouri</option>
-								<option value="MT">Montana</option>
-								<option value="NE">Nebraska</option>
-								<option value="NV">Nevada</option>
-								<option value="NH">New Hampshire</option>
-								<option value="NJ">New Jersey</option>
-								<option value="NM">New Mexico</option>
-								<option value="NY">New York</option>
-								<option value="NC">North Carolina</option>
-								<option value="ND">North Dakota</option>
-								<option value="OH">Ohio</option>
-								<option value="OK">Oklahoma</option>
-								<option value="OR">Oregon</option>
-								<option value="PA">Pennsylvania</option>
-								<option value="RI">Rhode Island</option>
-								<option value="SC">South Carolina</option>
-								<option value="SD">South Dakota</option>
-								<option value="TN">Tennessee</option>
-								<option value="TX">Texas</option>
-								<option value="UT">Utah</option>
-								<option value="VT">Vermont</option>
-								<option value="VA">Virginia</option>
-								<option value="WA">Washington</option>
-								<option value="WV">West Virginia</option>
-								<option value="WI">Wisconsin</option>
-								<option value="WY">Wyoming</option>
+								<option value="Puerto Rico">Puerto Rico</option>
+								<option value="Alabama">Alabama</option>
+								<option value="Alaska">Alaska</option>
+								<option value="Arizona">Arizona</option>
+								<option value="Arkansas">Arkansas</option>
+								<option value="California">California</option>
+								<option value="Colorado">Colorado</option>
+								<option value="Connecticut">Connecticut</option>
+								<option value="Delaware">Delaware</option>
+								<option value="Florida">Florida</option>
+								<option value="Georgia">Georgia</option>
+								<option value="Hawaii">Hawaii</option>
+								<option value="Idaho">Idaho</option>
+								<option value="Illinois">Illinois</option>
+								<option value="Indiana">Indiana</option>
+								<option value="Iowa">Iowa</option>
+								<option value="Kansas">Kansas</option>
+								<option value="Kentucky">Kentucky</option>
+								<option value="Louisiana">Louisiana</option>
+								<option value="Maine">Maine</option>
+								<option value="Maryland">Maryland</option>
+								<option value="Massachusetts">Massachusetts</option>
+								<option value="Michigan">Michigan</option>
+								<option value="Minnesota">Minnesota</option>
+								<option value="Mississippi">Mississippi</option>
+								<option value="Missouri">Missouri</option>
+								<option value="Montana">Montana</option>
+								<option value="Nebraska">Nebraska</option>
+								<option value="Nevada">Nevada</option>
+								<option value="New Hampshire">New Hampshire</option>
+								<option value="New Jersey">New Jersey</option>
+								<option value="New Mexico">New Mexico</option>
+								<option value="New York">New York</option>
+								<option value="North Carolina">North Carolina</option>
+								<option value="North Dakota">North Dakota</option>
+								<option value="Ohio">Ohio</option>
+								<option value="Oklahoma">Oklahoma</option>
+								<option value="Oregon">Oregon</option>
+								<option value="Pennsylvania">Pennsylvania</option>
+								<option value="Rhode Island">Rhode Island</option>
+								<option value="South Carolina">South Carolina</option>
+								<option value="South Dakota">South Dakota</option>
+								<option value="Tennessee">Tennessee</option>
+								<option value="Texas">Texas</option>
+								<option value="Utah">Utah</option>
+								<option value="Vermont">Vermont</option>
+								<option value="Virginia">Virginia</option>
+								<option value="Washington">Washington</option>
+								<option value="West Virginia">West Virginia</option>
+								<option value="Wisconsin">Wisconsin</option>
+								<option value="Wyoming">Wyoming</option>
 							</select>
 						</div>
 
@@ -152,7 +152,7 @@
 							<label>
 								City <span class="symbol required"></span>
 							</label>
-							<input type="text" name="city" class="form-control" placeholder="Enter city" ng-model="chosenPatient.city" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="city" class="form-control" placeholder="Enter city" ng-model="thisPatient.city" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="editPatientForm.city.$dirty && editPatientForm.city.$invalid">Enter a valid city.</span>
 						</div>
 
@@ -161,7 +161,7 @@
 							<label>
 								Country or Region <span class="symbol required"></span>
 							</label>
-							<input type="text" name="countryRegion" class="form-control" placeholder="Enter country or region" ng-model="chosenPatient.countryRegion" ng-pattern="/[\w\s]+/" required>
+							<input type="text" name="countryRegion" class="form-control" placeholder="Enter country or region" ng-model="thisPatient.country" ng-pattern="/[\w\s]+/" required>
 							<span class="error text-small block" ng-if="editPatientForm.countryRegion.$dirty && editPatientForm.countryRegion.$invalid">Enter a valid country or region.</span>
 						</div>
 
@@ -170,7 +170,7 @@
 							<label>
 								Zip Code <span class="symbol required"></span>
 							</label>
-							<input type="text" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="chosenPatient.zipCode" maxlength="5" minlength="5" required>
+							<input type="text" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="thisPatient.zipcode" maxlength="5" minlength="5" required>
 							<span class="error text-small block" ng-if="editPatientForm.city.$dirty && editPatientForm.city.$invalid">Enter a valid zip code.</span>
 						</div>	
 
@@ -180,7 +180,7 @@
 								Email
 							</label>
 							<div class="form-group">
-								<input type="email" placeholder="Enter email" name="email" class="form-control" ng-model="newUser.email" ng-pattern="/.+@.+\..+/">
+								<input type="email" placeholder="Enter email" name="email" class="form-control" ng-model="thisPatient.email" ng-pattern="/.+@.+\..+/">
 								<span class="error text-small block" ng-if="editPatientForm.email.$dirty && editPatientForm.email.$invalid">Enter a valid email address.</span>
 							</div>
 						</div>
@@ -190,18 +190,18 @@
 							<label>
 								New Password
 							</label>
-							<input type="password" class="form-control" ng-model="assistant.password" placeholder="Enter new password">
+							<input type="password" class="form-control" ng-model="thisPatient.pssword" placeholder="Enter new password">
 						</div>
 						<div class="form-group">
 							<label>
 								Re-Type Password
 							</label>
-							<input type="password" placeholder="Re-type the new password" name="password" id="password" class="form-control">
+							<input type="password" placeholder="Re-type the new password" id="repeatPassword" class="form-control">
 						</div>
 
 						<div class="form-group" style="margin-top: 15px;">
 							<a class="btn btn-red" ui-sref="app.users.manage_users.manage_patients.view_profile" style="float: right">Cancel</a>
-							<a class="btn btn-primary" ng-click="open('sm')" style="float: right; margin-right: 15px;">Save Changes</a>
+							<a class="btn btn-primary" ng-click="open('sm')" ng-disabled=" editPatientForm.$invalid || thisPatient.password != editPatientForm.repeatPassword" style="float: right; margin-right: 15px;">Save Changes</a>
 						</div>
 
 					</fieldset>
@@ -222,7 +222,7 @@
 			<h5 style="font-size: 16px; margin-bottom: 0px;">Are you sure?</h5>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-primary" ng-click="ok()" ui-sref="app.users.manage_users.manage_patients.view_profile">Confirm</button>
+			<button class="btn btn-primary" ng-click="ok()">Confirm</button>
 			<button class="btn btn-red" ng-click="cancel()">Cancel</button>
 		</div>
 	</script>

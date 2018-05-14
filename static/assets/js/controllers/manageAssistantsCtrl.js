@@ -19,14 +19,15 @@
 		}
 	}
 
+
+
     // Assistant that is being managed
-    $rootScope.chosenAssistant = "";
+    $rootScope.chosenAssistant = '';
 
     /* HTTP GET Request: getAllAssistant() */
     /* Get list of all assistants */
-    $http.get('/Doctor/eCSP/AssistantList') 
+    $http.get('/Doctor/eCSP/AssistantList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
     .then(function success(response) {
-    	console.log(response.status);
 		
 		// Populate the list of assistants
         $scope.assistants = response.data.Assistant; 
@@ -50,13 +51,11 @@
             dataset: $scope.assistants
         });
 
-	}, function error(response) {
-		console.log(response);
-	});
+	}, function error(response) { });
 
-	$scope.getAssistantProfile = function(button, employeeID) {
+	$scope.getAssistantProfile = function(button, assistantID) {
 
-		$rootScope.chosenAssistant = employeeID;
+		$rootScope.chosenAssistant = assistantID;
 
 		if(button == 'view') {
 			$state.go('app.users.manage_users.manage_assistants.view_profile');

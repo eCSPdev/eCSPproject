@@ -55,18 +55,17 @@
 						</thead>
 
 						<tbody>
-							<tr ng-repeat="patient in $data | orderBy:sortType:!sortReverse | filter:patientSearch">
+							<tr ng-repeat="patient in $data | orderBy:sortType:sortReverse | filter:patientSearch">
 								<td style="text-align:center;">{{ patient.recordno }}</td>
 								<td style="text-align:center;">{{ patient.lastname }}, {{ patient.firstname }} {{ patient.middlename }}</td>
-								<td ng-show="{{ patient.status }}" style="text-align:center;">Active</td>
-								<td ng-show="{{ !patient.status }}" style="text-align:center;">Inactive</td>
+								<td style="text-align:center;">{{ patient.status }}</td>
 								<td style="text-align:center;"> 
 									<!-- View or Edit Profile Button -->
-									<button type="button" class="btn btn-wide btn-default" ng-click="getPatientProfile('view', patient.recordno)">
+									<button type="button" class="btn btn-wide btn-default" ng-click="getPatientProfile('view', patient.patientid)">
 										View
 									</button>
 									
-									<button type="button" class="btn btn-wide btn-primary" ng-click="getPatientProfile('edit', patient.recordno)">
+									<button type="button" class="btn btn-wide btn-primary" ng-click="getPatientProfile('edit', patient.patientid)">
 										Edit
 									</button>
 								</td>

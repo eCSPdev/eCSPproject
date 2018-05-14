@@ -27,6 +27,8 @@
           $rootScope.currentUser.role = response.data.Patient.rle;
 
           $rootScope.currentUser.firstname = response.data.Patient.firstname;
+          $rootScope.currentUser.middlename = response.data.Patient.middlename;
+          $rootScope.currentUser.lastname = response.data.Patient.lastname;
 
           $rootScope.isLoggedIn = true;
 

@@ -9,6 +9,16 @@
   		$state.go('login.signin');
   	}
 
+    /* HTTP GET Request: getAssistantByID() */
+    /* Get assistant personal information */
+    $http.get('/Doctor/eCSP/Assistant/PersonalInformation?assistantid=' + $rootScope.chosenAssistant + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+    .then(function success(response) {
+
+      $scope.thisAssistant = response.data.Assistant;
+      console.log($scope.thisAssistant);
+
+    }, function error(response) { });
+
 
   	/* Currently logged in user */
   	$scope.thisUser = { 

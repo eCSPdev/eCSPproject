@@ -45,7 +45,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="newUser.firstName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="newUser.firstname" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="addNewUserForm.firstName.$dirty && addNewUserForm.firstName.$invalid">Enter a valid first name.</span>
 						</div>
 
@@ -56,7 +56,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="newUser.middleName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/">
+							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="newUser.middlename" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/">
 							<span class="error text-small block" ng-if="addNewUserForm.middleName.$dirty && addNewUserForm.middleName.$invalid">Enter a valid middle name.</span>
 						</div>
 
@@ -65,7 +65,7 @@
 							<label class="control-label">
 								Last Name <span class="symbol required"></span>
 							</label>
-							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="newUser.lastName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="newUser.lastname" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="addNewUserForm.lastName.$dirty && addNewUserForm.lastName.$invalid">Enter a valid last name.</span>
 						</div>
 
@@ -95,12 +95,23 @@
 							</div>
 						</div>
 
+						<!-- Birthday form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.birthDate.$invalid && addNewUserForm.birthDate.$pristine, 'has-success':addNewUserForm.birthDate.$valid }">
+							<label>
+								Birth Date <span class="symbol required"></span>
+							</label>
+							<div class="form-group">
+								<input type="date" placeholder="Enter birth date" name="birthDate" class="form-control" ng-model="newUser.birthdate" required>
+								<span class="error text-small block" ng-if="addNewUserForm.birthDate.$dirty && addNewUserForm.birthDate.$invalid">Enter a valid birth date.</span>
+							</div>
+						</div>
+
 						<!-- Insurance company form input and validation -->
 						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.insuranceCompany.$invalid, 'has-success':addNewUserForm.insuranceCompany.$valid }">
 							<label>
 								Insurance Company
 							</label>
-							<input type="text" name="insuranceCompany" class="form-control" placeholder="Enter insurance company" ng-model="newUser.insuranceCompany" ng-pattern="/[\w\s]+/">
+							<input type="text" name="insuranceCompany" class="form-control" placeholder="Enter insurance company" ng-model="newUser.insurancecompanyname" ng-pattern="/[\w\s]+/">
 							<span class="error text-small block" ng-if="addNewUserForm.insuranceCompany.$dirty && addNewUserForm.insuranceCompany.$invalid">Enter a valid insurance company name.</span>
 						</div>	
 
@@ -111,7 +122,7 @@
 								Phone Number <span class="symbol required"></span>
 							</label>
 							<div class="input-group">
-								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="newUser.phoneNumber" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" ng-max-length="12" required>
+								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="newUser.phone" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" ng-max-length="12" required>
 								<span class="error text-small block" ng-if="addNewUserForm.phoneNumber.$dirty && addNewUserForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>
@@ -121,7 +132,7 @@
 							<label>
 								Address Line #1 <span class="symbol required"></span>
 							</label>
-							<input type="text" name="addressLine1" class="form-control" placeholder="Enter address" ng-model="newUser.addressLine1" ng-pattern="/[\w\s]+/" required>
+							<input type="text" name="addressLine1" class="form-control" placeholder="Enter address" ng-model="newUser.street" ng-pattern="/[\w\s]+/" required>
 							<span class="error text-small block" ng-if="addNewUserForm.addressLine1.$dirty && addNewUserForm.addressLine1.$invalid">Enter a valid address.</span>
 						</div>	
 
@@ -129,7 +140,7 @@
 							<label>
 								Address Line #2
 							</label>
-							<input type="text" name="addressLine2" class="form-control" placeholder="Enter address" ng-model="newUser.addressLine2" ng-pattern="/[\w\s]+/">
+							<input type="text" name="addressLine2" class="form-control" placeholder="Enter address" ng-model="newUser.aptno" ng-pattern="/[\w\s]+/">
 							<span class="error text-small block" ng-if="addNewUserForm.addressLine2.$dirty && addNewUserForm.addressLine2.$invalid">Enter a valid address.</span>
 						</div>
 
@@ -138,7 +149,7 @@
 							<label>
 								State
 							</label>
-							<select name="state" class="cs-select cs-skin-elastic" ng-model="newUser.state">
+							<select name="state" class="cs-select cs-skin-elastic" ng-model="newUser.st">
 								<option value="">-- None --</option>
 								<option value="PR">Puerto Rico</option>
 								<option value="AL">Alabama</option>
@@ -208,7 +219,7 @@
 							<label>
 								Country or Region <span class="symbol required"></span>
 							</label>
-							<input type="text" name="countryRegion" class="form-control" placeholder="Enter country or region" ng-model="newUser.countryRegion" ng-pattern="/[\w\s]+/" required>
+							<input type="text" name="countryRegion" class="form-control" placeholder="Enter country or region" ng-model="newUser.country" ng-pattern="/[\w\s]+/" required>
 							<span class="error text-small block" ng-if="addNewUserForm.countryRegion.$dirty && addNewUserForm.countryRegion.$invalid">Enter a valid country or region.</span>
 						</div>	
 
@@ -217,7 +228,7 @@
 							<label>
 								Zip Code <span class="symbol required"></span>
 							</label>
-							<input type="number" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="newUser.zipCode" maxlength="5" minlength="5" required>
+							<input type="text" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="newUser.zipcode" maxlength="5" minlength="5" required>
 							<span class="error text-small block" ng-if="addNewUserForm.city.$dirty && addNewUserForm.city.$invalid">Enter a valid zip code.</span>
 						</div>	
 
@@ -227,8 +238,19 @@
 								Email
 							</label>
 							<div class="form-group">
-								<input type="email" placeholder="Enter email" name="email" id="email" class="form-control" ng-model="newUser.email" ng-pattern="/.+@.+\..+/">
+								<input type="email" placeholder="Enter email" class="form-control" ng-model="newUser.email" ng-pattern="/.+@.+\..+/">
 								<span class="error text-small block" ng-if="addNewUserForm.email.$dirty && addNewUserForm.email.$invalid">Enter a valid email address.</span>
+							</div>
+						</div>
+
+						<!-- Medical record number form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.recordNumber.$invalid && addNewUserForm.recordNumber.$pristine, 'has-success':addNewUserForm.recordNumber.$valid }">
+							<label>
+								Record Number <span class="symbol required"></span>
+							</label>
+							<div class="form-group">
+								<input type="text" placeholder="Enter medical record number" name="recordNumber" class="form-control" ng-model="newUser.recordno" ng-disabled="newUser.type == 'assistant'" required>
+								<span class="error text-small block" ng-if="addNewUserForm.recordNumber.$dirty && addNewUserForm.recordNumber.$invalid">Enter a valid record number.</span>
 							</div>
 						</div>
 
@@ -250,7 +272,7 @@
 								Temporary Password <span class="symbol required"></span>
 							</label>
 							<input type="password" placeholder="Enter a temporary password" class="form-control" name="password" ng-model="newUser.password" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/" required/>
-							<span class="help-block"><i class="ti-info-alt text-primary"></i>   Password must be 8 to 24 characters, include a special character (@, !, #), a (0-9), and an uppercase letter (A-Z).</span>
+							<span class="help-block"><i class="ti-info-alt text-primary"></i>   Password must be 8 to 24 characters, include a special character (@, !, #), a number (0-9), and an uppercase letter (A-Z).</span>
 							<span class="error text-small block" ng-if="addNewUserForm.password.$dirty && addNewUserForm.password.$invalid && addNewUserForm.password.$error.required">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
 						</div>
 
@@ -259,15 +281,15 @@
 							<label>
 								Repeat Password <span class="symbol required"></span>
 							</label>
-							<input type="password" placeholder="Repeat temporary password" class="form-control" name="confirmPassword" ng-model="newUser.confirmPassword" compare-to="newUser.password" required/>
-							<span class="error text-small block" ng-if="addNewUserForm.password.$dirty && addNewUserForm.password.$invalid && addNewUserForm.password.$error.required">Re-enter a valid password.</span>
-							<span class="error text-small block" ng-if="addNewUserForm.confirmPassword.$dirty && addNewUserForm.confirmPassword.$error.compareTo">Passwords do not match. Please try again.</span>
+							<input type="password" placeholder="Repeat temporary password" class="form-control" id="confirmPassword" required/>
+							<span class="error text-small block" ng-if="addNewUserForm.confirmPassword.$dirty && addNewUserForm.confirmPassword.$invalid && addNewUserForm.confirmPassword.$error.required">Re-enter a valid password.</span>
+							<span class="error text-small block" ng-if="addNewUserForm.confirmPassword.$dirty">Passwords do not match. Please try again.</span>
 						</div>
 
 						<!-- Action buttons -->
 						<div class="form-group" style="margin-top: 15px;">
 							<a class="btn btn-red" ui-sref="app.users.manage_users" style="float: right">Cancel</a>
-							<button class="btn btn-primary" type="submit" ng-click="addUser();" ng-disabled="addNewUserForm.$invalid || !newUser.gender || !newUser.type" style="float: right; margin-right: 15px;">Submit</button>
+							<button class="btn btn-primary" type="submit" ng-click="addUser();" ng-disabled="addNewUserForm.$invalid || !newUser.gender || !newUser.type || newUser.password != addNewUserForm.confirmPassword" style="float: right; margin-right: 15px;">Submit</button>
 						</div>
 					</fieldset>
 				</div>

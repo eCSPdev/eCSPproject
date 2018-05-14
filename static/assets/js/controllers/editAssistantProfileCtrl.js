@@ -2,9 +2,8 @@
 /** 
   * controllers used for the dashboard
   */
-  app.controller('editAssistantProfileCtrl', ["$scope", "$rootScope", "$state", "$uibModal", function ($scope, $rootScope, $state, $uibModal) {
+  app.controller('editAssistantProfileCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModal", function ($scope, $rootScope, $state, $http, $uibModal) {
 
-  	$scope.userType = "";
 
     /* Redirect user to login page if he or she is not logged in correctly */
     if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
@@ -17,20 +16,22 @@
         }
     }
 
-    $scope.chosenAssistant = { 
-      firstName: 'Francisco', 
-      middleName: '', 
-      lastName: 'Castillo', 
-      phoneNumber: '315-120-1123', 
-      addressLine1: 'One Batch St. Penny-Dime Avenue', 
-      addressLine2: 'Apartment 404',
-      countryRegion: 'United States',
-      state: 'NY',
-      city: 'New York City',
-      countryRegion: 'US',
-      zipCode: '10012',
-      email: 'frank.castle@gmail.com'
-    };
+    $scope.thisAssistant = { };
+
+    /* HTTP GET Request: getAssistantByID() */
+      /* Get patient personal information */
+      $http.get('/Doctor/eCSP/Assistant/PersonalInformation?assistantid=' + $rootScope.chosenAssistant + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+      .then(function success(response) {
+
+        $scope.thisAssistant = response.data.Assistant;
+        console.log('GET');
+        console.log($scope.thisAssistant);
+
+      }, function error(response) { });
+
+    $scope.thisAssistant.assistantid = $rootScope.chosenAssistant;
+    $scope.thisAssistant.username = $rootScope.currentUser.username;
+    $scope.thisAssistant.token = $rootScope.currentUser.token;
 
   	// open() Function Definition
     $scope.open = function (size) {
@@ -39,12 +40,15 @@
        templateUrl: 'modal1.html',
        controller: 'ModalInstanceCtrl',
        size: size,
+       resolve: { 
+        chosenAssistant: function() {
+          return $scope.thisAssistant;
+        }
+      }
      });
 
       modalInstance.result.then(function (confirmation) {
-       if(confirmation == true) {
-        console.log('worked');
-      }
+       if(confirmation == true) {  }
     });
     };
 
@@ -54,9 +58,25 @@
 // It is not the same as the $uibModal service used above.
 
 // Popup/Modal Controller
-app.controller('ModalInstanceCtrl', ["$scope", "$uibModalInstance", function ($scope, $uibModalInstance) {
+app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "chosenAssistant", "$uibModalInstance", function ($scope, $rootScope, $state, $http, chosenAssistant, $uibModalInstance) {
 
 	$scope.ok = function () {
+
+      $scope.thisAssistant = chosenAssistant;
+      console.log('Antes del PUT');
+      console.log($scope.thisAssistant);
+
+      /* HTTP PUT Request: getAssistantByID() */
+      /* Update (PUT) assistant personal information */
+      $http.put('/Doctor/eCSP/Assistant/PersonalInformation', $scope.thisAssistant) 
+      .then(function success(response) {
+
+        $scope.thisAssistant = response.data.Assistant;
+        $state.go('app.users.manage_users.manage_assistants.view_profile');
+
+
+      }, function error(response) { });
+
 		$uibModalInstance.close(true);
 	};
 

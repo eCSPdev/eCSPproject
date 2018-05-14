@@ -22,6 +22,7 @@ class AssistantHandler:
         return result
 
     def build_assistantinfo_dict(self,row):
+        print(row)
         result = {}
         result['assistantid'] = row[0]
         result['firstname'] = row[1]
@@ -31,13 +32,14 @@ class AssistantHandler:
         result['status'] = row[5]
         result['email'] = row[6]
         result['username'] = row[7]
-        result['addressid'] = row[8]
-        result['street'] = row[9]
-        result['aptno'] = row[10]
-        result['city'] = row[11]
-        result['st'] = row[12]
-        result['country'] = row[13]
-        result['zipcode'] = row[14]
+        result['Password'] = row[8]
+        result['addresid'] = row[9]
+        result['street'] = row[10]
+        result['aptno'] = row[11]
+        result['city'] = row[12]
+        result['st'] = row[13]
+        result['country'] = row[14]
+        result['zipcode'] = row[15]
         return result
 
     def update_assistant_dict(self, assistantid, firstname, middlename, lastname, phone, status,
@@ -163,7 +165,7 @@ class AssistantHandler:
             deactivationdate = None
             daysofgrace = None
 
-            if firstname and lastname and phone and status and username and pssword and street and aptno and city \
+            if firstname and lastname and phone and status and username and pssword and street and city \
                     and country and zipcode:
 
                 dao = AssistantDAO()
@@ -222,9 +224,12 @@ class AssistantHandler:
         if row == None:
             return jsonify(Error="Assistant not found."), 404
         else:
-            if len(form) != 17:
-                return jsonify(Error="Malformed update request"), 400
-            else:
+            # if len(form) != 16:
+            #     print('Entre al jsonify')
+            #     print(len(form))
+            #     return jsonify(Error="Malformed update request"), 400
+            # else:
+                print(form)
                 assistantid = form['assistantid']
                 firstname = form['firstname']
                 middlename = form['middlename']
@@ -232,7 +237,7 @@ class AssistantHandler:
                 phone = form['phone']
                 status = form['status']
                 email = form['email']
-                username = form['assistantusername']
+                username = form['username']
                 pssword = form['pssword']
                 street = form['street']
                 aptno = form['aptno']
@@ -246,8 +251,9 @@ class AssistantHandler:
                 if pssword == None:
                     pssword = dao.getPsswordByID(assistantid)
 
-                if assistantid and firstname and lastname and phone and status and street and aptno \
+                if assistantid and firstname and lastname and phone and status and street \
                         and city and country and zipcode:
+                    print('En el IF')
                     dao.updateAssistantInfoByID(assistantid, firstname, middlename, lastname, phone, status,
                                                 email, username, pssword)
                     dao.updateAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
@@ -265,6 +271,7 @@ class AssistantHandler:
                                                         email, street, aptno, city, st, country, zipcode)
                     return jsonify(Assistant = result), 200
                 else:
+                    print('Entre al else')
                     return jsonify(Error="Unexpected attributes in update request"), 400
 
     def updateAssistantPssword(self, form):

@@ -232,7 +232,7 @@ class PatientHandler:
                 status = form['status']
                 email = form['email']
                 insurancecompanyname = form['insurancecompanyname']
-                username = form['patientusername']
+                username = form['username']
                 pssword = form['pssword']
                 street = form['street']
                 aptno = form['aptno']
@@ -266,6 +266,7 @@ class PatientHandler:
                                 email, insurancecompanyname, street, aptno, city, st, country, zipcode)
                     return jsonify(Patient=result), 200
                 else:
+                    print('Else')
                     return jsonify(Error="Unexpected attributes in update request"), 400
 
     def updatePatientPssword(self, form):
@@ -370,7 +371,7 @@ class PatientHandler:
             status = form['status']
             email = form['email']
             username = form['username']
-            pssword = form['pssword']
+            pssword = form['password']
             insurancecompanyname = form['insurancecompanyname']
             street = form['street']
             aptno = form['aptno']

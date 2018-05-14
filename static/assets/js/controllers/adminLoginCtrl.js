@@ -24,13 +24,16 @@
           $rootScope.currentUser.token = response.data.Doctor.token;
           $rootScope.currentUser.role = response.data.Doctor.rle;
 
+          $rootScope.currentUser.firstname = response.data.Doctor.firstname;
+          $rootScope.currentUser.middlename = response.data.Doctor.middlename;
+          $rootScope.currentUser.lastname = response.data.Doctor.lastname;
+
           $rootScope.isLoggedIn = true;
 
           // Redirect to homepage
           $state.go('app.home');
 
         }, function error(response) {
-          console.log(response);
           alert('Invalid username or password. Please try again.');
           $scope.credentials.password = '';
         });
@@ -46,13 +49,16 @@
           $rootScope.currentUser.token = response.data.Assistant.token;
           $rootScope.currentUser.role = response.data.Assistant.rle;
 
+          $rootScope.currentUser.firstname = response.data.Assistant.firstname;
+          $rootScope.currentUser.middlename = response.data.Assistant.middlename;
+          $rootScope.currentUser.lastname = response.data.Assistant.lastname;
+
           $rootScope.isLoggedIn = true;
 
           // Redirect to homepage
           $state.go('app.home');
 
         }, function error(response) {
-          console.log(response);
           alert('Invalid username or password. Please try again.');
           $scope.credentials.password = '';
         });

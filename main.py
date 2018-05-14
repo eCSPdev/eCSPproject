@@ -148,7 +148,9 @@ def getAssistantByID():
             return AssistantHandler().getAssistantByID(request.args)
     if request.method == 'PUT':
         path = request.path
-        return AssistantHandler().updateAssistantInformation(request.args, path)
+        print('Request JSON')
+        print(request.get_json())
+        return AssistantHandler().updateAssistantInformation(request.get_json(), path)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -182,7 +184,8 @@ def getAllPatients():
         print('GET - GETPATIENTLIST')
         return PatientHandler().getAllPatients()
     elif request.method == 'POST':
-        return PatientHandler().insertPatient(request.form)
+        print(request.get_json())
+        return PatientHandler().insertPatient(request.get_json())
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -200,7 +203,9 @@ def getPatientByID():
     if request.method == 'PUT':
         print ('PUT - Patient Personal Information')
         path = request.path
-        return PatientHandler().updatePatientInformation(request.args, path)
+        print('Request JSON')
+        print(request.get_json())
+        return PatientHandler().updatePatientInformation(request.get_json(), path)
     else:
         return jsonify(Error="Method not allowed."), 405
 

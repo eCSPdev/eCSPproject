@@ -74,7 +74,7 @@ class LoginHandler:
                 self.updateLogInformation(username, token, 'Patient')
                 return jsonify(Patient=result)
             else:
-                return jsonify(Error="Expited Account"), 400
+                return jsonify(Error="Expired Account"), 400
 
 
     def validateAdmin(self, form, token):

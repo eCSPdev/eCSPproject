@@ -142,6 +142,7 @@ class AssistantDAO:
             self.conn = psycopg2._connect(connection_url)
 
             try:
+                print(street + aptno + city + st + country + zipcode)
                 cursor = self.conn.cursor()
                 query = "update assistantaddress " \
                         "set street=%s, aptno=%s, city=%s, st=%s, country=%s, zipcode=%s " \
@@ -150,6 +151,9 @@ class AssistantDAO:
                 cursor.execute(query, (street, aptno, city, st, country, zipcode, assistantid,))
                 addressid = cursor.fetchone()[0]
                 self.conn.commit()
+
+                print(street + aptno + city + st + country + zipcode)
+
                 return addressid
             except Exception as e:
                 print("Query failed : ", e)

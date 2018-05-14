@@ -19,14 +19,14 @@
 						<label>
 							First Name
 						</label>
-						<input type="text" name="firstName" class="form-control" value="{{thisAssistant.firstName}}" readonly>
+						<input type="text" name="firstName" class="form-control" value="{{ thisAssistant.firstname }}" readonly>
 					</div>
 
 					<div class="form-group">
 						<label>
 							Middle Name
 						</label>
-						<input type="text" name="Middle" class="form-control" value="{{thisAssistant.middleName}}" readonly>
+						<input type="text" name="Middle" class="form-control" value="{{ thisAssistant.middlename }}" readonly>
 					</div>
 
 
@@ -34,7 +34,7 @@
 						<label class="control-label">
 							Last Name
 						</label>
-						<input type="text" name="lastName" class="form-control" value="{{thisAssistant.lastName}}" readonly>
+						<input type="text" name="lastName" class="form-control" value="{{ thisAssistant.lastname }}" readonly>
 					</div>
 
 					<!-- Contact Information -->
@@ -43,7 +43,7 @@
 							Phone Number
 						</label>
 						<div class="input-group">
-							<input type="text" class="form-control" name="phoneNumber" value="{{thisAssistant.phoneNumber}}" readonly>
+							<input type="text" class="form-control" name="phoneNumber" value="{{ thisAssistant.phone }}" readonly>
 						</div>
 					</div>
 
@@ -51,35 +51,35 @@
 						<label class="control-label">
 							Address Line #1
 						</label>
-						<input type="text" name="addressLine1" class="form-control" value="{{thisAssistant.addressLine1}}" readonly> 
+						<input type="text" name="addressLine1" class="form-control" value="{{ thisAssistant.street }}" readonly> 
 					</div>	
 
 					<div class="form-group">
 						<label class="control-label">
 							Address Line #2
 						</label>
-						<input type="text" name="addressLine2" class="form-control" value="{{thisAssistant.addressLine2}}" readonly>
+						<input type="text" name="addressLine2" class="form-control" value="{{ thisAssistant.aptno }}" readonly>
 					</div>
 
 					<div class="form-group">
 						<label class="control-label">
 							Country or Region
 						</label>
-						<input type="text" name="countryRegion" class="form-control" value="{{thisAssistant.countryRegion}}" readonly>
+						<input type="text" name="countryRegion" class="form-control" value="{{ thisAssistant.country }}" readonly>
 					</div>
 
 					<div class="form-group">
 						<label class="control-label">
 							State
 						</label>
-						<input type="text" name="state" class="form-control" value="{{thisAssistant.state}}" readonly>
+						<input type="text" name="state" class="form-control" value="{{ thisAssistant.st }}" readonly>
 					</div>
 
 					<div class="form-group">
 						<label class="control-label">
 							Zip Code
 						</label>
-						<input type="text" name="zipCode" class="form-control" value="{{thisAssistant.zipCode}}" readonly>
+						<input type="text" name="zipCode" class="form-control" value="{{ thisAssistant.zipcode }}" readonly>
 					</div>	
 
 					<div class="form-group">
@@ -87,7 +87,7 @@
 							Email
 						</label>
 						<div class="form-group">
-							<input type="email" value="{{thisAssistant.email}}" name="email" id="email" class="form-control" readonly>
+							<input type="email" value="{{ thisAssistant.email }}" name="email" id="email" class="form-control" readonly>
 						</div>
 					</div>
 

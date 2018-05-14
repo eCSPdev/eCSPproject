@@ -24,7 +24,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="chosenAssistant.firstName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="thisAssistant.firstname" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="editAssistantForm.firstName.$dirty && editAssistantForm.firstName.$invalid">Enter a valid first name.</span>
 						</div>
 
@@ -35,7 +35,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="chosenAssistant.middleName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/">
+							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="thisAssistant.middlename" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/">
 							<span class="error text-small block" ng-if="editAssistantForm.middleName.$dirty && editAssistantForm.middleName.$invalid">Enter a valid middle name.</span>
 						</div>
 
@@ -44,7 +44,7 @@
 							<label class="control-label">
 								Last Name <span class="symbol required"></span>
 							</label>
-							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="chosenAssistant.lastName" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="thisAssistant.lastname" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="editAssistantForm.lastName.$dirty && editAssistantForm.lastName.$invalid">Enter a valid last name.</span>
 						</div>		
 
@@ -55,7 +55,7 @@
 								Phone Number <span class="symbol required"></span>
 							</label>
 							<div class="input-group">
-								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="chosenAssistant.phoneNumber" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" ng-max-length="12" required>
+								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="thisAssistant.phone" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" ng-max-length="12" required>
 								<span class="error text-small block" ng-if="editAssistantForm.phoneNumber.$dirty && editAssistantForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>
@@ -65,7 +65,7 @@
 							<label>
 								Address Line #1 <span class="symbol required"></span>
 							</label>
-							<input type="text" name="addressLine1" class="form-control" placeholder="Enter address" ng-model="chosenAssistant.addressLine1" ng-pattern="/[\w\s]+/" required>
+							<input type="text" name="addressLine1" class="form-control" placeholder="Enter address" ng-model="thisAssistant.street" ng-pattern="/[\w\s]+/" required>
 							<span class="error text-small block" ng-if="editAssistantForm.addressLine1.$dirty && editAssistantForm.addressLine1.$invalid">Enter a valid address.</span>
 						</div>	
 
@@ -73,7 +73,7 @@
 							<label class='control-label'>
 								Address Line #2
 							</label>
-							<input type="text" name="addressLine2" class="form-control" placeholder="Enter address" ng-model="chosenAssistant.addressLine2" ng-pattern="/[\w\s]+/">
+							<input type="text" name="addressLine2" class="form-control" placeholder="Enter address" ng-model="thisAssistant.aptno" ng-pattern="/[\w\s]+/">
 							<span class="error text-small block" ng-if="editAssistantForm.addressLine2.$dirty && editAssistantForm.addressLine2.$invalid">Enter a valid address.</span>
 						</div>
 
@@ -82,7 +82,7 @@
 							<label>
 								State
 							</label>
-							<select name="state" class="cs-select cs-skin-elastic" ng-model="chosenAssistant.state">
+							<select name="state" class="cs-select cs-skin-elastic" ng-model="thisAssistant.st">
 								<option value="">-- None --</option>
 								<option value="PR">Puerto Rico</option>
 								<option value="AL">Alabama</option>
@@ -143,7 +143,7 @@
 							<label>
 								City <span class="symbol required"></span>
 							</label>
-							<input type="text" name="city" class="form-control" placeholder="Enter city" ng-model="chosenAssistant.city" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="city" class="form-control" placeholder="Enter city" ng-model="thisAssistant.city" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="editAssistantForm.city.$dirty && editAssistantForm.city.$invalid">Enter a valid city.</span>
 						</div>
 
@@ -152,7 +152,7 @@
 							<label>
 								Country or Region <span class="symbol required"></span>
 							</label>
-							<input type="text" name="countryRegion" class="form-control" placeholder="Enter country or region" ng-model="chosenAssistant.countryRegion" ng-pattern="/[\w\s]+/" required>
+							<input type="text" name="countryRegion" class="form-control" placeholder="Enter country or region" ng-model="thisAssistant.country" ng-pattern="/[\w\s]+/" required>
 							<span class="error text-small block" ng-if="editAssistantForm.countryRegion.$dirty && editAssistantForm.countryRegion.$invalid">Enter a valid country or region.</span>
 						</div>
 
@@ -161,8 +161,8 @@
 							<label>
 								Zip Code <span class="symbol required"></span>
 							</label>
-							<input type="text" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="chosenAssistant.zipCode" maxlength="5" minlength="5" required>
-							<span class="error text-small block" ng-if="editAssistantForm.city.$dirty && editAssistantForm.city.$invalid">Enter a valid zip code.</span>
+							<input type="text" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="thisAssistant.zipcode" maxlength="5" minlength="5" required>
+							<span class="error text-small block" ng-if="editAssistantForm.zipCode.$dirty && editAssistantForm.zipCode.$invalid">Enter a valid zip code.</span>
 						</div>	
 
 						<!-- Email form input and validation -->
@@ -171,7 +171,7 @@
 								Email
 							</label>
 							<div class="form-group">
-								<input type="email" placeholder="Enter email" name="email" id="email" class="form-control" ng-model="chosenAssistant.email" ng-pattern="/.+@.+\..+/">
+								<input type="email" placeholder="Enter email" name="email" class="form-control" ng-model="thisAssistant.email" ng-pattern="/.+@.+\..+/">
 								<span class="error text-small block" ng-if="editAssistantForm.email.$dirty && editAssistantForm.email.$invalid">Enter a valid email address.</span>
 							</div>
 						</div>
@@ -181,18 +181,18 @@
 							<label>
 								New Password
 							</label>
-							<input type="password" class="form-control" ng-model="assistant.password" placeholder="Enter new password">
+							<input type="password" class="form-control" ng-model="thisAssistant.pssword" placeholder="Enter new password">
 						</div>
 						<div class="form-group">
 							<label>
 								Re-Type Password
 							</label>
-							<input type="password" placeholder="Re-type the new password" name="password" id="password" class="form-control">
+							<input type="password" placeholder="Re-type the new password" id="repeatPassword" class="form-control">
 						</div>
 
 						<div class="form-group" style="margin-top: 15px;">
 							<a class="btn btn-red" ui-sref="app.users.manage_users.manage_assistants.view_profile" style="float: right">Cancel</a>
-							<a class="btn btn-primary" ng-click="open('sm')" style="float: right; margin-right: 15px;">Save Changes</a>
+							<a class="btn btn-primary" ng-click="open('sm')" ng-disabled="editAssistantForm.$invalid || thisAssistant.password != editAssistantForm.repeatPassword" style="float: right; margin-right: 15px;">Save Changes</a>
 						</div>
 
 					</fieldset>
@@ -214,7 +214,7 @@
 			<h5 style="font-size: 16px; margin-bottom: 0px;">Are you sure?</h5>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-primary" ng-click="ok()" ui-sref="app.users.manage_users.manage_assistants.view_profile">Confirm</button>
+			<button class="btn btn-primary" ng-click="ok()">Confirm</button>
 			<button class="btn btn-red" ng-click="cancel()">Cancel</button>
 		</div>
 	</script>

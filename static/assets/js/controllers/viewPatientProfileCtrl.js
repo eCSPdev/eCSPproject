@@ -2,7 +2,7 @@
 /** 
   * controllers used for the dashboard
   */
-  app.controller('viewPatientProfileCtrl', ["$scope", "$rootScope", "$state", function ($scope, $rootScope, $state) {
+  app.controller('viewPatientProfileCtrl', ["$scope", "$rootScope", "$state", "$http", function ($scope, $rootScope, $state, $http) {
 
   	/* Redirect user to login page if he or she is not logged in correctly */
   	if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
@@ -15,21 +15,31 @@
       	}
     }
 
-    $scope.thisPatient = {
-      firstName: 'Leslie', 
-      middleName: 'Anne', 
-      lastName: 'Knope', 
-      insuranceCompany: '',
-      phoneNumber: '308-321-0092', 
-      addressLine1: 'Winfree Apartments Apt. 123', 
-      addressLine2: '',
-      countryRegion: 'United States',
-      state: 'IN',
-      city: 'Pawnee',
-      countryRegion: 'US',
-      zipCode: '00213',
-      email: ''
-    };
+  if($rootScope.currentUser.role == 'Doctor')
+  {
+    /* HTTP GET Request: getPatientByID() */
+    /* Get patient personal information */
+    $http.get('/Doctor/eCSP/Patient/PersonalInformation?patientid=' + $rootScope.chosenPatient + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+    .then(function success(response) {
+
+      $scope.thisPatient = response.data.Patient;
+      console.log($scope.thisPatient);
+
+    }, function error(response) { });
+  }
+
+  else
+  {
+    /* HTTP GET Request: getPatientByID() */
+    /* Get patient personal information */
+    $http.get('/Assistant/eCSP/Patient/PersonalInformation?patientid=' + $rootScope.chosenPatient + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+    .then(function success(response) {
+
+      $scope.thisPatient = response.data.Patient;
+      console.log($scope.thisPatient);
+
+    }, function error(response) { });
+  }
 
   }]);
 

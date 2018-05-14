@@ -25,6 +25,7 @@ psycopg2==2.7.4
 psycopg2-binary==2.7.4
 pyasn1==0.4.2
 pycparser==2.18
+PyJWT==1.6.1
 python-dateutil==2.7.2
 PyYAML==3.12
 requests==2.18.4

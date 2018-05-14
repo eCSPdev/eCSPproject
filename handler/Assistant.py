@@ -365,7 +365,7 @@ class AssistantHandler:
             zipcode = form['zipcode']
             if assistantid and firstname and middlename and lastname and \
                     phone and status and username \
-                    and street and aptno and city and st and country and zipcode:
+                    and street and city and st and country and zipcode:
                 dao.insertAssistantHistory(assistantid, firstname, middlename, lastname,
                                         phone, status, email, username,
                                         street, aptno, city, st, country, zipcode)

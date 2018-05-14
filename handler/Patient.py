@@ -248,7 +248,7 @@ class PatientHandler:
 
                 #PROBAR SOLO LOS QUE NO PUEDEN SER NULOS
                 if patientid and firstname and lastname and ssn and birthdate and phone and status \
-                        and street and aptno and city and country and zipcode:
+                        and street and city and country and zipcode:
                     print("CALLING DAO HERE")
                     dao.updatePatientInfoByID(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status, email,
                                insurancecompanyname, username, pssword)
@@ -384,7 +384,7 @@ class PatientHandler:
 
             #Verify if cirtical(not null) info is complete
             if firstname and lastname and ssn and birthdate and phone and username and pssword\
-                    and street and aptno and city and country and zipcode and insurancecompanyname \
+                    and street and city and country and zipcode \
                     and type and recordno:
 
                 dao = PatientsDAO()

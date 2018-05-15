@@ -23,14 +23,14 @@
 
 						<!-- User Type Selection -->
 						<div class="form-group" style="margin-bottom: 0px;">
-							<label>User Type<span class="symbol required"></span></label>
+							<label>User Role<span class="symbol required"></span></label>
 
 							<div class="radio clip-radio radio-primary">
-								<input type="radio" id="rdPatient" name="vertical1" value="patient" ng-model="newUser.type" required>
+								<input type="radio" id="rdPatient" name="vertical1" value="patient" ng-model="newUser.role">
 								<label for="rdPatient">
 									Patient
 								</label>
-								<input type="radio" id="rdAssistant" name="vertical2" value="assistant" ng-if="currentUser.role != 'Assistant'" ng-model="newUser.type" required>
+								<input type="radio" id="rdAssistant" name="vertical2" value="assistant" ng-if="currentUser.role != 'Assistant'" ng-model="newUser.role">
 								<label for="rdAssistant" ng-if="currentUser.role != 'Assistant'">
 									Assistant
 								</label>
@@ -84,11 +84,11 @@
 								Gender <span class="symbol required"></span>
 							</label>
 							<div class="clip-radio radio-primary">
-								<input type="radio" id="female" name="gender" value="female" checked="checked" ng-model="newUser.gender" required>
+								<input type="radio" id="female" name="gender" value="F" checked="checked" ng-model="newUser.gender">
 								<label for="female">
 									Female
 								</label>
-								<input type="radio" id="male" name="gender" value="male" ng-model="newUser.gender" required>
+								<input type="radio" id="male" name="gender" value="M" ng-model="newUser.gender">
 								<label for="male">
 									Male
 								</label>
@@ -244,12 +244,12 @@
 						</div>
 
 						<!-- Medical record number form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.recordNumber.$invalid && addNewUserForm.recordNumber.$pristine, 'has-success':addNewUserForm.recordNumber.$valid }">
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.recordNumber.$invalid && addNewUserForm.recordNumber.$pristine, 'has-success':addNewUserForm.recordNumber.$valid }" ng-if="newUser.role == 'patient'">
 							<label>
 								Record Number <span class="symbol required"></span>
 							</label>
 							<div class="form-group">
-								<input type="text" placeholder="Enter medical record number" name="recordNumber" class="form-control" ng-model="newUser.recordno" ng-disabled="newUser.type == 'assistant'" required>
+								<input type="text" placeholder="Enter medical record number" name="recordNumber" class="form-control" ng-model="newUser.recordno" ng-disabled="newUser.role == 'assistant'" required>
 								<span class="error text-small block" ng-if="addNewUserForm.recordNumber.$dirty && addNewUserForm.recordNumber.$invalid">Enter a valid record number.</span>
 							</div>
 						</div>
@@ -281,7 +281,7 @@
 							<label>
 								Repeat Password <span class="symbol required"></span>
 							</label>
-							<input type="password" placeholder="Repeat temporary password" class="form-control" id="confirmPassword" required/>
+							<input type="password" placeholder="Repeat temporary password" class="form-control" id="confirmPassword" ng-model="newUser.confirmPassword" required/>
 							<span class="error text-small block" ng-if="addNewUserForm.confirmPassword.$dirty && addNewUserForm.confirmPassword.$invalid && addNewUserForm.confirmPassword.$error.required">Re-enter a valid password.</span>
 							<span class="error text-small block" ng-if="addNewUserForm.confirmPassword.$dirty">Passwords do not match. Please try again.</span>
 						</div>
@@ -289,7 +289,7 @@
 						<!-- Action buttons -->
 						<div class="form-group" style="margin-top: 15px;">
 							<a class="btn btn-red" ui-sref="app.users.manage_users" style="float: right">Cancel</a>
-							<button class="btn btn-primary" type="submit" ng-click="addUser();" ng-disabled="addNewUserForm.$invalid || !newUser.gender || !newUser.type || newUser.password != addNewUserForm.confirmPassword" style="float: right; margin-right: 15px;">Submit</button>
+							<button class="btn btn-primary" type="submit" ng-click="addUser();" ng-disabled="addNewUserForm.$invalid || !newUser.gender || !newUser.role || newUser.password != newUser.confirmPassword" style="float: right; margin-right: 15px;">Submit</button>
 						</div>
 					</fieldset>
 				</div>

@@ -15,27 +15,28 @@
       }
     }
 
-    $scope.newUser = { };
+    // Set default (non-required) values for new user
+    $scope.newUser = {};
+    $scope.newUser.registeredby = $rootScope.currentUser.username;
+    $scope.newUser.middlename = '';
+    $scope.newUser.insurancecompanyname = '';
+    $scope.newUser.aptno = '';
+    $scope.newUser.st = '';
+    $scope.newUser.email = "";
+    $scope.newUser.status = true;
 
     $scope.addUser = function() {
-      console.log($scope.newUser);
-
-      if($rootScope.currentUser.role == 'Doctor')
-      {
 
       // Create (INSERT) new patient
-      if($scope.newUser.type == 'patient')
+      if($scope.newUser.role == 'patient')
       {
-        console.log($scope.newUser);
 
         /* HTTP POST Request: insertPatient() */
         /* Create new patient */
-        $http.post('/Doctor/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.newUser) 
+        $http.post('/Doctor/eCSP/PatientList', $scope.newUser) 
         .then(function success(response) {
 
           $scope.newUser = response.data;
-
-          console.log($scope.newUser);
 
           $state.go('app.users.manage_users.manage_patients');
 
@@ -44,7 +45,6 @@
 
       else
       {
-        console.log($scope.newUser);
 
         /* HTTP POST Request: insertAssistant() */
         /* Create new assistant */
@@ -52,9 +52,6 @@
         .then(function success(response) {
 
           $scope.newUser = response.data;
-
-          console.log($scope.newUser);
-
           $state.go('app.users.manage_users.manage_assistants');
 
         }, function error(response) { });
@@ -62,20 +59,5 @@
 
     }
 
-    else
-    {
-      /* HTTP GET Request: getPatientByID() */
-      /* Get patient personal information */
-      $http.get('/Assistant/eCSP/Patient/PersonalInformation?patientid=' + $rootScope.chosenPatient + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-      .then(function success(response) {
-
-        $scope.thisPatient = response.data.Patient;
-        console.log($scope.thisPatient);
-
-      }, function error(response) { });
-    }
-
-  }
-
-}]);
+  }]);
 

@@ -144,71 +144,68 @@ class AssistantHandler:
             return jsonify(Assistant = result)
 
     def insertAssistant(self, form):
-        DoctorSign = form['username']
-        if len(form) != 16: # 15 del asistente + el username y token del doctor activo
-            return jsonify(Error="Malformed post request"), 400
-        else:
-            firstname = form['firstname']
-            middlename = form['middlename']
-            lastname = form['lastname']
-            phone = form['phone']
-            status = form['status']
-            email = form['email']
-            username = form['assistantusername']
-            pssword = form['pssword']
-            street = form['street']
-            aptno = form['aptno']
-            city = form['city']
-            st = form['st']
-            country = form['country']
-            zipcode = form['zipcode']
-            deactivationdate = None
-            daysofgrace = None
+        DoctorSign = form['registeredby']
+        firstname = form['firstname']
+        middlename = form['middlename']
+        lastname = form['lastname']
+        phone = form['phone']
+        status = form['status']
+        email = form['email']
+        username = form['username']
+        pssword = form['password']
+        street = form['street']
+        aptno = form['aptno']
+        city = form['city']
+        st = form['st']
+        country = form['country']
+        zipcode = form['zipcode']
+        deactivationdate = None
+        daysofgrace = None
 
-            if firstname and lastname and phone and status and username and pssword and street and city \
-                    and country and zipcode:
+        if firstname and lastname and phone and status and username and pssword and street and city \
+                and country and zipcode:
 
-                dao = AssistantDAO()
-                doctordao = DoctorDAO()
-                patientdao = PatientsDAO()
+            dao = AssistantDAO()
+            doctordao = DoctorDAO()
+            patientdao = PatientsDAO()
 
-                # verify if a assistant exist with this information
-                existantassistant_list = dao.verifyAssistant(firstname, middlename, lastname)
+            # verify if a assistant exist with this information
+            existantassistant_list = dao.verifyAssistant(firstname, middlename, lastname)
 
-                # no doctor exist with this information
-                if not existantassistant_list:
-                    # verify if username already exist
-                    if dao.verifyUsername(username) == None \
-                            and patientdao.verifyUsername(username) == None \
-                            and doctordao.verifyUsername(username) == None:
+            # no doctor exist with this information
+            if not existantassistant_list:
+                # verify if username already exist
+                if dao.verifyUsername(username) == None \
+                        and patientdao.verifyUsername(username) == None \
+                        and doctordao.verifyUsername(username) == None:
 
-                        # assistantid = uuid.uuid4()
-                        # license number and username is not taken yet, Doctor can be inserted
-                        assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone, email, username, pssword)
-                        addressid = dao.insertAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
+                    # assistantid = uuid.uuid4()
+                    # license number and username is not taken yet, Doctor can be inserted
+                    assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone, email, username, pssword)
+                    addressid = dao.insertAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
 
-                        changes_time = time.time()
-                        changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
-                        dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
-                                                   email, username, pssword, street, aptno, city, st, country, zipcode,
-                                                   changesdate, DoctorSign, deactivationdate, daysofgrace)
+                    changes_time = time.time()
+                    changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                    dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
+                                               email, username, pssword, street, aptno, city, st, country, zipcode,
+                                               changesdate, DoctorSign, deactivationdate, daysofgrace)
 
-                        result = self.new_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
-                                               email, username, pssword, addressid, street, aptno, city, st, country, zipcode)
-                        return jsonify(Success="Assistant added correctly", Assistant=result), 201
-                        # return jsonify(Success="Assistant added correctly")
-                    # username already exist
-                    else:
-                        return jsonify(Error="Username is already taken.")
-                # a patient with this info already exists
+                    result = self.new_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
+                                                     email, username, pssword, addressid, street, aptno, city, st, country, zipcode)
+                    return jsonify(Success="Assistant added correctly", Assistant=result), 201
+                    # return jsonify(Success="Assistant added correctly")
+                # username already exist
                 else:
-                    # return doctor or doctors with this critical information
-                    result_list = []
-                    for row in existantassistant_list:
-                        result_list.append(self.verify_existantassistant_dict(row))
-                    return jsonify(Error="A Assistant with this information already exist.", Assistant=result_list)
+                    return jsonify(Error="Username is already taken.")
+            # a patient with this info already exists
             else:
-                return jsonify(Error="Unexpected attributes in post request"), 400
+                # return doctor or doctors with this critical information
+                result_list = []
+                for row in existantassistant_list:
+                    result_list.append(self.verify_existantassistant_dict(row))
+                return jsonify(Error="A Assistant with this information already exist.", Assistant=result_list)
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
 
     def updateAssistantInformation(self, form, path):
         # A-adido

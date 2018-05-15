@@ -358,9 +358,6 @@ class PatientHandler:
 
 
     def insertPatient(self, form):
-        if len(form) != 20:
-            return jsonify(Error="Malformed post request"), 400
-        else:
             firstname = form['firstname']
             middlename = form['middlename']
             lastname = form['lastname']
@@ -379,13 +376,13 @@ class PatientHandler:
             st = form['st']
             country = form['country']
             zipcode = form['zipcode']
-            type = form['type']
+            rle = form['role']
             recordno = form['recordno']
 
             #Verify if cirtical(not null) info is complete
             if firstname and lastname and ssn and birthdate and phone and username and pssword\
                     and street and city and country and zipcode \
-                    and type and recordno:
+                    and rle and recordno:
 
                 dao = PatientsDAO()
                 doctordao = DoctorDAO()
@@ -416,7 +413,7 @@ class PatientHandler:
                 #History
                             dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender,
                                                      phone, status, email, username, pssword, insurancecompanyname, street,
-                                                     aptno, city, st, country, zipcode, visitdate)
+                                                     aptno, city, st, country, zipcode, visitdate, 'none', 'none', 'none', 'none')
 
                             result = self.new_patient_dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                                    email, username, pssword, addressid, street, aptno, city, st, country,

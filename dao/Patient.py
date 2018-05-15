@@ -566,7 +566,7 @@ class PatientsDAO:
                         "from patients " \
                         "inner join patientaddress on patients.patientid = patientaddress.patientid " \
                         "inner join medicalrecord on patients.patientid = medicalrecord.patientid " \
-                        "where (firstname=%s and middlename=%s, and lastname=%s and birthdate=%s) or ssn=%s;"
+                        "where (firstname=%s and middlename=%s and lastname=%s and birthdate=%s) or ssn=%s;"
                 cursor.execute(query, (firstname, middlename, lastname, birthdate, ssn,))
                 result = []
                 for row in cursor:

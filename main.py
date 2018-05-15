@@ -131,7 +131,7 @@ def getAllAssistant():
         print('GET - GETASSISTANTLIST')
         return AssistantHandler().getAllAssistant()
     elif request.method == 'POST':
-        return AssistantHandler().insertAssistant(request.args)
+        return AssistantHandler().insertAssistant(request.get_json())
     else:
         return jsonify(Error="Method not allowed."), 405
 

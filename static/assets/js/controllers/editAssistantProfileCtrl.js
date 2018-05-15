@@ -24,8 +24,6 @@
       .then(function success(response) {
 
         $scope.thisAssistant = response.data.Assistant;
-        console.log('GET');
-        console.log($scope.thisAssistant);
 
       }, function error(response) { });
 
@@ -63,8 +61,6 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 	$scope.ok = function () {
 
       $scope.thisAssistant = chosenAssistant;
-      console.log('Antes del PUT');
-      console.log($scope.thisAssistant);
 
       /* HTTP PUT Request: getAssistantByID() */
       /* Update (PUT) assistant personal information */

@@ -298,44 +298,44 @@ class AssistantHandler:
         if not assistant:
             return jsonify(Error="Assistant not found."), 404
         else:
-            if len(form) != 4: #username, token, assistantid, deactivationdays
-                return jsonify(Error="Malformed update request"), 400
+            # if len(form) != 4: #username, token, assistantid, deactivationdays
+            #     return jsonify(Error="Malformed update request"), 400
+            # else:
+            firstname = assistant[1]
+            middlename = assistant[2]
+            lastname = assistant[3]
+            phone = assistant[4]
+            email = assistant[6]
+            username = assistant[7]
+            pssword = assistant[8]
+            street = assistant[10]
+            aptno = assistant[11]
+            city = assistant[12]
+            st = assistant[13]
+            country = assistant[14]
+            zipcode = assistant[15]
+            changes_time = time.time()
+            print('status', status)
+            if status == True:
+                daysofgrace = None
+                deactivationdate = None
             else:
-                firstname = assistant[1]
-                middlename = assistant[2]
-                lastname = assistant[3]
-                phone = assistant[4]
-                email = assistant[6]
-                username = assistant[7]
-                pssword = assistant[8]
-                street = assistant[10]
-                aptno = assistant[11]
-                city = assistant[12]
-                st = assistant[13]
-                country = assistant[14]
-                zipcode = assistant[15]
-                changes_time = time.time()
-                print('status', status)
-                if status == True:
-                    daysofgrace = None
-                    deactivationdate = None
-                else:
-                    daysofgrace = form['daysofgrace']
-                    print ('days fo grace : ', daysofgrace)
-                    date = datetime.datetime.fromtimestamp(changes_time)
-                    print('date', date)
-                    deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
-                    print('deactivationdate : ', deactivationdate)
-                dao.updateAssistantStatus(assistantid, status, deactivationdate, daysofgrace)
-                # History
-                changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
-                ## Modificado (... , DoctorSign)
-                dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
-                                           email, username, pssword, street, aptno, city, st, country, zipcode,
-                                           changesdate, DoctorSign, deactivationdate, daysofgrace) #hay que a-adir al history el campo de deactivationdays
-                result = self.update_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
-                                                    email, street, aptno, city, st, country, zipcode)
-                return jsonify(Assistant=result), 200
+                daysofgrace = form['daysofgrace']
+                print ('days of grace : ', daysofgrace)
+                date = datetime.datetime.fromtimestamp(changes_time)
+                print('date', date)
+                deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
+                print('deactivationdate : ', deactivationdate)
+            dao.updateAssistantStatus(assistantid, status, deactivationdate, daysofgrace)
+            # History
+            changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+            ## Modificado (... , DoctorSign)
+            dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
+                                       email, username, pssword, street, aptno, city, st, country, zipcode,
+                                       changesdate, DoctorSign, deactivationdate, daysofgrace) #hay que a-adir al history el campo de deactivationdays
+            result = self.update_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
+                                                email, street, aptno, city, st, country, zipcode)
+            return jsonify(Assistant=result), 200
 
 
 ########## Assistant History #############

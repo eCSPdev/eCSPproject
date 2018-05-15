@@ -2,39 +2,52 @@
 /** 
   * controllers used for the dashboard
   */
-  app.controller('viewMyProfileCtrl', ["$scope", "$rootScope", "$state", function ($scope, $rootScope, $state) {
+  app.controller('viewMyProfileCtrl', ["$scope", "$rootScope", "$state", "$http", function ($scope, $rootScope, $state, $http) {
 
   	/* Redirect user to login page if he or she is not logged in correctly */
   	if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
   		$state.go('login.signin');
   	}
 
-    /* HTTP GET Request: getAssistantByID() */
-    /* Get assistant personal information */
-    $http.get('/Doctor/eCSP/Assistant/PersonalInformation?assistantid=' + $rootScope.chosenAssistant + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-    .then(function success(response) {
+    if($rootScope.currentUser.role == 'Doctor')
+    {
 
-      $scope.thisAssistant = response.data.Assistant;
-      console.log($scope.thisAssistant);
+      console.log($scope.thisUser);
 
-    }, function error(response) { });
+      /* HTTP GET Request: getDoctorByID() */
+      /* Get doctor personal information */
+      $http.get('/Doctor/eCSP/PersonalInformation?doctorid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+      .then(function success(response) {
 
+        $scope.thisUser = response.data.Doctor;
+        console.log('GET');
+        console.log($scope.thisUser);
 
-  	/* Currently logged in user */
-  	$scope.thisUser = { 
-      firstName: 'Fulgencio',
-      middleName: '',
-      lastName: 'Talavera',
-      phoneNumber: '(787) 452-1244',
-      addressLine1: 'HC-73 1232 Bo. Molina',
-      addressLine2: 'Apt. #212',
-      state: 'PR',
-      city: 'Fajardo',
-      countryRegion: 'Puerto Rico',
-      zipCode: '00738',
-      email: 'fulgencio.talavera@gmail.com'
-      
-    };
+      }, function error(response) { });
+    }
+
+    else if($rootScope.currentUser.role == 'Assistant')
+    {
+      /* HTTP GET Request: getAssistantByID() */
+      /* Get assistant personal information */
+      $http.get('/Assistant/eCSP/PersonalInformation?assistantid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+      .then(function success(response) {
+
+        $scope.thisUser = response.data.Assistant;
+
+      }, function error(response) { });
+    }
+
+    else 
+    {
+      /* HTTP GET Request: getPatientByID() */
+      /* Get patient personal information */
+      $http.get('/Patient/eCSP/PersonalInformation?patientid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+      .then(function success(response) {
+
+        $scope.thisUser = response.data.Patient;
+
+      }, function error(response) { });
+    }
 
   }]);
-

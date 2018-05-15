@@ -23,6 +23,7 @@
           $rootScope.currentUser.username = response.data.Doctor.username;
           $rootScope.currentUser.token = response.data.Doctor.token;
           $rootScope.currentUser.role = response.data.Doctor.rle;
+          $rootScope.currentUser.userid = response.data.Doctor.doctorid;
 
           $rootScope.currentUser.firstname = response.data.Doctor.firstname;
           $rootScope.currentUser.middlename = response.data.Doctor.middlename;
@@ -48,6 +49,7 @@
           $rootScope.currentUser.username = response.data.Assistant.username;
           $rootScope.currentUser.token = response.data.Assistant.token;
           $rootScope.currentUser.role = response.data.Assistant.rle;
+          $rootScope.currentUser.userid = response.data.Assistant.assistantid;
 
           $rootScope.currentUser.firstname = response.data.Assistant.firstname;
           $rootScope.currentUser.middlename = response.data.Assistant.middlename;

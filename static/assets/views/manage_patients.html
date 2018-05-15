@@ -60,6 +60,7 @@
 								<td style="text-align:center;">{{ patient.lastname }}, {{ patient.firstname }} {{ patient.middlename }}</td>
 								<td style="text-align:center;">{{ patient.status }}</td>
 								<td style="text-align:center;"> 
+
 									<!-- View or Edit Profile Button -->
 									<button type="button" class="btn btn-wide btn-default" ng-click="getPatientProfile('view', patient.patientid)">
 										View
@@ -68,10 +69,47 @@
 									<button type="button" class="btn btn-wide btn-primary" ng-click="getPatientProfile('edit', patient.patientid)">
 										Edit
 									</button>
+
+									<!-- Change Patient Status Button -->
+									<button type="button" class="btn btn-wide btn-success" ng-click="openActivate('sm', patient.patientid)" ng-if="patient.status == 'Inactive'">
+										Activate
+									</button>
+
+									<button type="button" class="btn btn-wide btn-danger" ng-click="openDeactivate('sm', patient.patientid)" ng-if="patient.status == 'Active'">
+										Deactivate
+									</button>
+
 								</td>
 							</tr>
 						</tbody>
 					</table>
+
+					<!-- Modal Instance Scripts -->
+					<script type="text/ng-template" id="modal_activate.html">
+						<div class="modal-header">
+							<h3 class="modal-title">Confirm Changes</h3>
+						</div>
+						<div class="modal-body">
+							<h5 style="font-size: 16px; margin-bottom: 0px;">Are you sure?</h5>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary" ng-click="changeStatus('activate')">Confirm</button>
+							<button class="btn btn-red" ng-click="cancel()">Cancel</button>
+						</div>
+					</script>
+
+					<script type="text/ng-template" id="modal_deactivate.html">
+						<div class="modal-header">
+							<h3 class="modal-title">Confirm Changes</h3>
+						</div>
+						<div class="modal-body">
+							<h5 style="font-size: 16px; margin-bottom: 0px;">Are you sure?</h5>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary" ng-click="changeStatus('deactivate')">Confirm</button>
+							<button class="btn btn-red" ng-click="cancel()">Cancel</button>
+						</div>
+					</script>
 
 					<!-- Script for pagination -->
 					<script type="text/ng-template" id="custom/pager">

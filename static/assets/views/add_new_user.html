@@ -115,6 +115,17 @@
 							<span class="error text-small block" ng-if="addNewUserForm.insuranceCompany.$dirty && addNewUserForm.insuranceCompany.$invalid">Enter a valid insurance company name.</span>
 						</div>	
 
+						<!-- Medical record number form input and validation -->
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.recordNumber.$invalid && addNewUserForm.recordNumber.$pristine, 'has-success':addNewUserForm.recordNumber.$valid }" ng-if="newUser.role == 'patient'">
+							<label>
+								Record Number <span class="symbol required"></span>
+							</label>
+							<div class="form-group">
+								<input type="text" placeholder="Enter medical record number" name="recordNumber" class="form-control" ng-model="newUser.recordno" ng-disabled="newUser.role == 'assistant'" required>
+								<span class="error text-small block" ng-if="addNewUserForm.recordNumber.$dirty && addNewUserForm.recordNumber.$invalid">Enter a valid record number.</span>
+							</div>
+						</div>
+
 						<!-- Contact Information -->
 						<!-- Phone number form input and validation -->
 						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.phoneNumber.$invalid && !addNewUserForm.phoneNumber.$pristine, 'has-success':addNewUserForm.phoneNumber.$valid }">
@@ -240,17 +251,6 @@
 							<div class="form-group">
 								<input type="email" placeholder="Enter email" class="form-control" ng-model="newUser.email" ng-pattern="/.+@.+\..+/">
 								<span class="error text-small block" ng-if="addNewUserForm.email.$dirty && addNewUserForm.email.$invalid">Enter a valid email address.</span>
-							</div>
-						</div>
-
-						<!-- Medical record number form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.recordNumber.$invalid && addNewUserForm.recordNumber.$pristine, 'has-success':addNewUserForm.recordNumber.$valid }" ng-if="newUser.role == 'patient'">
-							<label>
-								Record Number <span class="symbol required"></span>
-							</label>
-							<div class="form-group">
-								<input type="text" placeholder="Enter medical record number" name="recordNumber" class="form-control" ng-model="newUser.recordno" ng-disabled="newUser.role == 'assistant'" required>
-								<span class="error text-small block" ng-if="addNewUserForm.recordNumber.$dirty && addNewUserForm.recordNumber.$invalid">Enter a valid record number.</span>
 							</div>
 						</div>
 

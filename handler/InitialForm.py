@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from dao.InitialForm import InitialFormDAO
 from dao.s3connection import s3Connection
+import datetime, time
 
 class InitialFormHandler:
 
@@ -62,10 +63,14 @@ class InitialFormHandler:
             initialform = form['initialform']
             assistantid = form['assistantid']
             doctorid = form['doctorid']
-            dateofupload = form['dateofupload']
+            # dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
             targetlocation = "initialforms/"
+
+            upload_time = time.time()
+            dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
+
             if initialform and dateofupload and recordno:
                 if dao.verifyRecordno(recordno) != None:
 

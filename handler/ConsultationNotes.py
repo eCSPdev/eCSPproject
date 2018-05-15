@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from dao.ConsultationNotes import ConsultationNotesDAO
 from dao.s3connection import s3Connection
+import datetime, time
 
 class ConsultationNotesHandler:
 
@@ -66,10 +67,14 @@ class ConsultationNotesHandler:
             consultationnote = form['consultationnote']     #this is the file to insert
             assistantid = form['assistantid']
             doctorid = form['doctorid']
-            dateofupload = form['dateofupload']
+            #dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
             targetlocation = 'consultationnotes/'          #this is the location folder on the bucket
+
+            upload_time = time.time()
+            dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
+
             if (consultationnote and dateofupload and recordno):
 
                 if dao.verifyRecordno(recordno) != None:

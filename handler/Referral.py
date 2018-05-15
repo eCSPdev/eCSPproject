@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from dao.Referral import ReferralDAO
 from dao.s3connection import s3Connection
+import datetime, time
 
 class ReferralHandler:
 
@@ -62,10 +63,14 @@ class ReferralHandler:
             referral = form['referral']
             assistantid = form['assistantid']
             doctorid = form['doctorid']
-            dateofupload = form['dateofupload']
+            # dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
             targetlocation = 'referrals/'
+
+            upload_time = time.time()
+            dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
+
             if referral and dateofupload and recordno:
                 if dao.verifyRecordno(recordno) != None:
 

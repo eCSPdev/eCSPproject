@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from dao.Prescription import PrescriptionDAO
 from dao.s3connection import s3Connection
+import datetime, time
 
 class PrescriptionHandler:
 
@@ -62,10 +63,14 @@ class PrescriptionHandler:
             prescription = form['prescription']
             assistantid = form['assistantid']
             doctorid = form['doctorid']
-            dateofupload = form['dateofupload']
+            # dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
             targetlocation = "prescriptions/"
+
+            upload_time = time.time()
+            dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
+
             if prescription and dateofupload and recordno:
                 if dao.verifyRecordno(recordno) != None:
 

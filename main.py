@@ -405,6 +405,17 @@ def getResultDates():
     else:
         return jsonify(Error="Method not allowed."), 405
 
+###################Prueba#########################
+@application.route('/Doctor/eCSP/Patient/Files', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/Files', methods=['GET'])
+@application.route('/Patient/eCSP/Result/Files', methods=['GET'])
+def getPatientFiles():
+    if request.method == 'GET':
+        print('GET - GETFILES')
+        return ConsultationNotesHandler().getPatientFiles(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 
 if __name__== '__main__':
     application.run(debug=True)

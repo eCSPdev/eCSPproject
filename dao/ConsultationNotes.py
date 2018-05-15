@@ -136,3 +136,46 @@ class ConsultationNotesDAO:
             self.conn.close()
             print("Connection closed.")
 
+    def getPatientFiles(self, pid):
+        try:
+            connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+                pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+            self.conn = psycopg2._connect(connection_url)
+            try:
+                cursor = self.conn.cursor()
+                query = "(select patientid, consultationnoteid as fileid, consultationnote as link, 'consultationnote' as type, dateofupload, doctorusername, assistantusername, recordno " \
+                        "from consultationnotes " \
+                        "where patientid = %s ) " \
+                        "Union " \
+                        "(select patientid, initialformid as fileid, initialform as link, 'initialform' as type, dateofupload, doctorusername, assistantusername, recordno " \
+                        "from initialform " \
+                        "where patientid = %s ) " \
+                        "Union " \
+                        "(select patientid, prescriptionid as fileid, prescription as link, 'prescription' as type, dateofupload, doctorusername, assistantusername, recordno " \
+                        "from prescriptions " \
+                        "where patientid = %s ) " \
+                        "Union " \
+                        "(select patientid, referralid as fileid, referral as link, 'referral' as type, dateofupload, doctorusername, assistantusername, recordno " \
+                        "from referrals " \
+                        "where patientid = %s ) " \
+                        "Union " \
+                        "(select patientid, resultid as fileid, results as link, 'result' as type, dateofupload, doctorusername, assistantusername, recordno " \
+                        "from results " \
+                        "where patientid = %s ) "
+                cursor.execute(query, (pid, pid, pid, pid, pid,))
+                result = []
+                #print ('result : ', result)
+                for row in cursor:
+                    result.append(row)
+                print('result : ', result)
+                return result
+            except Exception as e:
+                print("Query failed : ", e)
+                return e
+        except Exception as e:
+            print("Error connecting to database.")
+            return e
+        finally:
+            self.conn.close()
+            print("Connection closed.")
+

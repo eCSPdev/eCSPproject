@@ -34,6 +34,23 @@ class ConsultationNotesHandler:
         result['month'] = row[1]
         return result
 
+    def build_fileslist_dict(self,row):
+        result = {}
+        print(row)
+        result['patientid'] = row[0]
+        result['fileid'] = row[1]
+        result['link'] = row[2]
+        result['type'] = row[3]
+        result['dateofupload'] = row[4].strftime('%Y-%m-%d %H:%M:%S')
+        if row[5] != None:
+            result['sign'] = row[5]
+        elif row[6] != None:
+            result['sign'] = row[6]
+        else:
+            result['sign'] = None
+        result['recordno'] = row[7]
+        return result
+
     def getPatientConsultationNotes(self, args):
         print('estoy en el CN List')
         pid = args.get("patientid")
@@ -99,3 +116,16 @@ class ConsultationNotesHandler:
             result = self.build_cndates_dict(row)
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
         return jsonify(ConsultationNotesDates=result_list)
+
+    def getPatientFiles(self, args):
+        print('estoy en los Files')
+        pid = args.get("patientid")
+        dao = ConsultationNotesDAO()
+        consultationnotes_list = dao.getPatientFiles(pid)
+        result_list = []
+        if not consultationnotes_list:
+            return jsonify(Error="NOT FOUND"),404
+        for row in consultationnotes_list:
+            result = self.build_fileslist_dict(row)
+            result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
+        return jsonify(FilesList=result_list)

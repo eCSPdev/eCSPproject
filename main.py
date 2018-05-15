@@ -246,7 +246,7 @@ def getConsultationNotesByID():
 def getConsultationNotesDates():
     if request.method == 'GET':
         print('GET - GETCONSULTATIONNOTEDATES')
-        ConsultationNotesHandler().getConsultationNotesDates(request.args)
+        return ConsultationNotesHandler().getConsultationNotesDates(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -287,7 +287,7 @@ def getInitialFormByID():
 def getInitialFormDates():
     if request.method == 'GET':
         print('GET - GETINITIALFORMDATES')
-        InitialFormHandler().getInitialFormDates(request.args)
+        return InitialFormHandler().getInitialFormDates(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 

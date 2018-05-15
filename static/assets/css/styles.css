@@ -9522,8 +9522,9 @@ nav.links a {
 }
 .main-login label {
   color: #7F7F7F;
-  font-size: 14px;
-  margin-top: 5px;
+  font-size: 13px;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 .main-login .copyright {
   font-size: 11px;

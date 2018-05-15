@@ -27,7 +27,7 @@
 					<table class="table table-hover" style="width=50%;" ng-table="tableParams" template-pagination="custom/pager">
 						<thead>
 							<tr>
-								<td style="text-align:center;">
+								<td style="text-align:left;">
 									<a href="#" ng-click="sortType = 'lastname'; sortReverse = !sortReverse">
 										Full Name 
 										<span ng-show="sortType == 'lastname' && !sortReverse" class="fa fa-caret-down"></span>
@@ -49,13 +49,13 @@
 
 						<tbody>
 							<tr ng-repeat="assistant in $data | orderBy:sortType:!sortReverse | filter:assistantSearch">
-								<td style="text-align:center;">{{ assistant.lastname }}, {{ assistant.firstname}} {{ assistant.middlename }}</td>
+								<td style="text-align:left;">{{ assistant.lastname }}, {{ assistant.firstname}} {{ assistant.middlename }}</td>
 								<td ng-show="{{ assistant.status }}" style="text-align:center;">Active</td>
 								<td ng-show="{{ !assistant.status }}" style="text-align:center;">Inactive</td>
 								<td style="text-align:center;"> 
 
 									<!-- View or Edit Profile Button -->
-									<button type="button" class="btn btn-wide btn-default" ng-click="getAssistantProfile('view', assistant.assistantid)">
+									<button type="button" class="btn btn-wide btn-default" ng-click="getAssistantProfile('view', assistant.assistantid)" style="border-color: #000000;color: #000000;">
 										View
 									</button>
 									

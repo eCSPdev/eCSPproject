@@ -104,28 +104,31 @@ class ConsultationNotesHandler:
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400
 
-    def getConsultationNotesDates(self, args):
+    def getFilesDates(self, args):
         print('estoy en el CN Dates')
         pid = args.get("patientid")
         dao = ConsultationNotesDAO()
-        consultationnotes_list = dao.getConsultationNotesDates(pid)
+        files_list = dao.getConsultationNotesDates(pid)
         result_list = []
-        if not consultationnotes_list:
+        if not files_list:
             return jsonify(Error="NOT FOUND"),404
-        for row in consultationnotes_list:
+        for row in files_list:
             result = self.build_cndates_dict(row)
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
-        return jsonify(ConsultationNotesDates=result_list)
+        return jsonify(FilesDates=result_list)
 
     def getPatientFiles(self, args):
         print('estoy en los Files')
         pid = args.get("patientid")
+        year = args.get("year")
+        month = args.get("month")
         dao = ConsultationNotesDAO()
-        consultationnotes_list = dao.getPatientFiles(pid)
+        files_list = dao.getPatientFiles(pid, year, month)
         result_list = []
-        if not consultationnotes_list:
+        print(files_list)
+        if not files_list:
             return jsonify(Error="NOT FOUND"),404
-        for row in consultationnotes_list:
+        for row in files_list:
             result = self.build_fileslist_dict(row)
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
         return jsonify(FilesList=result_list)

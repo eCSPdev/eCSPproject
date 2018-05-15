@@ -19,12 +19,11 @@
         /* Doctor login */
         $http.get('/Patient/eCSP/Login?username=' + username + '&pssword=' + password)
         .then(function success(response) {
-
-          console.log(response.data);
           
           $rootScope.currentUser.username = response.data.Patient.username;
           $rootScope.currentUser.token = response.data.Patient.token;
           $rootScope.currentUser.role = response.data.Patient.rle;
+          $rootScope.currentUser.userid = response.data.Patient.patientid;
 
           $rootScope.currentUser.firstname = response.data.Patient.firstname;
           $rootScope.currentUser.middlename = response.data.Patient.middlename;
@@ -36,7 +35,6 @@
           $state.go('app.home');
 
         }, function error(response) {
-          console.log(response);
           alert('Invalid username or password. Please try again.');
           $scope.credentials.password = '';
         });

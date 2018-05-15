@@ -109,11 +109,13 @@ class DoctorDAO:
     def updateDoctorInfoByID(self, doctorid, licenseno, firstname, middlename, lastname, officename, phone, status,
                              email):
         try:
+
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
             self.conn = psycopg2._connect(connection_url)
 
             try:
+
                 cursor = self.conn.cursor()
                 query = "update doctor " \
                         "set licenseno=%s, firstname=%s, middlename=%s, lastname=%s, officename=%s, phone=%s, status=%s, " \
@@ -135,11 +137,13 @@ class DoctorDAO:
 
     def updateDoctorAddress(self, doctorid, street, aptno, city, st, country, zipcode):
         try:
+
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
             self.conn = psycopg2._connect(connection_url)
 
             try:
+
                 cursor = self.conn.cursor()
                 query = "update doctoraddress " \
                         "set street=%s, aptno=%s, city=%s, st=%s, country=%s, zipcode=%s " \
@@ -150,6 +154,7 @@ class DoctorDAO:
                 self.conn.commit()
                 return addressid
             except Exception as e:
+
                 print("Query failed : ", e)
                 return e
         except Exception as e:
@@ -243,25 +248,30 @@ class DoctorDAO:
                                         officename, phone, status, email, username, pssword,
                                         street, aptno, city, st, country, zipcode, changesdate):
         try:
+            print("estoy en el try")
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
             self.conn = psycopg2._connect(connection_url)
 
             try:
+                print("estoy en el otro try")
                 cursor = self.conn.cursor()
                 query = "insert into doctorhistory (doctorid, licenseno, firstname, middlename, lastname, "\
-                                                "officename, phone, status, email, username, pssword,"\
+                                                "phone, status, email, username, pssword,"\
                                                 "street, aptno, city, st, country, zipcode, changesdate)" \
                         "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
                         "returning historyid;"
                 cursor.execute(query, (doctorid, licenseno, firstname, middlename, lastname,
-                                                officename, phone, status, email, username, pssword,
+                                                phone, status, email, username, pssword,
                                                 street, aptno, city, st, country, zipcode, changesdate,))
                 historyid = cursor.fetchone()[0]
+                print(historyid)
                 self.conn.commit()
 
+                print(historyid)
                 return historyid
             except Exception as e:
+                print("estoy en el error der diablo")
                 print("Query failed : ", e)
                 return e
         except Exception as e:

@@ -161,51 +161,51 @@ class DoctorHandler:
         if not dao.getDoctorByID(doctorid):
             return jsonify(Error="Doctor not found."), 404
         else:
-            if len(form) != 17:
-                return jsonify(Error="Malformed update request"), 400
-            else:
-                doctorid = form['doctorid']
-                licenseno = form['licenseno']
-                firstname = form['firstname']
-                middlename = form['middlename']
-                lastname = form['lastname']
-                officename = form['officename']
-                phone = form['phone']
-                status = form['status']
-                email = form['email']
-                username = form['username']
-                pssword = form['pssword']
-                street = form['street']
-                aptno = form['aptno']
-                city = form['city']
-                st = form['st']
-                country = form['country']
-                zipcode = form['zipcode']
-                print('estoy antes del if')
+            # if len(form) != 17:
+            #     return jsonify(Error="Malformed update request"), 400
+            # else:
+            doctorid = form['doctorid']
+            licenseno = form['licenseno']
+            firstname = form['firstname']
+            middlename = form['middlename']
+            lastname = form['lastname']
+            officename = form['officename']
+            phone = form['phone']
+            status = form['status']
+            email = form['email']
+            username = form['username']
+            pssword = form['pssword']
+            street = form['street']
+            aptno = form['aptno']
+            city = form['city']
+            st = form['st']
+            country = form['country']
+            zipcode = form['zipcode']
+            print('estoy antes del if')
 
-                if pssword == None:
-                    pssword = dao.getPsswordByID(doctorid)
+            if pssword == None:
+                pssword = dao.getPsswordByID(doctorid)
 
 
-                if doctorid and licenseno and firstname and lastname and officename and phone and status \
-                        and street and city and country and zipcode and pssword:
+            if doctorid and licenseno and firstname and lastname and officename and phone and status \
+                    and street and city and country and zipcode and pssword:
 
-                    dao.updateDoctorInfoByID(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
-                                             status, email)
-                    dao.updateDoctorAddress(doctorid, street, aptno, city, st, country, zipcode)
+                dao.updateDoctorInfoByID(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
+                                         status, email)
+                dao.updateDoctorAddress(doctorid, street, aptno, city, st, country, zipcode)
 
             #History
-                    changes_time = time.time()
-                    changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
-                    dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
-                                            status, email, username, pssword, street, aptno, city, st, country, zipcode,
-                                            changesdate)
+                changes_time = time.time()
+                changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
+                                        status, email, username, pssword, street, aptno, city, st, country, zipcode,
+                                        changesdate)
 
-                    result = self.update_doctor_dict(doctorid, licenseno, firstname, middlename, lastname, officename,
-                                                     phone, status, email, street, aptno, city, st, country, zipcode)
-                    return jsonify(Doctor = result), 200
-                else:
-                    return jsonify(Error="Unexpected attributes in update request"), 400
+                result = self.update_doctor_dict(doctorid, licenseno, firstname, middlename, lastname, officename,
+                                                 phone, status, email, street, aptno, city, st, country, zipcode)
+                return jsonify(Doctor = result), 200
+            else:
+                return jsonify(Error="Unexpected attributes in update request"), 400
 
 
 

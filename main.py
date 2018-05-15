@@ -96,12 +96,15 @@ def getAllDoctor():
 def getDoctorByID():
     if request.method == 'GET':
         print('GET - GETDOCTORBYID')
+        print(request.args)
         if not request.args:
+            print('405 here')
             return jsonify(Error="No Doctor ID Included."), 405
         else:
             return DoctorHandler().getDoctorByID(request.args)
     if request.method == 'PUT':
-        return DoctorHandler().updateDoctorInformation(request.args)
+        print(request.get_json())
+        return DoctorHandler().updateDoctorInformation(request.get_json())
     else:
         return jsonify(Error="Method not allowed."), 405
 

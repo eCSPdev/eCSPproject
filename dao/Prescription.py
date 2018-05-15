@@ -112,7 +112,7 @@ class PrescriptionDAO:
             self.conn.close()
             print("Connection closed.")
 
-    def getPrescriptionMonthAndYear(self, pid):
+    def getPrescriptionDates(self, pid):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])

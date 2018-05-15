@@ -246,10 +246,7 @@ def getConsultationNotesByID():
 def getConsultationNotesDates():
     if request.method == 'GET':
         print('GET - GETCONSULTATIONNOTEDATES')
-        if not request.args:
-            return jsonify(Error="No Consultation Note ID Included."), 405
-        else:
-            return ConsultationNotesHandler().getConsultationNotesDates(request.args)
+        ConsultationNotesHandler().getConsultationNotesDates(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -283,6 +280,17 @@ def getInitialFormByID():
     else:
         return jsonify(Error="Method not allowed."), 405
 
+#Get Patient Initial Form Dates
+@application.route('/Doctor/eCSP/Patient/InitialForm/Dates', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/InitialForm/Dates', methods=['GET'])
+@application.route('/Patient/eCSP/InitialForm/Dates', methods=['GET'])
+def getInitialFormDates():
+    if request.method == 'GET':
+        print('GET - GETINITIALFORMDATES')
+        InitialFormHandler().getInitialFormDates(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 #Get Patient Prescription List
 @application.route('/Doctor/eCSP/Patient/PrescriptionList', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/PrescriptionList', methods=['GET'])
@@ -307,6 +315,17 @@ def getPrescriptionByID():
             return PrescriptionHandler().getPrescriptionByID(request.args)
     if request.method == 'POST':
         return PrescriptionHandler().insertPrescription(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#Get Patient Prescription Dates
+@application.route('/Doctor/eCSP/Patient/Prescription/Dates', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/Prescription/Dates', methods=['GET'])
+@application.route('/Patient/eCSP/Prescription/Dates', methods=['GET'])
+def getPrescriptionDates():
+    if request.method == 'GET':
+        print('GET - GETPRESCRIPTIONDATES')
+        return PrescriptionHandler().getPrescriptionDates(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -337,6 +356,17 @@ def getReferralByID():
     else:
         return jsonify(Error="Method not allowed."), 405
 
+#Get Patient Referral Dates
+@application.route('/Doctor/eCSP/Patient/Referral/Dates', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/Referral/Dates', methods=['GET'])
+@application.route('/Patient/eCSP/Referral/Dates', methods=['GET'])
+def getReferralDates():
+    if request.method == 'GET':
+        print('GET - GETREFERRALDATES')
+        return ReferralHandler().getReferralDates(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 #Get Patient Result List
 @application.route('/Doctor/eCSP/Patient/ResultList', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/ResultList', methods=['GET'])
@@ -361,6 +391,17 @@ def getResultByID():
             return ResultHandler().getResultByID(request.args)
     if request.method == 'POST':
         return ResultHandler().insertResult(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#Get Patient Result Dates
+@application.route('/Doctor/eCSP/Patient/Result/Dates', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/Result/Dates', methods=['GET'])
+@application.route('/Patient/eCSP/Result/Dates', methods=['GET'])
+def getResultDates():
+    if request.method == 'GET':
+        print('GET - GETRESULTDATES')
+        return ResultHandler().getResultDates(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 

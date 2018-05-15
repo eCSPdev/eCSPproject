@@ -88,7 +88,7 @@ class ConsultationNotesHandler:
                 return jsonify(Error="Unexpected attributes in insert request"), 400
 
     def getConsultationNotesDates(self, args):
-        print('estoy en el CN List')
+        print('estoy en el CN Dates')
         pid = args.get("patientid")
         dao = ConsultationNotesDAO()
         consultationnotes_list = dao.getConsultationNotesDates(pid)

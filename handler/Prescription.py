@@ -25,6 +25,12 @@ class PrescriptionHandler:
         result['recordno'] = recordno
         return result
 
+    def build_pdates_dict(self, row):
+        result = {}
+        result['year'] = row[0]
+        result['month'] = row[1]
+        return result
+
     def getPatientPrescription(self, args):
         pid = args.get("patientid")
         dao = PrescriptionDAO()
@@ -73,3 +79,16 @@ class PrescriptionHandler:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400
+
+    def getPrescriptionDates(self, args):
+        print('estoy en el Pres Dates')
+        pid = args.get("patientid")
+        dao = PrescriptionDAO()
+        prescription_list = dao.getPrescriptionDates(pid)
+        result_list = []
+        if not prescription_list:
+            return jsonify(Error="NOT FOUND"),404
+        for row in prescription_list:
+            result = self.build_pdates_dict(row)
+            result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
+        return jsonify(PrescriptionDates=result_list)

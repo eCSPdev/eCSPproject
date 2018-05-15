@@ -25,6 +25,12 @@ class ReferralHandler:
         result['recordno'] = recordno
         return result
 
+    def build_rdates_dict(self, row):
+        result = {}
+        result['year'] = row[0]
+        result['month'] = row[1]
+        return result
+
     def getPatientReferral(self, args):
         pid = args.get("patientid")
         dao = ReferralDAO()
@@ -74,3 +80,16 @@ class ReferralHandler:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400
+
+    def getReferralDates(self, args):
+        print('estoy en el Referral Dates')
+        pid = args.get("patientid")
+        dao = ReferralDAO()
+        referral_list = dao.getReferralDates(pid)
+        result_list = []
+        if not referral_list:
+            return jsonify(Error="NOT FOUND"),404
+        for row in referral_list:
+            result = self.build_rdates_dict(row)
+            result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
+        return jsonify(ReferralDates=result_list)

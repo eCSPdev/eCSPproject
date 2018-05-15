@@ -25,6 +25,12 @@ class InitialFormHandler:
         result['recordno'] = recordno
         return result
 
+    def build_ifdates_dict(self, row):
+        result = {}
+        result['year'] = row[0]
+        result['month'] = row[1]
+        return result
+
     def getPatientInitialForm(self, args):
         pid = args.get("patientid")
         dao = InitialFormDAO()
@@ -73,3 +79,16 @@ class InitialFormHandler:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400
+
+    def getInitialFormDates(self, args):
+        print('estoy en el IF Dates')
+        pid = args.get("patientid")
+        dao = InitialFormDAO()
+        initialform_list = dao.getInitialFormDates(pid)
+        result_list = []
+        if not initialform_list:
+            return jsonify(Error="NOT FOUND"),404
+        for row in initialform_list:
+            result = self.build_ifdates_dict(row)
+            result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
+        return jsonify(InitialFormDates=result_list)

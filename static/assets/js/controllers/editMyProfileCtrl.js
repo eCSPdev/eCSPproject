@@ -89,6 +89,12 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
       .then(function success(response) {
 
         $scope.thisUser = response.data.Doctor;
+        console.log($scope.thisUser);
+
+        $rootScope.currentUser.firstname = response.data.Doctor.firstname;
+        $rootScope.currentUser.middlename = response.data.Doctor.middlename;
+        $rootScope.currentUser.lastname = response.data.Doctor.lastname;
+
         $state.go('app.users.view_my_profile');
 
       }, function error(response) { });
@@ -102,6 +108,12 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
       .then(function success(response) {
 
         $scope.thisUser = response.data.Assistant;
+        console.log($scope.thisUser);
+
+        $rootScope.currentUser.firstname = response.data.Assistant.firstname;
+        $rootScope.currentUser.middlename = response.data.Assistant.middlename;
+        $rootScope.currentUser.lastname = response.data.Assistant.lastname;
+
         $state.go('app.users.view_my_profile');
 
       }, function error(response) { });
@@ -115,6 +127,13 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
       .then(function success(response) {
 
         $scope.thisUser = response.data.Patient;
+
+        console.log($scope.thisUser);
+
+        $rootScope.currentUser.firstname = response.data.Patient.firstname;
+        $rootScope.currentUser.middlename = response.data.Patient.middlename;
+        $rootScope.currentUser.lastname = response.data.Patient.lastname;
+
         $state.go('app.users.view_my_profile');
 
       }, function error(response) { });

@@ -233,7 +233,7 @@ class PatientHandler:
                 email = form['email']
                 insurancecompanyname = form['insurancecompanyname']
                 username = form['username']
-                pssword = form['pssword']
+                pssword = form['Password']
                 street = form['street']
                 aptno = form['aptno']
                 city = form['city']
@@ -307,53 +307,53 @@ class PatientHandler:
         if not patient:
             return jsonify(Error="Patient not found."), 404
         else:
-            if len(form) != 4: #username, token, patientid, deactivationdays
-                return jsonify(Error="Malformed update request"), 400
+            # if len(form) != 4: #username, token, patientid, deactivationdays
+            #     return jsonify(Error="Malformed update request"), 400
+            # else:
+            firstname = patient[1]
+            middlename = patient[2]
+            lastname = patient[3]
+            ssn = patient[4]
+            birthdate = patient[5]
+            gender = patient[6]
+            phone = patient[7]
+            email = patient[9]
+            username = patient[10]
+            pssword = patient[11]
+            insurancecompanyname = patient[12]
+            street = patient[14]
+            aptno = patient[15]
+            city = patient[16]
+            st = patient[17]
+            country = patient[18]
+            zipcode = patient[19]
+            changes_time = time.time()
+
+            if status == True:
+                daysofgrace = None
+                deactivationdate = None
             else:
-                firstname = patient[1]
-                middlename = patient[2]
-                lastname = patient[3]
-                ssn = patient[4]
-                birthdate = patient[5]
-                gender = patient[6]
-                phone = patient[7]
-                email = patient[9]
-                username = patient[10]
-                pssword = patient[11]
-                insurancecompanyname = patient[12]
-                street = patient[14]
-                aptno = patient[15]
-                city = patient[16]
-                st = patient[17]
-                country = patient[18]
-                zipcode = patient[19]
-                changes_time = time.time()
+                daysofgrace = form['daysofgrace']
+                print ('days fo grace : ', daysofgrace)
+                date = datetime.datetime.fromtimestamp(changes_time)
+                print('date', date)
+                deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
+                print('deactivationdate : ', deactivationdate)
 
-                if status == True:
-                    daysofgrace = None
-                    deactivationdate = None
-                else:
-                    daysofgrace = form['daysofgrace']
-                    print ('days fo grace : ', daysofgrace)
-                    date = datetime.datetime.fromtimestamp(changes_time)
-                    print('date', date)
-                    deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
-                    print('deactivationdate : ', deactivationdate)
+            dao.updatePatientStatus(patientid, status, deactivationdate)
+            # History
+            changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+            ## Modificado (... , DoctorSign)
+            dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
+                                     status, email, username, pssword, insurancecompanyname, street, aptno, city,
+                                     st, country, zipcode, changesdate, AssistantSign, DoctorSign, deactivationdate, daysofgrace)
 
-                dao.updatePatientStatus(patientid, status, deactivationdate)
-                # History
-                changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
-                ## Modificado (... , DoctorSign)
-                dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
-                                         status, email, username, pssword, insurancecompanyname, street, aptno, city,
-                                         st, country, zipcode, changesdate, AssistantSign, DoctorSign, deactivationdate, daysofgrace)
+            #hay que a-adir al history el campo de deactivationdays y creo que hay que a-adirlo al diccionario
 
-                #hay que a-adir al history el campo de deactivationdays y creo que hay que a-adirlo al diccionario
-
-                result = self.update_patient_dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender,
-                                                  phone, status, email, insurancecompanyname, street, aptno, city, st,
-                                                  country,zipcode)
-                return jsonify(Assistant=result), 200
+            result = self.update_patient_dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender,
+                                              phone, status, email, insurancecompanyname, street, aptno, city, st,
+                                              country,zipcode)
+            return jsonify(Assistant=result), 200
 
 
 

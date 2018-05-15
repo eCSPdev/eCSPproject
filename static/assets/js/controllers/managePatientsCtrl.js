@@ -2,7 +2,7 @@
 /** 
   * controllers used for the dashboard
   */
-  app.controller('managePatientsCtrl', ["$scope", "$rootScope", "$state", "$http", "NgTableParams", function ($scope, $rootScope, $state, $http, NgTableParams) {
+  app.controller('managePatientsCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModal", "NgTableParams", function ($scope, $rootScope, $state, $http, $uibModal, NgTableParams) {
 
 	$scope.sortType     = 'status'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
@@ -127,4 +127,82 @@
 			$state.go('app.users.manage_users.manage_patients.edit_profile');
 		}
 	}
+
+    // openActivate() Function Definition
+    $scope.openActivate = function (size, patientID) {
+
+        var modalInstance = $uibModal.open({
+            templateUrl: 'modal_activate.html',
+            controller: 'ModalInstanceCtrl',
+            size: size,
+            resolve: {
+                chosenPatient: function() {
+                return patientID;
+                }
+            }
+        });
+    }
+
+    // openDeactivate() Function Definition
+    $scope.openDeactivate = function (size, patientID) {
+
+        var modalInstance = $uibModal.open({
+            templateUrl: 'modal_deactivate.html',
+            controller: 'ModalInstanceCtrl',
+            size: size,
+            resolve: {
+                chosenPatient: function() {
+                return patientID;
+                }
+            }
+   });
+}
+}]);
+
+// Popup/Modal Controller
+app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenPatient", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenPatient) {
+
+    $scope.changeStatus = function(button) {
+
+        if($rootScope.currentUser.role == 'Doctor') {
+
+            if(button == 'activate') {
+                $http.put('/Doctor/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient)
+                .then(function success(response) { 
+                    $state.reload();
+                }, function error(response) { });
+            }
+
+            else if(button == 'deactivate') {
+                $http.put('/Doctor/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient  + '&daysofgrace=' + 30)
+                .then(function success(response) { 
+                    $state.reload();
+                }, function error(response) { });
+            }
+        }
+
+        else {
+
+            if(button == 'activate') {
+                $http.put('/Assistant/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient)
+                .then(function success(response) { 
+                    $state.reload();
+                }, function error(response) { });
+            }
+
+            else if(button == 'deactivate') {
+                $http.put('/Assistant/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient  + '&daysofgrace=' + 30)
+                .then(function success(response) { 
+                    $state.reload();
+                }, function error(response) { });
+            }
+        }
+
+        $uibModalInstance.close(true);
+    };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+
 }]);

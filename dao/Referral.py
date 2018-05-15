@@ -100,7 +100,6 @@ class ReferralDAO:
                 cursor.execute(query, (recordno,))
                 consultationnoteid = cursor.fetchone()[0]
                 self.conn.commit()
-
                 return consultationnoteid
             except Exception as e:
                 print("Query failed : ", e)

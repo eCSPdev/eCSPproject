@@ -28,6 +28,12 @@ class ConsultationNotesHandler:
         result['recordno'] = recordno
         return result
 
+    def build_cndates_dict(self, row):
+        result = {}
+        result['year'] = row[0]
+        result['month'] = row[1]
+        return result
+
     def getPatientConsultationNotes(self, args):
         print('estoy en el CN List')
         pid = args.get("patientid")
@@ -80,3 +86,16 @@ class ConsultationNotesHandler:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400
+
+    def getConsultationNotesDates(self, args):
+        print('estoy en el CN List')
+        pid = args.get("patientid")
+        dao = ConsultationNotesDAO()
+        consultationnotes_list = dao.getConsultationNotesDates(pid)
+        result_list = []
+        if not consultationnotes_list:
+            return jsonify(Error="NOT FOUND"),404
+        for row in consultationnotes_list:
+            result = self.build_cndates_dict(row)
+            result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
+        return jsonify(ConsultationNotesDates=result_list)

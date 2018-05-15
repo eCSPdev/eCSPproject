@@ -239,6 +239,20 @@ def getConsultationNotesByID():
     else:
         return jsonify(Error="Method not allowed."), 405
 
+#Get Patient Consultation Note Dates
+@application.route('/Doctor/eCSP/Patient/ConsultationNotes/Dates', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/ConsultationNotes/Dates', methods=['GET'])
+@application.route('/Patient/eCSP/ConsultationNotes/Dates', methods=['GET'])
+def getConsultationNotesDates():
+    if request.method == 'GET':
+        print('GET - GETCONSULTATIONNOTEDATES')
+        if not request.args:
+            return jsonify(Error="No Consultation Note ID Included."), 405
+        else:
+            return ConsultationNotesHandler().getConsultationNotesDates(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 #Get Patient Initial Form List
 @application.route('/Doctor/eCSP/Patient/InitialFormList', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/InitialFormList', methods=['GET'])

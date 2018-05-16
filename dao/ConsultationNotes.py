@@ -59,7 +59,7 @@ class ConsultationNotesDAO:
             self.conn.close()
             print("Connection closed.")
 
-    def insertConsultationNote(self, consultationnote, assistantusername, doctorusername, dateofupload, patientid, recordno):
+    def insertConsultationNote(self, filename, assistantusername, doctorusername, dateofupload, patientid, recordno):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -67,11 +67,11 @@ class ConsultationNotesDAO:
 
             try:
                 cursor = self.conn.cursor()
-                query = "insert into consultationnotes (consultationnote, assistantusername, doctorusername, dateofupload, " \
+                query = "insert into consultationnotes (filename, assistantusername, doctorusername, dateofupload, " \
                         "patientid, recordno) " \
                         "values (%s,%s,%s,%s,%s,%s) " \
                         "returning consultationnoteid;"
-                cursor.execute(query, (consultationnote, assistantusername, doctorusername, dateofupload, patientid, recordno,))
+                cursor.execute(query, (filename, assistantusername, doctorusername, dateofupload, patientid, recordno,))
                 consultationnoteid = cursor.fetchone()[0]
                 self.conn.commit()
                 print("new consultation note id : ", consultationnoteid)

@@ -60,7 +60,7 @@ class InitialFormDAO:
             self.conn.close()
             print("Connection closed.")
 
-    def insertInitialForm(self, initialformlink, assistantusername, doctorusername, dateofupload, patientid, recordno):
+    def insertInitialForm(self, filename, assistantusername, doctorusername, dateofupload, patientid, recordno):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -68,11 +68,11 @@ class InitialFormDAO:
 
             try:
                 cursor = self.conn.cursor()
-                query = "insert into initialform (initialform, assistantusername, doctorusername, dateofupload, " \
+                query = "insert into initialform (filename, assistantusername, doctorusername, dateofupload, " \
                         "patientid, recordno) " \
                         "values (%s,%s,%s,%s,%s,%s) " \
                         "returning initialformid;"
-                cursor.execute(query, (initialformlink, assistantusername, doctorusername, dateofupload, patientid, recordno,))
+                cursor.execute(query, (filename, assistantusername, doctorusername, dateofupload, patientid, recordno,))
                 initialformid = cursor.fetchone()[0]
                 self.conn.commit()
 

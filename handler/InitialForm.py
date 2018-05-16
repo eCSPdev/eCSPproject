@@ -15,10 +15,10 @@ class InitialFormHandler:
         result['patientid'] = row[5]
         return result
 
-    def build_ifinsert_dict(self, initialformid, initialformlink, assistantusername, doctorusername, dateofupload, patientid, recordno):
+    def build_ifinsert_dict(self, initialformid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno):
         result = {}
         result['initialformid'] = initialformid
-        result['initialform'] = initialformlink
+        result['filename'] = filename
         result['assistantusername'] = assistantusername
         result['doctorusername'] = doctorusername
         result['dateofupload'] = dateofupload
@@ -57,13 +57,11 @@ class InitialFormHandler:
 
     def insertInitialForm(self, form):
         dao = InitialFormDAO()
-        if len(form) != 5:
+        if len(form) != 6:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            initialform = form['initialform']
+            filepath = form['filepath']
             filename = form['filename']
-            # assistantid = form['assistantid']
-            # doctorid = form['doctorid']
             doctorusername = form['doctorusername']
             assistantusername = form['assistantusername']
             patientid = form['patientid']
@@ -72,16 +70,20 @@ class InitialFormHandler:
             upload_time = time.time()
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
 
-            if initialform and dateofupload and recordno:
+            if filepath and dateofupload and recordno:
                 if str(dao.verifyRecordno(recordno)) == str(patientid):
 
+                    initialformid = dao.insertInitialForm(filename, assistantusername, doctorusername, dateofupload, patientid, recordno)
+
                     s3 = s3Connection()
-                    targetlocation = 'initialforms/' + dateofupload + '.pdf'
-                    initialformlink = s3.uploadfile(initialform,targetlocation)  # returns the url after storing it
-                    print ("initial form link : ", initialformlink)
-                    initialformid = dao.insertInitialForm(initialformlink, assistantusername, doctorusername, dateofupload, patientid, recordno)
-                    result = self.build_ifinsert_dict(initialformid, initialformlink, assistantusername, doctorusername, dateofupload, patientid, recordno)
-                    return jsonify(InitialForm = result), 201 #Verificar porque 201
+                    targetlocation = 'initialforms/' + filename + str(initialformid) + '.pdf'
+
+                    #ELIMINAR EL LINK
+                    link = s3.uploadfile(filepath, targetlocation)  # returns the url after storing it
+                    print("link : ", link)
+
+                    result = self.build_ifinsert_dict(initialformid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno)
+                    return jsonify(Success="Initial Form inserted.", InitialForm = result), 201 #Verificar porque 201
                 else:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
             else:

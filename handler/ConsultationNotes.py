@@ -17,11 +17,11 @@ class ConsultationNotesHandler:
         result['recordno'] = row[6]
         return result
 
-    def build_cninsert_dict(self, consultationnoteid, consultationnotelink, assistantusername, doctorusername,
+    def build_cninsert_dict(self, consultationnoteid, filename, assistantusername, doctorusername,
                                                       dateofupload, patientid, recordno):
         result = {}
         result['consultationnoteid'] = consultationnoteid
-        result['consultationnote'] = consultationnotelink
+        result['filename'] = filename
         result['assistantusername'] = assistantusername
         result['doctorusername'] = doctorusername
         result['dateofupload'] = dateofupload
@@ -78,35 +78,35 @@ class ConsultationNotesHandler:
 
     def insertConsultationNotes(self, form):
         dao = ConsultationNotesDAO()
-        if len(form) != 5:
+        if len(form) != 6:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            consultationnote = form['consultationnote']     #this is the file to insert
+            filepath = form['filepath']     #this is the file to insert
             filename = form['filename']
-            # assistantid = form['assistantid']
-            # doctorid = form['doctorid']
             assistantusername = form['assistantusername']
             doctorusername = form['doctorusername']
             patientid = form['patientid']
             recordno = form['recordno']
 
-            print("form : ", form)
-            print("consultation note : ",consultationnote)
-
             upload_time = time.time()
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
 
-            if (consultationnote and dateofupload and recordno):
+            if (filepath and dateofupload and recordno):
 
                 if str(dao.verifyRecordno(recordno)) == str(patientid):
+
+                    consultationnoteid = dao.insertConsultationNote(filename, assistantusername, doctorusername, dateofupload,
+                                                                    patientid, recordno)
+
                     #insert the file in s3
                     s3 = s3Connection()
-                    targetlocation = 'consultationnotes/'+dateofupload+'.pdf' #cambiar por filename
-                    consultationnotelink = s3.uploadfile(consultationnote,targetlocation) #returns the url after storing it
-                    print ("consultation note link : ", consultationnotelink)
-                    consultationnoteid = dao.insertConsultationNote(consultationnotelink, assistantusername, doctorusername, dateofupload,
-                                                                      patientid, recordno)
-                    result = self.build_cninsert_dict(consultationnoteid, consultationnotelink, assistantusername, doctorusername,
+                    targetlocation = 'consultationnotes/'+filename+str(consultationnoteid)+'.pdf' #cambiar por filename
+
+                    #ELIMINAR EL LINK
+                    link = s3.uploadfile(filepath,targetlocation) #returns the url after storing it
+                    print("link : ", link)
+
+                    result = self.build_cninsert_dict(consultationnoteid, filename, assistantusername, doctorusername,
                                                       dateofupload, patientid, recordno)
                     return jsonify(Success="Consultation Node inserted.", ConsultatioNote = result), 201
                 else:

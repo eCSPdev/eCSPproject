@@ -61,6 +61,7 @@ class PrescriptionHandler:
             return jsonify(Error="Malformed insert request"), 400
         else:
             prescription = form['prescription']
+            filename = form['filename']
             # assistantid = form['assistantid']
             # doctorid = form['doctorid']
             doctorusername = form['doctorusername']

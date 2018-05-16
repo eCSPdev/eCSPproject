@@ -82,6 +82,7 @@ class ConsultationNotesHandler:
             return jsonify(Error="Malformed insert request"), 400
         else:
             consultationnote = form['consultationnote']     #this is the file to insert
+            filename = form['filename']
             # assistantid = form['assistantid']
             # doctorid = form['doctorid']
             assistantusername = form['assistantusername']
@@ -90,6 +91,7 @@ class ConsultationNotesHandler:
             recordno = form['recordno']
 
             print("form : ", form)
+            print("consultation note : ",consultationnote)
 
             upload_time = time.time()
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
@@ -99,7 +101,7 @@ class ConsultationNotesHandler:
                 if str(dao.verifyRecordno(recordno)) == str(patientid):
                     #insert the file in s3
                     s3 = s3Connection()
-                    targetlocation = 'consultationnotes/'+dateofupload+'.pdf'
+                    targetlocation = 'consultationnotes/'+dateofupload+'.pdf' #cambiar por filename
                     consultationnotelink = s3.uploadfile(consultationnote,targetlocation) #returns the url after storing it
                     print ("consultation note link : ", consultationnotelink)
                     consultationnoteid = dao.insertConsultationNote(consultationnotelink, assistantusername, doctorusername, dateofupload,

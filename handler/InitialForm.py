@@ -61,6 +61,7 @@ class InitialFormHandler:
             return jsonify(Error="Malformed insert request"), 400
         else:
             initialform = form['initialform']
+            filename = form['filename']
             # assistantid = form['assistantid']
             # doctorid = form['doctorid']
             doctorusername = form['doctorusername']

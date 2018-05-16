@@ -61,6 +61,7 @@ class ResultHandler:
             return jsonify(Error="Malformed insert request"), 400
         else:
             result = form['result']
+            filename = form['filename']
             # assistantid = form['assistantid']
             # doctorid = form['doctorid']
             assistantusername = form['assistantusername']
@@ -79,6 +80,8 @@ class ResultHandler:
                     targetlocation = 'results/' + dateofupload + '.pdf'
                     resultlink = s3.uploadfile(result,targetlocation)  # returns the url after storing it
                     print ("result link : ", resultlink)
+
+                    #añadir filename al query y al result y en el diccionario
                     resultid = dao.insertResult(resultlink, assistantusername, doctorusername, dateofupload, patientid, recordno)
                     result = self.build_resinsert_dict(resultid, resultlink, assistantusername, doctorusername, dateofupload, patientid, recordno)
                     return jsonify(Results = result), 201

@@ -61,6 +61,7 @@ class ReferralHandler:
             return jsonify(Error="Malformed insert request"), 400
         else:
             referral = form['referral']
+            filename = form['filename']
             # assistantid = form['assistantid']
             # doctorid = form['doctorid']
             assistantusername = form['assistantusername']

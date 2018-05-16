@@ -1,5 +1,9 @@
 from flask import jsonify, request
 from dao.ConsultationNotes import ConsultationNotesDAO
+from dao.InitialForm import InitialFormDAO
+from dao.Prescription import PrescriptionDAO
+from dao.Referral import ReferralDAO
+from dao.Result import ResultDAO
 from dao.s3connection import s3Connection
 import datetime, time
 
@@ -40,17 +44,23 @@ class ConsultationNotesHandler:
         print(row)
         result['patientid'] = row[0]
         result['fileid'] = row[1]
-        result['link'] = row[2]
-        result['type'] = row[3]
-        result['dateofupload'] = row[4].strftime('%Y-%m-%d %H:%M:%S')
-        if row[5] != None:
-            result['sign'] = row[5]
-        elif row[6] != None:
+        result['filepath'] = row[2]
+        result['filelink'] = row[3]
+        result['type'] = row[4]
+        result['dateofupload'] = row[5].strftime('%Y-%m-%d %H:%M:%S')
+        if row[6] != None:
             result['sign'] = row[6]
+        elif row[7] != None:
+            result['sign'] = row[7]
         else:
             result['sign'] = None
-        result['recordno'] = row[7]
+        result['recordno'] = row[8]
         return result
+
+    def build_link_dict(self, link):
+        result = {}
+        result['filelink'] = link
+        return link
 
     def getPatientConsultationNotes(self, args):
         print('estoy en el CN List')
@@ -142,3 +152,39 @@ class ConsultationNotesHandler:
             result = self.build_fileslist_dict(row)
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
         return jsonify(FilesList=result_list)
+
+    def getDownloadFile(self, args):
+        print('estoy en el Download File')
+        pid = args.get("patientid")
+        type = args.get("type")
+        fileid = args.get("fileid")
+        if type == 'consultationnote':
+            dao = ConsultationNotesDAO()
+            filename = dao.getConsultatioNoteNameById(pid, fileid)[0]
+        elif type == 'initialform':
+            dao = InitialFormDAO()
+            filename = dao.getInitialFormNameById(pid, fileid)[0]
+        elif type == 'prescription':
+            dao = PrescriptionDAO()
+            filename = dao.getPrescriptionNameById(pid, fileid)[0]
+        elif type == 'referral':
+            dao = ReferralDAO()
+            filename = dao.getReferralNameById(pid, fileid)[0]
+        elif type == 'result':
+            dao = ReferralDAO()
+            filename = dao.getReferralNameById(pid, fileid)[0]
+        else:
+            return jsonify(Error="INVALID FILE TYPE"), 404
+
+        if filename == None:
+            return jsonify(Error="NOT FOUND"), 404
+
+
+
+        ###########################################################
+        #me quedé aquí, ya tengo el nombre y el id.
+        s3filename = filename + fileid + '.pdf'
+        link = 'Ejemplo' #aqui va la coneccion a s3 para que devuelva el link
+        result = self.build_fileslist_dict(link)
+        return jsonify(FileLink=result)
+        ###########################################################

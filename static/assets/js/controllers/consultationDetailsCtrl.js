@@ -2,7 +2,7 @@
 /** 
   * controllers used for the dashboard
 */
-app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", function ($scope, $rootScope, $state) {
+app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$http", "NgTableParams", function ($scope, $rootScope, $state, $http, NgTableParams) {
 
 	$scope.sortType     = 'status'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
@@ -13,13 +13,64 @@ app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", fun
         $state.go('login.signin');
     }
 
-	// create the list of patients
-	$scope.documents = [
-	{ documentName: 'Lab_Results.pdf', documentType: 'Results', uploadDate: '20 February 2017', uploadedBy: 'Stark, Antonio' },
-	{ documentName: 'Neurologist_Referral.pdf', documentType: 'Referral', uploadDate: '28 February 2017', uploadedBy: 'Stark, Antonio' },
-	{ documentName: 'Initial_Form.pdf', documentType: 'Consultation Notes', uploadDate: '3 February 2017', uploadedBy: 'Talavera, Dr. Fulgencio' },
-	{ documentName: 'Naproxel_Prescription.pdf', documentType: 'Prescription', uploadDate: '13 February 2017', uploadedBy: 'Talavera, Dr. Fulgencio' }
-	];
+    console.log($rootScope.chosenRecord);
+
+    //Make sure type is displayed correctly in table
+    function changeTypeDisplayName(type) {
+    	switch(type) {
+    		case 'consultationnote':
+    			return 'Consultation Note';
+    		case 'initialform':
+    			return 'Initial Form';
+    		case 'prescription':
+    			return 'Prescription';
+    		case 'referral':
+    			return 'Referral';
+    		case 'result':
+    			return 'Result';
+    	}
+    }
+
+    $http.get('/Doctor/eCSP/Patient/Files?patientid=' + $rootScope.chosenRecord.patientID + '&month=' + $rootScope.consultationDate.month + '&year=' + $rootScope.consultationDate.year) 
+		.then(function success(response) {
+
+			console.log($scope.documents);
+
+			$scope.documents = response.data.FilesList;
+
+			for (var i = 0; i < $scope.documents.length; i++) {
+				$scope.documents[i].dateofupload = $scope.documents[i].dateofupload.split(" ")[0]; //Get date only
+				$scope.documents[i].type = changeTypeDisplayName($scope.documents[i].type);
+			}
+
+			console.log($scope.documents);
+
+			// Declaration of table parameters
+	        $scope.tableParams = new NgTableParams({
+	        	// Show first page
+	        	page: 1, 
+
+	        	// Count per page
+	        	count: 10,
+
+	        	// initial sort order
+	        	sorting: {
+	        		name: "asc"
+	        	}
+	        }, {
+	    		// Array with information to display in table ($data in HTML)
+	            // Length of data
+	            total: $scope.documents.length, 
+	            dataset: $scope.documents
+	        });
+		},
+			function error(response) {});
+
+	$scope.download = function(data) {
+		console.log(data);
+		window.location.assign(data);
+	}
+
 
 
 }]);

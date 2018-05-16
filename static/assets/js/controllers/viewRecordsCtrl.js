@@ -2,7 +2,7 @@
 /** 
   * controllers used for the dashboard
 */
-app.controller('viewRecordsCtrl', ["$scope", "$rootScope", "$state", function ($scope, $rootScope, $state) {
+app.controller('viewRecordsCtrl', ["$scope", "$rootScope", "$state", "$http", "NgTableParams", function ($scope, $rootScope, $state, $http, NgTableParams) {
 
 	$scope.sortType     = 'status'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
@@ -19,21 +19,110 @@ app.controller('viewRecordsCtrl', ["$scope", "$rootScope", "$state", function ($
       	}
     }
 
-	// create the list of patient records
-	$scope.records = [
-	{ name: 'Cordero, Jacinto', recordID: '123', status: 'Active', lastUpdated: '20 February 2018' },
-	{ name: 'Melendez, Teófilo', recordID: '456', status: 'Inactive' , lastUpdated: '3 August 2016'},
-	{ name: 'Reyes, Adelaida', recordID: '789', status: 'Active', lastUpdated: '15 December 2017' },
-	{ name: 'González, Rigoberta', recordID: '321', status: 'Inactive', lastUpdated: '9 May 2017' }
-	];
+    if($rootScope.currentUser.role == 'Doctor')
+	{
+		/* HTTP GET Request: getAllPatients() */
+		/* Get list of all patients */
+		$http.get('/Doctor/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+		.then(function success(response) {
+
+			// console.log(response.data.Patient);
+
+	    	// Search bar
+	    	for(var i = 0; i < response.data.Patient.length; i++) 
+	    	{
+	    		if(response.data.Patient[i].status == true)
+	    		{
+	    			response.data.Patient[i].status = 'Active';
+	    		}
+
+	    		else
+	    		{
+	    			response.data.Patient[i].status = 'Inactive';
+	    		}
+	    	}
+
+			// Populate the list of patients
+			$scope.patients = response.data.Patient; 
+
+	        // Declaration of table parameters
+	        $scope.tableParams = new NgTableParams({
+	        	// Show first page
+	        	page: 1, 
+
+	        	// Count per page
+	        	count: 10,
+
+	        	// initial sort order
+	        	sorting: {
+	        		name: "asc"
+	        	}
+	        }, {
+	    		// Array with information to display in table ($data in HTML)
+	            // Length of data
+	            total: $scope.patients.length, 
+	            dataset: $scope.patients
+	        });
+
+    	}, function error(response) { });
+	}
+
+	else
+	{
+		/* HTTP GET Request: getAllPatients() */
+		/* Get list of all patients */
+		$http.get('/Assistant/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+		.then(function success(response) {
+
+	    	// Search bar
+	    	for(var i = 0; i < response.data.Patient.length; i++) 
+	    	{
+	    		if(response.data.Patient[i].status == true)
+	    		{
+	    			response.data.Patient[i].status = 'Active';
+	    		}
+
+	    		else
+	    		{
+	    			response.data.Patient[i].status = 'Inactive';
+	    		}
+	    	}
+
+			// Populate the list of patients
+			$scope.patients = response.data.Patient; 
+
+	        // Declaration of table parameters
+	        $scope.tableParams = new NgTableParams({
+	        	// Show first page
+	        	page: 1, 
+
+	        	// Count per page
+	        	count: 10,
+
+	        	// initial sort order
+	        	sorting: {
+	        		name: "asc"
+	        	}
+	        }, {
+	    		// Array with information to display in table ($data in HTML)
+	            // Length of data
+	            total: $scope.patients.length, 
+	            dataset: $scope.patients
+	        });
+
+    	}, function error(response) { });
+	}
 
 	$rootScope.chosenRecord = { };
 
 	// getPatientRecord() Function Definition
-	$scope.getPatientRecord = function(recordID) {
+	$scope.getPatientRecord = function(patientID, lName, fName, mName) {
 
-		$rootScope.chosenRecord = recordID;
-		console.log('Chosen Record: ' + $rootScope.chosenRecord);
+		$rootScope.chosenRecord.patientID = patientID;
+		$rootScope.chosenRecord.lName = lName;
+		$rootScope.chosenRecord.fName = fName;
+		$rootScope.chosenRecord.mName = mName;
+		// console.log('Chosen Record: ' + $rootScope.chosenRecord);
 		$state.go("app.users.view_records.patient_consultations");
 	}
 

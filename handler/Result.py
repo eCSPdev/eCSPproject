@@ -64,7 +64,6 @@ class ResultHandler:
             # dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
-            targetlocation = 'results/'
 
             upload_time = time.time()
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
@@ -74,6 +73,7 @@ class ResultHandler:
 
                     # insert the file in s3
                     s3 = s3Connection()
+                    targetlocation = 'results/' + dateofupload + '.pdf'
                     resultlink = s3.uploadfile(result,targetlocation)  # returns the url after storing it
 
                     resultid = dao.insertReferral(resultlink, assistantid, doctorid, dateofupload, patientid, recordno)

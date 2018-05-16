@@ -63,10 +63,8 @@ class ReferralHandler:
             referral = form['referral']
             assistantid = form['assistantid']
             doctorid = form['doctorid']
-            # dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
-            targetlocation = 'referrals/'
 
             upload_time = time.time()
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
@@ -76,6 +74,7 @@ class ReferralHandler:
 
                     # insert the file in s3
                     s3 = s3Connection()
+                    targetlocation = 'referrals/' + dateofupload + '.pdf'
                     referrallink = s3.uploadfile(referral,targetlocation)  # returns the url after storing it
 
                     referralid = dao.insertReferral(referral, assistantid, doctorid, dateofupload, patientid, recordno)

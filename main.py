@@ -238,7 +238,7 @@ def getConsultationNotesByID():
         else:
             return ConsultationNotesHandler().getConsultationNotesByID(request.args)
     if request.method == 'POST':
-        return ConsultationNotesHandler().insertConsultationNotes(request.args)
+        return ConsultationNotesHandler().insertConsultationNotes(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 

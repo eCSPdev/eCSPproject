@@ -63,10 +63,8 @@ class PrescriptionHandler:
             prescription = form['prescription']
             assistantid = form['assistantid']
             doctorid = form['doctorid']
-            # dateofupload = form['dateofupload']
             patientid = form['patientid']
             recordno = form['recordno']
-            targetlocation = "prescriptions/"
 
             upload_time = time.time()
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
@@ -75,6 +73,7 @@ class PrescriptionHandler:
                 if dao.verifyRecordno(recordno) != None:
 
                     s3 = s3Connection()
+                    targetlocation = 'prescriptions/' + dateofupload + '.pdf'
                     prescriptionlink = s3.uploadfile(prescription, targetlocation)  # returns the url after storing it
 
                     prescriptionid = dao.insertPrescription(prescriptionlink, assistantid, doctorid, dateofupload, patientid, recordno)

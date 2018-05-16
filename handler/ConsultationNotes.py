@@ -17,13 +17,13 @@ class ConsultationNotesHandler:
         result['recordno'] = row[6]
         return result
 
-    def build_cninsert_dict(self, consultationnoteid, consultationnotelink, assistantid, doctorid,
+    def build_cninsert_dict(self, consultationnoteid, consultationnotelink, assistantusername, doctorusername,
                                                       dateofupload, patientid, recordno):
         result = {}
         result['consultationnoteid'] = consultationnoteid
         result['consultationnote'] = consultationnotelink
-        result['assistantid'] = assistantid
-        result['doctorid'] = doctorid
+        result['assistantusername'] = assistantusername
+        result['doctorusername'] = doctorusername
         result['dateofupload'] = dateofupload
         result['patientid'] = patientid
         result['recordno'] = recordno

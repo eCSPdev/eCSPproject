@@ -60,7 +60,7 @@ class ReferralDAO:
             self.conn.close()
             print("Connection closed.")
 
-    def insertReferral(self, referral, assistantid, doctorid, dateofupload, patientid, recordno):
+    def insertReferral(self, referral, assistantusername, doctorusername, dateofupload, patientid, recordno):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -68,11 +68,11 @@ class ReferralDAO:
 
             try:
                 cursor = self.conn.cursor()
-                query = "insert into initialform (prescription, assistantid, doctorid, dateofupload, " \
+                query = "insert into referrals (referral, assistantusername, doctorusername, dateofupload, " \
                         "patientid, recordno) " \
                         "values (%s,%s,%s,%s,%s,%s) " \
                         "returning referralid;"
-                cursor.execute(query, (referral, assistantid, doctorid, dateofupload, patientid, recordno,))
+                cursor.execute(query, (referral, assistantusername, doctorusername, dateofupload, patientid, recordno,))
                 referralid = cursor.fetchone()[0]
                 self.conn.commit()
 
@@ -95,12 +95,13 @@ class ReferralDAO:
 
             try:
                 cursor = self.conn.cursor()
-                query = "select * " \
-                        "from recordno;"
+                query = "select patientid " \
+                        "from medicalrecord " \
+                        "where recordno = %s;"
                 cursor.execute(query, (recordno,))
-                consultationnoteid = cursor.fetchone()[0]
+                patientid = cursor.fetchone()[0]
                 self.conn.commit()
-                return consultationnoteid
+                return patientid
             except Exception as e:
                 print("Query failed : ", e)
                 return e

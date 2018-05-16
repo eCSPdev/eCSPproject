@@ -355,7 +355,7 @@ def getReferralByID():
         else:
             return ReferralHandler().getReferralByID(request.args)
     if request.method == 'POST':
-        return ReferralHandler().insertReferral(request.args)
+        return ReferralHandler().insertReferral(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -393,7 +393,7 @@ def getResultByID():
         else:
             return ResultHandler().getResultByID(request.args)
     if request.method == 'POST':
-        return ResultHandler().insertResult(request.args)
+        return ResultHandler().insertResult(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 

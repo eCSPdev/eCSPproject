@@ -238,7 +238,7 @@ def getConsultationNotesByID():
         else:
             return ConsultationNotesHandler().getConsultationNotesByID(request.args)
     if request.method == 'POST':
-        return ConsultationNotesHandler().insertConsultationNotes(request.args)
+        return ConsultationNotesHandler().insertConsultationNotes(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -279,7 +279,7 @@ def getInitialFormByID():
         else:
             return InitialFormHandler().getInitialFormByID(request.args)
     if request.method == 'POST':
-        return InitialFormHandler().insertInitialForm(request.args)
+        return InitialFormHandler().insertInitialForm(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -317,7 +317,7 @@ def getPrescriptionByID():
         else:
             return PrescriptionHandler().getPrescriptionByID(request.args)
     if request.method == 'POST':
-        return PrescriptionHandler().insertPrescription(request.args)
+        return PrescriptionHandler().insertPrescription(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -355,7 +355,7 @@ def getReferralByID():
         else:
             return ReferralHandler().getReferralByID(request.args)
     if request.method == 'POST':
-        return ReferralHandler().insertReferral(request.args)
+        return ReferralHandler().insertReferral(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -393,7 +393,7 @@ def getResultByID():
         else:
             return ResultHandler().getResultByID(request.args)
     if request.method == 'POST':
-        return ResultHandler().insertResult(request.args)
+        return ResultHandler().insertResult(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 

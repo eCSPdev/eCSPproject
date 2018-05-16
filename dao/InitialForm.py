@@ -60,7 +60,7 @@ class InitialFormDAO:
             self.conn.close()
             print("Connection closed.")
 
-    def insertInitialForm(self, initialform, assistantid, doctorid, dateofupload, patientid, recordno):
+    def insertInitialForm(self, initialformlink, assistantusername, doctorusername, dateofupload, patientid, recordno):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -68,11 +68,11 @@ class InitialFormDAO:
 
             try:
                 cursor = self.conn.cursor()
-                query = "insert into initialform (initialform, assistantid, doctorid, dateofupload, " \
+                query = "insert into initialform (initialform, assistantusername, doctorusername, dateofupload, " \
                         "patientid, recordno) " \
                         "values (%s,%s,%s,%s,%s,%s) " \
                         "returning initialformid;"
-                cursor.execute(query, (initialform, assistantid, doctorid, dateofupload, patientid, recordno,))
+                cursor.execute(query, (initialformlink, assistantusername, doctorusername, dateofupload, patientid, recordno,))
                 initialformid = cursor.fetchone()[0]
                 self.conn.commit()
 
@@ -95,13 +95,14 @@ class InitialFormDAO:
 
             try:
                 cursor = self.conn.cursor()
-                query = "select * " \
-                        "from recordno;"
+                query = "select patientid " \
+                        "from medicalrecord " \
+                        "where recordno = %s;"
                 cursor.execute(query, (recordno,))
-                consultationnoteid = cursor.fetchone()[0]
+                patientid = cursor.fetchone()[0]
                 self.conn.commit()
 
-                return consultationnoteid
+                return patientid
             except Exception as e:
                 print("Query failed : ", e)
                 return e

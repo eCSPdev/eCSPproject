@@ -15,12 +15,12 @@ class PrescriptionHandler:
         result['patientid'] = row[5]
         return result
 
-    def build_presinsert_dict(self, prescriptionid, prescriptionlink, assistantid, doctorid, dateofupload, patientid, recordno):
+    def build_presinsert_dict(self, prescriptionid, prescriptionlink, assistantusername, doctorusername, dateofupload, patientid, recordno):
         result = {}
         result['prescriptionid'] = prescriptionid
         result['prescription'] = prescriptionlink
-        result['assistantid'] = assistantid
-        result['doctorid'] = doctorid
+        result['assistantusername'] = assistantusername
+        result['doctorusername'] = doctorusername
         result['dateofupload'] = dateofupload
         result['patientid'] = patientid
         result['recordno'] = recordno
@@ -61,8 +61,10 @@ class PrescriptionHandler:
             return jsonify(Error="Malformed insert request"), 400
         else:
             prescription = form['prescription']
-            assistantid = form['assistantid']
-            doctorid = form['doctorid']
+            # assistantid = form['assistantid']
+            # doctorid = form['doctorid']
+            doctorusername = form['doctorusername']
+            assistantusername = form['assistantusername']
             patientid = form['patientid']
             recordno = form['recordno']
 
@@ -70,14 +72,14 @@ class PrescriptionHandler:
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
 
             if prescription and dateofupload and recordno:
-                if dao.verifyRecordno(recordno) != None:
+                if str(dao.verifyRecordno(recordno)) == str(patientid):
 
                     s3 = s3Connection()
                     targetlocation = 'prescriptions/' + dateofupload + '.pdf'
                     prescriptionlink = s3.uploadfile(prescription, targetlocation)  # returns the url after storing it
-
-                    prescriptionid = dao.insertPrescription(prescriptionlink, assistantid, doctorid, dateofupload, patientid, recordno)
-                    result = self.build_presinsert_dict(prescriptionid, prescriptionlink, assistantid, doctorid, dateofupload, patientid, recordno)
+                    print ("prescription link : ", prescriptionlink)
+                    prescriptionid = dao.insertPrescription(prescriptionlink, assistantusername, doctorusername, dateofupload, patientid, recordno)
+                    result = self.build_presinsert_dict(prescriptionid, prescriptionlink, assistantusername, doctorusername, dateofupload, patientid, recordno)
                     return jsonify(Prescription = result), 201 #Verificar porque 201
                 else:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400

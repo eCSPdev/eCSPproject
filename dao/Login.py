@@ -16,12 +16,14 @@ class LoginDAO:
             self.conn = psycopg2._connect(connection_url)
             try:
                 cursor = self.conn.cursor()
-                query = "select username, status, deactivationdate, firstname, middlename, lastname, patientid " \
+                query = "select username, status, deactivationdate, firstname, middlename, lastname, patients.patientid, recordno " \
                         "from patients " \
+                        "inner join medicalrecord on patients.patientid = medicalrecord.patientid " \
                         "where (username = %s and pssword = %s) " \
                         "or (email = %s and pssword = %s);"
                 cursor.execute(query, (username, pssword, username, pssword, ))
                 result = cursor.fetchone()
+                print(result)
                 return result
             except Exception as e:
                 print("Query failed : ", e)

@@ -99,13 +99,14 @@ class ConsultationNotesHandler:
             recordno = args.get("recordno")             #form['recordno']
 
         print("args : ", args)
-        print("filename : ", args)
-        print("assistantusername : ", args)
-        print("doctorusername : ", args)
-        print("patientid : ", args)
-        print("recordno : ", args)
-        print("file : ", file)
-        return
+        print("filename : ", filename)
+        print("assistantusername : ", assistantusername)
+        print("doctorusername : ", doctorusername)
+        print("patientid : ", patientid)
+        print("recordno : ", recordno)
+        print("file : ", filepath)
+
+        return jsonify(Success="Consultation Node inserted."), 201
 
         # upload_time = time.time()
         # dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')

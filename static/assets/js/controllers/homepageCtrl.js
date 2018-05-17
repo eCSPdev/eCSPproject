@@ -17,7 +17,7 @@ app.controller('homepageCtrl', ["$scope", "$rootScope", "$state", function($scop
     }
 
     else if($rootScope.currentUser.role == 'Patient') {
-            $scope.nextState = "app.users.consultation_details";
+            $scope.nextState = "app.users.view_records.patient_consultations";
     }
 
 }]);

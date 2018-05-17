@@ -96,10 +96,12 @@
 							<h3 class="modal-title">Confirm Changes</h3>
 						</div>
 						<div class="modal-body">
-							<h5 style="font-size: 16px; margin-bottom: 0px;">Are you sure?</h5>
-						</div>
+							<h5 style="font-size: 16px; margin-bottom: 0px;">Days of grace: 
+								<input type="text" name="daysofgrace" placeholder="" ng-model="daysofgrace" ng-pattern="/^[0-9]+$/" required style="width: 60px;">
+							</h5>
+						</div>	
 						<div class="modal-footer">
-							<button class="btn btn-primary" ng-click="changeStatus('deactivate')">Confirm</button>
+							<button class="btn btn-primary" ng-click="changeStatus('deactivate')" ng-disabled="!daysofgrace">Confirm</button>
 							<button class="btn btn-red" ng-click="cancel()">Cancel</button>
 						</div>
 					</script>

@@ -35,16 +35,12 @@ app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$h
 
     if($rootScope.currentUser.role == 'Doctor' || $rootScope.currentUser.role == 'Assistant') {
     	$scope.patientid = $rootScope.chosenRecord.patientID;
-    	$rootScope.chosenRecord.lastame = $rootScope.currentUser.lastname;
-    	$rootScope.chosenRecord.firstname = $rootScope.currentUser.firstname;
-    	$rootScope.chosenRecord.middlename = $rootScope.currentUser.middlename;
     }
-
     else {
     	$scope.patientid = $rootScope.currentUser.userid;
-    	$rootScope.chosenRecord.lastame = $rootScope.currentUser.lastname;
-    	$rootScope.chosenRecord.firstname = $rootScope.currentUser.firstname;
-    	$rootScope.chosenRecord.middlename = $rootScope.currentUser.middlename;
+    	$rootScope.chosenRecord.lName = $rootScope.currentUser.lastname;
+    	$rootScope.chosenRecord.fName = $rootScope.currentUser.firstname;
+    	$rootScope.chosenRecord.mName = $rootScope.currentUser.middlename;
 
     }
 
@@ -55,7 +51,7 @@ app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$h
 
 			for (var i = 0; i < $scope.documents.length; i++) {
 				$scope.documents[i].dateofupload = $scope.documents[i].dateofupload.split(" ")[0]; //Get date only
-				$scope.documents[i].type = changeTypeDisplayName($scope.documents[i].type);
+				$scope.documents[i].typeDisplayName = changeTypeDisplayName($scope.documents[i].type);
 			}
 
 			console.log($scope.documents);
@@ -81,9 +77,18 @@ app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$h
 		},
 			function error(response) {});
 
-	$scope.download = function(data) {
-		console.log(data);
-		window.location.assign(data);
+	$scope.download = function(pid, type, fileid) {
+		console.log(pid);
+
+		$http.get('/Doctor/eCSP/Patient/Files/Download?patientid=' + pid + '&type=' + type + '&fileid=' + fileid) 
+			.then(function success(response) {
+				console.log(response.data);
+
+			}, function error(response) {
+				
+			}
+		);
+
 	}
 
 	// openActivate() Function Definition
@@ -127,47 +132,47 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     			return;
     		case 'initialform':
     			if ($rootScope.currentUser.role == 'Doctor') {
-    				item.url = '/Doctor/eCSP/Patient/InitialForm?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=' + $rootScope.currentUser.username + '&recordno=' +  $rootScope.chosenRecord.recordno;
+
     			}
     			else if ($rootScope.currentUser.role == 'Assistant') {
-    				item.url = '/Doctor/eCSP/Patient/InitialForm?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=' + + $rootScope.currentUser.username + '&doctorusername=undefined&recordno=' +  $rootScope.chosenRecord.recordno;
+
     			}
     			else {
-    				item.url = '/Patient/eCSP/InitialForm?patientid=' + $rootScope.currentUser.userid + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=undefined&recordno=' +  $rootScope.currentUser.recordno;
+    				
     			}
 
     			return 'Initial Form';
     		case 'prescription':
     			if ($rootScope.currentUser.role == 'Doctor') {
-    				item.url = '/Doctor/eCSP/Patient/Prescription?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=' + $rootScope.currentUser.username + '&recordno=' +  $rootScope.chosenRecord.recordno;
+
     			}
     			else if ($rootScope.currentUser.role == 'Assistant') {
-    				item.url = '/Doctor/eCSP/Patient/Prescription?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=' + + $rootScope.currentUser.username + '&doctorusername=undefined&recordno=' +  $rootScope.chosenRecord.recordno;
+
     			}
     			else {
-    				item.url = '/Patient/eCSP/Prescription?patientid=' + $rootScope.currentUser.userid + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=undefined&recordno=' +  $rootScope.currentUser.recordno;
+    				
     			}
     			return 'Prescription';
     		case 'referral':
     			if ($rootScope.currentUser.role == 'Doctor') {
-    				item.url = '/Doctor/eCSP/Patient/Referral?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=' + $rootScope.currentUser.username + '&recordno=' +  $rootScope.chosenRecord.recordno;
+
     			}
     			else if ($rootScope.currentUser.role == 'Assistant') {
-    				item.url = '/Doctor/eCSP/Patient/Referral?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=' + + $rootScope.currentUser.username + '&doctorusername=undefined&recordno=' +  $rootScope.chosenRecord.recordno;
+
     			}
     			else {
-    				item.url = '/Patient/eCSP/Referral?patientid=' + $rootScope.currentUser.userid + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=undefined&recordno=' +  $rootScope.currentUser.recordno;
+    				
     			}
     			return 'Referral';
     		case 'result':
     			if ($rootScope.currentUser.role == 'Doctor') {
-    				item.url = '/Doctor/eCSP/Patient/Result?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=' + $rootScope.currentUser.username + '&recordno=' +  $rootScope.chosenRecord.recordno;
+
     			}
     			else if ($rootScope.currentUser.role == 'Assistant') {
-    				item.url = '/Doctor/eCSP/Patient/Result?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=' + + $rootScope.currentUser.username + '&doctorusername=undefined&recordno=' +  $rootScope.chosenRecord.recordno;
+
     			}
     			else {
-    				item.url = '/Patient/eCSP/Result?patientid=' + $rootScope.currentUser.userid + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=undefined&recordno=' +  $rootScope.currentUser.recordno;
+    				
     			}
     			return 'Result';
     	}

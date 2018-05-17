@@ -15,7 +15,7 @@ app.controller('viewRecordsCtrl', ["$scope", "$rootScope", "$state", "$http", "N
 
   	if($rootScope.isLoggedIn == true) {
   		if($rootScope.currentUser.role == 'Patient') {
-      		$state.go('app.home');
+      		$state.go('app.users.view_records.patient_consultations');
       	}
     }
 
@@ -116,13 +116,14 @@ app.controller('viewRecordsCtrl', ["$scope", "$rootScope", "$state", "$http", "N
 	$rootScope.chosenRecord = { };
 
 	// getPatientRecord() Function Definition
-	$scope.getPatientRecord = function(patientID, lName, fName, mName) {
+	$scope.getPatientRecord = function(patientID, recordno, lastname, firstname, middlename) {
 
 		$rootScope.chosenRecord.patientID = patientID;
-		$rootScope.chosenRecord.lName = lName;
-		$rootScope.chosenRecord.fName = fName;
-		$rootScope.chosenRecord.mName = mName;
-		// console.log('Chosen Record: ' + $rootScope.chosenRecord);
+		$rootScope.chosenRecord.recordno = recordno;
+		$rootScope.chosenRecord.lastname = lastname;
+		$rootScope.chosenRecord.firstname = firstname;
+		$rootScope.chosenRecord.middlename = middlename;
+
 		$state.go("app.users.view_records.patient_consultations");
 	}
 

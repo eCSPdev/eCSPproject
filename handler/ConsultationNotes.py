@@ -86,43 +86,47 @@ class ConsultationNotesHandler:
             result = self.build_consultationnoteslist_dict(row[0])
             return jsonify(ConsultatioNote=result)
 
-    def insertConsultationNotes(self, form):
+    def insertConsultationNotes(self, form, file):
         dao = ConsultationNotesDAO()
-        if len(form) != 6:
-            return jsonify(Error="Malformed insert request"), 400
-        else:
-            filepath = form['filepath']     #this is the file to insert
-            filename = form['filename']
-            assistantusername = form['assistantusername']
-            doctorusername = form['doctorusername']
-            patientid = form['patientid']
-            recordno = form['recordno']
+        # if len(form) != 6:
+        #     return jsonify(Error="Malformed insert request"), 400
+        # else:
+        filepath = file     #this is the file to insert
+        filename = form['filename']
+        assistantusername = form['assistantusername']
+        doctorusername = form['doctorusername']
+        patientid = form['patientid']
+        recordno = form['recordno']
 
-            upload_time = time.time()
-            dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
+        print(form)
+        print(file)
+        return
 
-            if (filepath and dateofupload and recordno):
+        # upload_time = time.time()
+        # dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
 
-                if str(dao.verifyRecordno(recordno)) == str(patientid):
+        # if (filepath and dateofupload and recordno):
 
-                    consultationnoteid = dao.insertConsultationNote(filename, assistantusername, doctorusername, dateofupload,
-                                                                    patientid, recordno)
+        #     if str(dao.verifyRecordno(recordno)) == str(patientid):
 
-                    #insert the file in s3
-                    s3 = s3Connection()
-                    targetlocation = 'consultationnotes/'+filename+str(consultationnoteid)+'.pdf' #cambiar por filename
+        #         consultationnoteid = dao.insertConsultationNote(filename, assistantusername, doctorusername, dateofupload,
+        #                                                         patientid, recordno)
 
-                    #ELIMINAR EL LINK
-                    link = s3.uploadfile(filepath,targetlocation) #returns the url after storing it
-                    print("link : ", link)
+        #         #insert the file in s3
+        #         s3 = s3Connection()
+        #         targetlocation = 'consultationnotes/'+filename+str(consultationnoteid)+'.pdf' #cambiar por filename
 
-                    result = self.build_cninsert_dict(consultationnoteid, filename, assistantusername, doctorusername,
-                                                      dateofupload, patientid, recordno)
-                    return jsonify(Success="Consultation Node inserted.", ConsultatioNote = result), 201
-                else:
-                    return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
-            else:
-                return jsonify(Error="Unexpected attributes in insert request"), 400
+        #         #ELIMINAR EL LINK
+        #         link = s3.uploadfile(filepath,targetlocation) #returns the url after storing it
+        #         print("link : ", link)
+
+        #         result = self.build_cninsert_dict(consultationnoteid, filename, assistantusername, doctorusername,
+        #                                           dateofupload, patientid, recordno)
+        #         return jsonify(Success="Consultation Node inserted.", ConsultatioNote = result), 201
+        #     else:
+        #         return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
+        # else:
+        #     return jsonify(Error="Unexpected attributes in insert request"), 400
 
     def getFilesDates(self, args):
         print('estoy en el CN Dates')

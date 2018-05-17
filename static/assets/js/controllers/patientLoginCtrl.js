@@ -19,11 +19,15 @@
         /* Doctor login */
         $http.get('/Patient/eCSP/Login?username=' + username + '&pssword=' + password)
         .then(function success(response) {
+
+              console.log(response.data.Patient);
+
           
           $rootScope.currentUser.username = response.data.Patient.username;
           $rootScope.currentUser.token = response.data.Patient.token;
           $rootScope.currentUser.role = response.data.Patient.rle;
           $rootScope.currentUser.userid = response.data.Patient.patientid;
+          $rootScope.currentUser.recordno = response.data.Patient.recordno;
 
           $rootScope.currentUser.firstname = response.data.Patient.firstname;
           $rootScope.currentUser.middlename = response.data.Patient.middlename;

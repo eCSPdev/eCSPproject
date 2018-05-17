@@ -46,6 +46,13 @@ application.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 def index():
     return render_template('index.html')
 
+@application.route('/upload', methods=['POST'])
+def upload():
+    print(request.args)
+    print(request.files['file'].filename)
+    return 'wepa'
+
+
 #Patient login
 @application.route('/Patient/eCSP/Login', methods = ['GET'])
 def plogin():
@@ -238,7 +245,9 @@ def getConsultationNotesByID():
         else:
             return ConsultationNotesHandler().getConsultationNotesByID(request.args)
     if request.method == 'POST':
-        return ConsultationNotesHandler().insertConsultationNotes(request.form)
+        print(request.args)
+        print(request.files['file'].filename)
+        return ConsultationNotesHandler().insertConsultationNotes(request.args, request.files['file'])
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -397,7 +406,7 @@ def getResultByID():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Result Dates
+#Get Patient Result Datesx
 @application.route('/Doctor/eCSP/Patient/Result/Dates', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/Result/Dates', methods=['GET'])
 @application.route('/Patient/eCSP/Result/Dates', methods=['GET'])

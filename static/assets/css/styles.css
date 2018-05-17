@@ -5039,7 +5039,7 @@ div.cs-select {
   background: #fff;
   z-index: 100;
   font-size: 100%;
-  width: 100%;
+  width: 160px;
   max-width: 1500px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;

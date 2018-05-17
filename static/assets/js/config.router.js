@@ -158,7 +158,7 @@
     }).state('app.users.view_records.patient_consultations.consultation_details', {
         url: "/consultationDetails",
         templateUrl: "static/assets/views/consultation_details.html",
-        resolve: loadSequence('ngTable', 'jquery-sparkline', 'consultationDetailsCtrl'),
+        resolve: loadSequence('ngTable', 'angularFileUpload', 'consultationDetailsCtrl'),
         title: 'Consultation Details',
         ncyBreadcrumb: {
             label: 'Consultation Details'
@@ -166,7 +166,7 @@
     }).state('app.users.consultation_details', {
         url: "/consultationDetails",
         templateUrl: "static/assets/views/consultation_details.html",
-        resolve: loadSequence('ngTable', 'jquery-sparkline', 'consultationDetailsCtrl'),
+        resolve: loadSequence('ngTable', 'angularFileUpload', 'consultationDetailsCtrl'),
         title: 'Consultation Details',
         ncyBreadcrumb: {
             label: 'Consultation Details'

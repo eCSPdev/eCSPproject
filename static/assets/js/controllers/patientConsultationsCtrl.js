@@ -25,6 +25,8 @@
 		return months[monthNumber];
 	}
 
+	
+
 	if($rootScope.currentUser.role == 'Doctor') {
 		$http.get('/Doctor/eCSP/Patient/Files/Dates?patientid=' + $rootScope.chosenRecord.patientID) 
 		.then(function success(response) {

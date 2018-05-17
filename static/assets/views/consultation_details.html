@@ -11,7 +11,7 @@
 		<div class="row">
 			<div class="col-md-12" style="padding-right: 100px; padding-left: 50px;">
 				
-				<h2><span class="text-bold">Patient: </span>{{ chosenRecord.lName }}, {{ chosenRecord.fName }} {{ chosenRecord.mName }}</h2>
+				<h2><span class="text-bold">Patient: </span>{{ chosenRecord.lastname }}, {{ chosenRecord.firstname }} {{ chosenRecord.middlename }}</h2>
 				<br>
 
 				<!-- start: Consultation Details Search Form -->
@@ -107,7 +107,7 @@
 				<!-- start: Upload Button -->
 				<form>
 					<div class="form-group">
-						<button type="button" class="btn btn-wide btn-primary" style="float:left;  margin-top: -5px">
+						<button type="button" class="btn btn-wide btn-primary" ng-click="open()" style="float:left;  margin-top: -5px">
 							<i class="fa fa-upload fa-inverse" style="margin-right: 5px;;"></i> Upload File
 						</button>
 						<span class="help-inline col-md-4 col-sm-6"> <i class="ti-info-alt text-primary"></i> Document must be PDF (*.pdf) </span>
@@ -119,3 +119,35 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal Instance Scripts -->
+<script type="text/ng-template" id="modal_upload.html">
+	<div class="modal-header">
+		<h3 class="modal-title">Upload a file</h3>
+	</div>
+	<div class="modal-body">
+		<h5 style="font-size: 16px; margin-bottom: 0px;">Select file type: 
+			<select class="cs-select cs-skin-elastic" style="width: 140px;" ng-model="fileType">
+				<option value="" disabled selected>-- None --</option>
+				<option value="consultationnote">Consultation Note</option>
+				<option value="initialform">Initial Form</option>
+				<option value="prescription">Prescription</option>
+				<option value="referral">Referral</option>
+				<option value="result">Result</option>
+			</select>
+		</h5>
+		</br>
+
+		<h5 style="font-size: 16px; margin-bottom: 0px;">Select a file: 
+			<span class="btn btn-primary btn-o btn-sm btn-file"> Choose File
+				<input type="file" nv-file-select="" uploader="uploader" accept=".pdf"  />
+			</span>
+			<span>{{uploader.queue[0].file.name}}</span>
+		</h5>
+
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="upload();" ng-disabled="!uploader.getNotUploadedItems().length || !fileType"><span class="glyphicon glyphicon-upload"></span>Upload</button>
+		<button class="btn btn-red" ng-click="cancel()">Cancel</button>
+	</div>
+</script>

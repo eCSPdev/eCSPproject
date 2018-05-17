@@ -44,7 +44,7 @@ class ConsultationNotesHandler:
         print(row)
         result['patientid'] = row[0]
         result['fileid'] = row[1]
-        result['filelink'] = row[2]
+        result['filename'] = row[2]
         result['type'] = row[3]
         result['dateofupload'] = row[4].strftime('%Y-%m-%d %H:%M:%S')
         if row[5] != None:
@@ -85,20 +85,26 @@ class ConsultationNotesHandler:
             result = self.build_consultationnoteslist_dict(row[0])
             return jsonify(ConsultatioNote=result)
 
-    def insertConsultationNotes(self, form, file):
+    def insertConsultationNotes(self, args, file):
         dao = ConsultationNotesDAO()
         # if len(form) != 6:
-        #     return jsonify(Error="Malformed insert request"), 400
-        # else:
-        filepath = file     #this is the file to insert
-        filename = form['filename']
-        assistantusername = form['assistantusername']
-        doctorusername = form['doctorusername']
-        patientid = form['patientid']
-        recordno = form['recordno']
+        if not args:
+            return jsonify(Error="Malformed insert request"), 400
+        else:
+            filepath = file                                                             #this is the file to insert
+            filename = args.get('filename')             #form['filename']
+            assistantusername = args.get('filename')    #form['assistantusername']
+            doctorusername = args.get('filename')       #form['doctorusername']
+            patientid = args.get('filename')            #form['patientid']
+            recordno = args.get('filename')             #form['recordno']
 
-        print(form)
-        print(file)
+        print("args : ", args)
+        print("filename : ", args)
+        print("assistantusername : ", args)
+        print("doctorusername : ", args)
+        print("patientid : ", args)
+        print("recordno : ", args)
+        print("file : ", file)
         return
 
         # upload_time = time.time()

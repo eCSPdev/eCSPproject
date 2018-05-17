@@ -30,7 +30,8 @@ class s3Connection:
             s3resource = session.resource('s3', region_name=s3_config['region_name'])
 
             try:
-                s3resource.Bucket(s3_config['bucketname']).upload_file(location_filename, target_filename)
+                # s3resource.Bucket(s3_config['bucketname']).upload_file(location_filename, target_filename)
+                s3resource.Bucket(s3_config['bucketname']).put_object(Key=target_filename, Body=location_filename)
                 return self.getfileurl(target_filename)
             except Exception as e:
                 return e

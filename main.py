@@ -288,7 +288,7 @@ def getInitialFormByID():
         else:
             return InitialFormHandler().getInitialFormByID(request.args)
     if request.method == 'POST':
-        return InitialFormHandler().insertInitialForm(request.form)
+        return InitialFormHandler().insertInitialForm(request.args, request.files['file'])
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -326,7 +326,7 @@ def getPrescriptionByID():
         else:
             return PrescriptionHandler().getPrescriptionByID(request.args)
     if request.method == 'POST':
-        return PrescriptionHandler().insertPrescription(request.form)
+        return PrescriptionHandler().insertPrescription(request.args, request.files['file'])
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -364,7 +364,7 @@ def getReferralByID():
         else:
             return ReferralHandler().getReferralByID(request.args)
     if request.method == 'POST':
-        return ReferralHandler().insertReferral(request.form)
+        return ReferralHandler().insertReferral(request.args, request.files['file'])
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -402,7 +402,7 @@ def getResultByID():
         else:
             return ResultHandler().getResultByID(request.args)
     if request.method == 'POST':
-        return ResultHandler().insertResult(request.form)
+        return ResultHandler().insertResult(request.args, request.files['file'])
     else:
         return jsonify(Error="Method not allowed."), 405
 

@@ -55,31 +55,42 @@ class InitialFormHandler:
             result = self.build_initialformlist_dict(row[0])
             return jsonify(ConsultatioNote=result)
 
-    def insertInitialForm(self, form):
+    def insertInitialForm(self, args, file):
         dao = InitialFormDAO()
-        if len(form) != 6:
+        # if len(form) != 6:
+        if len(args) != 6 or not file:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            filepath = form['filepath']
-            filename = form['filename']
-            doctorusername = form['doctorusername']
-            assistantusername = form['assistantusername']
-            patientid = form['patientid']
-            recordno = form['recordno']
+            # filepath = file  # this is the file to insert
+            filename = args.get("filename")  # form['filename']
+            assistantusername = args.get("assistantusername")  # form['assistantusername']
+            doctorusername = args.get("doctorusername")  # form['doctorusername']
+            patientid = args.get("patientid")  # form['patientid']
+            recordno = args.get("recordno")  # form['recordno']
+
+            # print("args : ", args)
+            print("filename : ", filename)
+            print("assistantusername : ", assistantusername)
+            print("doctorusername : ", doctorusername)
+            print("patientid : ", patientid)
+            print("recordno : ", recordno)
+            print("file : ", file)
+
+            # return jsonify(Success="Consultation Node inserted."), 201
 
             upload_time = time.time()
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
 
-            if filepath and dateofupload and recordno:
+            if file and dateofupload and recordno:
                 if str(dao.verifyRecordno(recordno)) == str(patientid):
 
                     initialformid = dao.insertInitialForm(filename, assistantusername, doctorusername, dateofupload, patientid, recordno)
 
                     s3 = s3Connection()
-                    targetlocation = 'initialforms/' + filename + str(initialformid) + '.pdf'
-
+                    targetlocation = 'initialforms/' + str(initialformid) + filename
+                    print("target location : ", targetlocation)
                     #ELIMINAR EL LINK
-                    link = s3.uploadfile(filepath, targetlocation)  # returns the url after storing it
+                    link = s3.uploadfile(file, targetlocation)  # returns the url after storing it
                     print("link : ", link)
 
                     result = self.build_ifinsert_dict(initialformid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno)

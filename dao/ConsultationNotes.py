@@ -161,23 +161,23 @@ class ConsultationNotesDAO:
             self.conn = psycopg2._connect(connection_url)
             try:
                 cursor = self.conn.cursor()
-                query = "(select patientid, consultationnoteid as fileid, filepath, filename, 'consultationnote' as type, dateofupload, doctorusername, assistantusername, recordno " \
+                query = "(select patientid, consultationnoteid as fileid, filename, 'consultationnote' as type, dateofupload, doctorusername, assistantusername, recordno " \
                         "from consultationnotes " \
                         "where patientid = %s and EXTRACT(YEAR FROM dateofupload) = %s and EXTRACT(MONTH FROM dateofupload) = %s ) " \
                         "Union " \
-                        "(select patientid, initialformid as fileid, filepath, filename, 'initialform' as type, dateofupload, doctorusername, assistantusername, recordno " \
+                        "(select patientid, initialformid as fileid, filename, 'initialform' as type, dateofupload, doctorusername, assistantusername, recordno " \
                         "from initialform " \
                         "where patientid = %s and EXTRACT(YEAR FROM dateofupload) = %s and EXTRACT(MONTH FROM dateofupload) = %s) " \
                         "Union " \
-                        "(select patientid, prescriptionid as fileid, filepath, filename, 'prescription' as type, dateofupload, doctorusername, assistantusername, recordno " \
+                        "(select patientid, prescriptionid as fileid, filename, 'prescription' as type, dateofupload, doctorusername, assistantusername, recordno " \
                         "from prescriptions " \
                         "where patientid = %s and EXTRACT(YEAR FROM dateofupload) = %s and EXTRACT(MONTH FROM dateofupload) = %s) " \
                         "Union " \
-                        "(select patientid, referralid as fileid, filepath, filename, 'referral' as type, dateofupload, doctorusername, assistantusername, recordno " \
+                        "(select patientid, referralid as fileid, filename, 'referral' as type, dateofupload, doctorusername, assistantusername, recordno " \
                         "from referrals " \
                         "where patientid = %s and EXTRACT(YEAR FROM dateofupload) = %s and EXTRACT(MONTH FROM dateofupload) = %s) " \
                         "Union " \
-                        "(select patientid, resultid as fileid, filepath, filename, 'result' as type, dateofupload, doctorusername, assistantusername, recordno " \
+                        "(select patientid, resultid as fileid, filename, 'result' as type, dateofupload, doctorusername, assistantusername, recordno " \
                         "from results " \
                         "where patientid = %s and EXTRACT(YEAR FROM dateofupload) = %s and EXTRACT(MONTH FROM dateofupload) = %s) "
                 cursor.execute(query, (pid, year, month, pid, year, month, pid, year, month, pid, year, month, pid, year, month,))

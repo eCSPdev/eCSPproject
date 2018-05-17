@@ -149,9 +149,11 @@ class InitialFormDAO:
                         "from initialform " \
                         "where patientid = %s and initialformid = %s ; "
                 cursor.execute(query, (pid, initialformid, ))
-                result = []
-                for row in cursor:
-                    result.append(row)
+                result = cursor.fetchone()
+                print("result : ", result)
+                if result == None:
+                    result = ["None"]
+                    print("result : ", result)
                 return result
             except Exception as e:
                 print("Query failed : ", e)

@@ -154,37 +154,83 @@ class ConsultationNotesHandler:
         return jsonify(FilesList=result_list)
 
     def getDownloadFile(self, args):
-        print('estoy en el Download File')
+        print('estoy en el Download File args: ', args)
         pid = args.get("patientid")
+        print("pid : ", pid)
         type = args.get("type")
+        print("type : ", type)
         fileid = args.get("fileid")
+        print("fileid : ", fileid)
+
         if type == 'consultationnote':
+            s3 = s3Connection()
             dao = ConsultationNotesDAO()
             filename = dao.getConsultatioNoteNameById(pid, fileid)[0]
+            print("filename : ", filename)
+            if filename != "None":
+                s3filename = filename + str(fileid) + '.pdf'
+                target_filename = "consultationnotes/"+ s3filename
+                link = s3.getfileurl(target_filename)
+                result = self.build_link_dict(link)
+                return jsonify(FileLink=result)
+            else:
+                return jsonify(Error="NOT FOUND"), 404
+
         elif type == 'initialform':
+            s3 = s3Connection()
             dao = InitialFormDAO()
             filename = dao.getInitialFormNameById(pid, fileid)[0]
+            print("filename : ", filename)
+            if filename != "None":
+                s3filename = filename + str(fileid) + '.pdf'
+                target_filename = "initialforms/" + s3filename
+                link = s3.getfileurl(target_filename)
+                result = self.build_link_dict(link)
+                return jsonify(FileLink=result)
+            else:
+                return jsonify(Error="NOT FOUND"), 404
+
         elif type == 'prescription':
+            s3 = s3Connection()
             dao = PrescriptionDAO()
             filename = dao.getPrescriptionNameById(pid, fileid)[0]
+            print("filename : ", filename)
+            if filename != "None":
+                s3filename = filename + str(fileid) + '.pdf'
+                target_filename = "prescriptions/" + s3filename
+                link = s3.getfileurl(target_filename)
+                result = self.build_link_dict(link)
+                return jsonify(FileLink=result)
+            else:
+                return jsonify(Error="NOT FOUND"), 404
+
         elif type == 'referral':
+            s3 = s3Connection()
             dao = ReferralDAO()
             filename = dao.getReferralNameById(pid, fileid)[0]
+            print("filename : ", filename)
+            if filename != "None":
+                s3filename = filename + str(fileid) + '.pdf'
+                target_filename = "referrals/" + s3filename
+                link = s3.getfileurl(target_filename)
+                result = self.build_link_dict(link)
+                return jsonify(FileLink=result)
+            else:
+                return jsonify(Error="NOT FOUND"), 404
+
         elif type == 'result':
-            dao = ReferralDAO()
-            filename = dao.getReferralNameById(pid, fileid)[0]
+            s3 = s3Connection()
+            dao = ResultDAO()
+            filename = dao.getResultNameById(pid, fileid)[0]
+            print("filename : ", filename)
+            if filename != "None":
+                s3filename = filename + str(fileid) + '.pdf'
+                target_filename = "results/" + s3filename
+                link = s3.getfileurl(target_filename)
+                result = self.build_link_dict(link)
+                return jsonify(FileLink=result)
+            else:
+                return jsonify(Error="NOT FOUND"), 404
+
         else:
             return jsonify(Error="INVALID FILE TYPE"), 404
-
-        if filename == None:
-            return jsonify(Error="NOT FOUND"), 404
-
-
-
-        ###########################################################
-        #me quedé aquí, ya tengo el nombre y el id.
-        s3filename = filename + fileid + '.pdf'
-        link = 'Ejemplo' #aqui va la coneccion a s3 para que devuelva el link
-        result = self.build_fileslist_dict(link)
-        return jsonify(FileLink=result)
-        ###########################################################

@@ -148,9 +148,10 @@ class ReferralDAO:
                         "from referrals " \
                         "where patientid = %s and referralid = %s ; "
                 cursor.execute(query, (pid, referralid, ))
-                result = []
-                for row in cursor:
-                    result.append(row)
+                result = cursor.fetchone()
+                if result == None:
+                    result = ["None"]
+                    print("result : ", result)
                 return result
             except Exception as e:
                 print("Query failed : ", e)

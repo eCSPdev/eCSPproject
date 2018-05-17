@@ -149,9 +149,10 @@ class PrescriptionDAO:
                         "from prescriptions " \
                         "where patientid = %s and prescriptionid = %s ; "
                 cursor.execute(query, (pid, prescriptionid, ))
-                result = []
-                for row in cursor:
-                    result.append(row)
+                result = cursor.fetchone()
+                if result == None:
+                    result = ["None"]
+                    print("result : ", result)
                 return result
             except Exception as e:
                 print("Query failed : ", e)

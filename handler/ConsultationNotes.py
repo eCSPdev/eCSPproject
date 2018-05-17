@@ -44,17 +44,16 @@ class ConsultationNotesHandler:
         print(row)
         result['patientid'] = row[0]
         result['fileid'] = row[1]
-        result['filepath'] = row[2]
-        result['filelink'] = row[3]
-        result['type'] = row[4]
-        result['dateofupload'] = row[5].strftime('%Y-%m-%d %H:%M:%S')
-        if row[6] != None:
+        result['filelink'] = row[2]
+        result['type'] = row[3]
+        result['dateofupload'] = row[4].strftime('%Y-%m-%d %H:%M:%S')
+        if row[5] != None:
+            result['sign'] = row[5]
+        elif row[6] != None:
             result['sign'] = row[6]
-        elif row[7] != None:
-            result['sign'] = row[7]
         else:
             result['sign'] = None
-        result['recordno'] = row[8]
+        result['recordno'] = row[7]
         return result
 
     def build_link_dict(self, link):

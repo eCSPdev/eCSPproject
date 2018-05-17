@@ -14,6 +14,7 @@ class LoginHandler:
         result['lastname'] = row[5]
         result['token'] = token
         result['patientid'] = row[6]
+        result['recordno'] = row[7]
         result['rle'] = 'Patient'
         print (result)
         return result

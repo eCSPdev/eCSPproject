@@ -162,9 +162,12 @@
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenPatient", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenPatient) {
 
+    $scope.daysofgrace = '';
+
     $scope.changeStatus = function(button) {
 
         if($rootScope.currentUser.role == 'Doctor') {
+            console.log($scope.daysofgrace);
 
             if(button == 'activate') {
                 $http.put('/Doctor/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient)
@@ -174,7 +177,7 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
             }
 
             else if(button == 'deactivate') {
-                $http.put('/Doctor/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient  + '&daysofgrace=' + 30)
+                $http.put('/Doctor/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient  + '&daysofgrace=' + $scope.daysofgrace)
                 .then(function success(response) { 
                     $state.reload();
                 }, function error(response) { });
@@ -191,7 +194,7 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
             }
 
             else if(button == 'deactivate') {
-                $http.put('/Assistant/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient  + '&daysofgrace=' + 30)
+                $http.put('/Assistant/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient  + '&daysofgrace=' + $scope.daysofgrace)
                 .then(function success(response) { 
                     $state.reload();
                 }, function error(response) { });

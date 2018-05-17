@@ -100,6 +100,8 @@
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenAssistant", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenAssistant) {
 
+    $scope.daysofgrace = '';
+
 	$scope.changeStatus = function(button) {
 
 		if(button == 'activate') {
@@ -110,7 +112,7 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 		}
 
 		else if(button == 'deactivate') {
-			$http.put('/Doctor/eCSP/Assistant/Deactivate?username=' + $rootScope.currentUser.username + '&assistantid=' + chosenAssistant  + '&daysofgrace=' + 30)
+			$http.put('/Doctor/eCSP/Assistant/Deactivate?username=' + $rootScope.currentUser.username + '&assistantid=' + chosenAssistant  + '&daysofgrace=' + $scope.daysofgrace)
 			.then(function success(response) { 
 				$state.reload();
 			}, function error(response) { });

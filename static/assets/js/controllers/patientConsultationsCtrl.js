@@ -9,11 +9,11 @@
   		$state.go('login.signin');
   	}
 
-  	if($rootScope.isLoggedIn == true) {
-  		if($rootScope.currentUser.role == 'Patient') {
-      		$state.go('app.home');
-      	}
-    }
+  	// if($rootScope.isLoggedIn == true) {
+  	// 	if($rootScope.currentUser.role == 'Patient') {
+   //    		$state.go('app.home');
+   //    	}
+   //  }
 
 	$scope.sortType     = 'consultationDate'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
@@ -25,7 +25,8 @@
 		return months[monthNumber];
 	}
 
-	$http.get('/Doctor/eCSP/Patient/Files/Dates?patientid=' + $rootScope.chosenRecord.patientID) 
+	if($rootScope.currentUser.role == 'Doctor') {
+		$http.get('/Doctor/eCSP/Patient/Files/Dates?patientid=' + $rootScope.chosenRecord.patientID) 
 		.then(function success(response) {
 
 			for (var i = 0; i < response.data.FilesDates.length; i++) {
@@ -37,7 +38,7 @@
 			$scope.consultations = response.data.FilesDates;
 
 			// Declaration of table parameters
-	        $scope.tableParams = new NgTableParams({
+			$scope.tableParams = new NgTableParams({
 	        	// Show first page
 	        	page: 1, 
 
@@ -55,7 +56,76 @@
 	            dataset: $scope.consultations
 	        });
 		},
-			function error(response) {});
+		function error(response) {});
+	}
+
+	else if($rootScope.currentUser.role == 'Assistant') {
+		$http.get('/Assistant/eCSP/Patient/Files/Dates?patientid=' + $rootScope.chosenRecord.patientID) 
+		.then(function success(response) {
+
+			for (var i = 0; i < response.data.FilesDates.length; i++) {
+				response.data.FilesDates[i].monthName = convertMonth(response.data.FilesDates[i].month);
+			}
+
+			// console.log(response.data);
+
+			$scope.consultations = response.data.FilesDates;
+
+			// Declaration of table parameters
+			$scope.tableParams = new NgTableParams({
+	        	// Show first page
+	        	page: 1, 
+
+	        	// Count per page
+	        	count: 10,
+
+	        	// initial sort order
+	        	sorting: {
+	        		name: "asc"
+	        	}
+	        }, {
+	    		// Array with information to display in table ($data in HTML)
+	            // Length of data
+	            total: $scope.consultations.length, 
+	            dataset: $scope.consultations
+	        });
+		},
+		function error(response) {});
+	}
+
+	else {
+		$http.get('/Patient/eCSP/Files/Dates?patientid=' + $rootScope.currentUser.userid) 
+		.then(function success(response) {
+
+			for (var i = 0; i < response.data.FilesDates.length; i++) {
+				response.data.FilesDates[i].monthName = convertMonth(response.data.FilesDates[i].month);
+			}
+
+			// console.log(response.data);
+
+			$scope.consultations = response.data.FilesDates;
+
+			// Declaration of table parameters
+			$scope.tableParams = new NgTableParams({
+	        	// Show first page
+	        	page: 1, 
+
+	        	// Count per page
+	        	count: 10,
+
+	        	// initial sort order
+	        	sorting: {
+	        		name: "asc"
+	        	}
+	        }, {
+	    		// Array with information to display in table ($data in HTML)
+	            // Length of data
+	            total: $scope.consultations.length, 
+	            dataset: $scope.consultations
+	        });
+		},
+		function error(response) {});
+	}
 
 
 	$rootScope.consultationDate = { };

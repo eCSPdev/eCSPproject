@@ -162,7 +162,8 @@
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenPatient", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenPatient) {
 
-    $scope.daysofgrace = '';
+    // Default value
+    $scope.daysofgrace = '30';
 
     $scope.changeStatus = function(button) {
 

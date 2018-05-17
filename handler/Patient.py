@@ -340,13 +340,14 @@ class PatientHandler:
                 deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
                 print('deactivationdate : ', deactivationdate)
 
-            dao.updatePatientStatus(patientid, status, deactivationdate)
+            dao.updatePatientStatus(patientid, status, deactivationdate, daysofgrace)
             # History
             changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
             ## Modificado (... , DoctorSign)
             dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                      status, email, username, pssword, insurancecompanyname, street, aptno, city,
-                                     st, country, zipcode, changesdate, AssistantSign, DoctorSign, deactivationdate, daysofgrace)
+                                     st, country, zipcode, changesdate, AssistantSign, DoctorSign, deactivationdate,
+                                     daysofgrace)
 
             #hay que a-adir al history el campo de deactivationdays y creo que hay que a-adirlo al diccionario
 

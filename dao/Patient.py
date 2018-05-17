@@ -611,7 +611,7 @@ class PatientsDAO:
             self.conn.close()
             print("Connection closed.")
 
-    def updatePatientStatus(self, patientid, status, deactivationdate):
+    def updatePatientStatus(self, patientid, status, deactivationdate, daysofgrace):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -620,9 +620,9 @@ class PatientsDAO:
             try:
                 cursor = self.conn.cursor()
                 query = "update patients " \
-                        "set status=%s, deactivationdate=%s " \
+                        "set status=%s, deactivationdate=%s, daysofgrace=%s " \
                         "where patientid=%s;"
-                cursor.execute(query, ( status, deactivationdate, patientid, ))
+                cursor.execute(query, (status, deactivationdate, daysofgrace, patientid,))
                 self.conn.commit()
                 return patientid
             except Exception as e:

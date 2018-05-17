@@ -320,7 +320,7 @@ class AssistantHandler:
                 daysofgrace = None
                 deactivationdate = None
             else:
-                daysofgrace =  0 #form['daysofgrace']
+                daysofgrace =  form['daysofgrace']
                 print ('days of grace : ', daysofgrace)
                 date = datetime.datetime.fromtimestamp(changes_time)
                 print('date', date)

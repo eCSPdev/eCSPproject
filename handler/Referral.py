@@ -55,32 +55,43 @@ class ReferralHandler:
             result = self.build_referrallist_dict(row[0])
             return jsonify(Referral=result)
 
-    def insertReferral(self, form):
+    def insertReferral(self, args, file):
         dao = ReferralDAO()
-        if len(form) != 6:
+        # if len(form) != 6:
+        if len(args) != 6 or not file:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            filepath = form['filepath']
-            filename = form['filename']
-            assistantusername = form['assistantusername']
-            doctorusername = form['doctorusername']
-            patientid = form['patientid']
-            recordno = form['recordno']
+            # filepath = file  # this is the file to insert
+            filename = args.get("filename")  # form['filename']
+            assistantusername = args.get("assistantusername")  # form['assistantusername']
+            doctorusername = args.get("doctorusername")  # form['doctorusername']
+            patientid = args.get("patientid")  # form['patientid']
+            recordno = args.get("recordno")  # form['recordno']
+
+            # print("args : ", args)
+            print("filename : ", filename)
+            print("assistantusername : ", assistantusername)
+            print("doctorusername : ", doctorusername)
+            print("patientid : ", patientid)
+            print("recordno : ", recordno)
+            print("file : ", file)
+
+            # return jsonify(Success="Consultation Node inserted."), 201
 
             upload_time = time.time()
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
 
-            if filepath and dateofupload and recordno:
+            if file and dateofupload and recordno:
                 if str(dao.verifyRecordno(recordno)) == str(patientid):
 
                     referralid = dao.insertReferral(filename, assistantusername, doctorusername, dateofupload, patientid, recordno)
 
                     # insert the file in s3
                     s3 = s3Connection()
-                    targetlocation = 'referrals/' + filename + str(referralid) + '.pdf'
-
+                    targetlocation = 'referrals/' + str(referralid) + filename
+                    print("target location : ", targetlocation)
                     #ELIMINAR EL LINK
-                    link = s3.uploadfile(filepath, targetlocation)  # returns the url after storing it
+                    link = s3.uploadfile(file, targetlocation)  # returns the url after storing it
                     print("link : ", link)
 
                     result = self.build_refinsert_dict(referralid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno)

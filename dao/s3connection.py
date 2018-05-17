@@ -38,14 +38,18 @@ class s3Connection:
             return e
 
     def getfileurl(self, filename):
-
-        session = boto3.Session(profile_name=s3_config['profile_name'])
-        s3client = session.client('s3', region_name=s3_config['region_name'])
-
-        url = s3client.generate_presigned_url(
-            'get_object',
-            Params={
-                'Bucket': s3_config['bucketname'],
-                'Key': filename, },)
-            # ExpiresIn=86400, ) #deberia quitarle el timing o ponerle uno mas alto
-        return url
+        try:
+            session = boto3.Session(profile_name=s3_config['profile_name'])
+            s3client = session.client('s3', region_name=s3_config['region_name'])
+            try:
+                url = s3client.generate_presigned_url(
+                    'get_object',
+                    Params={
+                        'Bucket': s3_config['bucketname'],
+                        'Key': filename, },)
+                    # ExpiresIn=86400, ) #deberia quitarle el timing o ponerle uno mas alto
+                return url
+            except Exception as e:
+                return e
+        except Exception as e:
+            return e

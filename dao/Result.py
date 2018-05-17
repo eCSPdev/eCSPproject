@@ -60,7 +60,7 @@ class ResultDAO:
             self.conn.close()
             print("Connection closed.")
 
-    def insertResult(self, resultlink, assistantusername, doctorusername, dateofupload, patientid, recordno):
+    def insertResult(self, filename, assistantusername, doctorusername, dateofupload, patientid, recordno):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -68,11 +68,11 @@ class ResultDAO:
 
             try:
                 cursor = self.conn.cursor()
-                query = "insert into results (results, assistantusername, doctorusername, dateofupload, " \
+                query = "insert into results (filename, assistantusername, doctorusername, dateofupload, " \
                         "patientid, recordno) " \
                         "values (%s,%s,%s,%s,%s,%s) " \
                         "returning resultid;"
-                cursor.execute(query, (resultlink, assistantusername, doctorusername, dateofupload, patientid, recordno,))
+                cursor.execute(query, (filename, assistantusername, doctorusername, dateofupload, patientid, recordno,))
                 resultid = cursor.fetchone()[0]
                 self.conn.commit()
 
@@ -127,6 +127,32 @@ class ResultDAO:
                 result = []
                 for row in cursor:
                     result.append(row)
+                return result
+            except Exception as e:
+                print("Query failed : ", e)
+                return e
+        except Exception as e:
+            print("Error connecting to database.")
+            return e
+        finally:
+            self.conn.close()
+            print("Connection closed.")
+
+    def getResultNameById(self, pid, resultid):
+        try:
+            connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+                pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+            self.conn = psycopg2._connect(connection_url)
+            try:
+                cursor = self.conn.cursor()
+                query = "select filename " \
+                        "from results " \
+                        "where patientid = %s and resultid = %s ; "
+                cursor.execute(query, (pid, resultid, ))
+                result = cursor.fetchone()
+                if result == None:
+                    result = ["None"]
+                    print("result : ", result)
                 return result
             except Exception as e:
                 print("Query failed : ", e)

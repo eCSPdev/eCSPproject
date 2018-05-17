@@ -15,10 +15,10 @@ class ResultHandler:
         result['patientid'] = row[5]
         return result
 
-    def build_resinsert_dict(self, resultid, resultlink, assistantusername, doctorusername, dateofupload, patientid, recordno):
+    def build_resinsert_dict(self, resultid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno):
         result = {}
         result['resultid'] = resultid
-        result['resultlink'] = resultlink
+        result['filename'] = filename
         result['assistantusername'] = assistantusername
         result['doctorusername'] = doctorusername
         result['dateofupload'] = dateofupload
@@ -57,12 +57,11 @@ class ResultHandler:
 
     def insertResult(self, form):
         dao = ResultDAO()
-        if len(form) != 5:
+        if len(form) != 6:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            result = form['result']
-            # assistantid = form['assistantid']
-            # doctorid = form['doctorid']
+            filepath = form['filepath']
+            filename = form['filename']
             assistantusername = form['assistantusername']
             doctorusername = form['doctorusername']
             patientid = form['patientid']
@@ -71,17 +70,21 @@ class ResultHandler:
             upload_time = time.time()
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
 
-            if result and dateofupload and recordno:
+            if filepath and dateofupload and recordno:
                 if str(dao.verifyRecordno(recordno)) == str(patientid):
+
+                    resultid = dao.insertResult(filename, assistantusername, doctorusername, dateofupload, patientid, recordno)
 
                     # insert the file in s3
                     s3 = s3Connection()
-                    targetlocation = 'results/' + dateofupload + '.pdf'
-                    resultlink = s3.uploadfile(result,targetlocation)  # returns the url after storing it
-                    print ("result link : ", resultlink)
-                    resultid = dao.insertResult(resultlink, assistantusername, doctorusername, dateofupload, patientid, recordno)
-                    result = self.build_resinsert_dict(resultid, resultlink, assistantusername, doctorusername, dateofupload, patientid, recordno)
-                    return jsonify(Results = result), 201
+                    targetlocation = 'results/' + filename + str(resultid) + '.pdf'
+
+                    #ELIMINAR EL LINK
+                    link = s3.uploadfile(filepath, targetlocation)  # returns the url after storing it
+                    print("link : ", link)
+
+                    result = self.build_resinsert_dict(resultid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno)
+                    return jsonify(Success="Result inserted.", Results = result), 201
                 else:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
             else:

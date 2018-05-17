@@ -60,7 +60,7 @@ class ReferralDAO:
             self.conn.close()
             print("Connection closed.")
 
-    def insertReferral(self, referral, assistantusername, doctorusername, dateofupload, patientid, recordno):
+    def insertReferral(self, filename, assistantusername, doctorusername, dateofupload, patientid, recordno):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
@@ -68,11 +68,11 @@ class ReferralDAO:
 
             try:
                 cursor = self.conn.cursor()
-                query = "insert into referrals (referral, assistantusername, doctorusername, dateofupload, " \
+                query = "insert into referrals (filename, assistantusername, doctorusername, dateofupload, " \
                         "patientid, recordno) " \
                         "values (%s,%s,%s,%s,%s,%s) " \
                         "returning referralid;"
-                cursor.execute(query, (referral, assistantusername, doctorusername, dateofupload, patientid, recordno,))
+                cursor.execute(query, (filename, assistantusername, doctorusername, dateofupload, patientid, recordno,))
                 referralid = cursor.fetchone()[0]
                 self.conn.commit()
 
@@ -126,6 +126,32 @@ class ReferralDAO:
                 result = []
                 for row in cursor:
                     result.append(row)
+                return result
+            except Exception as e:
+                print("Query failed : ", e)
+                return e
+        except Exception as e:
+            print("Error connecting to database.")
+            return e
+        finally:
+            self.conn.close()
+            print("Connection closed.")
+
+    def getReferralNameById(self, pid, referralid):
+        try:
+            connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
+                pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+            self.conn = psycopg2._connect(connection_url)
+            try:
+                cursor = self.conn.cursor()
+                query = "select filename " \
+                        "from referrals " \
+                        "where patientid = %s and referralid = %s ; "
+                cursor.execute(query, (pid, referralid, ))
+                result = cursor.fetchone()
+                if result == None:
+                    result = ["None"]
+                    print("result : ", result)
                 return result
             except Exception as e:
                 print("Query failed : ", e)

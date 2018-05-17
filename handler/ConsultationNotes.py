@@ -1,5 +1,9 @@
 from flask import jsonify, request
 from dao.ConsultationNotes import ConsultationNotesDAO
+from dao.InitialForm import InitialFormDAO
+from dao.Prescription import PrescriptionDAO
+from dao.Referral import ReferralDAO
+from dao.Result import ResultDAO
 from dao.s3connection import s3Connection
 import datetime, time
 
@@ -17,11 +21,11 @@ class ConsultationNotesHandler:
         result['recordno'] = row[6]
         return result
 
-    def build_cninsert_dict(self, consultationnoteid, consultationnotelink, assistantusername, doctorusername,
+    def build_cninsert_dict(self, consultationnoteid, filename, assistantusername, doctorusername,
                                                       dateofupload, patientid, recordno):
         result = {}
         result['consultationnoteid'] = consultationnoteid
-        result['consultationnote'] = consultationnotelink
+        result['filename'] = filename
         result['assistantusername'] = assistantusername
         result['doctorusername'] = doctorusername
         result['dateofupload'] = dateofupload
@@ -40,17 +44,23 @@ class ConsultationNotesHandler:
         print(row)
         result['patientid'] = row[0]
         result['fileid'] = row[1]
-        result['link'] = row[2]
-        result['type'] = row[3]
-        result['dateofupload'] = row[4].strftime('%Y-%m-%d %H:%M:%S')
-        if row[5] != None:
-            result['sign'] = row[5]
-        elif row[6] != None:
+        result['filepath'] = row[2]
+        result['filelink'] = row[3]
+        result['type'] = row[4]
+        result['dateofupload'] = row[5].strftime('%Y-%m-%d %H:%M:%S')
+        if row[6] != None:
             result['sign'] = row[6]
+        elif row[7] != None:
+            result['sign'] = row[7]
         else:
             result['sign'] = None
-        result['recordno'] = row[7]
+        result['recordno'] = row[8]
         return result
+
+    def build_link_dict(self, link):
+        result = {}
+        result['filelink'] = link
+        return link
 
     def getPatientConsultationNotes(self, args):
         print('estoy en el CN List')
@@ -78,33 +88,35 @@ class ConsultationNotesHandler:
 
     def insertConsultationNotes(self, form):
         dao = ConsultationNotesDAO()
-        if len(form) != 5:
+        if len(form) != 6:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            consultationnote = form['consultationnote']     #this is the file to insert
-            # assistantid = form['assistantid']
-            # doctorid = form['doctorid']
+            filepath = form['filepath']     #this is the file to insert
+            filename = form['filename']
             assistantusername = form['assistantusername']
             doctorusername = form['doctorusername']
             patientid = form['patientid']
             recordno = form['recordno']
 
-            print("form : ", form)
-
             upload_time = time.time()
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
 
-            if (consultationnote and dateofupload and recordno):
+            if (filepath and dateofupload and recordno):
 
                 if str(dao.verifyRecordno(recordno)) == str(patientid):
+
+                    consultationnoteid = dao.insertConsultationNote(filename, assistantusername, doctorusername, dateofupload,
+                                                                    patientid, recordno)
+
                     #insert the file in s3
                     s3 = s3Connection()
-                    targetlocation = 'consultationnotes/'+dateofupload+'.pdf'
-                    consultationnotelink = s3.uploadfile(consultationnote,targetlocation) #returns the url after storing it
-                    print ("consultation note link : ", consultationnotelink)
-                    consultationnoteid = dao.insertConsultationNote(consultationnotelink, assistantusername, doctorusername, dateofupload,
-                                                                      patientid, recordno)
-                    result = self.build_cninsert_dict(consultationnoteid, consultationnotelink, assistantusername, doctorusername,
+                    targetlocation = 'consultationnotes/'+filename+str(consultationnoteid)+'.pdf' #cambiar por filename
+
+                    #ELIMINAR EL LINK
+                    link = s3.uploadfile(filepath,targetlocation) #returns the url after storing it
+                    print("link : ", link)
+
+                    result = self.build_cninsert_dict(consultationnoteid, filename, assistantusername, doctorusername,
                                                       dateofupload, patientid, recordno)
                     return jsonify(Success="Consultation Node inserted.", ConsultatioNote = result), 201
                 else:
@@ -140,3 +152,85 @@ class ConsultationNotesHandler:
             result = self.build_fileslist_dict(row)
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
         return jsonify(FilesList=result_list)
+
+    def getDownloadFile(self, args):
+        print('estoy en el Download File args: ', args)
+        pid = args.get("patientid")
+        print("pid : ", pid)
+        type = args.get("type")
+        print("type : ", type)
+        fileid = args.get("fileid")
+        print("fileid : ", fileid)
+
+        if type == 'consultationnote':
+            s3 = s3Connection()
+            dao = ConsultationNotesDAO()
+            filename = dao.getConsultatioNoteNameById(pid, fileid)[0]
+            print("filename : ", filename)
+            if filename != "None":
+                s3filename = filename + str(fileid) + '.pdf'
+                target_filename = "consultationnotes/"+ s3filename
+                link = s3.getfileurl(target_filename)
+                result = self.build_link_dict(link)
+                return jsonify(FileLink=result)
+            else:
+                return jsonify(Error="NOT FOUND"), 404
+
+        elif type == 'initialform':
+            s3 = s3Connection()
+            dao = InitialFormDAO()
+            filename = dao.getInitialFormNameById(pid, fileid)[0]
+            print("filename : ", filename)
+            if filename != "None":
+                s3filename = filename + str(fileid) + '.pdf'
+                target_filename = "initialforms/" + s3filename
+                link = s3.getfileurl(target_filename)
+                result = self.build_link_dict(link)
+                return jsonify(FileLink=result)
+            else:
+                return jsonify(Error="NOT FOUND"), 404
+
+        elif type == 'prescription':
+            s3 = s3Connection()
+            dao = PrescriptionDAO()
+            filename = dao.getPrescriptionNameById(pid, fileid)[0]
+            print("filename : ", filename)
+            if filename != "None":
+                s3filename = filename + str(fileid) + '.pdf'
+                target_filename = "prescriptions/" + s3filename
+                link = s3.getfileurl(target_filename)
+                result = self.build_link_dict(link)
+                return jsonify(FileLink=result)
+            else:
+                return jsonify(Error="NOT FOUND"), 404
+
+        elif type == 'referral':
+            s3 = s3Connection()
+            dao = ReferralDAO()
+            filename = dao.getReferralNameById(pid, fileid)[0]
+            print("filename : ", filename)
+            if filename != "None":
+                s3filename = filename + str(fileid) + '.pdf'
+                target_filename = "referrals/" + s3filename
+                link = s3.getfileurl(target_filename)
+                result = self.build_link_dict(link)
+                return jsonify(FileLink=result)
+            else:
+                return jsonify(Error="NOT FOUND"), 404
+
+        elif type == 'result':
+            s3 = s3Connection()
+            dao = ResultDAO()
+            filename = dao.getResultNameById(pid, fileid)[0]
+            print("filename : ", filename)
+            if filename != "None":
+                s3filename = filename + str(fileid) + '.pdf'
+                target_filename = "results/" + s3filename
+                link = s3.getfileurl(target_filename)
+                result = self.build_link_dict(link)
+                return jsonify(FileLink=result)
+            else:
+                return jsonify(Error="NOT FOUND"), 404
+
+        else:
+            return jsonify(Error="INVALID FILE TYPE"), 404

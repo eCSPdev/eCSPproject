@@ -15,10 +15,10 @@ class PrescriptionHandler:
         result['patientid'] = row[5]
         return result
 
-    def build_presinsert_dict(self, prescriptionid, prescriptionlink, assistantusername, doctorusername, dateofupload, patientid, recordno):
+    def build_presinsert_dict(self, prescriptionid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno):
         result = {}
         result['prescriptionid'] = prescriptionid
-        result['prescription'] = prescriptionlink
+        result['filename'] = filename
         result['assistantusername'] = assistantusername
         result['doctorusername'] = doctorusername
         result['dateofupload'] = dateofupload
@@ -57,12 +57,11 @@ class PrescriptionHandler:
 
     def insertPrescription(self, form):
         dao = PrescriptionDAO()
-        if len(form) != 5:
+        if len(form) != 6:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            prescription = form['prescription']
-            # assistantid = form['assistantid']
-            # doctorid = form['doctorid']
+            filepath = form['filepath']
+            filename = form['filename']
             doctorusername = form['doctorusername']
             assistantusername = form['assistantusername']
             patientid = form['patientid']
@@ -71,16 +70,21 @@ class PrescriptionHandler:
             upload_time = time.time()
             dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
 
-            if prescription and dateofupload and recordno:
+            if filepath and dateofupload and recordno:
+
                 if str(dao.verifyRecordno(recordno)) == str(patientid):
 
+                    prescriptionid = dao.insertPrescription(filename, assistantusername, doctorusername, dateofupload, patientid, recordno)
+
                     s3 = s3Connection()
-                    targetlocation = 'prescriptions/' + dateofupload + '.pdf'
-                    prescriptionlink = s3.uploadfile(prescription, targetlocation)  # returns the url after storing it
-                    print ("prescription link : ", prescriptionlink)
-                    prescriptionid = dao.insertPrescription(prescriptionlink, assistantusername, doctorusername, dateofupload, patientid, recordno)
-                    result = self.build_presinsert_dict(prescriptionid, prescriptionlink, assistantusername, doctorusername, dateofupload, patientid, recordno)
-                    return jsonify(Prescription = result), 201 #Verificar porque 201
+                    targetlocation = 'prescriptions/' + filename + str(prescriptionid) + '.pdf'
+
+                    #ELIMINAR EL LINK
+                    link = s3.uploadfile(filepath, targetlocation)  # returns the url after storing it
+                    print("link : ", link)
+
+                    result = self.build_presinsert_dict(prescriptionid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno)
+                    return jsonify(Success="Prescription inserted.", Prescription = result), 201 #Verificar porque 201
                 else:
                     return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
             else:

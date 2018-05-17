@@ -98,17 +98,18 @@ class LoginHandler:
                     self.updateLogInformation(username, token, 'Assistant')
                     return jsonify(Assistant=result)
                 else:
-                    deactivationdate = assistant[2].strftime('%Y-%m-%d %H:%M:%S')
-                    now_time = time.time()
-                    today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
-                    print('deactivationdate : ', deactivationdate)
-                    print('dateofchanges : ', today)
-                    if today <= deactivationdate:
-                        result = self.build_ALogin_dict(assistant, token)
-                        self.updateLogInformation(username, token, 'Assistant')
-                        return jsonify(Assistant=result)
-                    else:
-                        return jsonify(Error="Expired Account"), 400
+                    #deactivationdate = assistant[2].strftime('%Y-%m-%d %H:%M:%S')
+                    #now_time = time.time()
+                    #today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
+                    #print('deactivationdate : ', deactivationdate)
+                    #print('dateofchanges : ', today)
+                    #if today <= deactivationdate:
+                    #    result = self.build_ALogin_dict(assistant, token)
+                    #    self.updateLogInformation(username, token, 'Assistant')
+                    #    return jsonify(Assistant=result)
+                    #else:
+                    #    return jsonify(Error="Expired Account"), 400
+                    return jsonify(Error="Expired Account"), 400
         else:
             status = doctor[1]
             print('status : ', status)
@@ -117,17 +118,18 @@ class LoginHandler:
                 self.updateLogInformation(username, token, 'Doctor')
                 return jsonify(Doctor=result)
             else:
-                deactivationdate = doctor[2].strftime('%Y-%m-%d %H:%M:%S')
-                now_time = time.time()
-                today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
-                print('deactivationdate : ', deactivationdate)
-                print('dateofchanges : ', today)
-                if today <= deactivationdate:
-                    result = self.build_DLogin_dict(doctor, token)
-                    self.updateLogInformation(username, token, 'Doctor')
-                    return jsonify(Doctor=result)
-                else:
-                    return jsonify(Error="Expired Account"), 400
+                #deactivationdate = doctor[2].strftime('%Y-%m-%d %H:%M:%S')
+                #now_time = time.time()
+                #today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
+                #print('deactivationdate : ', deactivationdate)
+                #print('dateofchanges : ', today)
+                #if today <= deactivationdate:
+                #    result = self.build_DLogin_dict(doctor, token)
+                #    self.updateLogInformation(username, token, 'Doctor')
+                #    return jsonify(Doctor=result)
+                #else:
+                #    return jsonify(Error="Expired Account"), 400
+                return jsonify(Error="Expired Account"), 400
 
     def build_dict(self, username, token):
         #print ('username : ', username)

@@ -429,6 +429,15 @@ def getFilesDates():
     else:
         return jsonify(Error="Method not allowed."), 405
 
+@application.route('/Doctor/eCSP/Patient/Files/Download', methods=['GET'])
+@application.route('/Assistant/eCSP/Patient/Files/Download', methods=['GET'])
+@application.route('/Patient/eCSP/Files/Download', methods=['GET'])
+def getDownloadFile():
+    if request.method == 'GET':
+        print('GET - GETDOWNLOADFILE')
+        return ConsultationNotesHandler().getDownloadFile(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 if __name__== '__main__':
     application.run(debug=True)

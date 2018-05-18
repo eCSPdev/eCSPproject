@@ -71,8 +71,8 @@ class LoginHandler:
             return jsonify(Patient = result)
         else:
             deactivationdate = patient[2].strftime('%Y-%m-%d %H:%M:%S')
-            now_time = datetime.now(timezone.utc).astimezone()#time.time()
-            today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
+            # now_time = time.time()
+            today = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
             if today <= deactivationdate:
                 result = self.build_PLogin_dict(patient, token)
                 self.updateLogInformation(username, token, 'Patient')
@@ -100,8 +100,8 @@ class LoginHandler:
                     return jsonify(Assistant=result)
                 else:
                     #deactivationdate = assistant[2].strftime('%Y-%m-%d %H:%M:%S')
-                    #now_time = datetime.now(timezone.utc).astimezone()#time.time()
-                    #today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
+                    # #now_time = time.time()
+                    #today = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
                     #print('deactivationdate : ', deactivationdate)
                     #print('dateofchanges : ', today)
                     #if today <= deactivationdate:
@@ -120,8 +120,8 @@ class LoginHandler:
                 return jsonify(Doctor=result)
             else:
                 #deactivationdate = doctor[2].strftime('%Y-%m-%d %H:%M:%S')
-                #now_time = datetime.now(timezone.utc).astimezone()#time.time()
-                #today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
+                ##now_time = time.time()
+                #today = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
                 #print('deactivationdate : ', deactivationdate)
                 #print('dateofchanges : ', today)
                 #if today <= deactivationdate:

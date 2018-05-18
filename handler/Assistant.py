@@ -185,8 +185,8 @@ class AssistantHandler:
                     assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone, email, username, pssword)
                     addressid = dao.insertAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
 
-                    changes_time = datetime.now(timezone.utc).astimezone()#time.time()
-                    changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                    # changes_time = time.time()
+                    changesdate = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                     dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
                                                email, username, pssword, street, aptno, city, st, country, zipcode,
                                                changesdate, DoctorSign, deactivationdate, daysofgrace)
@@ -253,9 +253,9 @@ class AssistantHandler:
                 dao.updateAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
 
         #History
-                changes_time = datetime.now(timezone.utc).astimezone()#time.time()
+                # changes_time = time.time()
 
-                dateofchanges = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                dateofchanges = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                 ## Modificado (... , DoctorSign)
                 dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
                                          email, username, pssword, street, aptno, city, st, country, zipcode,
@@ -305,7 +305,7 @@ class AssistantHandler:
             st = assistant[13]
             country = assistant[14]
             zipcode = assistant[15]
-            changes_time = datetime.now(timezone.utc).astimezone()#time.time()
+            # changes_time = time.time()
             print('status', status)
             if status == True:
                 daysofgrace = None
@@ -313,13 +313,13 @@ class AssistantHandler:
             else:
                 daysofgrace =  form['daysofgrace']
                 print ('days of grace : ', daysofgrace)
-                date = datetime.datetime.fromtimestamp(changes_time)
+                date = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time)
                 print('date', date)
                 deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
                 print('deactivationdate : ', deactivationdate)
             dao.updateAssistantStatus(assistantid, status, deactivationdate, daysofgrace)
             # History
-            changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+            changesdate = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
             ## Modificado (... , DoctorSign)
             dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
                                        email, username, pssword, street, aptno, city, st, country, zipcode,

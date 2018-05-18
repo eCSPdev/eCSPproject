@@ -253,8 +253,8 @@ class PatientHandler:
                 dao.updatePatientAddress(patientid, street, aptno, city, st, country, zipcode)
 
                 # History
-                changes_time = datetime.now(timezone.utc).astimezone()#time.time()
-                dateofchanges = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                # changes_time = time.time()
+                dateofchanges = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                 # Modificado (... , AssistantSign, DoctorSign)
                 dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                         status, email, username, pssword, insurancecompanyname, street, aptno, city,
@@ -319,7 +319,7 @@ class PatientHandler:
             st = patient[17]
             country = patient[18]
             zipcode = patient[19]
-            changes_time = datetime.now(timezone.utc).astimezone()#time.time()
+            # changes_time = time.time()
 
             if status == True:
                 daysofgrace = None
@@ -327,14 +327,14 @@ class PatientHandler:
             else:
                 daysofgrace = form['daysofgrace']
                 print ('days fo grace : ', daysofgrace)
-                date = datetime.datetime.fromtimestamp(changes_time)
+                date = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time)
                 print('date', date)
                 deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
                 print('deactivationdate : ', deactivationdate)
 
             dao.updatePatientStatus(patientid, status, deactivationdate, daysofgrace)
             # History
-            changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+            changesdate = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
             ## Modificado (... , DoctorSign)
             dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                      status, email, username, pssword, insurancecompanyname, street, aptno, city,
@@ -399,8 +399,8 @@ class PatientHandler:
                                                    email, username, pssword, insurancecompanyname)
                             addressid = dao.insertPatientAddress(patientid, street, aptno, city, st, country, zipcode)
                             dao.insertMedicalRecord(recordno, patientid)
-                            visit_time = datetime.now(timezone.utc).astimezone()#time.time()
-                            visitdate = datetime.datetime.fromtimestamp(visit_time).strftime('%Y-%m-%d %H:%M:%S')
+                            # visit_time = time.time()
+                            visitdate = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(visit_time).strftime('%Y-%m-%d %H:%M:%S')
                             dao.insertVisit(recordno, patientid, visitdate, type)
 
                 #History

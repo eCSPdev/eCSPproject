@@ -107,8 +107,8 @@ class ConsultationNotesHandler:
 
         # return jsonify(Success="Consultation Node inserted."), 201
 
-        upload_time = datetime.now(timezone.utc).astimezone()#time.time()
-        dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
+        # upload_time = time.time()
+        dateofupload = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
 
         if (file and dateofupload and recordno):
 

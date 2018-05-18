@@ -193,8 +193,8 @@ class DoctorHandler:
                 dao.updateDoctorAddress(doctorid, street, aptno, city, st, country, zipcode)
 
             #History
-                changes_time = datetime.now(timezone.utc).astimezone()#time.time()
-                changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                # changes_time = time.time()
+                changesdate = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                 dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
                                         status, email, username, pssword, street, aptno, city, st, country, zipcode,
                                         changesdate)
@@ -246,8 +246,8 @@ class DoctorHandler:
                                                  email, username, pssword)
                     addressid = dao.insertDoctorAddress(doctorid, street, aptno, city, st, country, zipcode)
 
-                    changes_time = datetime.now(timezone.utc).astimezone()#time.time()
-                    changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                    # changes_time = time.time()
+                    changesdate = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                     dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
                                             status, email, username, pssword, street, aptno, city, st, country, zipcode,
                                             changesdate)

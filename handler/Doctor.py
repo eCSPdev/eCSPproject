@@ -2,8 +2,9 @@ from flask import jsonify, request
 from dao.Doctor import DoctorDAO
 from dao.Patient import PatientsDAO
 from dao.Assistant import AssistantDAO
-import datetime, time
-import uuid
+# import datetime, time
+from datetime import datetime, timezone
+# import uuid
 
 ## Coralis Camacho##
 class DoctorHandler:
@@ -192,7 +193,7 @@ class DoctorHandler:
                 dao.updateDoctorAddress(doctorid, street, aptno, city, st, country, zipcode)
 
             #History
-                changes_time = time.time()
+                changes_time = datetime.now(timezone.utc).astimezone()#time.time()
                 changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                 dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
                                         status, email, username, pssword, street, aptno, city, st, country, zipcode,
@@ -245,7 +246,7 @@ class DoctorHandler:
                                                  email, username, pssword)
                     addressid = dao.insertDoctorAddress(doctorid, street, aptno, city, st, country, zipcode)
 
-                    changes_time = time.time()
+                    changes_time = datetime.now(timezone.utc).astimezone()#time.time()
                     changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                     dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
                                             status, email, username, pssword, street, aptno, city, st, country, zipcode,

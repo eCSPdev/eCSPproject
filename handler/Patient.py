@@ -3,7 +3,8 @@ from dao.Patient import PatientsDAO
 from dao.Doctor import DoctorDAO
 from dao.Assistant import AssistantDAO
 from handler.RoleBase import RoleBase
-import datetime, time
+# import datetime, time
+from datetime import datetime, timezone
 import uuid
 
 ## Luis Santiago ##
@@ -252,7 +253,7 @@ class PatientHandler:
                 dao.updatePatientAddress(patientid, street, aptno, city, st, country, zipcode)
 
                 # History
-                changes_time = time.time()
+                changes_time = datetime.now(timezone.utc).astimezone()#time.time()
                 dateofchanges = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                 # Modificado (... , AssistantSign, DoctorSign)
                 dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
@@ -318,7 +319,7 @@ class PatientHandler:
             st = patient[17]
             country = patient[18]
             zipcode = patient[19]
-            changes_time = time.time()
+            changes_time = datetime.now(timezone.utc).astimezone()#time.time()
 
             if status == True:
                 daysofgrace = None
@@ -398,7 +399,7 @@ class PatientHandler:
                                                    email, username, pssword, insurancecompanyname)
                             addressid = dao.insertPatientAddress(patientid, street, aptno, city, st, country, zipcode)
                             dao.insertMedicalRecord(recordno, patientid)
-                            visit_time = time.time()
+                            visit_time = datetime.now(timezone.utc).astimezone()#time.time()
                             visitdate = datetime.datetime.fromtimestamp(visit_time).strftime('%Y-%m-%d %H:%M:%S')
                             dao.insertVisit(recordno, patientid, visitdate, type)
 

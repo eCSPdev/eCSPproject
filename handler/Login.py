@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from dao.Login import LoginDAO
-import datetime, time
-
+# import datetime, time
+from datetime import datetime, timezone
 class LoginHandler:
 
     def build_PLogin_dict(self, row, token):
@@ -71,7 +71,7 @@ class LoginHandler:
             return jsonify(Patient = result)
         else:
             deactivationdate = patient[2].strftime('%Y-%m-%d %H:%M:%S')
-            now_time = time.time()
+            now_time = datetime.now(timezone.utc).astimezone()#time.time()
             today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
             if today <= deactivationdate:
                 result = self.build_PLogin_dict(patient, token)
@@ -100,7 +100,7 @@ class LoginHandler:
                     return jsonify(Assistant=result)
                 else:
                     #deactivationdate = assistant[2].strftime('%Y-%m-%d %H:%M:%S')
-                    #now_time = time.time()
+                    #now_time = datetime.now(timezone.utc).astimezone()#time.time()
                     #today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
                     #print('deactivationdate : ', deactivationdate)
                     #print('dateofchanges : ', today)
@@ -120,7 +120,7 @@ class LoginHandler:
                 return jsonify(Doctor=result)
             else:
                 #deactivationdate = doctor[2].strftime('%Y-%m-%d %H:%M:%S')
-                #now_time = time.time()
+                #now_time = datetime.now(timezone.utc).astimezone()#time.time()
                 #today = datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
                 #print('deactivationdate : ', deactivationdate)
                 #print('dateofchanges : ', today)

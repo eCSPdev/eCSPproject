@@ -1,8 +1,8 @@
 from flask import jsonify, request
 from dao.Prescription import PrescriptionDAO
 from dao.s3connection import s3Connection
-import datetime, time
-
+# import datetime, time
+from datetime import datetime, timezone
 class PrescriptionHandler:
 
     def build_prescriptionlist_dict(self,row):
@@ -74,7 +74,7 @@ class PrescriptionHandler:
 
         # return jsonify(Success="Consultation Node inserted."), 201
 
-        upload_time = time.time()
+        upload_time = datetime.now(timezone.utc).astimezone()#time.time()
         dateofupload = datetime.datetime.fromtimestamp(upload_time).strftime('%Y-%m-%d %H:%M:%S')
 
         if file and dateofupload and recordno:

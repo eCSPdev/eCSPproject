@@ -3,7 +3,8 @@ from dao.Doctor import DoctorDAO
 from dao.Patient import PatientsDAO
 from dao.Assistant import AssistantDAO
 from handler.RoleBase import RoleBase
-import datetime, time
+# import datetime, time
+from datetime import datetime, timezone
 import uuid
 
 class AssistantHandler:
@@ -184,7 +185,7 @@ class AssistantHandler:
                     assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone, email, username, pssword)
                     addressid = dao.insertAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
 
-                    changes_time = time.time()
+                    changes_time = datetime.now(timezone.utc).astimezone()#time.time()
                     changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                     dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
                                                email, username, pssword, street, aptno, city, st, country, zipcode,
@@ -252,7 +253,7 @@ class AssistantHandler:
                 dao.updateAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
 
         #History
-                changes_time = time.time()
+                changes_time = datetime.now(timezone.utc).astimezone()#time.time()
 
                 dateofchanges = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                 ## Modificado (... , DoctorSign)
@@ -304,7 +305,7 @@ class AssistantHandler:
             st = assistant[13]
             country = assistant[14]
             zipcode = assistant[15]
-            changes_time = time.time()
+            changes_time = datetime.now(timezone.utc).astimezone()#time.time()
             print('status', status)
             if status == True:
                 daysofgrace = None

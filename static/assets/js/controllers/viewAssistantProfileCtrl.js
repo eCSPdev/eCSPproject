@@ -5,11 +5,11 @@
   app.controller('viewAssistantProfileCtrl', ["$scope", "$rootScope", "$state", "$http", function ($scope, $rootScope, $state, $http) {
 
   	/* Redirect user to login page if he or she is not logged in correctly */
-  	if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
+    if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
   		$state.go('login.signin');
   	}
 
-  	if($rootScope.isLoggedIn == true) {
+  	else {
   		if($rootScope.currentUser.role == 'Assistant' || $rootScope.currentUser.role == 'Patient') {
       		$state.go('app.home');
       	}
@@ -21,7 +21,7 @@
     .then(function success(response) {
 
       $scope.thisAssistant = response.data.Assistant;
-      console.log($scope.thisAssistant);
+      // console.log($scope.thisAssistant);
 
     }, function error(response) { });
 

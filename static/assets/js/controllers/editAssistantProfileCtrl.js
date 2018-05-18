@@ -9,8 +9,7 @@
     if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
         $state.go('login.signin');
     }
-
-    if($rootScope.isLoggedIn == true) {
+    else {
       if($rootScope.currentUser.role == 'Assistant' || $rootScope.currentUser.role == 'Patient') {
           $state.go('app.home');
         }
@@ -20,12 +19,12 @@
 
     /* HTTP GET Request: getAssistantByID() */
       /* Get patient personal information */
-      $http.get('/Doctor/eCSP/Assistant/PersonalInformation?assistantid=' + $rootScope.chosenAssistant + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-      .then(function success(response) {
+    $http.get('/Doctor/eCSP/Assistant/PersonalInformation?assistantid=' + $rootScope.chosenAssistant + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+    .then(function success(response) {
 
-        $scope.thisAssistant = response.data.Assistant;
+      $scope.thisAssistant = response.data.Assistant;
 
-      }, function error(response) { });
+    }, function error(response) { });
 
     $scope.thisAssistant.assistantid = $rootScope.chosenAssistant;
     $scope.thisAssistant.username = $rootScope.currentUser.username;

@@ -50,7 +50,7 @@ class LoginDAO:
                         "or (email = %s and pssword = %s); "
                 cursor.execute(query, (username, pssword, username, pssword))
                 result = cursor.fetchone()
-                #print(result)
+                print(result)
                 return result
             except Exception as e:
                 print("Query failed : ", e)

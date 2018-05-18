@@ -11,6 +11,9 @@
 		<div class="row">
 			<div class="col-md-12" style="padding-right: 100px; padding-left: 50px;">
 				
+				<h2><span class="text-bold">Patient: </span>{{ chosenRecord.lName }}, {{ chosenRecord.fName }} {{ chosenRecord.mName }}</h2>
+				<br>
+
 				<!-- start: Consultation Search Form -->
 				<form>
 					<div class="form-group">
@@ -35,28 +38,12 @@
 										<span ng-show="sortType == 'consultationDate' && sortReverse" class="fa fa-caret-up"></span>
 									</a>
 								</td>
-								<td>
-									<a href="#" ng-click="sortType = 'lastUpdated'; sortReverse = !sortReverse">
-										Last Updated 
-										<span ng-show="sortType == 'lastUpdated' && !sortReverse" class="fa fa-caret-down"></span>
-										<span ng-show="sortType == 'lastUpdated' && sortReverse" class="fa fa-caret-up"></span>
-									</a>
-								</td>
-								<td>
-									<a href="#" ng-click="sortType = 'updatedBy'; sortReverse = !sortReverse">
-										Updated By 
-										<span ng-show="sortType == 'updatedBy' && !sortReverse" class="fa fa-caret-down"></span>
-										<span ng-show="sortType == 'updatedBy' && sortReverse" class="fa fa-caret-up"></span>
-									</a>
-								</td>
 							</tr>
 						</thead>
 
 						<tbody>
-							<tr ng-repeat="consultation in consultations | orderBy:sortType:sortReverse | filter:consultationSearch" ng-click="getPatientConsultation(consultation.month, consultation.year)">
+							<tr ng-repeat="consultation in $data | orderBy:sortType:sortReverse | filter:consultationSearch" ng-click="getPatientConsultation(consultation.month, consultation.year)">
 								<td> <i class="fa fa-folder" style="margin-right: 5px;"></i> {{ consultation.monthName }} {{ consultation.year }}</td>
-								<td>{{ consultation.lastUpdated }}</td>
-								<td>{{ consultation.updatedBy }}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -72,7 +59,7 @@
 						</li>
 						<li>
 							<div class="btn-group">
-								<label style="margin-top:10px;float:left;margin-right: 10px;">Show Patients:</label>
+								<label style="margin-top:10px;float:left;margin-right: 10px;">Show Consultations:</label>
 								<button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
 								<button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
 								<button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>

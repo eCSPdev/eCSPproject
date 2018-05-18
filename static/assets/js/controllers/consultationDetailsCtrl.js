@@ -33,15 +33,16 @@ app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$h
     $scope.patientid = '';
     // console.log($rootScope.chosenRecord);
 
-    if($rootScope.currentUser.role == 'Doctor' || $rootScope.currentUser.role == 'Assistant') {
-    	$scope.patientid = $rootScope.chosenRecord.patientID;
-    }
-    else {
-    	$scope.patientid = $rootScope.currentUser.userid;
-    	$rootScope.chosenRecord.lName = $rootScope.currentUser.lastname;
-    	$rootScope.chosenRecord.fName = $rootScope.currentUser.firstname;
-    	$rootScope.chosenRecord.mName = $rootScope.currentUser.middlename;
-
+    if($rootScope.currentUser) {
+        if($rootScope.currentUser.role == 'Doctor' || $rootScope.currentUser.role == 'Assistant') {
+        	$scope.patientid = $rootScope.chosenRecord.patientID;
+        }
+        else {
+        	$scope.patientid = $rootScope.currentUser.userid;
+        	$rootScope.chosenRecord.lName = $rootScope.currentUser.lastname;
+        	$rootScope.chosenRecord.fName = $rootScope.currentUser.firstname;
+        	$rootScope.chosenRecord.mName = $rootScope.currentUser.middlename;
+        }
     }
 
     $http.get('/Doctor/eCSP/Patient/Files?patientid=' + $scope.patientid + '&month=' + $rootScope.consultationDate.month + '&year=' + $rootScope.consultationDate.year) 
@@ -54,7 +55,7 @@ app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$h
 				$scope.documents[i].typeDisplayName = changeTypeDisplayName($scope.documents[i].type);
 			}
 
-			console.log($scope.documents);
+			// console.log($scope.documents);
 
 			// Declaration of table parameters
 	        $scope.tableParams = new NgTableParams({
@@ -75,7 +76,27 @@ app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$h
 	            dataset: $scope.documents
 	        });
 		},
-			function error(response) {});
+			function error(response) {
+				// Declaration of table parameters
+		        $scope.tableParams = new NgTableParams({
+		        	// Show first page
+		        	page: 1, 
+
+		        	// Count per page
+		        	count: 10,
+
+		        	// initial sort order
+		        	sorting: {
+		        		name: "asc"
+		        	}
+		        }, {
+		    		// Array with information to display in table ($data in HTML)
+		            // Length of data
+		            total: 0, 
+		            dataset: ""
+		        });
+
+			});
 
 	$scope.download = function(pid, type, fileid) {
 		console.log(pid);
@@ -113,8 +134,8 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
         url: '/upload' //aqui es donde se pondra la ruta del query del file upload
     });
 
-	//Esto es un callback function que se llama antes de que se suba el file
-	//Dentro de esta funcion es cuando unico se puede cambiar el url pq una vez se define arriba, no se puede cambiar.
+	// Esto es un callback function que se llama antes de que se suba el file
+	// Dentro de esta funcion es cuando unico se puede cambiar el url pq una vez se define arriba, no se puede cambiar.
     uploader.onBeforeUploadItem = function (item) {
 
     	switch($scope.fileType) {
@@ -185,7 +206,12 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     	//Upload execute
     	uploader.queue[0].upload();	
     	$uibModalInstance.close(true);
-    	// $state.reload();
+
+    	//Save data for reload
+    	$rootScope.uploaded.bool = true;
+    	$rootScope.uploaded.month = $rootScope.consultationDate.month;
+    	$rootScope.uploaded.year = $rootScope.consultationDate.year;
+    	$state.reload();
     };
 
 	$scope.cancel = function () {

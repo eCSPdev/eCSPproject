@@ -9,45 +9,47 @@
   		$state.go('login.signin');
   	}
 
-    if($rootScope.currentUser.role == 'Doctor')
-    {
+    if ($rootScope.currentUser) {
+      if($rootScope.currentUser.role == 'Doctor')
+      {
 
-      console.log($scope.thisUser);
+        // console.log($scope.thisUser);
 
-      /* HTTP GET Request: getDoctorByID() */
-      /* Get doctor personal information */
-      $http.get('/Doctor/eCSP/PersonalInformation?doctorid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-      .then(function success(response) {
+        /* HTTP GET Request: getDoctorByID() */
+        /* Get doctor personal information */
+        $http.get('/Doctor/eCSP/PersonalInformation?doctorid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+        .then(function success(response) {
 
-        $scope.thisUser = response.data.Doctor;
-        console.log('GET');
-        console.log($scope.thisUser);
+          $scope.thisUser = response.data.Doctor;
+          // console.log('GET');
+          // console.log($scope.thisUser);
 
-      }, function error(response) { });
-    }
+        }, function error(response) { });
+      }
 
-    else if($rootScope.currentUser.role == 'Assistant')
-    {
-      /* HTTP GET Request: getAssistantByID() */
-      /* Get assistant personal information */
-      $http.get('/Assistant/eCSP/PersonalInformation?assistantid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-      .then(function success(response) {
+      else if($rootScope.currentUser.role == 'Assistant')
+      {
+        /* HTTP GET Request: getAssistantByID() */
+        /* Get assistant personal information */
+        $http.get('/Assistant/eCSP/PersonalInformation?assistantid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+        .then(function success(response) {
 
-        $scope.thisUser = response.data.Assistant;
+          $scope.thisUser = response.data.Assistant;
 
-      }, function error(response) { });
-    }
+        }, function error(response) { });
+      }
 
-    else 
-    {
-      /* HTTP GET Request: getPatientByID() */
-      /* Get patient personal information */
-      $http.get('/Patient/eCSP/PersonalInformation?patientid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-      .then(function success(response) {
+      else 
+      {
+        /* HTTP GET Request: getPatientByID() */
+        /* Get patient personal information */
+        $http.get('/Patient/eCSP/PersonalInformation?patientid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+        .then(function success(response) {
 
-        $scope.thisUser = response.data.Patient;
+          $scope.thisUser = response.data.Patient;
 
-      }, function error(response) { });
+        }, function error(response) { });
+      }
     }
 
   }]);

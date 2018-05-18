@@ -12,8 +12,7 @@
 	if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
 		$state.go('login.signin');
 	}
-
-	if($rootScope.isLoggedIn == true) {
+    else {
 		if($rootScope.currentUser.role == 'Assistant' || $rootScope.currentUser.role == 'Patient') {
 			$state.go('app.home');
 		}
@@ -49,7 +48,28 @@
             dataset: $scope.assistants
         });
 
-    }, function error(response) { });
+    }, function error(response) {
+
+        // Declaration of table parameters
+        $scope.tableParams = new NgTableParams({
+            // Show first page
+            page: 1, 
+
+            // Count per page
+            count: 10,
+
+            // initial sort order
+            sorting: {
+                name: "asc"
+            }
+        }, {
+            // Array with information to display in table ($data in HTML)
+            // Length of data
+            total: 0, 
+            dataset: ""
+        });
+        
+     });
 
     $scope.getAssistantProfile = function(button, assistantID) {
 
@@ -100,8 +120,7 @@
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenAssistant", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenAssistant) {
 
-    // Default value
-    $scope.daysofgrace = '30';
+    $scope.daysofgrace = '';
 
 	$scope.changeStatus = function(button) {
 

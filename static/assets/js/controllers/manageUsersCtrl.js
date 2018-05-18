@@ -10,7 +10,7 @@ app.controller('manageUsersCtrl', ["$scope", "$rootScope", "$state", function ($
         $state.go('login.signin');
     }
     
-  	if($rootScope.isLoggedIn == true) {
+  	else {
   		if($rootScope.currentUser.role == 'Patient') {
       		$state.go('app.home');
       	}

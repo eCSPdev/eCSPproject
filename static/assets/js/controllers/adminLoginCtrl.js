@@ -15,6 +15,7 @@
     /* Function to validate Admin login information */
     $scope.validateLogin = function(username, password, role) {
       if(role == 'doctor') {
+
         /* HTTP POST Request: DAlogin() */
         /* Doctor login */
         $http.get('/Doctor/eCSP/Login?username=' + username + '&pssword=' + password)

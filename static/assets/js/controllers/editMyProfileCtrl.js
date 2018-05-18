@@ -12,40 +12,42 @@
 
     $scope.thisUser = {};
     
-    if($rootScope.currentUser.role == 'Doctor')
-    {
-      /* HTTP GET Request: getDoctorByID() */
-      /* Get doctor personal information */
-      $http.get('/Doctor/eCSP/PersonalInformation?doctorid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-      .then(function success(response) {
+    if ($rootScope.currentUser) {
+      if($rootScope.currentUser.role == 'Doctor')
+      {
+        /* HTTP GET Request: getDoctorByID() */
+        /* Get doctor personal information */
+        $http.get('/Doctor/eCSP/PersonalInformation?doctorid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+        .then(function success(response) {
 
-        $scope.thisUser = response.data.Doctor;
+          $scope.thisUser = response.data.Doctor;
 
-      }, function error(response) { });
-    }
+        }, function error(response) { });
+      }
 
-    else if($rootScope.currentUser.role == 'Assistant')
-    {
-      /* HTTP GET Request: getAssistantByID() */
-      /* Get assistant personal information */
-      $http.get('/Assistant/eCSP/PersonalInformation?assistantid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-      .then(function success(response) {
+      else if($rootScope.currentUser.role == 'Assistant')
+      {
+        /* HTTP GET Request: getAssistantByID() */
+        /* Get assistant personal information */
+        $http.get('/Assistant/eCSP/PersonalInformation?assistantid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+        .then(function success(response) {
 
-        $scope.thisUser = response.data.Assistant;
+          $scope.thisUser = response.data.Assistant;
 
-      }, function error(response) { });
-    }
+        }, function error(response) { });
+      }
 
-    else 
-    {
-      /* HTTP GET Request: getPatientByID() */
-      /* Get patient personal information */
-      $http.get('/Patient/eCSP/PersonalInformation?patientid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-      .then(function success(response) {
+      else 
+      {
+        /* HTTP GET Request: getPatientByID() */
+        /* Get patient personal information */
+        $http.get('/Patient/eCSP/PersonalInformation?patientid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+        .then(function success(response) {
 
-        $scope.thisUser = response.data.Patient;
+          $scope.thisUser = response.data.Patient;
 
-      }, function error(response) { });
+        }, function error(response) { });
+      }
     }
 
   	// open() Function Definition

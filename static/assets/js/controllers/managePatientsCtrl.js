@@ -9,12 +9,10 @@
 	$scope.patientSearch   = '';     // set the default search/filter term
 
 	/* Redirect user to login page if he or she is not logged in correctly */
-	if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
+    if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
 		$state.go('login.signin');
 	}
-
-	
-	if($rootScope.isLoggedIn == true) {
+	else {
 		if($rootScope.currentUser.role == 'Patient') {
 			$state.go('app.home');
 		}
@@ -23,97 +21,143 @@
 	// Patient that is being managed
 	$rootScope.chosenPatient = '';
 
-	if($rootScope.currentUser.role == 'Doctor')
-	{
-		/* HTTP GET Request: getAllPatients() */
-		/* Get list of all patients */
-		$http.get('/Doctor/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-		.then(function success(response) {
-
-    	// Search bar
-    	for(var i = 0; i < response.data.Patient.length; i++) 
+    if ($rootScope.currentUser) {
+    	if($rootScope.currentUser.role == 'Doctor')
     	{
-    		if(response.data.Patient[i].status == true)
-    		{
-    			response.data.Patient[i].status = 'Active';
-    		}
+    		/* HTTP GET Request: getAllPatients() */
+    		/* Get list of all patients */
+    		$http.get('/Doctor/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+    		.then(function success(response) {
 
-    		else
-    		{
-    			response.data.Patient[i].status = 'Inactive';
-    		}
+        	// Search bar
+        	for(var i = 0; i < response.data.Patient.length; i++) 
+        	{
+        		if(response.data.Patient[i].status == true)
+        		{
+        			response.data.Patient[i].status = 'Active';
+        		}
+
+        		else
+        		{
+        			response.data.Patient[i].status = 'Inactive';
+        		}
+        	}
+
+    		// Populate the list of patients
+    		$scope.patients = response.data.Patient; 
+
+            // Declaration of table parameters
+            $scope.tableParams = new NgTableParams({
+            	// Show first page
+            	page: 1, 
+
+            	// Count per page
+            	count: 10,
+
+            	// initial sort order
+            	sorting: {
+            		name: "asc"
+            	}
+            }, {
+        		// Array with information to display in table ($data in HTML)
+                // Length of data
+                total: $scope.patients.length, 
+                dataset: $scope.patients
+            });
+
+        }, function error(response) { 
+
+            // Declaration of table parameters
+            $scope.tableParams = new NgTableParams({
+                // Show first page
+                page: 1, 
+
+                // Count per page
+                count: 10,
+
+                // initial sort order
+                sorting: {
+                    name: "asc"
+                }
+            }, {
+                // Array with information to display in table ($data in HTML)
+                // Length of data
+                total: 0, 
+                dataset: ""
+            });
+
+
+            });
     	}
 
-		// Populate the list of patients
-		$scope.patients = response.data.Patient; 
-
-        // Declaration of table parameters
-        $scope.tableParams = new NgTableParams({
-        	// Show first page
-        	page: 1, 
-
-        	// Count per page
-        	count: 10,
-
-        	// initial sort order
-        	sorting: {
-        		name: "asc"
-        	}
-        }, {
-    		// Array with information to display in table ($data in HTML)
-            // Length of data
-            total: $scope.patients.length, 
-            dataset: $scope.patients
-        });
-
-    }, function error(response) { });
-	}
-
-	else
-	{
-		/* HTTP GET Request: getAllPatients() */
-		/* Get list of all patients */
-		$http.get('/Assistant/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-		.then(function success(response) {
-
-    	// Search bar
-    	for(var i = 0; i < response.data.Patient.length; i++) 
+    	else
     	{
-    		if(response.data.Patient[i].status == true)
-    		{
-    			response.data.Patient[i].status = 'Active';
-    		}
+    		/* HTTP GET Request: getAllPatients() */
+    		/* Get list of all patients */
+    		$http.get('/Assistant/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+    		.then(function success(response) {
 
-    		else
-    		{
-    			response.data.Patient[i].status = 'Inactive';
-    		}
-    	}
+        	// Search bar
+        	for(var i = 0; i < response.data.Patient.length; i++) 
+        	{
+        		if(response.data.Patient[i].status == true)
+        		{
+        			response.data.Patient[i].status = 'Active';
+        		}
 
-		// Populate the list of patients
-		$scope.patients = response.data.Patient; 
-
-        // Declaration of table parameters
-        $scope.tableParams = new NgTableParams({
-        	// Show first page
-        	page: 1, 
-
-        	// Count per page
-        	count: 10,
-
-        	// initial sort order
-        	sorting: {
-        		name: "asc"
+        		else
+        		{
+        			response.data.Patient[i].status = 'Inactive';
+        		}
         	}
-        }, {
-    		// Array with information to display in table ($data in HTML)
-            // Length of data
-            total: $scope.patients.length, 
-            dataset: $scope.patients
-        });
 
-    }, function error(response) { });
-	}
+    		// Populate the list of patients
+    		$scope.patients = response.data.Patient; 
+
+            // Declaration of table parameters
+            $scope.tableParams = new NgTableParams({
+            	// Show first page
+            	page: 1, 
+
+            	// Count per page
+            	count: 10,
+
+            	// initial sort order
+            	sorting: {
+            		name: "asc"
+            	}
+            }, {
+        		// Array with information to display in table ($data in HTML)
+                // Length of data
+                total: $scope.patients.length, 
+                dataset: $scope.patients
+            });
+
+        }, function error(response) { 
+
+                // Declaration of table parameters
+                $scope.tableParams = new NgTableParams({
+                    // Show first page
+                    page: 1, 
+
+                    // Count per page
+                    count: 10,
+
+                    // initial sort order
+                    sorting: {
+                        name: "asc"
+                    }
+                }, {
+                    // Array with information to display in table ($data in HTML)
+                    // Length of data
+                    total: 0, 
+                    dataset: ""
+                });
+
+
+            });
+    	}
+    }
 
 	$scope.getPatientProfile = function(button, patientID) {
 
@@ -162,8 +206,7 @@
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenPatient", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenPatient) {
 
-    // Default value
-    $scope.daysofgrace = '30';
+    $scope.daysofgrace = '';
 
     $scope.changeStatus = function(button) {
 

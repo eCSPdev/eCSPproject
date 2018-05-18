@@ -65,7 +65,7 @@
 						</thead>
 
 						<tbody>
-							<tr ng-repeat="document in documents | orderBy:sortType:sortReverse | filter:consultationDetailsSearch">
+							<tr ng-repeat="document in $data | orderBy:sortType:sortReverse | filter:consultationDetailsSearch">
 								<td> <i class="fa fa-file-text" style="margin-right: 5px;"></i> {{ document.filename }}</td>
 								<td>{{ document.typeDisplayName }}</td>
 								<td>{{ document.dateofupload }}</td>

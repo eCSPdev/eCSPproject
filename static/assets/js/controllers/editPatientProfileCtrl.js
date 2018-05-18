@@ -11,29 +11,31 @@
 
     $scope.thisPatient = {};
 
-    if($rootScope.currentUser.role == 'Doctor')
-    {
-      /* HTTP GET Request: getPatientByID() */
-      /* Get patient personal information */
-      $http.get('/Doctor/eCSP/Patient/PersonalInformation?patientid=' + $rootScope.chosenPatient + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-      .then(function success(response) {
+    if ($rootScope.currentUser) {
+      if($rootScope.currentUser.role == 'Doctor')
+      {
+        /* HTTP GET Request: getPatientByID() */
+        /* Get patient personal information */
+        $http.get('/Doctor/eCSP/Patient/PersonalInformation?patientid=' + $rootScope.chosenPatient + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+        .then(function success(response) {
 
-        $scope.thisPatient = response.data.Patient;
-        console.log($scope.thisPatient);
+          $scope.thisPatient = response.data.Patient;
+          console.log($scope.thisPatient);
 
-      }, function error(response) { });
-    }
+        }, function error(response) { });
+      }
 
-    else
-    {
-      /* HTTP GET Request: getPatientByID() */
-      /* Get patient personal information */
-      $http.get('/Assistant/eCSP/Patient/PersonalInformation?patientid=' + $rootScope.chosenPatient + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
-      .then(function success(response) {
+      else
+      {
+        /* HTTP GET Request: getPatientByID() */
+        /* Get patient personal information */
+        $http.get('/Assistant/eCSP/Patient/PersonalInformation?patientid=' + $rootScope.chosenPatient + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+        .then(function success(response) {
 
-        $scope.thisPatient = response.data.Patient;
+          $scope.thisPatient = response.data.Patient;
 
-      }, function error(response) { });
+        }, function error(response) { });
+      }
     }
 
     $scope.thisPatient.patientid = $rootScope.chosenPatient;

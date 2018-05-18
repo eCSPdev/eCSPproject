@@ -33,6 +33,8 @@
 	<link rel="stylesheet" href="/static/assets/css/plugins.css">
 	<!-- Clip-Two Theme -->
 	<link rel="stylesheet" data-ng-href="/static/assets/css/themes/{{'{{ app.layout.theme }}'}}.css" />
+	<!-- Favicon -->
+	<link rel="shortcut icon" type="image/png" href="/static/assets/images/favicon.png"/>
 </head>
 <body ng-controller="AppCtrl">
 	<div ui-view id="app" ng-class="{'app-mobile' : app.isMobile, 'app-navbar-fixed' : app.layout.isNavbarFixed, 'app-sidebar-fixed' : app.layout.isSidebarFixed, 'app-sidebar-closed':app.layout.isSidebarClosed, 'app-footer-fixed':app.layout.isFooterFixed}"></div>

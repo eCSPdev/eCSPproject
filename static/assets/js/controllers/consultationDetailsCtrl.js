@@ -2,7 +2,7 @@
 /** 
   * controllers used for the dashboard
 */
-app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModal", "NgTableParams", 'FileUploader', function ($scope, $rootScope, $state, $http, $uibModal, NgTableParams, FileUploader) {
+app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$http", "$window", "$uibModal", "NgTableParams", 'FileUploader', function ($scope, $rootScope, $state, $http, $window, $uibModal, NgTableParams, FileUploader) {
 
 	$scope.sortType     = 'status'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
@@ -12,7 +12,6 @@ app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$h
     if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
         $state.go('login.signin');
     }
-
 
     //Make sure type is displayed correctly in table
     function changeTypeDisplayName(type) {
@@ -99,12 +98,10 @@ app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$h
 			});
 
 	$scope.download = function(pid, type, fileid) {
-		console.log(pid);
 
 		$http.get('/Doctor/eCSP/Patient/Files/Download?patientid=' + pid + '&type=' + type + '&fileid=' + fileid) 
 			.then(function success(response) {
-				console.log(response.data);
-
+				$window.open(response.data.FileLink, '_blank');
 			}, function error(response) {
 				
 			}
@@ -139,64 +136,64 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     uploader.onBeforeUploadItem = function (item) {
 
     	switch($scope.fileType) {
-    		case 'consultationnote':
-    			if ($rootScope.currentUser.role == 'Doctor') {
-			    	item.url = '/Doctor/eCSP/Patient/ConsultationNotes?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=' + $rootScope.currentUser.username + '&recordno=' +  $rootScope.chosenRecord.recordno;
-    			}
-    			else if ($rootScope.currentUser.role == 'Assistant') {
-			    	item.url = '/Assistant/eCSP/Patient/ConsultationNotes?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=' + $rootScope.currentUser.username + '&doctorusername=undefined&recordno=' +  $rootScope.chosenRecord.recordno;
-    			}
-    			else {
-			    	item.url = '/Patient/eCSP/ConsultationNotes?patientid=' + $rootScope.currentUser.userid + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=undefined&recordno=' +  $rootScope.currentUser.recordno;
-    			}
+            case 'consultationnote':
+                if ($rootScope.currentUser.role == 'Doctor') {
+                    item.url = '/Doctor/eCSP/Patient/ConsultationNotes?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=' + $rootScope.currentUser.username + '&recordno=' +  $rootScope.chosenRecord.recordno;
+                }
+                else if ($rootScope.currentUser.role == 'Assistant') {
+                    item.url = '/Assistant/eCSP/Patient/ConsultationNotes?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=' + $rootScope.currentUser.username + '&doctorusername=undefined&recordno=' +  $rootScope.chosenRecord.recordno;
+                }
+                else {
+                    item.url = '/Patient/eCSP/ConsultationNotes?patientid=' + $rootScope.currentUser.userid + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=undefined&recordno=' +  $rootScope.currentUser.recordno;
+                }
 
-    			return;
-    		case 'initialform':
-    			if ($rootScope.currentUser.role == 'Doctor') {
+                return;
+            case 'initialform':
+                if ($rootScope.currentUser.role == 'Doctor') {
+                    item.url = '/Doctor/eCSP/Patient/InitialForm?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=' + $rootScope.currentUser.username + '&recordno=' +  $rootScope.chosenRecord.recordno;
+                }
+                else if ($rootScope.currentUser.role == 'Assistant') {
+                    item.url = '/Assistant/eCSP/Patient/InitialForm?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=' + $rootScope.currentUser.username + '&doctorusername=undefined&recordno=' +  $rootScope.chosenRecord.recordno;
+                }
+                else {
+                    item.url = '/Patient/eCSP/InitialForm?patientid=' + $rootScope.currentUser.userid + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=undefined&recordno=' +  $rootScope.currentUser.recordno;
+                }
 
-    			}
-    			else if ($rootScope.currentUser.role == 'Assistant') {
-
-    			}
-    			else {
-    				
-    			}
-
-    			return 'Initial Form';
-    		case 'prescription':
-    			if ($rootScope.currentUser.role == 'Doctor') {
-
-    			}
-    			else if ($rootScope.currentUser.role == 'Assistant') {
-
-    			}
-    			else {
-    				
-    			}
-    			return 'Prescription';
-    		case 'referral':
-    			if ($rootScope.currentUser.role == 'Doctor') {
-
-    			}
-    			else if ($rootScope.currentUser.role == 'Assistant') {
-
-    			}
-    			else {
-    				
-    			}
-    			return 'Referral';
-    		case 'result':
-    			if ($rootScope.currentUser.role == 'Doctor') {
-
-    			}
-    			else if ($rootScope.currentUser.role == 'Assistant') {
-
-    			}
-    			else {
-    				
-    			}
-    			return 'Result';
-    	}
+                return;
+            case 'prescription':
+                if ($rootScope.currentUser.role == 'Doctor') {
+                    item.url = '/Doctor/eCSP/Patient/Prescription?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=' + $rootScope.currentUser.username + '&recordno=' +  $rootScope.chosenRecord.recordno;
+                }
+                else if ($rootScope.currentUser.role == 'Assistant') {
+                    item.url = '/Assistant/eCSP/Patient/Prescription?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=' + $rootScope.currentUser.username + '&doctorusername=undefined&recordno=' +  $rootScope.chosenRecord.recordno;
+                }
+                else {
+                    item.url = '/Patient/eCSP/Prescription?patientid=' + $rootScope.currentUser.userid + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=undefined&recordno=' +  $rootScope.currentUser.recordno;
+                }
+                return;
+            case 'referral':
+                if ($rootScope.currentUser.role == 'Doctor') {
+                    item.url = '/Doctor/eCSP/Patient/Referral?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=' + $rootScope.currentUser.username + '&recordno=' +  $rootScope.chosenRecord.recordno;
+                }
+                else if ($rootScope.currentUser.role == 'Assistant') {
+                    item.url = '/Assistant/eCSP/Patient/Referral?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=' + $rootScope.currentUser.username + '&doctorusername=undefined&recordno=' +  $rootScope.chosenRecord.recordno;
+                }
+                else {
+                    item.url = '/Patient/eCSP/Referral?patientid=' + $rootScope.currentUser.userid + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=undefined&recordno=' +  $rootScope.currentUser.recordno;
+                }
+                return;
+            case 'result':
+                if ($rootScope.currentUser.role == 'Doctor') {
+                    item.url = '/Doctor/eCSP/Patient/Result?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=' + $rootScope.currentUser.username + '&recordno=' +  $rootScope.chosenRecord.recordno;
+                }
+                else if ($rootScope.currentUser.role == 'Assistant') {
+                    item.url = '/Assistant/eCSP/Patient/Result?patientid=' + $rootScope.chosenRecord.patientID + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=' + $rootScope.currentUser.username + '&doctorusername=undefined&recordno=' +  $rootScope.chosenRecord.recordno;
+                }
+                else {
+                    item.url = '/Patient/eCSP/Result?patientid=' + $rootScope.currentUser.userid + '&filepath=' + item.file + '&filename=' + item.file.name + '&assistantusername=undefined&doctorusername=undefined&recordno=' +  $rootScope.currentUser.recordno;
+                }
+                return;
+        }
 
         // console.info('onBeforeUploadItem', item);
     };

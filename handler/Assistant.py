@@ -221,55 +221,51 @@ class AssistantHandler:
         if row == None:
             return jsonify(Error="Assistant not found."), 404
         else:
-            # if len(form) != 16:
-            #     print('Entre al jsonify')
-            #     print(len(form))
-            #     return jsonify(Error="Malformed update request"), 400
-            # else:
-                print(form)
-                assistantid = form['assistantid']
-                firstname = form['firstname']
-                middlename = form['middlename']
-                lastname = form['lastname']
-                phone = form['phone']
-                status = form['status']
-                email = form['email']
-                username = form['username']
-                pssword = form['pssword']
-                street = form['street']
-                aptno = form['aptno']
-                city = form['city']
-                st = form['st']
-                country = form['country']
-                zipcode = form['zipcode']
-                deactivationdate = None
-                daysofgrace = None
 
-                if pssword == None:
-                    pssword = dao.getPsswordByID(assistantid)
+            print(form)
+            assistantid = form['assistantid']
+            firstname = form['firstname']
+            middlename = form['middlename']
+            lastname = form['lastname']
+            phone = form['phone']
+            status = form['status']
+            email = form['email']
+            username = form['username']
+            pssword = form['pssword']
+            street = form['street']
+            aptno = form['aptno']
+            city = form['city']
+            st = form['st']
+            country = form['country']
+            zipcode = form['zipcode']
+            deactivationdate = None
+            daysofgrace = None
 
-                if assistantid and firstname and lastname and phone and status and street \
-                        and city and country and zipcode:
-                    print('En el IF')
-                    dao.updateAssistantInfoByID(assistantid, firstname, middlename, lastname, phone, status,
-                                                email, username, pssword)
-                    dao.updateAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
+            if pssword == None:
+                pssword = dao.getPsswordByID(assistantid)
 
-            #History
-                    changes_time = time.time()
+            if assistantid and firstname and lastname and phone and status and street \
+                    and city and country and zipcode:
+                print('En el IF')
+                dao.updateAssistantInfoByID(assistantid, firstname, middlename, lastname, phone, status,
+                                            email, username, pssword)
+                dao.updateAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
 
-                    dateofchanges = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
-                    ## Modificado (... , DoctorSign)
-                    dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
-                                             email, username, pssword, street, aptno, city, st, country, zipcode,
-                                               dateofchanges, DoctorSign, deactivationdate, daysofgrace)
+        #History
+                changes_time = time.time()
 
-                    result = self.update_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
-                                                        email, street, aptno, city, st, country, zipcode)
-                    return jsonify(Assistant = result), 200
-                else:
-                    print('Entre al else')
-                    return jsonify(Error="Unexpected attributes in update request"), 400
+                dateofchanges = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                ## Modificado (... , DoctorSign)
+                dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
+                                         email, username, pssword, street, aptno, city, st, country, zipcode,
+                                           dateofchanges, DoctorSign, deactivationdate, daysofgrace)
+
+                result = self.update_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
+                                                    email, street, aptno, city, st, country, zipcode)
+                return jsonify(Assistant = result), 200
+            else:
+                print('Entre al else')
+                return jsonify(Error="Unexpected attributes in update request"), 400
 
     def updateAssistantPssword(self, form):
         dao = AssistantDAO()
@@ -277,16 +273,13 @@ class AssistantHandler:
         if not dao.getAssistantByID(assistantid):
             return jsonify(Error="Assistant not found."), 404
         else:
-            if len(form) != 2:
-                return jsonify(Error="Malformed update request"), 400
+            pssword = form['pssword']
+            if pssword:
+                dao.updateAssistantPssword(assistantid, pssword)
+                result = self.update_assistant_pssword_dict(assistantid)
+                return jsonify(Assistant=result), 200
             else:
-                pssword = form['pssword']
-                if pssword:
-                    dao.updateAssistantPssword(assistantid, pssword)
-                    result = self.update_assistant_pssword_dict(assistantid)
-                    return jsonify(Assistant=result), 200
-                else:
-                    return jsonify(Error="Unexpected attributes in update request"), 400
+                return jsonify(Error="Unexpected attributes in update request"), 400
 
     def manageAssistantStatus(self, form, status):
         print('estoy en el manageAssistantStatus')
@@ -298,9 +291,6 @@ class AssistantHandler:
         if not assistant:
             return jsonify(Error="Assistant not found."), 404
         else:
-            # if len(form) != 4: #username, token, assistantid, deactivationdays
-            #     return jsonify(Error="Malformed update request"), 400
-            # else:
             firstname = assistant[1]
             middlename = assistant[2]
             lastname = assistant[3]
@@ -343,33 +333,30 @@ class AssistantHandler:
 
     def insertAssistantHistory(self, form):
         dao = AssistantDAO()
-        if len(form) != 14:
-            return jsonify(Error="Malformed insert request"), 400
+        assistantid = form['assistantid']
+        firstname = form['firstname']
+        middlename = form['middlename']
+        lastname = form['lastname']
+        phone = form['phone']
+        status = form['status']
+        email = form['email']
+        username = form['username']
+        street = form['street']
+        aptno = form['aptno']
+        city = form['city']
+        st = form['st']
+        country = form['country']
+        zipcode = form['zipcode']
+        if assistantid and firstname and middlename and lastname and \
+                phone and status and username \
+                and street and city and st and country and zipcode:
+            dao.insertAssistantHistory(assistantid, firstname, middlename, lastname,
+                                    phone, status, email, username,
+                                    street, aptno, city, st, country, zipcode)
+            result = self.build_assistanthistory_dict(assistantid, firstname, middlename,
+                                                lastname, phone, status, email,
+                                                username, street, aptno,
+                                                city, st, country, zipcode)
+            return jsonify(Assistant = result), 201 #Verificar porque 201
         else:
-            assistantid = form['assistantid']
-            firstname = form['firstname']
-            middlename = form['middlename']
-            lastname = form['lastname']
-            phone = form['phone']
-            status = form['status']
-            email = form['email']
-            username = form['username']
-            street = form['street']
-            aptno = form['aptno']
-            city = form['city']
-            st = form['st']
-            country = form['country']
-            zipcode = form['zipcode']
-            if assistantid and firstname and middlename and lastname and \
-                    phone and status and username \
-                    and street and city and st and country and zipcode:
-                dao.insertAssistantHistory(assistantid, firstname, middlename, lastname,
-                                        phone, status, email, username,
-                                        street, aptno, city, st, country, zipcode)
-                result = self.build_assistanthistory_dict(assistantid, firstname, middlename,
-                                                    lastname, phone, status, email,
-                                                    username, street, aptno,
-                                                    city, st, country, zipcode)
-                return jsonify(Assistant = result), 201 #Verificar porque 201
-            else:
-                return jsonify(Error="Unexpected attributes in insert request"), 400
+            return jsonify(Error="Unexpected attributes in insert request"), 400

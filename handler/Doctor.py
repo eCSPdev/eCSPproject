@@ -161,9 +161,6 @@ class DoctorHandler:
         if not dao.getDoctorByID(doctorid):
             return jsonify(Error="Doctor not found."), 404
         else:
-            # if len(form) != 17:
-            #     return jsonify(Error="Malformed update request"), 400
-            # else:
             doctorid = form['doctorid']
             licenseno = form['licenseno']
             firstname = form['firstname']
@@ -210,75 +207,72 @@ class DoctorHandler:
 
 
     def insertDoctor(self, form):
-        if len(form) != 16:
-            return jsonify(Error="Malformed post request"), 400
-        else:
-            licenseno = form['licenseno']
-            firstname = form['firstname']
-            middlename = form['middlename']
-            lastname = form['lastname']
-            officename = form['officename']
-            phone = form['phone']
-            status = form['status']
-            email = form['email']
-            username = form['username']
-            pssword = form['pssword']
-            street = form['street']
-            aptno = form['aptno']
-            city = form['city']
-            st = form['st']
-            country = form['country']
-            zipcode = form['zipcode']
-            if licenseno and firstname and lastname and officename and phone and status and username and pssword \
-                    and street and city and country and zipcode:
-                dao = DoctorDAO()
-                patientdao = PatientsDAO()
-                assistantdao = AssistantDAO()
+        licenseno = form['licenseno']
+        firstname = form['firstname']
+        middlename = form['middlename']
+        lastname = form['lastname']
+        officename = form['officename']
+        phone = form['phone']
+        status = form['status']
+        email = form['email']
+        username = form['username']
+        pssword = form['pssword']
+        street = form['street']
+        aptno = form['aptno']
+        city = form['city']
+        st = form['st']
+        country = form['country']
+        zipcode = form['zipcode']
+        if licenseno and firstname and lastname and officename and phone and status and username and pssword \
+                and street and city and country and zipcode:
+            dao = DoctorDAO()
+            patientdao = PatientsDAO()
+            assistantdao = AssistantDAO()
 
-                # verify if a doctor exist with this information
-                existantdoctor_list = dao.verifyDoctor(firstname, middlename, lastname, licenseno)
+            # verify if a doctor exist with this information
+            existantdoctor_list = dao.verifyDoctor(firstname, middlename, lastname, licenseno)
 
-                # no doctor exist with this information
-                if not existantdoctor_list:
-                    # verify if username already exist
-                    if dao.verifyUsername(username) == None \
-                            and patientdao.verifyUsername(username) == None \
-                            and assistantdao.verifyUsername(username) == None:
+            # no doctor exist with this information
+            if not existantdoctor_list:
+                # verify if username already exist
+                if dao.verifyUsername(username) == None \
+                        and patientdao.verifyUsername(username) == None \
+                        and assistantdao.verifyUsername(username) == None:
 
-                        #doctorid = uuid.uuid4()
-                        # license number and username is not taken yet, Doctor can be inserted
-                        doctorid = dao.insertDoctorInfo(licenseno, firstname, middlename, lastname, officename, phone,
-                                                     email, username, pssword)
-                        addressid = dao.insertDoctorAddress(doctorid, street, aptno, city, st, country, zipcode)
+                    #doctorid = uuid.uuid4()
+                    # license number and username is not taken yet, Doctor can be inserted
+                    doctorid = dao.insertDoctorInfo(licenseno, firstname, middlename, lastname, officename, phone,
+                                                 email, username, pssword)
+                    addressid = dao.insertDoctorAddress(doctorid, street, aptno, city, st, country, zipcode)
 
-                        changes_time = time.time()
-                        changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
-                        dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
-                                                status, email, username, pssword, street, aptno, city, st, country, zipcode,
-                                                changesdate)
-                #History
-                        dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
-                                                status, email, username, pssword, street, aptno, city, st, country,
-                                                zipcode, changesdate)
+                    changes_time = time.time()
+                    changesdate = datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                    dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
+                                            status, email, username, pssword, street, aptno, city, st, country, zipcode,
+                                            changesdate)
+            #History
+                    dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
+                                            status, email, username, pssword, street, aptno, city, st, country,
+                                            zipcode, changesdate)
 
-                        result = self.new_doctor_dict(doctorid, firstname, middlename, lastname, officename, phone, status,
-                                                       email, username, pssword, addressid, street, aptno, city, st, country, zipcode)
-                        return jsonify(Success="Doctor added correctly", Doctor=result), 201
+                    result = self.new_doctor_dict(doctorid, firstname, middlename, lastname, officename, phone, status,
+                                                   email, username, pssword, addressid, street, aptno, city, st, country, zipcode)
+                    return jsonify(Success="Doctor added correctly", Doctor=result), 201
 
-                        # return jsonify(Success="Doctor added correctly")
-                    # username already exist
-                    else:
-                        return jsonify(Error="Username is already taken.")
-
-                # a patient with this info already exists
+                    # return jsonify(Success="Doctor added correctly")
+                # username already exist
                 else:
-                    # return doctor or doctors with this critical information
-                    result_list = []
-                    for row in existantdoctor_list:
-                        result_list.append(self.verify_existantdoctor_dict(row))
-                    return jsonify(Error="A Doctor with this information already exist.", Doctors=result_list)
+                    return jsonify(Error="Username is already taken.")
+
+            # a patient with this info already exists
             else:
-                return jsonify(Error="Unexpected attributes in post request"), 400
+                # return doctor or doctors with this critical information
+                result_list = []
+                for row in existantdoctor_list:
+                    result_list.append(self.verify_existantdoctor_dict(row))
+                return jsonify(Error="A Doctor with this information already exist.", Doctors=result_list)
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
 
     def updateDoctorPssword(self, form):
         dao = DoctorDAO()
@@ -286,49 +280,43 @@ class DoctorHandler:
         if not dao.getDoctorByID(doctorid):
             return jsonify(Error="Doctor not found."), 404
         else:
-            if len(form) != 2:
-                return jsonify(Error="Malformed update request"), 400
+            pssword = form['pssword']
+            if pssword:
+                dao.updateDoctorPssword(doctorid, pssword)
+                result = self.update_doctor_pssword_dict(doctorid)
+                return jsonify(Doctor=result), 200
             else:
-                pssword = form['pssword']
-                if pssword:
-                    dao.updateDoctorPssword(doctorid, pssword)
-                    result = self.update_doctor_pssword_dict(doctorid)
-                    return jsonify(Doctor=result), 200
-                else:
-                    return jsonify(Error="Unexpected attributes in update request"), 400
+                return jsonify(Error="Unexpected attributes in update request"), 400
 
 ########## Doctor History #############
 #Para hacerle insert al history del Doctor
 
     def insertDoctorHistory(self, form):
         dao = DoctorDAO()
-        if len(form) != 17:
-            return jsonify(Error="Malformed insert request"), 400
+        doctorid = form['doctorid']
+        licenseno = form['liceseno']
+        firstname = form['firstname']
+        middlename = form['middlename']
+        lastname = form['lastname']
+        officename = form['officename']
+        phone = form['phone']
+        status = form['status']
+        email = form['email']
+        username = form['username']
+        pssword = form['pssword']
+        street = form['street']
+        aptno = form['aptno']
+        city = form['city']
+        st = form['st']
+        country = form['country']
+        zipcode = form['zipcode']
+        if doctorid and licenseno and firstname and lastname and officename and phone and status and username and \
+                pssword and street and city and country and zipcode:
+            dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone, status,
+                                    email, username, pssword, street, aptno, city, st, country, zipcode)
+            result = self.build_doctorhistory_dict(doctorid, licenseno, firstname, middlename, lastname, officename,
+                                                   phone, status, email, username, pssword, street, aptno, city, st,
+                                                   country, zipcode)
+            return jsonify(History = result), 201 #Verificar porque 201
         else:
-            doctorid = form['doctorid']
-            licenseno = form['liceseno']
-            firstname = form['firstname']
-            middlename = form['middlename']
-            lastname = form['lastname']
-            officename = form['officename']
-            phone = form['phone']
-            status = form['status']
-            email = form['email']
-            username = form['username']
-            pssword = form['pssword']
-            street = form['street']
-            aptno = form['aptno']
-            city = form['city']
-            st = form['st']
-            country = form['country']
-            zipcode = form['zipcode']
-            if doctorid and licenseno and firstname and lastname and officename and phone and status and username and \
-                    pssword and street and city and country and zipcode:
-                dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone, status,
-                                        email, username, pssword, street, aptno, city, st, country, zipcode)
-                result = self.build_doctorhistory_dict(doctorid, licenseno, firstname, middlename, lastname, officename,
-                                                       phone, status, email, username, pssword, street, aptno, city, st,
-                                                       country, zipcode)
-                return jsonify(History = result), 201 #Verificar porque 201
-            else:
-                return jsonify(Error="Unexpected attributes in insert request"), 400
+            return jsonify(Error="Unexpected attributes in insert request"), 400

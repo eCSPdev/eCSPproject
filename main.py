@@ -402,6 +402,7 @@ def getResultByID():
         else:
             return ResultHandler().getResultByID(request.args)
     if request.method == 'POST':
+        print('POST - UPLOADFILE')
         return ResultHandler().insertResult(request.args, request.files['file'])
     else:
         return jsonify(Error="Method not allowed."), 405

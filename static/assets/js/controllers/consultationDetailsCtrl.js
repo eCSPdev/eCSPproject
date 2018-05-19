@@ -17,19 +17,22 @@
     function changeTypeDisplayName(type) {
     	switch(type) {
     		case 'consultationnote':
-         return 'Consultation Note';
-         case 'initialform':
-         return 'Initial Form';
-         case 'prescription':
-         return 'Prescription';
-         case 'referral':
-         return 'Referral';
-         case 'result':
-         return 'Result';
-     }
- }
+           return 'Consultation Note';
+           case 'initialform':
+           return 'Initial Form';
+           case 'prescription':
+           return 'Prescription';
+           case 'referral':
+           return 'Referral';
+           case 'result':
+           return 'Result';
+       }
+   }
 
- $scope.patientid = '';
+   $scope.patientid = '';
+   console.log($rootScope.uploaded);
+   console.log($rootScope.consultationDate);
+   console.log($rootScope.chosenRecord);
 
     // if($rootScope.currentUser) {
         if($rootScope.currentUser.role == 'Doctor' || $rootScope.currentUser.role == 'Assistant') {
@@ -43,19 +46,26 @@
         }
     // }
 
-    if($rootScope.currentUser.role == 'Doctor') {
-        $http.get('/Doctor/eCSP/Patient/Files?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $scope.patientid + '&month=' + $rootScope.consultationDate.month + '&year=' + $rootScope.consultationDate.year) 
-        .then(function success(response) {
+    $rootScope.populatePatientFiles = function() {
+        if($rootScope.currentUser.role == 'Doctor') {
+            $http.get('/Doctor/eCSP/Patient/Files?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $scope.patientid + '&month=' + $rootScope.consultationDate.month + '&year=' + $rootScope.consultationDate.year) 
+            .then(function success(response) {
 
-         $scope.documents = response.data.FilesList;
+               $scope.documents = response.data.FilesList;
 
-         for (var i = 0; i < $scope.documents.length; i++) {
-				$scope.documents[i].dateofupload = $scope.documents[i].dateofupload.split(" ")[0]; //Get date only
-				$scope.documents[i].typeDisplayName = changeTypeDisplayName($scope.documents[i].type);
-			}
+               console.log($scope.documents);
 
+               for (var i = 0; i < $scope.documents.length; i++) {
+                $scope.documents[i].dateofupload = $scope.documents[i].dateofupload.split(" ")[0]; //Get date only
+                $scope.documents[i].typeDisplayName = changeTypeDisplayName($scope.documents[i].type);
+
+                if ($scope.documents[i].sign == 'undefined') {
+                    $scope.documents[i].sign = $rootScope.chosenRecord.username;
+                }
+            }
+            
 			// Declaration of table parameters
-           $scope.tableParams = new NgTableParams({
+         $scope.tableParams = new NgTableParams({
 	        	// Show first page
 	        	page: 1, 
 
@@ -72,8 +82,8 @@
 	            total: $scope.documents.length, 
 	            dataset: $scope.documents
 	        });
-       },
-       function error(response) {
+     },
+     function error(response) {
 				// Declaration of table parameters
               $scope.tableParams = new NgTableParams({
 		        	// Show first page
@@ -94,17 +104,21 @@
 		        });
 
           });
-    }
+        }
 
-    else if($rootScope.currentUser.role == 'Assistant') {
-        $http.get('/Assistant/eCSP/Patient/Files?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $scope.patientid + '&month=' + $rootScope.consultationDate.month + '&year=' + $rootScope.consultationDate.year) 
-        .then(function success(response) {
+        else if($rootScope.currentUser.role == 'Assistant') {
+            $http.get('/Assistant/eCSP/Patient/Files?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $scope.patientid + '&month=' + $rootScope.consultationDate.month + '&year=' + $rootScope.consultationDate.year) 
+            .then(function success(response) {
 
-         $scope.documents = response.data.FilesList;
+               $scope.documents = response.data.FilesList;
 
-         for (var i = 0; i < $scope.documents.length; i++) {
+               for (var i = 0; i < $scope.documents.length; i++) {
                 $scope.documents[i].dateofupload = $scope.documents[i].dateofupload.split(" ")[0]; //Get date only
                 $scope.documents[i].typeDisplayName = changeTypeDisplayName($scope.documents[i].type);
+
+                if ($scope.documents[i].sign == 'undefined') {
+                    $scope.documents[i].sign = $rootScope.chosenRecord.username;
+                }
             }
 
             // Declaration of table parameters
@@ -147,17 +161,21 @@
                 });
 
             });
-    }
+        }
 
-    else {
-        $http.get('/Patient/eCSP/Files?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $rootScope.currentUser.userid + '&month=' + $rootScope.consultationDate.month + '&year=' + $rootScope.consultationDate.year) 
-        .then(function success(response) {
+        else {
+            $http.get('/Patient/eCSP/Files?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $rootScope.currentUser.userid + '&month=' + $rootScope.consultationDate.month + '&year=' + $rootScope.consultationDate.year) 
+            .then(function success(response) {
 
-         $scope.documents = response.data.FilesList;
+               $scope.documents = response.data.FilesList;
 
-         for (var i = 0; i < $scope.documents.length; i++) {
+               for (var i = 0; i < $scope.documents.length; i++) {
                 $scope.documents[i].dateofupload = $scope.documents[i].dateofupload.split(" ")[0]; //Get date only
                 $scope.documents[i].typeDisplayName = changeTypeDisplayName($scope.documents[i].type);
+
+                if ($scope.documents[i].sign == 'undefined') {
+                    $scope.documents[i].sign = $rootScope.chosenRecord.username;
+                }
             }
 
             // Declaration of table parameters
@@ -200,6 +218,7 @@
                 });
 
             });
+        }
     }
 
     $scope.download = function(pid, type, fileid) {
@@ -233,6 +252,9 @@
     }
 }
 
+    // Execute query
+    $rootScope.populatePatientFiles();
+
 	// openActivate() Function Definition
     $scope.open = function () {
 
@@ -240,7 +262,7 @@
     		templateUrl: 'modal_upload.html',
     		controller: 'ModalInstanceCtrl',
     		size: 'md'
-       });
+     });
     }
 
 }]);
@@ -248,7 +270,7 @@
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "FileUploader", function ($scope, $rootScope, $state, $http, $uibModalInstance, FileUploader) {
 
-	// 
+	
 	$scope.fileType = '';
 
 	var uploader = $scope.uploader = new FileUploader({
@@ -320,17 +342,64 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
         }
     };
 
+    // $scope.upload = function() {
+
+    // 	//Upload execute
+    // 	uploader.queue[0].upload();	
+    // 	$uibModalInstance.close(true);
+
+    // 	//Save data for reload
+    // 	$rootScope.uploaded.bool = true;
+    // 	$rootScope.uploaded.month = $rootScope.consultationDate.month;
+    // 	$rootScope.uploaded.year = $rootScope.consultationDate.year;
+    //     $rootScope.uploaded.patientid = $rootScope.chosenRecord.patientID;
+    //     console.log('chosen record in uploaded');
+    //     console.log($rootScope.chosenRecord);
+    // 	$state.reload();
+    // };
+
+    // uploader.onCompleteAll = function () {
+    //     console.log('success');
+    //     $state.reload();
+    // };
+
+    // uploader.onSuccessItem = function (fileItem, response, status, headers) {
+    //     console.info('onSuccessItem', fileItem, response, status, headers);
+    // };
+    // uploader.onCompleteItem = function (fileItem, response, status, headers) {
+    //     console.info('onCompleteItem', fileItem, response, status, headers);
+    // };
+    uploader.onCompleteAll = function () {
+        console.info('onCompleteAll');
+        $rootScope.populatePatientFiles();
+    };
+
     $scope.upload = function() {
 
-    	//Upload execute
-    	uploader.queue[0].upload();	
-    	$uibModalInstance.close(true);
+        //Upload execute
+        uploader.queue[0].upload(); 
+        $uibModalInstance.close(true);
 
-    	//Save data for reload
-    	$rootScope.uploaded.bool = true;
-    	$rootScope.uploaded.month = $rootScope.consultationDate.month;
-    	$rootScope.uploaded.year = $rootScope.consultationDate.year;
-    	$state.reload();
+        //Save data for reload
+        $rootScope.uploaded.bool = true;
+        if ($rootScope.consultationDate.month != undefined) {
+            $rootScope.uploaded.month = $rootScope.consultationDate.month;
+            $rootScope.uploaded.year = $rootScope.consultationDate.year;
+        }
+        else {
+            var date = new Date();
+            $rootScope.consultationDate.month = date.getMonth()+1;
+            $rootScope.consultationDate.year = date.getFullYear();
+            $rootScope.uploaded.month = $rootScope.consultationDate.month;
+            $rootScope.uploaded.year = $rootScope.consultationDate.year;
+        }
+        
+        // Execute query
+        //setTimeout(function() {$rootScope.populatePatientFiles()}, 15000);
+        //setTimeout(function() {$state.reload()}, 3000);
+        //$state.reload();
+
+
     };
 
     $scope.cancel = function () {

@@ -58,7 +58,7 @@
 										<span ng-show="sortType == 'uploadDate' && sortReverse" class="fa fa-caret-up"></span>
 									</a>
 								</td>
-								<td>
+								<td style="text-align: center">
 									Action
 								</td>
 							</tr>
@@ -70,7 +70,7 @@
 								<td> <i class="fa fa-file-text" style="margin-right: 5px;"></i> {{ document.filename }}</td>
 								<td>{{ document.sign }}</td>
 								<td style="text-align: center">{{ document.dateofupload }}</td>
-								<td> 
+								<td style="text-align:center"> 
 									<!-- Download File Button -->
 									<button class="btn btn-wide btn-blue" ng-click="download(document.patientid, document.type, document.fileid)">
 										<i class="fa fa-download fa-inverse" style="margin-right: 5px;"></i> Download

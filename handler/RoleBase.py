@@ -244,6 +244,8 @@ class RoleBase:
             path == '/Patient/eCSP/ResultList' or \
             path == '/Doctor/eCSP/Patient/Result' or \
             path == '/Assistant/eCSP/Patient/Result' or \
-            path == '/Patient/eCSP/Result':
+            path == '/Patient/eCSP/Result' or \
+            path == '/Doctor/eCSP/Patient/Files' or \
+            path == '/Doctor/eCSP/Patient/Files/Dates' :
             return True
         return False

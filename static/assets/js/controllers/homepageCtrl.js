@@ -13,6 +13,7 @@ app.controller('homepageCtrl', ["$scope", "$rootScope", "$state", function($scop
     $scope.nextState = " ";
     $rootScope.consultationDate = { };
     $rootScope.uploaded = { };
+    $rootScope.chosenRecord = { };
 
 
     // console.log($rootScope.currentUser);

@@ -14,35 +14,26 @@
 	$scope.consultationSearch   = '';     // set the default search/filter term
 
 
-	console.log($rootScope.uploaded);
-	console.log('chosen record');
-	console.log($rootScope.chosenRecord);
-
-	// Redirect to files list when a file is uploaded
-	if($rootScope.uploaded.bool == true) {
-		console.log('upload = true');
-		console.log($rootScope.uploaded);
-		console.log($rootScope.consultationDate);
-		console.log($rootScope.chosenRecord);
-
-		$rootScope.uploaded.bool = false;
-		$state.go("app.users.view_records.patient_consultations.consultation_details");
-	}
-
-
 	function convertMonth(monthNumber) {
 		var months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		return months[monthNumber];
 	}
 
+	// Redirect to files list when a file is uploaded
+	if($rootScope.uploaded.bool == true) {
 
-	if ($rootScope.currentUser) {
+		console.log($rootScope.uploaded);
+		console.log($rootScope.consultationDate);
+		console.log($rootScope.chosenRecord);
+		$rootScope.uploaded.bool = false;
+		$state.go("app.users.view_records.patient_consultations.consultation_details");
+	}
+
+
+	else {
 		if($rootScope.currentUser.role == 'Doctor') {
 			$http.get('/Doctor/eCSP/Patient/Files/Dates?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $rootScope.chosenRecord.patientID) 
 			.then(function success(response) {
-
-				console.log('consultations');
-				console.log(response.data.FilesDates);
 
 				for (var i = 0; i < response.data.FilesDates.length; i++) {
 					response.data.FilesDates[i].monthName = convertMonth(response.data.FilesDates[i].month);

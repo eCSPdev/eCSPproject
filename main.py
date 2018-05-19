@@ -31,15 +31,15 @@ application.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 #         return f(*args, **kwargs)
 #     return decorated
 
-# @app.before_request
-# def before_execute():
-#     print ('BEFORE_EXECUTE')
-#     #print ('path', request.path)
-#     validate = RoleBase().validate(request.path, request.args)
-#     #print ('user', validate)
-#     if validate != True:
-#         return validate
-#     #print (request.args.get('username'))
+@application.before_request
+def before_execute():
+ print ('BEFORE_EXECUTE')
+ #print ('path', request.path)
+ validate = RoleBase().validate(request.path, request.args)
+ #print ('user', validate)
+ if validate != True:
+     return validate
+ #print (request.args.get('username'))
 
 #Load and render 'index.html'
 @application.route('/')

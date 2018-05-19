@@ -4,7 +4,10 @@ from dao.Doctor import DoctorDAO
 from dao.Assistant import AssistantDAO
 from handler.RoleBase import RoleBase
 # import datetime, time
-from datetime import datetime, timezone
+# from datetime import datetime, timezone
+from datetime import datetime
+from datetime import timezone
+from datetime import timedelta
 import uuid
 
 ## Luis Santiago ##
@@ -327,7 +330,7 @@ class PatientHandler:
             else:
                 daysofgrace = form['daysofgrace']
                 print ('days fo grace : ', daysofgrace)
-                date = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time)
+                date = datetime.now(timezone.utc).astimezone()#datetime.datetime.fromtimestamp(changes_time)
                 print('date', date)
                 deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
                 print('deactivationdate : ', deactivationdate)

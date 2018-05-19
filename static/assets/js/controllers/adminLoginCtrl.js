@@ -16,7 +16,7 @@
     $scope.validateLogin = function(username, password, role) {
       if(role == 'doctor') {
 
-        /* HTTP POST Request: DAlogin() */
+        /* HTTP GET Request: DAlogin() */
         /* Doctor login */
         $http.get('/Doctor/eCSP/Login?username=' + username + '&pssword=' + password)
         .then(function success(response) {
@@ -42,7 +42,7 @@
       }
 
       else {
-        /* HTTP POST Request: DAlogin*/
+        /* HTTP GET Request: DAlogin*/
         /* Assistant login */
         $http.get('/Assistant/eCSP/Login?username=' + username + '&pssword=' + password)
         .then(function success(response) {

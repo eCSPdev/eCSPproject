@@ -3,7 +3,7 @@ from dao.Doctor import DoctorDAO
 from dao.Patient import PatientsDAO
 from dao.Assistant import AssistantDAO
 from handler.RoleBase import RoleBase
-# import datetime, time
+import datetime, time
 from datetime import datetime, timezone
 import uuid
 
@@ -210,6 +210,7 @@ class AssistantHandler:
 
     def updateAssistantInformation(self, form, path):
         # A-adido
+        print(path)
         pathlist = RoleBase().splitall(path)
         role = pathlist[1]
         DoctorSign = None

@@ -27,8 +27,6 @@ app.controller('viewRecordsCtrl', ["$scope", "$rootScope", "$state", "$http", "N
 			$http.get('/Doctor/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
 			.then(function success(response) {
 
-				// console.log(response.data.Patient);
-
 		    	// Search bar
 		    	for(var i = 0; i < response.data.Patient.length; i++) 
 		    	{
@@ -168,7 +166,6 @@ app.controller('viewRecordsCtrl', ["$scope", "$rootScope", "$state", "$http", "N
 		$rootScope.chosenRecord.lName = lName;
 		$rootScope.chosenRecord.fName = fName;
 		$rootScope.chosenRecord.mName = mName;
-		// console.log('Chosen Record: ' + $rootScope.chosenRecord);
 		$state.go("app.users.view_records.patient_consultations");
 	}
 

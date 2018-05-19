@@ -20,7 +20,6 @@
         .then(function success(response) {
 
           $scope.thisPatient = response.data.Patient;
-          console.log($scope.thisPatient);
 
         }, function error(response) { });
       }
@@ -63,9 +62,6 @@
 
   }]);
 
-// Please note that $uibModalInstance represents a modal window (instance) dependency.
-// It is not the same as the $uibModal service used above.
-
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "chosenPatient", "$uibModalInstance", function ($scope, $rootScope, $state, $http, chosenPatient, $uibModalInstance) {
 
@@ -79,7 +75,7 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
       /* HTTP PUT Request: getPatientByID() */
       /* Update (PUT) patient personal information */
-      $http.put('/Doctor/eCSP/Patient/PersonalInformation', $scope.thisPatient) 
+      $http.put('/Doctor/eCSP/Patient/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisPatient) 
       .then(function success(response) {
 
         $scope.thisPatient = response.data.Patient;
@@ -91,7 +87,7 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     else
     {
       /* HTTP GET Request: getPatientByID() */
-      /* Get patient personal information */
+      /* Update (PUT) patient personal information */
       $http.put('/Assistant/eCSP/Patient/PersonalInformation?patientid=' + $rootScope.chosenPatient + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
       .then(function success(response) {
 

@@ -125,14 +125,14 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 	$scope.changeStatus = function(button) {
 
 		if(button == 'activate') {
-			$http.put('/Doctor/eCSP/Assistant/Activate?username=' + $rootScope.currentUser.username + '&assistantid=' + chosenAssistant)
+			$http.put('/Doctor/eCSP/Assistant/Activate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + chosenAssistant)
 			.then(function success(response) { 
 				$state.reload();
 			}, function error(response) { });
 		}
 
 		else if(button == 'deactivate') {
-			$http.put('/Doctor/eCSP/Assistant/Deactivate?username=' + $rootScope.currentUser.username + '&assistantid=' + chosenAssistant  + '&daysofgrace=' + $scope.daysofgrace)
+			$http.put('/Doctor/eCSP/Assistant/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + chosenAssistant  + '&daysofgrace=' + $scope.daysofgrace)
 			.then(function success(response) { 
 				$state.reload();
 			}, function error(response) { });

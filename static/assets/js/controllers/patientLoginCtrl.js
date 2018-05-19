@@ -15,12 +15,10 @@
   	/* Function to validate Patient login information */
   	$scope.validateLogin = function(username, password) {
 
-      /* HTTP POST Request: DAlogin() */
-        /* Doctor login */
+      /* HTTP GET Request: login() */
+        /* Patient login */
         $http.get('/Patient/eCSP/Login?username=' + username + '&pssword=' + password)
         .then(function success(response) {
-
-              // console.log(response.data.Patient);
 
           
           $rootScope.currentUser.username = response.data.Patient.username;

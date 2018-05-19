@@ -119,6 +119,7 @@ class ConsultationNotesDAO:
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
             self.conn = psycopg2._connect(connection_url)
             try:
+                print('entre al query de CN dates')
                 cursor = self.conn.cursor()
                 query = "(select EXTRACT(YEAR FROM dateofupload) AS year, EXTRACT(MONTH FROM dateofupload) AS month " \
                         "from consultationnotes " \
@@ -160,6 +161,7 @@ class ConsultationNotesDAO:
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])
             self.conn = psycopg2._connect(connection_url)
             try:
+                print('entre al query de patient files')
                 cursor = self.conn.cursor()
                 query = "(select patientid, consultationnoteid as fileid, filename, 'consultationnote' as type, dateofupload, doctorusername, assistantusername, recordno " \
                         "from consultationnotes " \

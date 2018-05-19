@@ -4,10 +4,7 @@ from dao.Patient import PatientsDAO
 from dao.Assistant import AssistantDAO
 from handler.RoleBase import RoleBase
 # import datetime, time
-# from datetime import datetime, timezone
-from datetime import datetime
-from datetime import timezone
-from datetime import timedelta
+from datetime import datetime, timezone, timedelta
 import uuid
 
 class AssistantHandler:

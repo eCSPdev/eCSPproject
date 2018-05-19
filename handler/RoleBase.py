@@ -6,7 +6,9 @@ import jwt
 
 class RoleBase:
 
-    ### Routine to split the path ###
+    ### Method to split the path ###
+    # Parameters : path - requested path
+    # Return : Splitted path in one Array
     def splitall(self, path):
         allparts = []
         while 1:
@@ -22,6 +24,10 @@ class RoleBase:
                 allparts.insert(0, parts[1])
         return allparts
 
+    ### Method to validate the path and credencials ###
+    # Parameters : path - requested path
+    # Return :  True if the request pass the validation
+    #           False of Error if the request don't pass the validation
     def validate(self, path, form):
         try:
             # Home Page - Don't access the sytem #
@@ -84,7 +90,11 @@ class RoleBase:
         except:
             return jsonify(Error = "Error Validating User"), 400 #Bad Request
 
-
+    ### Method to logout a user from the system ###
+    # Parameters:   role - user role (patient, assistant, doctor)
+    #               username - requested username
+    # Return :  True if the logout execute correctly
+    #           Error if the role or username are not valid
     def Logout(self, role, username):
         dao = RoleBaseDAO()
         if role == 'Patient':
@@ -102,6 +112,12 @@ class RoleBase:
         else:
             return jsonify(Error="Invalid Role or Not currently Logged in"), 401 #Unauthorized
 
+    ### Validate the role, username, token and id (if it is required)
+    # Parameters:   role - user role in the system
+    #               username - user username
+    #               token - user token
+    #               form - requested parameters
+    # Return:   Error if one of the condition don't pass
     def validateUser(self, role, username, token, form):
         dao = RoleBaseDAO()
         ### Patient Role ###
@@ -169,6 +185,8 @@ class RoleBase:
 
     ## Method to validate the token ##
     # Parameters: token - token received by the frontend
+    # Return:   True if validate the token correctly
+    #           False if the validation of the token fail
     def validateToken(self, token):
         try:
             data = jwt.decode(token, 'thisisthesecretkey') # hay que cambiarlo
@@ -178,6 +196,9 @@ class RoleBase:
 
 
     # To be sure that one assistant can't access other assistant information #
+    # Parameters:   path - requested path
+    #               username - active user username
+    #               form - requested parameters
     def validateRequest(self, path, username, form):
         try:
             dao = RoleBaseDAO()
@@ -191,6 +212,8 @@ class RoleBase:
             print("Any token : ", e)
             return e
 
+
+    # Hay que borrarlo # Si corre bien sin ello, lo borramos
     def validateroute(self, path):
         if path == '/' or \
             path == '/Patient/eCSP/Login' or \

@@ -17,20 +17,6 @@ import datetime
 application = Flask(__name__)
 application.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 
-
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.args.get('token')
-        print ('estoy verificando el token')
-        print('token', token)
-        try:
-            data = jwt.decode(token, application.config['SECRET_KEY'])
-        except:
-            return jsonify(Error="Invalid Token"), 403
-        return f(*args, **kwargs)
-    return decorated
-
 @application.before_request
 def before_execute():
     print ('BEFORE_EXECUTE')
@@ -39,9 +25,7 @@ def before_execute():
     # Execute function only for eCSP routes
     if request.path.split('/')[1] == 'Doctor' or request.path.split('/')[1] == 'Assistant' or request.path.split('/')[1] == 'Patient':
         validate = RoleBase().validate(request.path, request.args)
-        #print ('user', validate)
         if validate != True:
-            print(validate)
             return validate
         print (request.args.get('username'))
 

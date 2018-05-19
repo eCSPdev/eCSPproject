@@ -13,16 +13,12 @@
       if($rootScope.currentUser.role == 'Doctor')
       {
 
-        // console.log($scope.thisUser);
-
         /* HTTP GET Request: getDoctorByID() */
         /* Get doctor personal information */
         $http.get('/Doctor/eCSP/PersonalInformation?doctorid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
         .then(function success(response) {
 
           $scope.thisUser = response.data.Doctor;
-          // console.log('GET');
-          // console.log($scope.thisUser);
 
         }, function error(response) { });
       }

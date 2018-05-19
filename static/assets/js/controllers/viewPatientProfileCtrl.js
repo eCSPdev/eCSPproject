@@ -24,7 +24,6 @@
         .then(function success(response) {
 
           $scope.thisPatient = response.data.Patient;
-          console.log($scope.thisPatient);
 
         }, function error(response) { });
       }
@@ -37,7 +36,6 @@
         .then(function success(response) {
 
           $scope.thisPatient = response.data.Patient;
-          console.log($scope.thisPatient);
 
         }, function error(response) { });
       }

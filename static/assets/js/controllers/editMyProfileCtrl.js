@@ -72,26 +72,21 @@
 
   }]);
 
-// Please note that $uibModalInstance represents a modal window (instance) dependency.
-// It is not the same as the $uibModal service used above.
-
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "chosenUser", "$uibModalInstance", function ($scope, $rootScope, $state, $http, chosenUser, $uibModalInstance) {
 
   $scope.ok = function () {
 
     $scope.thisUser = chosenUser;
-    // $scope.thisUser.licenseno = '0';
 
     if($rootScope.currentUser.role == 'Doctor')
     {
       /* HTTP PUT Request: getDoctorByID() */
       /* Update doctor personal information */
-      $http.put('/Doctor/eCSP/PersonalInformation', $scope.thisUser) 
+      $http.put('/Doctor/eCSP/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisUser) 
       .then(function success(response) {
 
         $scope.thisUser = response.data.Doctor;
-        console.log($scope.thisUser);
 
         $rootScope.currentUser.firstname = response.data.Doctor.firstname;
         $rootScope.currentUser.middlename = response.data.Doctor.middlename;
@@ -106,11 +101,10 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     {
       /* HTTP PUT Request: getAssistantByID() */
       /* Update assistant personal information */
-      $http.put('/Assistant/eCSP/PersonalInformation', $scope.thisUser) 
+      $http.put('/Assistant/eCSP/PersonalInformation?assistantid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisUser) 
       .then(function success(response) {
 
         $scope.thisUser = response.data.Assistant;
-        console.log($scope.thisUser);
 
         $rootScope.currentUser.firstname = response.data.Assistant.firstname;
         $rootScope.currentUser.middlename = response.data.Assistant.middlename;
@@ -125,12 +119,10 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     {
       /* HTTP PUT Request: getPatientByID() */
       /* Update patient personal information */
-      $http.put('/Patient/eCSP/PersonalInformation', $scope.thisUser) 
+      $http.put('/Patient/eCSP/PersonalInformation?patientid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisUser) 
       .then(function success(response) {
 
         $scope.thisUser = response.data.Patient;
-
-        console.log($scope.thisUser);
 
         $rootScope.currentUser.firstname = response.data.Patient.firstname;
         $rootScope.currentUser.middlename = response.data.Patient.middlename;

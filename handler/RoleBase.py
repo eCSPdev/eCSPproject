@@ -6,7 +6,9 @@ import jwt
 
 class RoleBase:
 
-    ### Rutina para separar el path ###
+    ### Method to split the path ###
+    # Parameters : path - requested path
+    # Return : Splitted path in one Array
     def splitall(self, path):
         allparts = []
         while 1:
@@ -22,25 +24,35 @@ class RoleBase:
                 allparts.insert(0, parts[1])
         return allparts
 
+    ### Method to validate the path and credencials ###
+    # Parameters : path - requested path
+    # Return :  True if the request pass the validation
+    #           False of Error if the request don't pass the validation
     def validate(self, path, form):
         try:
+            # Home Page - Don't access the sytem #
             if path == '/':
                 return True
-            #### Validating Path ####
-            vpath = self.validateroute(path)
-            if vpath != True:
-                return jsonify(Error="Invalid Route"), 400 #Bad Request
+
+            #### Validating Path #### - no es necesario, con el try & catch es suficiente
+            #vpath = self.validateroute(path)
+            #f vpath != True:
+            #    return jsonify(Error="Invalid Route"), 400 #Bad Request
+
             p = self.splitall(path)
             validate = False
+
             #### Check if Form contain the username ####
             try:
                 username = form['username']
             except Exception as e:
                 print("Any username : ", e)
                 return e
+
             ### Exception - Login Routes ###
             if p[3] == 'Login':
                 validate = True
+
             ### Exception - Logout Routes ###
             elif p[3] == 'Logout' :
                 try:
@@ -57,9 +69,11 @@ class RoleBase:
                     return Logout
                 else:
                     validate = True
+
             ### Other Routes ###
             else:
                 vRequest = True
+                # To check that an assistant can't access other assistant information
                 if p[1] == 'assistant':
                     vRequest = self.validateRequest(path, username, form)
                 if vRequest == False:
@@ -76,7 +90,11 @@ class RoleBase:
         except:
             return jsonify(Error = "Error Validating User"), 400 #Bad Request
 
-
+    ### Method to logout a user from the system ###
+    # Parameters:   role - user role (patient, assistant, doctor)
+    #               username - requested username
+    # Return :  True if the logout execute correctly
+    #           Error if the role or username are not valid
     def Logout(self, role, username):
         dao = RoleBaseDAO()
         if role == 'Patient':
@@ -94,11 +112,18 @@ class RoleBase:
         else:
             return jsonify(Error="Invalid Role or Not currently Logged in"), 401 #Unauthorized
 
+    ### Validate the role, username, token and id (if it is required)
+    # Parameters:   role - user role in the system
+    #               username - user username
+    #               token - user token
+    #               form - requested parameters
+    # Return:   Error if one of the condition don't pass
     def validateUser(self, role, username, token, form):
         dao = RoleBaseDAO()
         ### Patient Role ###
         if role == 'Patient':
             patient = dao.validatePatient(username)
+            # Check the role in the path
             if not patient:
                 return jsonify(Error="Invalid Username"), 401 #Unauthorized
             pusername = patient[0][0]
@@ -106,28 +131,38 @@ class RoleBase:
             plogged = patient[0][2]
             pid = patient [0][3]
             patientid = form['patientid']
+            # Check if the patient id in the DB
             if str(pid) != str(patientid):
                 return jsonify(Error="Unauthorized patient ID"), 401 #Unauthorized
+            # Check if the username in the DB
             if pusername != username:
                 return jsonify(Error="Invalid Username"), 400 #Bad Request
+            # Validating the token
             if ptoken != token or self.validateToken(ptoken) != True :
                 return jsonify(Error="Invalid Token"), 400 #Bad Request
+            # Check if the user is currently logged in
             if plogged != True:
                 return jsonify(Error="Not currently Logged in"), 401 #Unauthorized
+
         ### Assistant Role ###
         elif role == 'Assistant':
             assistant = dao.validateAssistant(username)
+            # Check the role in the path
             if not assistant:
                 return jsonify(Error="Invalid Username"), 400 #Bad Request
             ausername = assistant[0][0]
             atoken = assistant[0][1]
             alogged = assistant[0][2]
+            # Check username in the DB
             if ausername != username:
                 return jsonify(Error="Invalid Username"), 400 #Bad Request
+            # Validating the token
             if atoken != token or self.validateToken(atoken) != True:
                 return jsonify(Error="Invalid Token"), 400 #Bad Request
+            # Check if the user is currently logged in
             if alogged != True:
                 return jsonify(Error="Not currently Logged in"), 401 #Unauthorized
+
         ### Doctor Role ###
         elif role == 'Doctor':
             doctor = dao.validateDoctor(username)
@@ -136,22 +171,34 @@ class RoleBase:
             dusername = doctor[0][0]
             dtoken = doctor[0][1]
             dlogged = doctor[0][2]
+            # Check username in the DB
             if dusername != username:
                 return jsonify(Error="Invalid Username"), 400 #Bad Request
+            # Validating the token
             if dtoken != token or self.validateToken(dtoken) != True :
                 return jsonify(Error="Invalid Token"), 400 #Bad Request
+            # Check if the user is currently logged in
             if dlogged != True:
                 return jsonify(Error="Not currently Logged in"), 401 #Unauthorized
         else:
             return jsonify(Error="Invalid Role"), 401 #Unauthorized
 
+    ## Method to validate the token ##
+    # Parameters: token - token received by the frontend
+    # Return:   True if validate the token correctly
+    #           False if the validation of the token fail
     def validateToken(self, token):
         try:
-            data = jwt.decode(token, 'thisisthesecretkey')
+            data = jwt.decode(token, 'thisisthesecretkey') # hay que cambiarlo
             return True
         except:
             return False
 
+
+    # To be sure that one assistant can't access other assistant information #
+    # Parameters:   path - requested path
+    #               username - active user username
+    #               form - requested parameters
     def validateRequest(self, path, username, form):
         try:
             dao = RoleBaseDAO()
@@ -165,6 +212,8 @@ class RoleBase:
             print("Any token : ", e)
             return e
 
+
+    # Hay que borrarlo # Si corre bien sin ello, lo borramos
     def validateroute(self, path):
         if path == '/' or \
             path == '/Patient/eCSP/Login' or \
@@ -218,6 +267,8 @@ class RoleBase:
             path == '/Patient/eCSP/ResultList' or \
             path == '/Doctor/eCSP/Patient/Result' or \
             path == '/Assistant/eCSP/Patient/Result' or \
-            path == '/Patient/eCSP/Result':
+            path == '/Patient/eCSP/Result' or \
+            path == '/Doctor/eCSP/Patient/Files' or \
+            path == '/Doctor/eCSP/Patient/Files/Dates' :
             return True
         return False

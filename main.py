@@ -17,29 +17,17 @@ import datetime
 application = Flask(__name__)
 application.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 
+@application.before_request
+def before_execute():
+    print ('BEFORE_EXECUTE')
+    print ('args:', request.args)
 
-# def token_required(f):
-#     @wraps(f)
-#     def decorated(*args, **kwargs):
-#         token = request.args.get('token')
-#         print ('estoy verificando el token')
-#         #print('token', token)
-#         try:
-#             data = jwt.decode(token, app.config['SECRET_KEY'])
-#         except:
-#             return jsonify(Error="Invalid Token"), 403
-#         return f(*args, **kwargs)
-#     return decorated
-
-# @app.before_request
-# def before_execute():
-#     print ('BEFORE_EXECUTE')
-#     #print ('path', request.path)
-#     validate = RoleBase().validate(request.path, request.args)
-#     #print ('user', validate)
-#     if validate != True:
-#         return validate
-#     #print (request.args.get('username'))
+    # Execute function only for eCSP routes
+    if request.path.split('/')[1] == 'Doctor' or request.path.split('/')[1] == 'Assistant' or request.path.split('/')[1] == 'Patient':
+        validate = RoleBase().validate(request.path, request.args)
+        if validate != True:
+            return validate
+        print (request.args.get('username'))
 
 #Load and render 'index.html'
 @application.route('/')
@@ -50,7 +38,7 @@ def index():
 def upload():
     print(request.args)
     print(request.files['file'].filename)
-    return 'wepa'
+    return 'Success'
 
 
 #Patient login
@@ -194,6 +182,7 @@ def getAllPatients():
         print('GET - GETPATIENTLIST')
         return PatientHandler().getAllPatients()
     elif request.method == 'POST':
+        print(request.args)
         print(request.get_json())
         return PatientHandler().insertPatient(request.get_json())
     else:
@@ -391,7 +380,7 @@ def getAllResult():
         return jsonify(Error="Method not allowed."), 405
 
 #Get Patient Result Information
-@application.route('/Patient/eCSP/Doctor/Result', methods=['GET','POST'])
+@application.route('/Doctor/eCSP/Patient/Result', methods=['GET','POST'])
 @application.route('/Assistant/eCSP/Patient/Result', methods=['GET','POST'])
 @application.route('/Patient/eCSP/Result', methods=['GET','POST'])
 def getResultByID():
@@ -407,7 +396,7 @@ def getResultByID():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Result Datesx
+#Get Patient Result Dates
 @application.route('/Doctor/eCSP/Patient/Result/Dates', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/Result/Dates', methods=['GET'])
 @application.route('/Patient/eCSP/Result/Dates', methods=['GET'])
@@ -421,7 +410,7 @@ def getResultDates():
 ###################Prueba#########################
 @application.route('/Doctor/eCSP/Patient/Files', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/Files', methods=['GET'])
-@application.route('/Patient/eCSP/Result/Files', methods=['GET'])
+@application.route('/Patient/eCSP/Files', methods=['GET'])
 def getPatientFiles():
     if request.method == 'GET':
         print('GET - GETFILES')
@@ -435,6 +424,7 @@ def getPatientFiles():
 def getFilesDates():
     if request.method == 'GET':
         print('GET - GETRESULTDATES')
+        print(request.args)
         return ConsultationNotesHandler().getFilesDates(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405

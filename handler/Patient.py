@@ -201,6 +201,7 @@ class PatientHandler:
 
     def updatePatientInformation(self, form, path):
         # A-adido
+        print(path)
         pathlist = RoleBase().splitall(path)
         role = pathlist[1]
         DoctorSign = None

@@ -18,8 +18,8 @@
     $scope.thisAssistant = { };
 
     /* HTTP GET Request: getAssistantByID() */
-      /* Get patient personal information */
-    $http.get('/Doctor/eCSP/Assistant/PersonalInformation?assistantid=' + $rootScope.chosenAssistant + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+      /* Get assistant personal information */
+    $http.get('/Doctor/eCSP/Assistant/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + $rootScope.chosenAssistant + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
     .then(function success(response) {
 
       $scope.thisAssistant = response.data.Assistant;
@@ -51,9 +51,6 @@
 
   }]);
 
-// Please note that $uibModalInstance represents a modal window (instance) dependency.
-// It is not the same as the $uibModal service used above.
-
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "chosenAssistant", "$uibModalInstance", function ($scope, $rootScope, $state, $http, chosenAssistant, $uibModalInstance) {
 
@@ -63,7 +60,7 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
       /* HTTP PUT Request: getAssistantByID() */
       /* Update (PUT) assistant personal information */
-      $http.put('/Doctor/eCSP/Assistant/PersonalInformation', $scope.thisAssistant) 
+      $http.put('/Doctor/eCSP/Assistant/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisAssistant) 
       .then(function success(response) {
 
         $scope.thisAssistant = response.data.Assistant;

@@ -214,14 +214,14 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
             console.log($scope.daysofgrace);
 
             if(button == 'activate') {
-                $http.put('/Doctor/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient)
+                $http.put('/Doctor/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient)
                 .then(function success(response) { 
                     $state.reload();
                 }, function error(response) { });
             }
 
             else if(button == 'deactivate') {
-                $http.put('/Doctor/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient  + '&daysofgrace=' + $scope.daysofgrace)
+                $http.put('/Doctor/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient  + '&daysofgrace=' + $scope.daysofgrace)
                 .then(function success(response) { 
                     $state.reload();
                 }, function error(response) { });
@@ -231,14 +231,14 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
         else {
 
             if(button == 'activate') {
-                $http.put('/Assistant/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient)
+                $http.put('/Assistant/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient)
                 .then(function success(response) { 
                     $state.reload();
                 }, function error(response) { });
             }
 
             else if(button == 'deactivate') {
-                $http.put('/Assistant/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&patientid=' + chosenPatient  + '&daysofgrace=' + $scope.daysofgrace)
+                $http.put('/Assistant/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient  + '&daysofgrace=' + $scope.daysofgrace)
                 .then(function success(response) { 
                     $state.reload();
                 }, function error(response) { });

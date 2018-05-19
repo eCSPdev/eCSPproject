@@ -21,7 +21,6 @@
     .then(function success(response) {
 
       $scope.thisAssistant = response.data.Assistant;
-      // console.log($scope.thisAssistant);
 
     }, function error(response) { });
 

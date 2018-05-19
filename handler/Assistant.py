@@ -210,6 +210,7 @@ class AssistantHandler:
 
     def updateAssistantInformation(self, form, path):
         # A-adido
+        print(path)
         pathlist = RoleBase().splitall(path)
         role = pathlist[1]
         DoctorSign = None

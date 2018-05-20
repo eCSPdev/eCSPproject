@@ -245,6 +245,10 @@
       }
 
       else {
+        console.log('username: '+ $rootScope.currentUser.username);
+        console.log('token: '+ $rootScope.currentUser.token);
+        console.log('patientid: '+ $rootScope.currentUser.pid);
+        console.log('fileid: '+ $rootScope.currentUser.fileid);
         $http.get('/Patient/eCSP/Files/Download?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + pid + '&type=' + type + '&fileid=' + fileid) 
         .then(function success(response) {
             console.log('File Link:');

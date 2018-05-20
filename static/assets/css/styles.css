@@ -9503,7 +9503,7 @@ nav.links a {
   border-radius: 5px;
   overflow: hidden;
   padding: 15px;
-  margin: 15px 0 65px 0;
+  margin: 15px 15px 35px 15px;
 }
 .main-login .form fieldset {
   border: none;
@@ -9529,8 +9529,8 @@ nav.links a {
 }
 .main-login .copyright {
   font-size: 11px;
-  margin: 0 auto;
-  padding: 10px 10px 0;
+  margin: 10 auto 10;
+  padding: 0 10px 0;
   text-align: center;
 }
 .main-login .form-actions:before, .main-login .form-actions:after {

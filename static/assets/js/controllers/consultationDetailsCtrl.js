@@ -224,7 +224,7 @@
         if($rootScope.currentUser.role == 'Doctor') {
           $http.get('/Doctor/eCSP/Patient/Files/Download?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + pid + '&type=' + type + '&fileid=' + fileid) 
           .then(function success(response) {
-            console.log('File Link:')
+            console.log('File Link:');
             console.log(response.data.FileLink);
             $window.open(response.data.FileLink, '_blank');
         }, 
@@ -236,7 +236,7 @@
       else if($rootScope.currentUser.role == 'Assistant') {
           $http.get('/Assistant/eCSP/Patient/Files/Download?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + pid + '&type=' + type + '&fileid=' + fileid) 
           .then(function success(response) {
-            console.log('File Link:')
+            console.log('File Link:');
             console.log(response.data.FileLink);
             $window.open(response.data.FileLink, '_blank');
         }, 

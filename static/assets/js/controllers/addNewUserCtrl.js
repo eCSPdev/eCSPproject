@@ -32,7 +32,7 @@
         if($rootScope.currentUser.role == 'Doctor') {
           /* HTTP POST Request: insertPatient() */
           /* Create new patient */
-          $http.post('/Doctor/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' $rootScope.currentUser.token, $scope.newUser) 
+          $http.post('/Doctor/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.newUser)
           .then(function success(response) {
 
             $scope.newUser = response.data;
@@ -45,7 +45,7 @@
         else {
           /* HTTP POST Request: insertPatient() */
           /* Create new patient */
-          $http.post('/Assistant/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' $rootScope.currentUser.token, $scope.newUser) 
+          $http.post('/Assistant/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.newUser) 
           .then(function success(response) {
 
             $scope.newUser = response.data;
@@ -61,7 +61,7 @@
       {
         /* HTTP POST Request: insertAssistant() */
         /* Create new assistant */
-        $http.post('/Doctor/eCSP/AssistantList?username=' + $rootScope.currentUser.username + '&token=' $rootScope.currentUser.token, $scope.newUser) 
+        $http.post('/Doctor/eCSP/AssistantList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.newUser) 
         .then(function success(response) {
 
           $scope.newUser = response.data;
@@ -73,4 +73,3 @@
     }
 
   }]);
-

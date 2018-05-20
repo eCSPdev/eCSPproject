@@ -30,9 +30,7 @@
    }
 
    $scope.patientid = '';
-   console.log($rootScope.uploaded);
-   console.log($rootScope.consultationDate);
-   console.log($rootScope.chosenRecord);
+
 
     // if($rootScope.currentUser) {
         if($rootScope.currentUser.role == 'Doctor' || $rootScope.currentUser.role == 'Assistant') {
@@ -52,8 +50,6 @@
             .then(function success(response) {
 
                $scope.documents = response.data.FilesList;
-
-               console.log($scope.documents);
 
                for (var i = 0; i < $scope.documents.length; i++) {
                 $scope.documents[i].dateofupload = $scope.documents[i].dateofupload.split(" ")[0]; //Get date only
@@ -342,35 +338,7 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
         }
     };
 
-    // $scope.upload = function() {
-
-    // 	//Upload execute
-    // 	uploader.queue[0].upload();	
-    // 	$uibModalInstance.close(true);
-
-    // 	//Save data for reload
-    // 	$rootScope.uploaded.bool = true;
-    // 	$rootScope.uploaded.month = $rootScope.consultationDate.month;
-    // 	$rootScope.uploaded.year = $rootScope.consultationDate.year;
-    //     $rootScope.uploaded.patientid = $rootScope.chosenRecord.patientID;
-    //     console.log('chosen record in uploaded');
-    //     console.log($rootScope.chosenRecord);
-    // 	$state.reload();
-    // };
-
-    // uploader.onCompleteAll = function () {
-    //     console.log('success');
-    //     $state.reload();
-    // };
-
-    // uploader.onSuccessItem = function (fileItem, response, status, headers) {
-    //     console.info('onSuccessItem', fileItem, response, status, headers);
-    // };
-    // uploader.onCompleteItem = function (fileItem, response, status, headers) {
-    //     console.info('onCompleteItem', fileItem, response, status, headers);
-    // };
     uploader.onCompleteAll = function () {
-        console.info('onCompleteAll');
         $rootScope.populatePatientFiles();
     };
 
@@ -393,12 +361,6 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
             $rootScope.uploaded.month = $rootScope.consultationDate.month;
             $rootScope.uploaded.year = $rootScope.consultationDate.year;
         }
-        
-        // Execute query
-        //setTimeout(function() {$rootScope.populatePatientFiles()}, 15000);
-        //setTimeout(function() {$state.reload()}, 3000);
-        //$state.reload();
-
 
     };
 

@@ -316,7 +316,8 @@ class AssistantHandler:
                 print ('days of grace : ', daysofgrace)
                 date = datetime.now(timezone.utc).astimezone()#datetime.datetime.fromtimestamp(changes_time)
                 print('date', date)
-                deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
+                #deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
+                deactivationdate = (date + timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
                 print('deactivationdate : ', deactivationdate)
             dao.updateAssistantStatus(assistantid, status, deactivationdate, daysofgrace)
             # History

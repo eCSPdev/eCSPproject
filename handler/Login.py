@@ -2,8 +2,11 @@ from flask import jsonify, request
 from dao.Login import LoginDAO
 # import datetime, time
 from datetime import datetime, timezone
+
+#### Login Handler Class - Login a user if all credentials are correct ####
 class LoginHandler:
 
+    #### Patient Login Diccionary ####
     def build_PLogin_dict(self, row, token):
         result = {}
         result['username'] = row[0]
@@ -16,9 +19,9 @@ class LoginHandler:
         result['patientid'] = row[6]
         result['recordno'] = row[7]
         result['rle'] = 'Patient'
-        print (result)
         return result
 
+    #### Assistant Login Diccionary ####
     def build_ALogin_dict(self, row, token):
         result = {}
         result['username'] = row[0]
@@ -30,9 +33,9 @@ class LoginHandler:
         result['token'] = token
         result['assistantid'] = row[6]
         result['rle'] = 'Assistant'
-        print (result)
         return result
 
+    #### Doctor Login Diccionary ####
     def build_DLogin_dict(self, row, token):
         result = {}
         result['username'] = row[0]
@@ -44,20 +47,13 @@ class LoginHandler:
         result['token'] = token
         result['doctorid'] = row[6]
         result['rle'] = 'Doctor'
-        print (result)
         return result
 
-    def build_FEinfo_dict(self, username, token, role):
-        result = {}
-        #print ('estoy en el diccionario')
-        result['username'] = username
-        result['token'] = token
-        result['role'] = role
-        #result ('diccionario : ', result)
-        return result
-
+    ### Validate Patient credentials
+    # Parameters:   token - user token
+    #               form - requested parameters
+    # Return:   Error if one of the condition don't pass
     def validatePatient(self, form, token):
-        print ('Patient login')
         username = form['username']
         pssword = form['pssword']
         dao = LoginDAO()
@@ -80,9 +76,11 @@ class LoginHandler:
             else:
                 return jsonify(Error="Expired Account"), 400
 
-
+    ### Validate Admin (Doctor & Assistant) credentials
+    # Parameters:   token - user token
+    #               form - requested parameters
+    # Return:   Error if one of the condition don't pass
     def validateAdmin(self, form, token):
-        print ('Admin login')
         username = form['username']
         pssword = form['pssword']
         dao = LoginDAO()
@@ -93,68 +91,38 @@ class LoginHandler:
                 return jsonify(Error="Invalid Username or Password"), 400
             else:
                 status = assistant[1]
-                print('status : ', status)
                 if status == True :
                     result = self.build_ALogin_dict(assistant, token)
                     self.updateLogInformation(username, token, 'Assistant')
                     return jsonify(Assistant=result)
                 else:
-                    #deactivationdate = assistant[2].strftime('%Y-%m-%d %H:%M:%S')
-                    # #now_time = time.time()
-                    #today = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
-                    #print('deactivationdate : ', deactivationdate)
-                    #print('dateofchanges : ', today)
-                    #if today <= deactivationdate:
-                    #    result = self.build_ALogin_dict(assistant, token)
-                    #    self.updateLogInformation(username, token, 'Assistant')
-                    #    return jsonify(Assistant=result)
-                    #else:
-                    #    return jsonify(Error="Expired Account"), 400
                     return jsonify(Error="Expired Account"), 400
         else:
             status = doctor[1]
-            print('status : ', status)
             if status == True:
                 result = self.build_DLogin_dict(doctor, token)
                 self.updateLogInformation(username, token, 'Doctor')
                 return jsonify(Doctor=result)
             else:
-                #deactivationdate = doctor[2].strftime('%Y-%m-%d %H:%M:%S')
-                ##now_time = time.time()
-                #today = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(now_time).strftime('%Y-%m-%d %H:%M:%S')
-                #print('deactivationdate : ', deactivationdate)
-                #print('dateofchanges : ', today)
-                #if today <= deactivationdate:
-                #    result = self.build_DLogin_dict(doctor, token)
-                #    self.updateLogInformation(username, token, 'Doctor')
-                #    return jsonify(Doctor=result)
-                #else:
-                #    return jsonify(Error="Expired Account"), 400
                 return jsonify(Error="Expired Account"), 400
 
-    def build_dict(self, username, token):
-        #print ('username : ', username)
-        #print ('token : ', token)
-        result = self.build_FEinfo_dict(username, token)
-        return jsonify(user = result)
-
+    ### Update the login information in the database
+    # Parameters:   token - user token
+    #               form - requested parameters
+    #               role - role of the active user
+    # Return:   Error if one of the condition don't pass
     def updateLogInformation(self, username, token, role):
-        print ('updating ...')
         dao = LoginDAO()
         logged = True
         if username :
-            print("CALLING DAO HERE")
             if role == 'Patient':
                 dao.updateloggedPatient(username, token, logged)
-                #result = self.build_FEinfo_dict(username, token, 'Patient',firstname, middlename, lastname)
                 return
             if role == 'Assistant':
                 dao.updateloggedAssistant(username, token, logged)
-                #result = self.build_FEinfo_dict(username, token, 'Assistant',firstname, middlename, lastname)
                 return
             if role == 'Doctor':
                 dao.updateloggedDoctor(username, token, logged)
-                #result = self.build_FEinfo_dict(username, token, 'Doctor',firstname, middlename, lastname)
                 return
             else:
                 return jsonify(Error="Invalid user"), 400

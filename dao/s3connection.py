@@ -25,6 +25,7 @@ class s3Connection:
     def uploadfile(self, location_filename, target_filename):
 
         try:
+            print ("estoy en upload file to s3")
             # self.verifybucket()         #verifies if the bucket is valid
             # session = boto3.Session(profile_name=s3_config['profile_name'],
             #                         aws_access_key_id=s3_config['aws_access_key_id'],
@@ -33,12 +34,15 @@ class s3Connection:
             s3resource = session.resource('s3', region_name=s3_config['region_name'])
 
             try:
+                print ("voy a subir el file")
                 # s3resource.Bucket(s3_config['bucketname']).upload_file(location_filename, target_filename)
                 s3resource.Bucket(s3_config['bucketname']).put_object(Key=target_filename, Body=location_filename)
                 return self.getfileurl(target_filename)
             except Exception as e:
+                print("Cai en la excepcion! subiendo el file : ", e)
                 return e
         except Exception as e:
+            print("Cai en la excepcion! Error con el profile name : ", e)
             return e
 
     def getfileurl(self, filename):
@@ -57,7 +61,8 @@ class s3Connection:
                 print("Pasamos la coneccion a s3")
                 return url
             except Exception as e:
-                print("Cai en la excepcion! Error con el profile name")
+                print("Cai en la excepcion! Error con obteniendo el url : ", e)
                 return e
         except Exception as e:
+            print("Cai en la excepcion! Error con el profile name : ", e)
             return e

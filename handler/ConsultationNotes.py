@@ -91,6 +91,7 @@ class ConsultationNotesHandler:
     def insertConsultationNotes(self, args, file):
         dao = ConsultationNotesDAO()
 
+        print("Estoy en el insert Consultation Notes")
         # filepath = file                                                            #this is the file to insert
         filename = args.get("filename")             #form['filename']
         assistantusername = args.get("assistantusername")    #form['assistantusername']
@@ -123,8 +124,9 @@ class ConsultationNotesHandler:
                 targetlocation = 'consultationnotes/'+str(consultationnoteid)+str(filename) #cambiar por filename
                 print("target location : ", targetlocation)
                 #ELIMINAR EL LINK
+                print("Voy a llamar al metodo de upload s3")
                 link = s3.uploadfile(file,targetlocation) #returns the url after storing it
-                print("link : ", link)
+                print("link del file uploaded: ", link)
 
                 result = self.build_cninsert_dict(consultationnoteid, filename, assistantusername, doctorusername,
                                                   dateofupload, patientid, recordno)

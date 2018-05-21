@@ -209,6 +209,7 @@ def getConsultationNotesByID():
         else:
             return ConsultationNotesHandler().getConsultationNotesByID(request.args)
     if request.method == 'POST':
+        print("Estoy en el POST Consultation Notes")
         return ConsultationNotesHandler().insertConsultationNotes(request.args, request.files['file'])
     else:
         return jsonify(Error="Method not allowed."), 405

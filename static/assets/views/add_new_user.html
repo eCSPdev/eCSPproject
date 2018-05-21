@@ -155,15 +155,6 @@
 							<span class="error text-small block" ng-if="addNewUserForm.addressLine2.$dirty && addNewUserForm.addressLine2.$invalid">Enter a valid address.</span>
 						</div>
 
-						<!-- State form selection and validation -->
-						<div class="form-group">
-							<label>
-								State
-							</label>
-							<input type="text" name="state" class="form-control" placeholder="Enter state" ng-model="newUser.st" ng-pattern="/[\w\s]+/">
-							<span class="error text-small block" ng-if="addNewUserForm.state.$dirty && addNewUserForm.state.$invalid">Enter a valid state.</span>
-						</div>
-
 						<!-- City form input and validation -->
 						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.city.$invalid && !addNewUserForm.city.$pristine, 'has-success':addNewUserForm.city.$valid }">
 							<label>
@@ -171,6 +162,15 @@
 							</label>
 							<input type="text" name="city" class="form-control" placeholder="Enter city" ng-model="newUser.city" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
 							<span class="error text-small block" ng-if="addNewUserForm.city.$dirty && addNewUserForm.city.$invalid">Enter a valid city.</span>
+						</div>
+
+						<!-- State form selection and validation -->
+						<div class="form-group">
+							<label>
+								State
+							</label>
+							<input type="text" name="state" class="form-control" placeholder="Enter state" ng-model="newUser.st" ng-pattern="/[\w\s]+/">
+							<span class="error text-small block" ng-if="addNewUserForm.state.$dirty && addNewUserForm.state.$invalid">Enter a valid state.</span>
 						</div>
 
 						<!-- Country or Region form input and validation -->

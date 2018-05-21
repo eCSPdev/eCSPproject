@@ -40,6 +40,7 @@ class s3Connection:
 
     def getfileurl(self, filename):
         try:
+            print ("estoy en get file url from s3")
             session = boto3.Session(profile_name=s3_config['profile_name'])
             s3client = session.client('s3', region_name=s3_config['region_name'])
             try:
@@ -49,8 +50,10 @@ class s3Connection:
                         'Bucket': s3_config['bucketname'],
                         'Key': filename, },)
                     # ExpiresIn=86400, ) #deberia quitarle el timing o ponerle uno mas alto
+                print("Pasamos la coneccion a s3")
                 return url
             except Exception as e:
+                print("Cai en la excepcion! Error con el profile name")
                 return e
         except Exception as e:
             return e

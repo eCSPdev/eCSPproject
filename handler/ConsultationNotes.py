@@ -165,8 +165,8 @@ class ConsultationNotesHandler:
 
     def getDownloadFile(self, args):
 
-        logging.debug('DEBUG : ESTOY EN METODO DOWNLOAD FILES')
-        logging.debug('DEBUG : args : %s', args)
+        # logging.debug('DEBUG : ESTOY EN METODO DOWNLOAD FILES')
+        # logging.debug('DEBUG : args : %s', args)
 
 
         print("pase el logger")

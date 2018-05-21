@@ -34,6 +34,8 @@ class PatientHandler:
         return result
 
     def build_patientinfo_dict(self, row):
+        print('row')
+        print(row)
         result = {}
         result['patientid'] = row[0]
         result['firstname'] = row[1]

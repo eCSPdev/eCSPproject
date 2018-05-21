@@ -7,6 +7,7 @@ from dao.Result import ResultDAO
 from dao.s3connection import s3Connection
 # import datetime, time
 from datetime import datetime, timezone
+import logging
 # import os
 
 class ConsultationNotesHandler:
@@ -163,6 +164,12 @@ class ConsultationNotesHandler:
         return jsonify(FilesList=result_list)
 
     def getDownloadFile(self, args):
+
+        logging.debug('DEBUG : ESTOY EN METODO DOWNLOAD FILES')
+        logging.debug('DEBUG : args : %s', args)
+
+
+        print("pase el logger")
         print('estoy en el Download File args: ', args)
         pid = args.get("patientid")
         print("pid : ", pid)
@@ -172,6 +179,7 @@ class ConsultationNotesHandler:
         print("fileid : ", fileid)
 
         if type == 'consultationnote':
+            print("estoy en download consultation notes")
             s3 = s3Connection()
             dao = ConsultationNotesDAO()
             filename = dao.getConsultatioNoteNameById(pid, fileid)[0]
@@ -180,6 +188,7 @@ class ConsultationNotesHandler:
                 s3filename = str(fileid) + filename
                 target_filename = "consultationnotes/"+ s3filename
                 link = s3.getfileurl(target_filename)
+                print("file link : ", link)
                 result = self.build_link_dict(link)
                 return jsonify(FileLink=result)
             else:

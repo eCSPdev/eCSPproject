@@ -234,6 +234,7 @@ class AssistantHandler:
             email = form['email']
             username = form['username']
             pssword = form['pssword']
+            print('pssword : ',pssword)
             street = form['street']
             aptno = form['aptno']
             city = form['city']
@@ -243,8 +244,10 @@ class AssistantHandler:
             deactivationdate = None
             daysofgrace = None
 
-            if pssword == None:
+            if not pssword:
+                print('Entre al if del pssword')
                 pssword = dao.getPsswordByID(assistantid)
+                print('pssword : ', pssword)
 
             if assistantid and firstname and lastname and phone and status and street \
                     and city and country and zipcode:

@@ -181,7 +181,7 @@ class DoctorHandler:
             zipcode = form['zipcode']
             print('estoy antes del if')
 
-            if pssword == None:
+            if not pssword:
                 pssword = dao.getPsswordByID(doctorid)
 
 

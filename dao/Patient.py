@@ -175,7 +175,7 @@ class PatientsDAO:
                         "where patientid = %s;"
                 cursor.execute(query, (patientid,))
                 result = cursor.fetchone()
-                return result
+                return result[0]
             except Exception as e:
                 print("Query failed : ", e)
                 return e

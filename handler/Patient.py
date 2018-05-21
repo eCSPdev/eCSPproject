@@ -244,7 +244,7 @@ class PatientHandler:
             deactivationdate = None
             daysofgrace = None
 
-            if pssword == None:
+            if not pssword:
                 pssword = dao.getPsswordByID(patientid)
 
             #PROBAR SOLO LOS QUE NO PUEDEN SER NULOS

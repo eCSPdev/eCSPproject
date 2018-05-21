@@ -21,6 +21,7 @@
         .then(function success(response) {
 
           $scope.thisUser = response.data.Doctor;
+          $scope.thisUser = '';
 
         }, function error(response) { });
       }
@@ -33,6 +34,7 @@
         .then(function success(response) {
 
           $scope.thisUser = response.data.Assistant;
+          $scope.thisUser = '';
 
         }, function error(response) { });
       }

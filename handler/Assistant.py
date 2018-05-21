@@ -153,7 +153,7 @@ class AssistantHandler:
         status = form['status']
         email = form['email']
         username = form['username']
-        pssword = form['password']
+        pssword = form['pssword']
         street = form['street']
         aptno = form['aptno']
         city = form['city']

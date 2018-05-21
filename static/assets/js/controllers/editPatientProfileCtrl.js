@@ -20,6 +20,7 @@
         .then(function success(response) {
 
           $scope.thisPatient = response.data.Patient;
+          $scope.thisPatient.pssword = '';
 
         }, function error(response) { });
       }
@@ -32,6 +33,7 @@
         .then(function success(response) {
 
           $scope.thisPatient = response.data.Patient;
+          $scope.thisPatient.pssword = '';
 
         }, function error(response) { });
       }
@@ -56,7 +58,7 @@
     });
 
       modalInstance.result.then(function (confirmation) {
-       if(confirmation == true) { }
+       // if(confirmation == true) { }
     });
     };
 
@@ -87,14 +89,16 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
     else
     {
+
+      $scope.thisPatient = chosenPatient;
+
       /* HTTP PUT Request: getPatientByID() */
       /* Update (PUT) patient personal information */
-      $http.put('/Assistant/eCSP/Patient/PersonalInformation?patientid=' + $rootScope.chosenPatient + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
+      $http.put('/Assistant/eCSP/Patient/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisPatient) 
       .then(function success(response) {
 
-        response.data.Patient.Password = '';
         $scope.thisPatient = response.data.Patient;
-        $state.go('app.users.manage_users.manage_assistants.view_profile');
+        $state.go('app.users.manage_users.manage_patients.view_profile');
 
       }, function error(response) { });
     }

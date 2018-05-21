@@ -80,7 +80,6 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
       $http.put('/Doctor/eCSP/Patient/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisPatient) 
       .then(function success(response) {
 
-        response.data.Patient.Password = '';
         $scope.thisPatient = response.data.Patient;
         $state.go('app.users.manage_users.manage_patients.view_profile');
 

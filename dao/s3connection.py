@@ -27,10 +27,10 @@ class s3Connection:
         try:
             print ("estoy en upload file to s3")
             # self.verifybucket()         #verifies if the bucket is valid
-            # session = boto3.Session(profile_name=s3_config['profile_name'],
-            #                         aws_access_key_id=s3_config['aws_access_key_id'],
-            #                         aws_secret_access_key=s3_config['aws_secret_access_key'])
-            session = boto3.Session()
+            session = boto3.Session(profile_name=s3_config['profile_name'],
+                                    aws_access_key_id=s3_config['aws_access_key_id'],
+                                    aws_secret_access_key=s3_config['aws_secret_access_key'])
+            # session = boto3.Session()
             s3resource = session.resource('s3', region_name=s3_config['region_name'])
 
             try:

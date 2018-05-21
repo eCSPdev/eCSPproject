@@ -214,7 +214,7 @@ class ConsultationNotesDAO:
                 print("result : ",result)
                 if result == None:
                     result = ["None"]
-                    print("result : ", result)
+                    print("filename result : ", result)
                 return result
             except Exception as e:
                 print("Query failed : ", e)

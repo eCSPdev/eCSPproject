@@ -183,7 +183,7 @@ class ConsultationNotesHandler:
             s3 = s3Connection()
             dao = ConsultationNotesDAO()
             filename = dao.getConsultatioNoteNameById(pid, fileid)[0]
-            print("filename : ", filename)
+            print("sali del dao con el filename : ", filename)
             if filename != "None":
                 s3filename = str(fileid) + filename
                 target_filename = "consultationnotes/"+ s3filename

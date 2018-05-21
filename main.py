@@ -10,12 +10,17 @@ from handler.Referral import ReferralHandler
 from handler.Result import ResultHandler
 from handler.Login import LoginHandler
 from handler.RoleBase import RoleBase
+import logging
 
 import jwt
 import datetime
 
 application = Flask(__name__)
 application.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    filename='mainlogger.log',
+                    filemode='w')
 
 @application.before_request
 def before_execute():
@@ -433,6 +438,9 @@ def getFilesDates():
 @application.route('/Assistant/eCSP/Patient/Files/Download', methods=['GET'])
 @application.route('/Patient/eCSP/Files/Download', methods=['GET'])
 def getDownloadFile():
+
+    logging.debug('DEBUG : ESTOY EN LA RUTA DE DOWNLOAD FILES')
+    print("pase el logger")
     if request.method == 'GET':
         print('GET - GETDOWNLOADFILE')
         return ConsultationNotesHandler().getDownloadFile(request.args)

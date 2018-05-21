@@ -44,7 +44,8 @@ class s3Connection:
     def getfileurl(self, filename):
         try:
             print ("estoy en get file url from s3")
-            session = boto3.Session(profile_name=s3_config['profile_name'])
+            # session = boto3.Session(profile_name=s3_config['profile_name'])
+            session = boto3.Session()
             s3client = session.client('s3', region_name=s3_config['region_name'])
             try:
                 url = s3client.generate_presigned_url(

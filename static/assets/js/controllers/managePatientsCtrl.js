@@ -206,7 +206,7 @@
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenPatient", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenPatient) {
 
-    $scope.daysofgrace = '';
+    $scope.daysofgrace = '30';
 
     $scope.changeStatus = function(button) {
 
@@ -215,7 +215,7 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
             if(button == 'activate') {
                 $http.put('/Doctor/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient)
-                .then(function success(response) { 
+                .then(function success(response) {
                     $state.reload();
                 }, function error(response) { });
             }
@@ -224,7 +224,9 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
                 $http.put('/Doctor/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient  + '&daysofgrace=' + $scope.daysofgrace)
                 .then(function success(response) { 
                     $state.reload();
-                }, function error(response) { });
+                }, function error(response) { 
+                console.log('Could not deactivate!');
+            });
             }
         }
 
@@ -240,8 +242,11 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
             else if(button == 'deactivate') {
                 $http.put('/Assistant/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient  + '&daysofgrace=' + $scope.daysofgrace)
                 .then(function success(response) { 
+                    console.log('Deactivate succesful');
                     $state.reload();
-                }, function error(response) { });
+                }, function error(response) { 
+                    console.log('Could not deactivate!');
+                });
             }
         }
 

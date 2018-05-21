@@ -120,7 +120,7 @@
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenAssistant", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenAssistant) {
 
-    $scope.daysofgrace = '';
+    $scope.daysofgrace = '30';
 
 	$scope.changeStatus = function(button) {
 

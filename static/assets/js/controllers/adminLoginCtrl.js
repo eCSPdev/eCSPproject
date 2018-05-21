@@ -21,24 +21,33 @@
         $http.get('/Doctor/eCSP/Login?username=' + username + '&pssword=' + password)
         .then(function success(response) {
 
-          $rootScope.currentUser.username = response.data.Doctor.username;
-          $rootScope.currentUser.token = response.data.Doctor.token;
-          $rootScope.currentUser.role = response.data.Doctor.rle;
-          $rootScope.currentUser.userid = response.data.Doctor.doctorid;
+          if(response.data.Doctor) {
 
-          $rootScope.currentUser.firstname = response.data.Doctor.firstname;
-          $rootScope.currentUser.middlename = response.data.Doctor.middlename;
-          $rootScope.currentUser.lastname = response.data.Doctor.lastname;
+            $rootScope.currentUser.username = response.data.Doctor.username;
+            $rootScope.currentUser.token = response.data.Doctor.token;
+            $rootScope.currentUser.role = response.data.Doctor.rle;
+            $rootScope.currentUser.userid = response.data.Doctor.doctorid;
 
-          $rootScope.isLoggedIn = true;
+            $rootScope.currentUser.firstname = response.data.Doctor.firstname;
+            $rootScope.currentUser.middlename = response.data.Doctor.middlename;
+            $rootScope.currentUser.lastname = response.data.Doctor.lastname;
+
+            $rootScope.isLoggedIn = true;
 
           // Redirect to homepage
           $state.go('app.home');
 
-        }, function error(response) {
+        }
+
+        else {
           alert('Invalid username or password. Please try again.');
           $scope.credentials.password = '';
-        });
+        }
+
+      }, function error(response) {
+        alert('Invalid username or password. Please try again.');
+        $scope.credentials.password = '';
+      });
       }
 
       else {
@@ -47,25 +56,35 @@
         $http.get('/Assistant/eCSP/Login?username=' + username + '&pssword=' + password)
         .then(function success(response) {
 
-          $rootScope.currentUser.username = response.data.Assistant.username;
-          $rootScope.currentUser.token = response.data.Assistant.token;
-          $rootScope.currentUser.role = response.data.Assistant.rle;
-          $rootScope.currentUser.userid = response.data.Assistant.assistantid;
+          if(response.data.Assistant) {
 
-          $rootScope.currentUser.firstname = response.data.Assistant.firstname;
-          $rootScope.currentUser.middlename = response.data.Assistant.middlename;
-          $rootScope.currentUser.lastname = response.data.Assistant.lastname;
+            $rootScope.currentUser.username = response.data.Assistant.username;
+            $rootScope.currentUser.token = response.data.Assistant.token;
+            $rootScope.currentUser.role = response.data.Assistant.rle;
+            $rootScope.currentUser.userid = response.data.Assistant.assistantid;
 
-          $rootScope.isLoggedIn = true;
+            $rootScope.currentUser.firstname = response.data.Assistant.firstname;
+            $rootScope.currentUser.middlename = response.data.Assistant.middlename;
+            $rootScope.currentUser.lastname = response.data.Assistant.lastname;
+
+            $rootScope.isLoggedIn = true;
+
 
           // Redirect to homepage
           $state.go('app.home');
 
-        }, function error(response) {
+        }
+
+        else {
           alert('Invalid username or password. Please try again.');
           $scope.credentials.password = '';
-        });
+        }
+
+      }, function error(response) {
+        alert('Invalid username or password. Please try again.');
+        $scope.credentials.password = '';
+      });
       }
- };
-}]);
+    };
+  }]);
 

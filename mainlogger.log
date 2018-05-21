@@ -1,0 +1,4 @@
+2018-05-20 22:38:58,343 WARNING  * Debugger is active!
+2018-05-20 22:38:58,521 INFO  * Debugger PIN: 991-451-108
+2018-05-20 22:46:19,267 INFO 127.0.0.1 - - [20/May/2018 22:46:19] "GET /Doctor/eCSP/Login?username=julio.fjaramillo&pssword=Jfjaramillo!74 HTTP/1.1" 200 -
+2018-05-20 22:47:26,980 INFO 127.0.0.1 - - [20/May/2018 22:47:26] "GET /Doctor/eCSP/PatientList?username=julio.fjaramillo&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoianVsaW8uZmphcmFtaWxsbyIsImV4cCI6MTUyNjg5OTU1M30.cH04cUwUfhIY1JzJSDrOW0RZO_gonrbcvkCUkXjrLk0 HTTP/1.1" 200 -

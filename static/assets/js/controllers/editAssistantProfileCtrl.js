@@ -23,6 +23,7 @@
     .then(function success(response) {
 
       $scope.thisAssistant = response.data.Assistant;
+      $scope.thisAssistant.pssword = '';
 
     }, function error(response) { });
 

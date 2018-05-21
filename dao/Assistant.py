@@ -74,7 +74,8 @@ class AssistantDAO:
                         "where assistantid = %s;"
                 cursor.execute(query, (assistantid,))
                 result = cursor.fetchone()
-                return result
+                print('Result : ', result)
+                return result[0]
             except Exception as e:
                 print("Query failed : ", e)
                 return e

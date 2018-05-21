@@ -330,7 +330,8 @@ class PatientHandler:
                 print ('days fo grace : ', daysofgrace)
                 date = datetime.now(timezone.utc).astimezone()#datetime.datetime.fromtimestamp(changes_time)
                 print('date', date)
-                deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
+                #deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
+                deactivationdate = (date + timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
                 print('deactivationdate : ', deactivationdate)
 
             dao.updatePatientStatus(patientid, status, deactivationdate, daysofgrace)

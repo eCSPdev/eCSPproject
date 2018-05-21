@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify
-from functools import wraps
 from handler.Assistant import AssistantHandler
 from handler.Doctor import DoctorHandler
 from handler.Patient import PatientHandler
@@ -10,19 +9,17 @@ from handler.Referral import ReferralHandler
 from handler.Result import ResultHandler
 from handler.Login import LoginHandler
 from handler.RoleBase import RoleBase
-
 import jwt
 import datetime
 
 application = Flask(__name__)
-application.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo
 
+#Secret Key para el token
+application.config['SECRET_KEY'] = 'thisisthesecretkey' #hay que cambiarlo cuando se entregue
+
+#### Before Execute Routine to validate user ####
 @application.before_request
 def before_execute():
-    print ('BEFORE_EXECUTE')
-    print ('args:', request.args)
-
-    # Execute function only for eCSP routes
     if request.path.split('/')[1] == 'Doctor' or request.path.split('/')[1] == 'Assistant' or request.path.split('/')[1] == 'Patient':
         validate = RoleBase().validate(request.path, request.args)
         if validate != True:
@@ -34,14 +31,7 @@ def before_execute():
 def index():
     return render_template('index.html')
 
-@application.route('/upload', methods=['POST'])
-def upload():
-    print(request.args)
-    print(request.files['file'].filename)
-    return 'Success'
-
-
-#Patient login
+#### Patient login Routes ####
 @application.route('/Patient/eCSP/Login', methods = ['GET'])
 def plogin():
     if request.method == 'GET':
@@ -53,15 +43,14 @@ def plogin():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Logout
+#### Users Logout Routes ####
 @application.route('/Patient/eCSP/Logout', )
 @application.route('/Assistant/eCSP/Logout')
 @application.route('/Doctor/eCSP/Logout')
 def Logout():
-    print ('LOGOUT')
     return jsonify(Status="Success")
 
-#Login
+#### Admin Login Routes ####
 @application.route('/Doctor/eCSP/Login', methods = ['GET'])
 @application.route('/Assistant/eCSP/Login', methods = ['GET'])
 def DAlogin():
@@ -74,36 +63,31 @@ def DAlogin():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get a Doctor List
+#### Doctor List GET & POST Routes ###
 @application.route('/Doctor/eCSP/DoctorList', methods=['GET', 'POST'])
-#@token_required
 def getAllDoctor():
     if request.method == 'GET':
-        print('GET - GETDOCTORLIST')
         return DoctorHandler().getAllDoctor()
     elif request.method == 'POST':
         return DoctorHandler().insertDoctor(request.form)
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get the Doctor Personal Information by Doctor ID
+#### Doctor Personal Information by Doctor ID GET & PUT Route ####
 @application.route('/Doctor/eCSP/PersonalInformation', methods=['GET', 'PUT'])
 def getDoctorByID():
     if request.method == 'GET':
-        print('GET - GETDOCTORBYID')
-        print(request.args)
         if not request.args:
             print('405 here')
             return jsonify(Error="No Doctor ID Included."), 405
         else:
             return DoctorHandler().getDoctorByID(request.args)
     if request.method == 'PUT':
-        print(request.get_json())
         return DoctorHandler().updateDoctorInformation(request.get_json())
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Deactivate Assistant Status
+#### Deactivate Assistant Status PUT Route ####
 @application.route('/Doctor/eCSP/Assistant/Deactivate', methods = ['PUT'])
 def deactivateAssistantStatus():
     if request.method == 'PUT':
@@ -113,7 +97,7 @@ def deactivateAssistantStatus():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Activate Assistant Status
+#### Activate Assistant Status PUT Route ####
 @application.route('/Doctor/eCSP/Assistant/Activate', methods = ['PUT'])
 def activateAssistantStatus():
     if request.method == 'PUT':
@@ -122,11 +106,10 @@ def activateAssistantStatus():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get an Assistant List
+#### Get All Assistant List GET & POST Route ####
 @application.route('/Doctor/eCSP/AssistantList', methods=['GET', 'POST'])
 def getAllAssistant():
     if request.method == 'GET':
-        print('GET - GETASSISTANTLIST')
         return AssistantHandler().getAllAssistant()
     elif request.method == 'POST':
         return AssistantHandler().insertAssistant(request.get_json())
@@ -134,25 +117,22 @@ def getAllAssistant():
         return jsonify(Error="Method not allowed."), 405
 
 
-#Get an Assistant Personal Information by Assistant ID
+#### Get Assistant Personal Information by Assistant ID GET & PUT Routes ####
 @application.route('/Doctor/eCSP/Assistant/PersonalInformation', methods=['GET', 'PUT'])
 @application.route('/Assistant/eCSP/PersonalInformation', methods=['GET', 'PUT'])
 def getAssistantByID():
     if request.method == 'GET':
-        print('GET - GETASSISTANTBYID')
         if not request.args:
             return jsonify(Error="No Assistant ID Included."), 405
         else:
             return AssistantHandler().getAssistantByID(request.args)
     if request.method == 'PUT':
         path = request.path
-        print('Request JSON')
-        print(request.get_json())
         return AssistantHandler().updateAssistantInformation(request.get_json(), path)
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Deactivate Patient Status
+#### Deactivate Patient Status PUT Routes ####
 @application.route('/Doctor/eCSP/Patient/Deactivate', methods = ['PUT'])
 @application.route('/Assistant/eCSP/Patient/Deactivate', methods = ['PUT'])
 def deactivatePatientStatus():
@@ -163,7 +143,7 @@ def deactivatePatientStatus():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Activate Patient Status
+#### Activate Patient Status PUT Route ####
 @application.route('/Doctor/eCSP/Patient/Activate', methods = ['PUT'])
 @application.route('/Assistant/eCSP/Patient/Activate', methods = ['PUT'])
 def activatePatientStatus():
@@ -174,47 +154,40 @@ def activatePatientStatus():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient List
+#### Get Patient List GET & POST Routes ####
 @application.route('/Doctor/eCSP/PatientList', methods=['GET', 'POST'])
 @application.route('/Assistant/eCSP/PatientList', methods=['GET', 'POST'])
 def getAllPatients():
     if request.method == 'GET':
-        print('GET - GETPATIENTLIST')
         return PatientHandler().getAllPatients()
     elif request.method == 'POST':
-        print(request.args)
-        print(request.get_json())
         return PatientHandler().insertPatient(request.get_json())
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get a Patient Personal Information by PatientID
+#### Get a Patient Personal Information by PatientID GET & PUT Routes ####
 @application.route('/Doctor/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT'])
 @application.route('/Assistant/eCSP/Patient/PersonalInformation', methods=['GET', 'PUT'])
 @application.route('/Patient/eCSP/PersonalInformation', methods=['GET', 'PUT'])
 def getPatientByID():
     if request.method == 'GET':
-        print('GET - GETPATIENTBYID')
         if not request.args:
             return jsonify(Error="No Patient ID Included."), 405
         else:
             return PatientHandler().getPatientByID(request.args)
     if request.method == 'PUT':
-        print ('PUT - Patient Personal Information')
         path = request.path
-        print('Request JSON')
-        print(request.get_json())
+
         return PatientHandler().updatePatientInformation(request.get_json(), path)
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Consultation Note List
+#### Get Patient Consultation Note List GET Routes ####
 @application.route('/Doctor/eCSP/Patient/ConsultationNotesList', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/ConsultationNotesList', methods=['GET'])
 @application.route('/Patient/eCSP/ConsultationNotesList', methods=['GET'])
 def getAllConsultationNotes():
     if request.method == 'GET':
-        print('GET - GETALLCONSULTATIONNOTES')
         if not request.args:
             return jsonify(Error="ID Included."), 405
         else:
@@ -222,42 +195,27 @@ def getAllConsultationNotes():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Consultation Note Information
+#### Get Patient Consultation Note Information by ID GET & POST Routes ####
 @application.route('/Doctor/eCSP/Patient/ConsultationNotes', methods=['GET','POST'])
 @application.route('/Assistant/eCSP/Patient/ConsultationNotes', methods=['GET','POST'])
 @application.route('/Patient/eCSP/ConsultationNotes', methods=['GET','POST'])
 def getConsultationNotesByID():
     if request.method == 'GET':
-        print('GET - GETCONSULTATIONNOTEBYID')
         if not request.args:
             return jsonify(Error="No Consultation Note ID Included."), 405
         else:
             return ConsultationNotesHandler().getConsultationNotesByID(request.args)
     if request.method == 'POST':
-        print(request.args)
-        print(request.files['file'].filename)
         return ConsultationNotesHandler().insertConsultationNotes(request.args, request.files['file'])
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Consultation Note Dates
-@application.route('/Doctor/eCSP/Patient/ConsultationNotes/Dates', methods=['GET'])
-@application.route('/Assistant/eCSP/Patient/ConsultationNotes/Dates', methods=['GET'])
-@application.route('/Patient/eCSP/ConsultationNotes/Dates', methods=['GET'])
-def getConsultationNotesDates():
-    if request.method == 'GET':
-        print('GET - GETCONSULTATIONNOTEDATES')
-        return ConsultationNotesHandler().getConsultationNotesDates(request.args)
-    else:
-        return jsonify(Error="Method not allowed."), 405
-
-#Get Patient Initial Form List
+#### Get Patient Initial Form List GET Routes ####
 @application.route('/Doctor/eCSP/Patient/InitialFormList', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/InitialFormList', methods=['GET'])
 @application.route('/Patient/eCSP/InitialFormList', methods=['GET'])
 def getAllInitialForm():
     if request.method == 'GET':
-        print('GET - GETALLINITIALFORM')
         if not request.args:
             return jsonify(Error="No Doctor ID Included."), 405
         else:
@@ -265,13 +223,12 @@ def getAllInitialForm():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Initial Form Information
+#### Get Patient Initial Form Information by ID GET & POST Routes ####
 @application.route('/Doctor/eCSP/Patient/InitialForm', methods=['GET','POST'])
 @application.route('/Assistant/eCSP/Patient/InitialForm', methods=['GET','POST'])
 @application.route('/Patient/eCSP/InitialForm', methods=['GET','POST'])
 def getInitialFormByID():
     if request.method == 'GET':
-        print('GET - GETINITIALFORMBYID')
         if not request.args:
             return jsonify(Error="No Initial Form ID Included."), 405
         else:
@@ -281,18 +238,7 @@ def getInitialFormByID():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Initial Form Dates
-@application.route('/Doctor/eCSP/Patient/InitialForm/Dates', methods=['GET'])
-@application.route('/Assistant/eCSP/Patient/InitialForm/Dates', methods=['GET'])
-@application.route('/Patient/eCSP/InitialForm/Dates', methods=['GET'])
-def getInitialFormDates():
-    if request.method == 'GET':
-        print('GET - GETINITIALFORMDATES')
-        return InitialFormHandler().getInitialFormDates(request.args)
-    else:
-        return jsonify(Error="Method not allowed."), 405
-
-#Get Patient Prescription List
+#### Get Patient Prescription List GET Routes ####
 @application.route('/Doctor/eCSP/Patient/PrescriptionList', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/PrescriptionList', methods=['GET'])
 @application.route('/Patient/eCSP/PrescriptionList', methods=['GET'])
@@ -303,13 +249,12 @@ def getAllPrescription():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Prescription Information
+#### Get Patient Prescription Information by ID GET & POST ####
 @application.route('/Doctor/eCSP/Patient/Prescription', methods=['GET','POST'])
 @application.route('/Assistant/eCSP/Patient/Prescription', methods=['GET','POST'])
 @application.route('/Patient/eCSP/Prescription', methods=['GET','POST'])
 def getPrescriptionByID():
     if request.method == 'GET':
-        print('GET - GETPRESCRIPTIONBYID')
         if not request.args:
             return jsonify(Error="No Prescription ID Included."), 405
         else:
@@ -319,35 +264,22 @@ def getPrescriptionByID():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Prescription Dates
-@application.route('/Doctor/eCSP/Patient/Prescription/Dates', methods=['GET'])
-@application.route('/Assistant/eCSP/Patient/Prescription/Dates', methods=['GET'])
-@application.route('/Patient/eCSP/Prescription/Dates', methods=['GET'])
-def getPrescriptionDates():
-    if request.method == 'GET':
-        print('GET - GETPRESCRIPTIONDATES')
-        return PrescriptionHandler().getPrescriptionDates(request.args)
-    else:
-        return jsonify(Error="Method not allowed."), 405
-
-#Get Patient Referral List
+#### Get Patient Referral List GET Routes ####
 @application.route('/Doctor/eCSP/Patient/ReferralList', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/ReferralList', methods=['GET'])
 @application.route('/Patient/eCSP/ReferralList', methods=['GET'])
 def getAllReferral():
     if request.method == 'GET':
-        print('GET - GETALLREFERRAL')
         return ReferralHandler().getPatientReferral(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Referral Information
+#### Get Patient Referral Information by ID GET & POST Routes ####
 @application.route('/Doctor/eCSP/Patient/Referral', methods=['GET','POST'])
 @application.route('/Assistant/eCSP/Patient/Referral', methods=['GET','POST'])
 @application.route('/Patient/eCSP/Referral', methods=['GET','POST'])
 def getReferralByID():
     if request.method == 'GET':
-        print('GET - GETREFERRALBYID')
         if not request.args:
             return jsonify(Error="No Referral ID Included."), 405
         else:
@@ -357,18 +289,7 @@ def getReferralByID():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Referral Dates
-@application.route('/Doctor/eCSP/Patient/Referral/Dates', methods=['GET'])
-@application.route('/Assistant/eCSP/Patient/Referral/Dates', methods=['GET'])
-@application.route('/Patient/eCSP/Referral/Dates', methods=['GET'])
-def getReferralDates():
-    if request.method == 'GET':
-        print('GET - GETREFERRALDATES')
-        return ReferralHandler().getReferralDates(request.args)
-    else:
-        return jsonify(Error="Method not allowed."), 405
-
-#Get Patient Result List
+#### Get Patient Result List GET Routes ####
 @application.route('/Doctor/eCSP/Patient/ResultList', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/ResultList', methods=['GET'])
 @application.route('/Patient/eCSP/ResultList', methods=['GET'])
@@ -379,62 +300,47 @@ def getAllResult():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Result Information
+#### Get Patient Result Information by ID Routes ####
 @application.route('/Doctor/eCSP/Patient/Result', methods=['GET','POST'])
 @application.route('/Assistant/eCSP/Patient/Result', methods=['GET','POST'])
 @application.route('/Patient/eCSP/Result', methods=['GET','POST'])
 def getResultByID():
     if request.method == 'GET':
-        print('GET - GETRESULTBYID')
         if not request.args:
             return jsonify(Error="No Result ID Included."), 405
         else:
             return ResultHandler().getResultByID(request.args)
     if request.method == 'POST':
-        print('POST - UPLOADFILE')
         return ResultHandler().insertResult(request.args, request.files['file'])
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Patient Result Dates
-@application.route('/Doctor/eCSP/Patient/Result/Dates', methods=['GET'])
-@application.route('/Assistant/eCSP/Patient/Result/Dates', methods=['GET'])
-@application.route('/Patient/eCSP/Result/Dates', methods=['GET'])
-def getResultDates():
-    if request.method == 'GET':
-        print('GET - GETRESULTDATES')
-        return ResultHandler().getResultDates(request.args)
-    else:
-        return jsonify(Error="Method not allowed."), 405
-
-###################Prueba#########################
+#### Get all files by Patient ID GET Routes ####
 @application.route('/Doctor/eCSP/Patient/Files', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/Files', methods=['GET'])
 @application.route('/Patient/eCSP/Files', methods=['GET'])
 def getPatientFiles():
     if request.method == 'GET':
-        print('GET - GETFILES')
         return ConsultationNotesHandler().getPatientFiles(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
+#### Get files dates by Patient ID GET Routes ####
 @application.route('/Doctor/eCSP/Patient/Files/Dates', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/Files/Dates', methods=['GET'])
 @application.route('/Patient/eCSP/Files/Dates', methods=['GET'])
 def getFilesDates():
     if request.method == 'GET':
-        print('GET - GETRESULTDATES')
-        print(request.args)
         return ConsultationNotesHandler().getFilesDates(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
+#### Download File by File ID GET Routes ####
 @application.route('/Doctor/eCSP/Patient/Files/Download', methods=['GET'])
 @application.route('/Assistant/eCSP/Patient/Files/Download', methods=['GET'])
 @application.route('/Patient/eCSP/Files/Download', methods=['GET'])
 def getDownloadFile():
     if request.method == 'GET':
-        print('GET - GETDOWNLOADFILE')
         return ConsultationNotesHandler().getDownloadFile(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405

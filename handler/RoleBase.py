@@ -1,9 +1,9 @@
 from flask import jsonify, request
 from dao.RoleBase import RoleBaseDAO
-
 import os, sys
 import jwt
 
+#### RoleBase Class - Validate user to avoid illegal access to the system ####
 class RoleBase:
 
     ### Method to split the path ###
@@ -48,23 +48,28 @@ class RoleBase:
             except Exception as e:
                 print("Any username : ", e)
                 return e
-
+            print ('Logout : ', p[3] )
             ### Exception - Login Routes ###
             if p[3] == 'Login':
                 validate = True
 
             ### Exception - Logout Routes ###
+
             elif p[3] == 'Logout' :
+                print('Logout elif')
                 try:
                     token = form['token']
                 except Exception as e:
                     print("Any token : ", e)
                     return e
+                print('validated Token')
                 ### Validating User ###
                 vUser = self.validateUser(p[1], username, token, form)
+                print('vUser: ', vUser)
                 if vUser != True:
                     return vUser
                 Logout = self.Logout(p[1], username)
+                print('Logout : ', Logout)
                 if Logout != True:
                     return Logout
                 else:
@@ -123,6 +128,7 @@ class RoleBase:
         ### Patient Role ###
         if role == 'Patient':
             patient = dao.validatePatient(username)
+            print('patient : ', patient)
             # Check the role in the path
             if not patient:
                 return jsonify(Error="Invalid Username"), 401 #Unauthorized
@@ -133,9 +139,11 @@ class RoleBase:
             patientid = form['patientid']
             # Check if the patient id in the DB
             if str(pid) != str(patientid):
+                print('not pid')
                 return jsonify(Error="Unauthorized patient ID"), 401 #Unauthorized
             # Check if the username in the DB
             if pusername != username:
+                print('not username')
                 return jsonify(Error="Invalid Username"), 400 #Bad Request
             # Validating the token
             if ptoken != token or self.validateToken(ptoken) != True :
@@ -162,7 +170,6 @@ class RoleBase:
             # Check if the user is currently logged in
             if alogged != True:
                 return jsonify(Error="Not currently Logged in"), 401 #Unauthorized
-
         ### Doctor Role ###
         elif role == 'Doctor':
             doctor = dao.validateDoctor(username)

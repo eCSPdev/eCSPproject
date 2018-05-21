@@ -179,6 +179,7 @@ class ConsultationNotesHandler:
         print("fileid : ", fileid)
 
         if type == 'consultationnote':
+            print("estoy en download consultation notes")
             s3 = s3Connection()
             dao = ConsultationNotesDAO()
             filename = dao.getConsultatioNoteNameById(pid, fileid)[0]
@@ -187,6 +188,7 @@ class ConsultationNotesHandler:
                 s3filename = str(fileid) + filename
                 target_filename = "consultationnotes/"+ s3filename
                 link = s3.getfileurl(target_filename)
+                print("file link : ", link)
                 result = self.build_link_dict(link)
                 return jsonify(FileLink=result)
             else:

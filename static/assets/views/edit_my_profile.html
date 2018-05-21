@@ -156,7 +156,7 @@
 
 						<div class="form-group" style="margin-top: 15px;">
 							<a class="btn btn-red" ui-sref="app.users.view_my_profile" style="float: right">Cancel</a>
-							<a class="btn btn-primary" ng-click="open('sm')" ng-disabled="editAssistantForm.$invalid || thisUser.password != thisUser.confirmPassword" style="float: right; margin-right: 15px;">Save Changes</a>
+							<a class="btn btn-primary" ng-click="open('sm')" ng-disabled=" editMyProfileForm.$invalid || thisUser.password != editMyProfileForm.repeatPassword || thisUser.pssword != thisUser.confirmPassword" style="float: right; margin-right: 15px;">Save Changes</a>
 						</div>
 
 					</fieldset>

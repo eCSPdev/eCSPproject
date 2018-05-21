@@ -148,14 +148,14 @@
 							<label>
 								Repeat Password <span class="symbol required"></span>
 							</label>
-							<input type="password" placeholder="Repeat temporary password" class="form-control" id="confirmPassword" ng-model="thisPatient.confirmPassword" />
+							<input type="password" placeholder="Repeat new password" class="form-control" id="confirmPassword" ng-model="thisAssistant.confirmPassword" />
 							<span class="error text-small block" ng-if="editAssistantForm.confirmPassword.$dirty && editAssistantForm.confirmPassword.$invalid && editAssistantForm.confirmPassword.$error.required">Re-enter a valid password.</span>
 							<span class="error text-small block" ng-if="editAssistantForm.confirmPassword.$dirty">Passwords do not match. Please try again.</span>
 						</div>
 
 						<div class="form-group" style="margin-top: 15px;">
 							<a class="btn btn-red" ui-sref="app.users.manage_users.manage_assistants.view_profile" style="float: right">Cancel</a>
-							<a class="btn btn-primary" ng-click="open('sm')" ng-disabled="editAssistantForm.$invalid || thisAssistant.password != thisAssistant.confirmPassword" style="float: right; margin-right: 15px;">Save Changes</a>
+							<a class="btn btn-primary" ng-click="open('sm')" ng-disabled=" editAssistantForm.$invalid || thisAssistant.password != editAssistantForm.repeatPassword || thisAssistant.pssword != thisAssistant.confirmPassword" style="float: right; margin-right: 15px;">Save Changes</a>
 						</div>
 
 					</fieldset>

@@ -95,6 +95,15 @@
 							<span class="error text-small block" ng-if="editAssistantForm.city.$dirty && editAssistantForm.city.$invalid">Enter a valid city.</span>
 						</div>
 
+						<!-- State form selection and validation -->
+						<div class="form-group" ng-class="{ 'has-error': editAssistantForm.state.$invalid, 'has-success':editAssistantForm.state.$valid }">
+							<label class='control-label'>
+								State
+							</label>
+							<input type="text" name="state" class="form-control" placeholder="Enter state" ng-model="thisAssistant.st" ng-pattern="/[\w\s]+/">
+							<span class="error text-small block" ng-if="editAssistantForm.state.$dirty && editAssistantForm.state.$invalid">Enter a valid state.</span>
+						</div>
+
 						<!-- Country or Region form input and validation -->
 						<div class="form-group" ng-class="{ 'has-error': editAssistantForm.countryRegion.$invalid && !editAssistantForm.countryRegion.$pristine, 'has-success':editAssistantForm.countryRegion.$valid }">
 							<label>

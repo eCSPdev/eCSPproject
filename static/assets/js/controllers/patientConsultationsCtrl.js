@@ -70,6 +70,11 @@
 			},
 			function error(response) {
 
+				if(response.data && response.data.Error == 'Invalid Token') {
+					alert("Invalid credentials. Please login again.");
+					$state.go('login.signin');
+				}
+
 				$state.go("app.users.view_records.patient_consultations.consultation_details");
 
 				// Declaration of table parameters
@@ -125,6 +130,11 @@
 		        });
 			},
 			function error(response) {
+
+				if(response.data && response.data.Error == 'Invalid Token') {
+					alert("Invalid credentials. Please login again.");
+					$state.go('login.signin');
+				}
 
 				$state.go("app.users.view_records.patient_consultations.consultation_details");
 
@@ -183,6 +193,11 @@
 			},
 			function error(response) {
 
+				if(response.data && response.data.Error == 'Invalid Token') {
+					alert("Invalid credentials. Please login again.");
+					$state.go('login.signin');
+				}
+
 				$state.go("app.users.view_records.patient_consultations.consultation_details");
 
 				// Declaration of table parameters
@@ -203,7 +218,7 @@
 		            total: 0, 
 		            dataset: ""
 		        });
-				
+
 			});
 		}
 	}

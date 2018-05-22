@@ -6,13 +6,13 @@
 
   	/* Redirect user to login page if he or she is not logged in correctly */
     if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
-  		$state.go('login.signin');
-  	}
+      $state.go('login.signin');
+    }
     //Logged in
-  	else {
-  		if($rootScope.currentUser.role == 'Patient') {
-      		$state.go('app.home');
-      	}
+    else {
+      if($rootScope.currentUser.role == 'Patient') {
+        $state.go('app.home');
+      }
     }
 
     if ($rootScope.currentUser) {
@@ -25,7 +25,12 @@
 
           $scope.thisPatient = response.data.Patient;
 
-        }, function error(response) { });
+        }, function error(response) { 
+          if(response.data && response.data.Error == 'Invalid Token') {
+            alert("Invalid credentials. Please login again.");
+            $state.go('login.signin');
+          }
+        });
       }
 
       else
@@ -37,7 +42,12 @@
 
           $scope.thisPatient = response.data.Patient;
 
-        }, function error(response) { });
+        }, function error(response) {
+          if(response.data && response.data.Error == 'Invalid Token') {
+            alert("Invalid credentials. Please login again.");
+            $state.go('login.signin');
+          }
+        });
       }
     }
 

@@ -7,25 +7,30 @@
 
     /* Redirect user to login page if he or she is not logged in correctly */
     if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
-        $state.go('login.signin');
+      $state.go('login.signin');
     }
     else {
       if($rootScope.currentUser.role == 'Assistant' || $rootScope.currentUser.role == 'Patient') {
-          $state.go('app.home');
-        }
+        $state.go('app.home');
+      }
     }
 
     $scope.thisAssistant = { };
 
     /* HTTP GET Request: getAssistantByID() */
-      /* Get assistant personal information */
+    /* Get assistant personal information */
     $http.get('/Doctor/eCSP/Assistant/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + $rootScope.chosenAssistant + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
     .then(function success(response) {
 
       delete response.data.Assistant.pssword;
       $scope.thisAssistant = response.data.Assistant;
 
-    }, function error(response) { });
+    }, function error(response) {
+      if(response.data && response.data.Error == 'Invalid Token') {
+        alert("Invalid credentials. Please login again.");
+        $state.go('login.signin');
+      }
+    });
 
     $scope.thisAssistant.assistantid = $rootScope.chosenAssistant;
     $scope.thisAssistant.username = $rootScope.currentUser.username;
@@ -40,14 +45,17 @@
        size: size,
        resolve: { 
         chosenAssistant: function() {
+          if(!$scope.thisAssistant.pssword) {
+            $scope.thisAssistant.pssword = $scope.temporaryPassword;
+          }
           return $scope.thisAssistant;
         }
       }
-     });
+    });
 
       modalInstance.result.then(function (confirmation) {
        if(confirmation == true) {  }
-    });
+     });
     };
 
   }]);
@@ -57,23 +65,28 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
 	$scope.ok = function () {
 
-      $scope.thisAssistant = chosenAssistant;
+    $scope.thisAssistant = chosenAssistant;
 
-      /* HTTP PUT Request: getAssistantByID() */
-      /* Update (PUT) assistant personal information */
-      $http.put('/Doctor/eCSP/Assistant/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisAssistant) 
-      .then(function success(response) {
+    /* HTTP PUT Request: getAssistantByID() */
+    /* Update (PUT) assistant personal information */
+    $http.put('/Doctor/eCSP/Assistant/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisAssistant) 
+    .then(function success(response) {
 
-        $scope.thisAssistant = response.data.Assistant;
-        $state.go('app.users.manage_users.manage_assistants.view_profile');
+      $scope.thisAssistant = response.data.Assistant;
+      $state.go('app.users.manage_users.manage_assistants.view_profile');
 
 
-      }, function error(response) { });
+    }, function error(response) { 
+      if(response.data && response.data.Error == 'Invalid Token') {
+        alert("Invalid credentials. Please login again.");
+        $state.go('login.signin');
+      }
+    });
 
-		$uibModalInstance.close(true);
-	};
+    $uibModalInstance.close(true);
+  };
 
-	$scope.cancel = function () {
-		$uibModalInstance.dismiss('cancel');
-	};
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
 }]);

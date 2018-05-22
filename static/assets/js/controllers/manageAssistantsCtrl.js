@@ -50,6 +50,11 @@
 
     }, function error(response) {
 
+        if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
+
         // Declaration of table parameters
         $scope.tableParams = new NgTableParams({
             // Show first page
@@ -120,7 +125,7 @@
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenAssistant", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenAssistant) {
 
-    $scope.daysofgrace = '30';
+    // $scope.daysofgrace = '30';
 
 	$scope.changeStatus = function(button) {
 
@@ -128,14 +133,24 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 			$http.put('/Doctor/eCSP/Assistant/Activate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + chosenAssistant)
 			.then(function success(response) { 
 				$state.reload();
-			}, function error(response) { });
+			}, function error(response) {
+                if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
+             });
 		}
 
 		else if(button == 'deactivate') {
 			$http.put('/Doctor/eCSP/Assistant/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + chosenAssistant  + '&daysofgrace=' + $scope.daysofgrace)
 			.then(function success(response) { 
 				$state.reload();
-			}, function error(response) { });
+			}, function error(response) {
+                if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
+             });
 		}
 
     	$uibModalInstance.close(true);

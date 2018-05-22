@@ -64,7 +64,7 @@
 									</button>
 
 									<!-- Change Assistant Status Button -->
-									<button type="button" class="btn btn-wide btn-success" ng-click="openActivate('sm', assistant.assistantid)" ng-if="assistant.status == false">
+									<button type="button" class="btn btn-wide btn-success" ng-click="changeStatus('sm', assistant.assistantid)" ng-if="assistant.status == false">
 										Activate
 									</button>
 
@@ -93,6 +93,19 @@
 
 					<script type="text/ng-template" id="modal_deactivate.html">
 						<div class="modal-header">
+							<h3 class="modal-title">Confirm Changes</h3>
+						</div>
+						<div class="modal-body">
+							<h5 style="font-size: 16px; margin-bottom: 0px;">Are you sure?</h5>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary" ng-click="changeStatus('deactivate')">Confirm</button>
+							<button class="btn btn-red" ng-click="cancel()">Cancel</button>
+						</div>
+					</script>
+
+					<!-- <script type="text/ng-template" id="modal_deactivate.html">
+						<div class="modal-header">
 							<h3 class="modal-title">Deactivation Details</h3>
 						</div>
 						<div class="modal-body">
@@ -104,7 +117,7 @@
 							<button class="btn btn-primary" ng-click="changeStatus('deactivate')" ng-disabled="!daysofgrace">Confirm</button>
 							<button class="btn btn-red" ng-click="cancel()">Cancel</button>
 						</div>
-					</script>
+					</script> -->
 
 					<!-- Script for pagination -->
 					<script type="text/ng-template" id="custom/pager">

@@ -22,7 +22,12 @@
 
       $scope.thisAssistant = response.data.Assistant;
 
-    }, function error(response) { });
+    }, function error(response) { 
+      if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
+    });
 
   }]);
 

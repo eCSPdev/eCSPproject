@@ -17,19 +17,19 @@
     function changeTypeDisplayName(type) {
     	switch(type) {
     		case 'consultationnote':
-           return 'Consultation Note';
-           case 'initialform':
-           return 'Initial Form';
-           case 'prescription':
-           return 'Prescription';
-           case 'referral':
-           return 'Referral';
-           case 'result':
-           return 'Result';
-       }
-   }
+         return 'Consultation Note';
+         case 'initialform':
+         return 'Initial Form';
+         case 'prescription':
+         return 'Prescription';
+         case 'referral':
+         return 'Referral';
+         case 'result':
+         return 'Result';
+     }
+ }
 
-   $scope.patientid = '';
+ $scope.patientid = '';
 
 
     // if($rootScope.currentUser) {
@@ -49,9 +49,9 @@
             $http.get('/Doctor/eCSP/Patient/Files?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $scope.patientid + '&month=' + $rootScope.consultationDate.month + '&year=' + $rootScope.consultationDate.year) 
             .then(function success(response) {
 
-               $scope.documents = response.data.FilesList;
+             $scope.documents = response.data.FilesList;
 
-               for (var i = 0; i < $scope.documents.length; i++) {
+             for (var i = 0; i < $scope.documents.length; i++) {
                 $scope.documents[i].dateofupload = $scope.documents[i].dateofupload.split(" ")[0]; //Get date only
                 $scope.documents[i].typeDisplayName = changeTypeDisplayName($scope.documents[i].type);
 
@@ -61,7 +61,7 @@
             }
             
 			// Declaration of table parameters
-         $scope.tableParams = new NgTableParams({
+           $scope.tableParams = new NgTableParams({
 	        	// Show first page
 	        	page: 1, 
 
@@ -78,8 +78,14 @@
 	            total: $scope.documents.length, 
 	            dataset: $scope.documents
 	        });
-     },
-     function error(response) {
+       },
+       function error(response) {
+
+        if(response.data && response.data.Error == 'Invalid Token') {
+          alert("Invalid credentials. Please login again.");
+          $state.go('login.signin');
+      }
+
 				// Declaration of table parameters
               $scope.tableParams = new NgTableParams({
 		        	// Show first page
@@ -106,9 +112,9 @@
             $http.get('/Assistant/eCSP/Patient/Files?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $scope.patientid + '&month=' + $rootScope.consultationDate.month + '&year=' + $rootScope.consultationDate.year) 
             .then(function success(response) {
 
-               $scope.documents = response.data.FilesList;
+             $scope.documents = response.data.FilesList;
 
-               for (var i = 0; i < $scope.documents.length; i++) {
+             for (var i = 0; i < $scope.documents.length; i++) {
                 $scope.documents[i].dateofupload = $scope.documents[i].dateofupload.split(" ")[0]; //Get date only
                 $scope.documents[i].typeDisplayName = changeTypeDisplayName($scope.documents[i].type);
 
@@ -137,6 +143,11 @@
             });
         },
         function error(response) {
+
+            if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
                 // Declaration of table parameters
                 $scope.tableParams = new NgTableParams({
                     // Show first page
@@ -163,9 +174,9 @@
             $http.get('/Patient/eCSP/Files?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $rootScope.currentUser.userid + '&month=' + $rootScope.consultationDate.month + '&year=' + $rootScope.consultationDate.year) 
             .then(function success(response) {
 
-               $scope.documents = response.data.FilesList;
+             $scope.documents = response.data.FilesList;
 
-               for (var i = 0; i < $scope.documents.length; i++) {
+             for (var i = 0; i < $scope.documents.length; i++) {
                 $scope.documents[i].dateofupload = $scope.documents[i].dateofupload.split(" ")[0]; //Get date only
                 $scope.documents[i].typeDisplayName = changeTypeDisplayName($scope.documents[i].type);
 
@@ -194,6 +205,12 @@
             });
         },
         function error(response) {
+
+            if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
+
                 // Declaration of table parameters
                 $scope.tableParams = new NgTableParams({
                     // Show first page
@@ -224,7 +241,12 @@
           .then(function success(response) {
             $window.open(response.data.FileLink, '_blank');
         }, 
-        function error(response) { }
+        function error(response) {
+            if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
+         }
         );
 
       }
@@ -234,7 +256,12 @@
           .then(function success(response) {
             $window.open(response.data.FileLink, '_blank');
         }, 
-        function error(response) { }
+        function error(response) {
+            if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
+         }
         );
       }
 
@@ -244,6 +271,10 @@
             $window.open(response.data.FileLink, '_blank');
         }, 
         function error(response) { 
+            if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
         }
         );
     }
@@ -259,7 +290,7 @@
     		templateUrl: 'modal_upload.html',
     		controller: 'ModalInstanceCtrl',
     		size: 'md'
-     });
+       });
     }
 
 }]);

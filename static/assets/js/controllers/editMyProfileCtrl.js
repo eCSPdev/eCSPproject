@@ -46,7 +46,7 @@
         $http.get('/Patient/eCSP/PersonalInformation?patientid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
         .then(function success(response) {
 
-          delete response.data.Doctor.pssword;
+          delete response.data.Patient.pssword;
           $scope.thisUser = response.data.Patient;
 
         }, function error(response) { });

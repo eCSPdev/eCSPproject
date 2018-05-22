@@ -13,6 +13,16 @@
 	$scope.sortReverse  = false;  // set the default sort order
 	$scope.consultationSearch   = '';     // set the default search/filter term
 
+	if($rootScope.currentUser.role == 'Doctor' || $rootScope.currentUser.role == 'Assistant') {
+		$scope.patientid = $rootScope.chosenRecord.patientID;
+	}
+	else {
+		$scope.patientid = $rootScope.currentUser.userid;
+		$rootScope.chosenRecord.lName = $rootScope.currentUser.lastname;
+		$rootScope.chosenRecord.fName = $rootScope.currentUser.firstname;
+		$rootScope.chosenRecord.mName = $rootScope.currentUser.middlename;
+	}
+
 
 	function convertMonth(monthNumber) {
 		var months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -28,6 +38,8 @@
 
 	else {
 		if($rootScope.currentUser.role == 'Doctor') {
+			console.log('Doctor Query');
+			console.log($rootScope.currentUser);
 			$http.get('/Doctor/eCSP/Patient/Files/Dates?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $rootScope.chosenRecord.patientID) 
 			.then(function success(response) {
 
@@ -61,7 +73,7 @@
 				$state.go("app.users.view_records.patient_consultations.consultation_details");
 
 				// Declaration of table parameters
-		        $scope.tableParams = new NgTableParams({
+				$scope.tableParams = new NgTableParams({
 		        	// Show first page
 		        	page: 1, 
 
@@ -82,6 +94,8 @@
 		}
 
 		else if($rootScope.currentUser.role == 'Assistant') {
+			console.log('Assistant Query');
+			console.log($rootScope.currentUser);
 			$http.get('/Assistant/eCSP/Patient/Files/Dates?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $rootScope.chosenRecord.patientID) 
 			.then(function success(response) {
 
@@ -115,7 +129,7 @@
 				$state.go("app.users.view_records.patient_consultations.consultation_details");
 
 				// Declaration of table parameters
-		        $scope.tableParams = new NgTableParams({
+				$scope.tableParams = new NgTableParams({
 		        	// Show first page
 		        	page: 1, 
 
@@ -137,6 +151,8 @@
 		}
 
 		else {
+			console.log('Patient Query');
+			console.log($rootScope.currentUser);
 			$http.get('/Patient/eCSP/Files/Dates?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $rootScope.currentUser.userid) 
 			.then(function success(response) {
 
@@ -170,7 +186,7 @@
 				$state.go("app.users.view_records.patient_consultations.consultation_details");
 
 				// Declaration of table parameters
-		        $scope.tableParams = new NgTableParams({
+				$scope.tableParams = new NgTableParams({
 		        	// Show first page
 		        	page: 1, 
 
@@ -187,7 +203,7 @@
 		            total: 0, 
 		            dataset: ""
 		        });
-		        
+				
 			});
 		}
 	}

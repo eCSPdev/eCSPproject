@@ -115,7 +115,11 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     else
     {
 
-      $scope.thisPatient = chosenPatient;
+      $scope.thisPatient = chosenPatient[0];
+
+      if(!$scope.thisPatient.pssword) {
+        $scope.thisPatient.pssword = chosenPatient[1];
+      }
 
       /* HTTP PUT Request: getPatientByID() */
       /* Update (PUT) patient personal information */

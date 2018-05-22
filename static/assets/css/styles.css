@@ -297,6 +297,7 @@ h5.over-title {
   top: 50%;
   width: 100px;
   z-index: 1051;
+  background-color: rgba(0, 0, 0, 0.6)
 }
 
 .loading-spinner {

@@ -25,8 +25,8 @@
 						<div class="form-group" style="margin-bottom: 0px;">
 							<label>User Role<span class="symbol required"></span></label>
 
-							<div class="radio clip-radio radio-primary">
-								<input type="radio" id="rdPatient" name="vertical1" value="patient" ng-model="newUser.role">
+							<div class="radio clip-radio radio-primary" ng-init="newUser.role = 'patient'">
+								<input type="radio" id="rdPatient" name="vertical1" value="patient" ng-model="newUser.role" checked>
 								<label for="rdPatient">
 									Patient
 								</label>
@@ -74,7 +74,7 @@
 							<label class="control-label">
 								Social Security Number (SSN) <span class="symbol required"></span>
 							</label>
-							<input type="password" name="ssn" class="form-control" placeholder="Enter social security number" ng-model="newUser.ssn" ng-pattern="/^(\d{3}-?\d{2}-?\d{4}|XXX-XX-XXXX)$/" ssn-input required>
+							<input type="password" name="ssn" class="form-control" placeholder="Enter social security number" ng-model="newUser.ssn" max-length="9" ng-pattern="/^(\d{3}-?\d{2}-?\d{4}|XXX-XX-XXXX)$/" ssn-input required>
 							<span class="error text-small block" ng-if="addNewUserForm.ssn.$dirty && addNewUserForm.ssn.$invalid">Enter a valid social security number.</span>
 						</div>
 
@@ -107,7 +107,7 @@
 						</div>
 
 						<!-- Insurance company form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.insuranceCompany.$invalid, 'has-success':addNewUserForm.insuranceCompany.$valid }">
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.insuranceCompany.$invalid, 'has-success':addNewUserForm.insuranceCompany.$valid }" ng-if="newUser.role == 'patient'">
 							<label>
 								Insurance Company
 							</label>
@@ -121,7 +121,7 @@
 								Record Number <span class="symbol required"></span>
 							</label>
 							<div class="form-group">
-								<input type="text" placeholder="Enter medical record number" name="recordNumber" class="form-control" ng-model="newUser.recordno" ng-disabled="newUser.role == 'assistant'" required>
+								<input type="text" placeholder="Enter medical record number" name="recordNumber" class="form-control" ng-model="newUser.recordno" maxlength="9" ng-disabled="newUser.role == 'assistant'" required>
 								<span class="error text-small block" ng-if="addNewUserForm.recordNumber.$dirty && addNewUserForm.recordNumber.$invalid">Enter a valid record number.</span>
 							</div>
 						</div>
@@ -219,7 +219,7 @@
 							<label>
 								Temporary Password <span class="symbol required"></span>
 							</label>
-							<input type="password" placeholder="Enter a temporary password" class="form-control" name="password" ng-model="newUser.pssword" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" required/>
+							<input type="password" placeholder="Enter a temporary password" class="form-control" name="password" ng-model="newUser.pssword" max-length="24" min-length="8" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" required/>
 							<span class="help-block"><i class="ti-info-alt text-primary"></i>   Password must be 8 to 24 characters, include a special character (must not be '#'), a number (0-9), and an uppercase letter (A-Z).</span>
 							<span class="error text-small block" ng-if="addNewUserForm.password.$dirty && addNewUserForm.password.$invalid && addNewUserForm.password.$error.required">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
 						</div>

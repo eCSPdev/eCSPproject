@@ -4,8 +4,8 @@
   */
   app.controller('consultationDetailsCtrl', ["$scope", "$rootScope", "$state", "$http", "$window", "$uibModal", "NgTableParams", 'FileUploader', function ($scope, $rootScope, $state, $http, $window, $uibModal, NgTableParams, FileUploader) {
 
-	$scope.sortType     = 'status'; // set the default sort type
-	$scope.sortReverse  = false;  // set the default sort order
+	$scope.sortType     = 'dateofupload'; // set the default sort type
+	$scope.sortReverse  = true;  // set the default sort order
 	$scope.consultationDetailsSearch  = '';     // set the default search/filter term
 
 	/* Redirect user to login page if he or she is not logged in correctly */

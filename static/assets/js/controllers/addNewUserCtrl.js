@@ -69,6 +69,9 @@
       // Create (INSERT) new assistant
       else
       {
+
+        $scope.newUser.role = 'patient';
+        
         /* HTTP POST Request: insertAssistant() */
         /* Create new assistant */
         $http.post('/Doctor/eCSP/AssistantList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.newUser) 

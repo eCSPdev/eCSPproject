@@ -29,6 +29,8 @@
     		$http.get('/Doctor/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
     		.then(function success(response) {
 
+                console.log(response);
+
         	// Search bar
         	for(var i = 0; i < response.data.Patient.length; i++) 
         	{
@@ -217,6 +219,7 @@
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenPatient", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenPatient) {
 
     $scope.daysofgrace = '30';
+    console.log($scope.daysofgrace);
 
     $scope.changeStatus = function(button) {
 
@@ -280,6 +283,7 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     };
 
     $scope.cancel = function () {
+        $scope.daysofgrace = '30';
         $uibModalInstance.dismiss('cancel');
     };
 

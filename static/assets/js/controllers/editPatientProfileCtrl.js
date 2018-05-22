@@ -25,7 +25,14 @@
 
           $scope.thisPatient = response.data.Patient;
 
-        }, function error(response) { });
+        }, function error(response) { 
+
+          if(response.data && response.data.Error == 'Invalid Token') {
+            alert("Invalid credentials. Please login again.");
+            $state.go('login.signin');
+          }
+
+        });
       }
 
       else
@@ -39,7 +46,13 @@
           delete response.data.Patient.pssword;
           $scope.thisPatient = response.data.Patient;
 
-        }, function error(response) { });
+        }, function error(response) {
+          if(response.data && response.data.Error == 'Invalid Token') {
+            alert("Invalid credentials. Please login again.");
+            $state.go('login.signin');
+          }
+
+        });
       }
     }
 
@@ -56,10 +69,7 @@
        size: size,
        resolve: { 
         chosenPatient: function() {
-          if(!$scope.thisPatient.pssword) {
-            $scope.thisPatient.pssword = $scope.temporaryPassword;
-          }
-          return $scope.thisPatient;
+          return [$scope.thisPatient, $scope.temporaryPassword];
         }
       }
     });
@@ -80,7 +90,11 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     if($rootScope.currentUser.role == 'Doctor')
     {
 
-      $scope.thisPatient = chosenPatient;
+      $scope.thisPatient = chosenPatient[0];
+
+      if(!$scope.thisPatient.pssword) {
+        $scope.thisPatient.pssword = chosenPatient[1];
+      }
 
       /* HTTP PUT Request: getPatientByID() */
       /* Update (PUT) patient personal information */

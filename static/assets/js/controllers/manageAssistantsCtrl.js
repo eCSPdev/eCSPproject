@@ -142,7 +142,7 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 		}
 
 		else if(button == 'deactivate') {
-			$http.put('/Doctor/eCSP/Assistant/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + chosenAssistant  + '&daysofgrace=' + $scope.daysofgrace)
+			$http.put('/Doctor/eCSP/Assistant/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + chosenAssistant)
 			.then(function success(response) { 
 				$state.reload();
 			}, function error(response) {

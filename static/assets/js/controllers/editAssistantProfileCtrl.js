@@ -16,12 +16,16 @@
     }
 
     $scope.thisAssistant = { };
+    $scope.temporaryPassword = '';
 
     /* HTTP GET Request: getAssistantByID() */
     /* Get assistant personal information */
     $http.get('/Doctor/eCSP/Assistant/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + $rootScope.chosenAssistant + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
     .then(function success(response) {
 
+      console.log(response);
+
+      $scope.temporaryPassword = response.data.Assistant.pssword;
       delete response.data.Assistant.pssword;
       $scope.thisAssistant = response.data.Assistant;
 
@@ -45,10 +49,7 @@
        size: size,
        resolve: { 
         chosenAssistant: function() {
-          if(!$scope.thisAssistant.pssword) {
-            $scope.thisAssistant.pssword = $scope.temporaryPassword;
-          }
-          return $scope.thisAssistant;
+          return [$scope.thisAssistant, $scope.temporaryPassword];
         }
       }
     });
@@ -65,7 +66,13 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
 	$scope.ok = function () {
 
-    $scope.thisAssistant = chosenAssistant;
+    $scope.thisAssistant = chosenAssistant[0];
+
+    if(!$scope.thisAssistant.pssword) {
+            $scope.thisAssistant.pssword = $scope.temporaryPassword;
+    }
+
+    console.log($scope.thisAssistant.pssword);
 
     /* HTTP PUT Request: getAssistantByID() */
     /* Update (PUT) assistant personal information */

@@ -210,7 +210,9 @@ class AssistantHandler:
 
     def updateAssistantInformation(self, form, path):
         # A-adido
-        print(path)
+        print ('Estoy en el update assistant information')
+        print('estoy en este path : ', path)
+        print('Este es el form que me enviaron del frontend: ', form)
         pathlist = RoleBase().splitall(path)
         role = pathlist[1]
         DoctorSign = None
@@ -233,6 +235,7 @@ class AssistantHandler:
             status = form['status']
             email = form['email']
             username = form['username']
+            print('voy a tratar de acceder el pssword, si no esta exploto')
             pssword = form['pssword']
             print('pssword : ',pssword)
             street = form['street']

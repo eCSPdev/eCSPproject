@@ -203,7 +203,9 @@ class PatientHandler:
 
     def updatePatientInformation(self, form, path):
         # A-adido
-        print(path)
+        print ('Estoy en el update patient info')
+        print('estoy en este path : ', path)
+        print('Este es el form que me enviaron: ', form)
         pathlist = RoleBase().splitall(path)
         role = pathlist[1]
         DoctorSign = None
@@ -212,11 +214,7 @@ class PatientHandler:
             DoctorSign = form['username']
         elif role == 'Assistant':
             AssistantSign = form['username']
-        #
-        print ('Estoy en el update')
         dao = PatientsDAO()
-        #print ('antes del DAO')
-        print('form : ', form)
         patientid = form['patientid']
         row = dao.getPatientByID(patientid)
         if row == None :
@@ -234,6 +232,7 @@ class PatientHandler:
             email = form['email']
             insurancecompanyname = form['insurancecompanyname']
             username = form['username']
+            print('voy a tratar de acceder el pssword, si no esta exploto')
             pssword = form['pssword']
             street = form['street']
             aptno = form['aptno']

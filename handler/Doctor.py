@@ -156,7 +156,8 @@ class DoctorHandler:
             return jsonify(Doctor = doctor)
 
     def updateDoctorInformation(self,form):
-        print ('estoy en el update')
+        print ('Estoy en el update patient info')
+        print('Este es el form que me enviaron: ', form)
         dao = DoctorDAO()
         doctorid = form["doctorid"]
         if not dao.getDoctorByID(doctorid):
@@ -172,6 +173,7 @@ class DoctorHandler:
             status = form['status']
             email = form['email']
             username = form['username']
+            print('voy a tratar de acceder el pssword, si no esta exploto')
             pssword = form['pssword']
             street = form['street']
             aptno = form['aptno']

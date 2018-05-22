@@ -10,6 +10,7 @@
     }
 
     $scope.thisPatient = {};
+    $scope.temporaryPassword = '';
 
     if ($rootScope.currentUser) {
       if($rootScope.currentUser.role == 'Doctor')
@@ -19,7 +20,9 @@
         $http.get('/Doctor/eCSP/Patient/PersonalInformation?patientid=' + $rootScope.chosenPatient + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
         .then(function success(response) {
 
+          $scope.temporaryPassword = response.data.Patient.pssword;
           delete response.data.Patient.pssword;
+
           $scope.thisPatient = response.data.Patient;
 
         }, function error(response) { });
@@ -32,6 +35,7 @@
         $http.get('/Assistant/eCSP/Patient/PersonalInformation?patientid=' + $rootScope.chosenPatient + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
         .then(function success(response) {
 
+          $scope.temporaryPassword = response.data.Patient.pssword;
           delete response.data.Patient.pssword;
           $scope.thisPatient = response.data.Patient;
 
@@ -74,6 +78,10 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     {
 
       $scope.thisPatient = chosenPatient;
+
+      if($scope.thisPatient.pssword.length == 0) {
+        $scope.thisPatient.pssword = $scope.temporaryPassword;
+      }
 
       /* HTTP PUT Request: getPatientByID() */
       /* Update (PUT) patient personal information */

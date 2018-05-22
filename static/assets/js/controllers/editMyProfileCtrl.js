@@ -11,6 +11,7 @@
     }
 
     $scope.thisUser = {};
+    $scope.temporaryPassword = '';
     
     if ($rootScope.currentUser) {
       if($rootScope.currentUser.role == 'Doctor')
@@ -20,6 +21,7 @@
         $http.get('/Doctor/eCSP/PersonalInformation?doctorid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
         .then(function success(response) {
 
+          $scope.temporaryPassword = response.data.Doctor.pssword;
           delete response.data.Doctor.pssword;
           $scope.thisUser = response.data.Doctor;
 
@@ -33,6 +35,7 @@
         $http.get('/Assistant/eCSP/PersonalInformation?assistantid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
         .then(function success(response) {
 
+          $scope.temporaryPassword = response.data.Assistant.pssword;
           delete response.data.Doctor.pssword;
           $scope.thisUser = response.data.Assistant;
 
@@ -46,10 +49,14 @@
         $http.get('/Patient/eCSP/PersonalInformation?patientid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
         .then(function success(response) {
 
+          $scope.temporaryPassword = response.data.Patient.pssword;
           delete response.data.Patient.pssword;
           $scope.thisUser = response.data.Patient;
 
-        }, function error(response) { });
+          console.log($scope.temporaryPassword);
+          console.log(response.data);
+
+        }, function error(response) { console.log(response); });
       }
     }
 
@@ -62,6 +69,11 @@
        size: size,
        resolve: {
         chosenUser: function() {
+          if(!$scope.thisUser.pssword) {
+            console.log('Entré');
+            $scope.thisUser.pssword = $scope.temporaryPassword;
+            console.log($scope.temporaryPassword);
+          }
           return $scope.thisUser;
         }
       }
@@ -82,6 +94,7 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
     $scope.thisUser = chosenUser;
 
+    console.log($scope.thisUser);
     if($rootScope.currentUser.role == 'Doctor')
     {
       /* HTTP PUT Request: getDoctorByID() */

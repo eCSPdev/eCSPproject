@@ -33,7 +33,7 @@ class AssistantHandler:
         result['status'] = row[5]
         result['email'] = row[6]
         result['username'] = row[7]
-        result['Password'] = row[8]
+        result['pssword'] = row[8]
         result['addresid'] = row[9]
         result['street'] = row[10]
         result['aptno'] = row[11]

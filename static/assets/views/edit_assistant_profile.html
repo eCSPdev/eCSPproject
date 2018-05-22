@@ -1,4 +1,4 @@
-<div ng-controller="editAssistantProfileCtrl" ui-view class="fade-in-up">
+<div ng-controller="editAssistantProfileCtrl" ui-view class="fade-in-up" ng-cloak>
 
 	<section id="page-title">
 		<div class="row">
@@ -55,7 +55,7 @@
 								Phone Number <span class="symbol required"></span>
 							</label>
 							<div class="input-group">
-								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="thisAssistant.phone" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" ng-max-length="12" required>
+								<input type="text" class="form-control" name="phoneNumber" placeholder="xxx-xxx-xxxx" ng-model="thisAssistant.phone" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" maxlength="10" required>
 								<span class="error text-small block" ng-if="editAssistantForm.phoneNumber.$dirty && editAssistantForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>
@@ -138,7 +138,7 @@
 							<label>
 								New Password
 							</label>
-							<input type="password" placeholder="Enter a temporary password" class="form-control" name="password" ng-model="thisAssistant.pssword" max-length="24" min-length="8" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" />
+							<input type="password" placeholder="Enter a temporary password" class="form-control" name="password" ng-model="thisAssistant.pssword" maxlength="24" minlength="8" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" />
 							<span class="help-block"><i class="ti-info-alt text-primary"></i>   Password must be 8 to 24 characters, include a special character (cannot be '#'), a number (0-9), and an uppercase letter (A-Z).</span>
 							<span class="error text-small block" ng-if="editAssistantForm.password.$invalid">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
 						</div>

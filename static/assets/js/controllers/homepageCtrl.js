@@ -10,7 +10,7 @@ app.controller('homepageCtrl', ["$scope", "$rootScope", "$state", function($scop
         $state.go('login.signin');
     }
 
-    $scope.nextState = " ";
+    $scope.nextState = '';
     $rootScope.consultationDate = { };
     $rootScope.uploaded = { };
     $rootScope.chosenRecord = { };

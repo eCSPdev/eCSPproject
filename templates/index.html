@@ -36,7 +36,7 @@
 	<!-- Favicon -->
 	<link rel="shortcut icon" type="image/png" href="/static/assets/images/favicon.png"/>
 </head>
-<body ng-controller="AppCtrl">
+<body ng-controller="AppCtrl" ng-cloak>
 	<div ui-view id="app" ng-class="{'app-mobile' : app.isMobile, 'app-navbar-fixed' : app.layout.isNavbarFixed, 'app-sidebar-fixed' : app.layout.isSidebarFixed, 'app-sidebar-closed':app.layout.isSidebarClosed, 'app-footer-fixed':app.layout.isFooterFixed}"></div>
 
 	<!-- jQuery -->

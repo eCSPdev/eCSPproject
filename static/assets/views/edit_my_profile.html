@@ -135,28 +135,26 @@
 						</div>
 
 						<!-- Password form input and validation -->
-						<div class="form-group" ng-class="{'has-error':editMyProfileForm.password.$dirty && editMyProfileForm.password.$invalid, 'has-success':editMyProfileForm.password.$valid}">
+						<div class="form-group" ng-class="{'has-error':editMyProfileForm.password.$invalid, 'has-success':editMyProfileForm.password.$valid}">
 							<label>
 								New Password <span class="symbol required"></span>
 							</label>
 							<input type="password" placeholder="Enter new password" class="form-control" name="password" ng-model="thisUser.pssword" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" />
-							<span class="help-block"><i class="ti-info-alt text-primary"></i>   Password must be 8 to 24 characters, include a special character (must not be '#'), a number (0-9), and an uppercase letter (A-Z).</span>
-							<span class="error text-small block" ng-if="editMyProfileForm.password.$dirty && editMyProfileForm.password.$invalid && editMyProfileForm.password.$error.required">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
+							<span class="help-block"><i class="ti-info-alt text-primary"></i>   Password must be 8 to 24 characters, include a special character (cannot be '#'), a number (0-9), and an uppercase letter (A-Z).</span>
+							<span class="error text-small block" ng-if="editMyProfileForm.password.$invalid">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
 						</div>
 
 						<!-- Password confirmation form input and validation -->
-						<div class="form-group" ng-class="{'has-error':editMyProfileForm.confirmPassword.$dirty && editMyProfileForm.confirmPassword.$error.compareTo || editMyProfileForm.confirmPassword.$dirty && editMyProfileForm.confirmPassword.$invalid, 'has-success':editMyProfileForm.confirmPassword.$valid}">
+						<div class="form-group" ng-class="{'has-error': editMyProfileForm.confirmPassword.$invalid, 'has-success':editMyProfileForm.confirmPassword.$valid}">
 							<label>
-								Repeat Password <span class="symbol required"></span>
+								Repeat Password
 							</label>
-							<input type="password" placeholder="Repeat new password" class="form-control" id="confirmPassword" ng-model="thisUser.confirmPassword" />
-							<span class="error text-small block" ng-if="editMyProfileForm.confirmPassword.$dirty && editMyProfileForm.confirmPassword.$invalid && editMyProfileForm.confirmPassword.$error.required">Re-enter a valid password.</span>
-							<span class="error text-small block" ng-if="editMyProfileForm.confirmPassword.$dirty">Passwords do not match. Please try again.</span>
+							<input type="password" placeholder="Repeat new password" class="form-control" id="confirmPassword" ng-model="thisUser.confirmPassword" ng-pattern="thisUser.pssword"/>
 						</div>
 
-						<div class="form-group" style="margin-top: 15px;">
+						<div class="form-group" style="margin-top: 35px;">
 							<a class="btn btn-red" ui-sref="app.users.view_my_profile" style="float: right">Cancel</a>
-							<a class="btn btn-primary" ng-click="open('sm')" ng-disabled=" editMyProfileForm.$invalid || thisUser.pssword != thisUser.confirmPassword" style="float: right; margin-right: 15px;">Save Changes</a>
+							<button class="btn btn-primary" ng-click="open('sm')" ng-disabled="editMyProfileForm.$invalid || thisUser.pssword != thisUser.confirmPassword" style="float:right;margin-right:15px;">Save Changes</a>
 						</div>
 
 					</fieldset>

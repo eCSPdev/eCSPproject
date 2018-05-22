@@ -213,7 +213,6 @@
 
              function promiseThen(_arg) {
                  if (typeof _arg == 'function') {
-                    console.log("if function");
                     return promise.then(_arg);
                 }
                 else {

@@ -22,8 +22,8 @@
     $http.get('/Doctor/eCSP/Assistant/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + $rootScope.chosenAssistant + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
     .then(function success(response) {
 
+      delete response.data.Assistant.pssword;
       $scope.thisAssistant = response.data.Assistant;
-      $scope.thisAssistant.pssword = '';
 
     }, function error(response) { });
 

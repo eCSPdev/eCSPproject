@@ -242,10 +242,8 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
             else if(button == 'deactivate') {
                 $http.put('/Assistant/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient  + '&daysofgrace=' + $scope.daysofgrace)
                 .then(function success(response) { 
-                    console.log('Deactivate succesful');
                     $state.reload();
                 }, function error(response) { 
-                    console.log('Could not deactivate!');
                 });
             }
         }

@@ -219,13 +219,9 @@
 
     $scope.download = function(pid, type, fileid) {
 
-//        console.log('Downloading file...');
-
         if($rootScope.currentUser.role == 'Doctor') {
           $http.get('/Doctor/eCSP/Patient/Files/Download?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + pid + '&type=' + type + '&fileid=' + fileid) 
           .then(function success(response) {
-//            console.log('File Link:');
-//            console.log(response.data.FileLink);
             $window.open(response.data.FileLink, '_blank');
         }, 
         function error(response) { }
@@ -236,8 +232,6 @@
       else if($rootScope.currentUser.role == 'Assistant') {
           $http.get('/Assistant/eCSP/Patient/Files/Download?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + pid + '&type=' + type + '&fileid=' + fileid) 
           .then(function success(response) {
-//            console.log('File Link:');
-//            console.log(response.data.FileLink);
             $window.open(response.data.FileLink, '_blank');
         }, 
         function error(response) { }
@@ -245,18 +239,11 @@
       }
 
       else {
-//        console.log('username: '+ $rootScope.currentUser.username);
-//        console.log('token: '+ $rootScope.currentUser.token);
-//        console.log('patientid: '+ pid);
-//        console.log('fileid: '+ fileid);
         $http.get('/Patient/eCSP/Files/Download?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + pid + '&type=' + type + '&fileid=' + fileid) 
         .then(function success(response) {
-//            console.log('File Link: ' + response.data.FileLink);
-//            console.log(response.data.FileLink);
             $window.open(response.data.FileLink, '_blank');
         }, 
         function error(response) { 
-//            console.log('Failed download');
         }
         );
     }

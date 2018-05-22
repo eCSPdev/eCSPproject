@@ -21,10 +21,6 @@
 
 	// Redirect to files list when a file is uploaded
 	if($rootScope.uploaded.bool == true) {
-
-		console.log($rootScope.uploaded);
-		console.log($rootScope.consultationDate);
-		console.log($rootScope.chosenRecord);
 		$rootScope.uploaded.bool = false;
 		$state.go("app.users.view_records.patient_consultations.consultation_details");
 	}

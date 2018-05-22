@@ -165,7 +165,6 @@ $scope.getPatientRecord = function(patientID, recordno, username, lName, fName, 
 	$rootScope.chosenRecord.lName = lName;
 	$rootScope.chosenRecord.fName = fName;
 	$rootScope.chosenRecord.mName = mName;
-		// console.log('Chosen Record: ' + $rootScope.chosenRecord);
 		$state.go("app.users.view_records.patient_consultations");
 	}
 

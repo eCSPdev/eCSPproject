@@ -20,7 +20,7 @@
         $http.get('/Doctor/eCSP/PersonalInformation?doctorid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
         .then(function success(response) {
 
-          response.data.Doctor.pssword = '';
+          delete response.data.Doctor.pssword;
           $scope.thisUser = response.data.Doctor;
 
         }, function error(response) { });
@@ -33,7 +33,7 @@
         $http.get('/Assistant/eCSP/PersonalInformation?assistantid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
         .then(function success(response) {
 
-          response.data.Assistant.pssword = '';
+          delete response.data.Doctor.pssword;
           $scope.thisUser = response.data.Assistant;
 
         }, function error(response) { });
@@ -46,7 +46,7 @@
         $http.get('/Patient/eCSP/PersonalInformation?patientid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
         .then(function success(response) {
 
-          response.data.Patient.pssword = '';
+          delete response.data.Doctor.pssword;
           $scope.thisUser = response.data.Patient;
 
         }, function error(response) { });

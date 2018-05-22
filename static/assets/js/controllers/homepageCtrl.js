@@ -15,9 +15,6 @@ app.controller('homepageCtrl', ["$scope", "$rootScope", "$state", function($scop
     $rootScope.uploaded = { };
     $rootScope.chosenRecord = { };
 
-
-    // console.log($rootScope.currentUser);
-
     if ($rootScope.currentUser) {
 
         if($rootScope.currentUser.role == 'Doctor' || $rootScope.currentUser.role == 'Assistant') {
@@ -27,7 +24,6 @@ app.controller('homepageCtrl', ["$scope", "$rootScope", "$state", function($scop
         else if($rootScope.currentUser.role == 'Patient') {
                 $scope.nextState = "app.users.view_records.patient_consultations";
         }
-            // console.log($rootScope.currentUser);
     }
 
 }]);

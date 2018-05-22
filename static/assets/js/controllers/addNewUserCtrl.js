@@ -39,7 +39,12 @@
 
             $state.go('app.users.manage_users.manage_patients');
 
-          }, function error(response) { });
+          }, function error(response) {
+            if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
+          });
         }
 
         else {
@@ -52,7 +57,12 @@
 
             $state.go('app.users.manage_users.manage_patients');
 
-          }, function error(response) { });
+          }, function error(response) {
+              if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
+           });
         }
       }
 
@@ -67,7 +77,12 @@
           $scope.newUser = response.data;
           $state.go('app.users.manage_users.manage_assistants');
 
-        }, function error(response) { });
+        }, function error(response) {
+            if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+            }
+         });
       }
 
     }

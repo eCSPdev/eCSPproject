@@ -25,7 +25,12 @@
           delete response.data.Doctor.pssword;
           $scope.thisUser = response.data.Doctor;
 
-        }, function error(response) { });
+        }, function error(response) {
+          if(response.data && response.data.Error == 'Invalid Token') {
+            alert("Invalid credentials. Please login again.");
+            $state.go('login.signin');
+          }
+         });
       }
 
       else if($rootScope.currentUser.role == 'Assistant')
@@ -36,10 +41,15 @@
         .then(function success(response) {
 
           $scope.temporaryPassword = response.data.Assistant.pssword;
-          delete response.data.Doctor.pssword;
+          delete response.data.Assistant.pssword;
           $scope.thisUser = response.data.Assistant;
 
-        }, function error(response) { });
+        }, function error(response) { 
+          if(response.data && response.data.Error == 'Invalid Token') {
+            alert("Invalid credentials. Please login again.");
+            $state.go('login.signin');
+          }
+        });
       }
 
       else 
@@ -53,10 +63,12 @@
           delete response.data.Patient.pssword;
           $scope.thisUser = response.data.Patient;
 
-          console.log($scope.temporaryPassword);
-          console.log(response.data);
-
-        }, function error(response) { console.log(response); });
+        }, function error(response) { 
+          if(response.data && response.data.Error == 'Invalid Token') {
+            alert("Invalid credentials. Please login again.");
+            $state.go('login.signin');
+          }
+        });
       }
     }
 
@@ -70,9 +82,7 @@
        resolve: {
         chosenUser: function() {
           if(!$scope.thisUser.pssword) {
-            console.log('Entré');
             $scope.thisUser.pssword = $scope.temporaryPassword;
-            console.log($scope.temporaryPassword);
           }
           return $scope.thisUser;
         }
@@ -110,7 +120,12 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
         $state.go('app.users.view_my_profile');
 
-      }, function error(response) { });
+      }, function error(response) {
+          if(response.data && response.data.Error == 'Invalid Token') {
+            alert("Invalid credentials. Please login again.");
+            $state.go('login.signin');
+          }
+       });
     }
 
     else if($rootScope.currentUser.role == 'Assistant')
@@ -128,7 +143,12 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
         $state.go('app.users.view_my_profile');
 
-      }, function error(response) { });
+      }, function error(response) {
+        if(response.data && response.data.Error == 'Invalid Token') {
+            alert("Invalid credentials. Please login again.");
+            $state.go('login.signin');
+          }
+       });
     }
 
     else 
@@ -146,7 +166,12 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
         $state.go('app.users.view_my_profile');
 
-      }, function error(response) { });
+      }, function error(response) { 
+        if(response.data && response.data.Error == 'Invalid Token') {
+            alert("Invalid credentials. Please login again.");
+            $state.go('login.signin');
+          }
+      });
     }
 
     $uibModalInstance.close(true);

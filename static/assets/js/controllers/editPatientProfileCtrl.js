@@ -56,6 +56,9 @@
        size: size,
        resolve: { 
         chosenPatient: function() {
+          if(!$scope.thisPatient.pssword) {
+            $scope.thisPatient.pssword = $scope.temporaryPassword;
+          }
           return $scope.thisPatient;
         }
       }
@@ -63,7 +66,7 @@
 
       modalInstance.result.then(function (confirmation) {
        // if(confirmation == true) { }
-    });
+     });
     };
 
   }]);
@@ -79,10 +82,6 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
       $scope.thisPatient = chosenPatient;
 
-      if($scope.thisPatient.pssword.length == 0) {
-        $scope.thisPatient.pssword = $scope.temporaryPassword;
-      }
-
       /* HTTP PUT Request: getPatientByID() */
       /* Update (PUT) patient personal information */
       $http.put('/Doctor/eCSP/Patient/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisPatient) 
@@ -91,7 +90,12 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
         $scope.thisPatient = response.data.Patient;
         $state.go('app.users.manage_users.manage_patients.view_profile');
 
-      }, function error(response) { });
+      }, function error(response) { 
+        if(response.data && response.data.Error == 'Invalid Token') {
+          alert("Invalid credentials. Please login again.");
+          $state.go('login.signin');
+        }
+      });
     }
 
     else
@@ -107,7 +111,12 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
         $scope.thisPatient = response.data.Patient;
         $state.go('app.users.manage_users.manage_patients.view_profile');
 
-      }, function error(response) { });
+      }, function error(response) {
+        if(response.data && response.data.Error == 'Invalid Token') {
+          alert("Invalid credentials. Please login again.");
+          $state.go('login.signin');
+        }
+      });
     }
 
 

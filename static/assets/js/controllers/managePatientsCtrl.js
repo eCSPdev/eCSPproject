@@ -10,13 +10,13 @@
 
 	/* Redirect user to login page if he or she is not logged in correctly */
     if($rootScope.isLoggedIn == false || $rootScope.isLoggedIn == undefined) {
-		$state.go('login.signin');
-	}
-	else {
-		if($rootScope.currentUser.role == 'Patient') {
-			$state.go('app.home');
-		}
-	}
+      $state.go('login.signin');
+  }
+  else {
+      if($rootScope.currentUser.role == 'Patient') {
+         $state.go('app.home');
+     }
+ }
 
 	// Patient that is being managed
 	$rootScope.chosenPatient = '';
@@ -67,6 +67,11 @@
 
         }, function error(response) { 
 
+            if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+          }
+
             // Declaration of table parameters
             $scope.tableParams = new NgTableParams({
                 // Show first page
@@ -87,7 +92,7 @@
             });
 
 
-            });
+        });
     	}
 
     	else
@@ -135,6 +140,11 @@
 
         }, function error(response) { 
 
+            if(response.data && response.data.Error == 'Invalid Token') {
+              alert("Invalid credentials. Please login again.");
+              $state.go('login.signin');
+          }
+
                 // Declaration of table parameters
                 $scope.tableParams = new NgTableParams({
                     // Show first page
@@ -159,18 +169,18 @@
     	}
     }
 
-	$scope.getPatientProfile = function(button, patientID) {
+    $scope.getPatientProfile = function(button, patientID) {
 
-		$rootScope.chosenPatient = patientID;
-		
-		if(button == 'view') {
-			$state.go('app.users.manage_users.manage_patients.view_profile');
-		}
+      $rootScope.chosenPatient = patientID;
+      
+      if(button == 'view') {
+         $state.go('app.users.manage_users.manage_patients.view_profile');
+     }
 
-		else if(button == 'edit') {
-			$state.go('app.users.manage_users.manage_patients.edit_profile');
-		}
-	}
+     else if(button == 'edit') {
+         $state.go('app.users.manage_users.manage_patients.edit_profile');
+     }
+ }
 
     // openActivate() Function Definition
     $scope.openActivate = function (size, patientID) {
@@ -181,7 +191,7 @@
             size: size,
             resolve: {
                 chosenPatient: function() {
-                return patientID;
+                    return patientID;
                 }
             }
         });
@@ -196,11 +206,11 @@
             size: size,
             resolve: {
                 chosenPatient: function() {
-                return patientID;
+                    return patientID;
                 }
             }
-   });
-}
+        });
+    }
 }]);
 
 // Popup/Modal Controller
@@ -217,7 +227,13 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
                 $http.put('/Doctor/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient)
                 .then(function success(response) {
                     $state.reload();
-                }, function error(response) { });
+                }, function error(response) {
+                    if(response.data && response.data.Error == 'Invalid Token') {
+                      alert("Invalid credentials. Please login again.");
+                      $state.go('login.signin');
+                  }
+
+              });
             }
 
             else if(button == 'deactivate') {
@@ -225,8 +241,11 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
                 .then(function success(response) { 
                     $state.reload();
                 }, function error(response) { 
-                console.log('Could not deactivate!');
-            });
+                    if(response.data && response.data.Error == 'Invalid Token') {
+                      alert("Invalid credentials. Please login again.");
+                      $state.go('login.signin');
+                  }
+              });
             }
         }
 
@@ -236,7 +255,12 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
                 $http.put('/Assistant/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient)
                 .then(function success(response) { 
                     $state.reload();
-                }, function error(response) { });
+                }, function error(response) { 
+                    if(response.data && response.data.Error == 'Invalid Token') {
+                      alert("Invalid credentials. Please login again.");
+                      $state.go('login.signin');
+                  }
+              });
             }
 
             else if(button == 'deactivate') {
@@ -244,15 +268,19 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
                 .then(function success(response) { 
                     $state.reload();
                 }, function error(response) { 
-                });
+                    if(response.data && response.data.Error == 'Invalid Token') {
+                      alert("Invalid credentials. Please login again.");
+                      $state.go('login.signin');
+                  }
+              });
             }
         }
 
         $uibModalInstance.close(true);
     };
 
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 
 }]);

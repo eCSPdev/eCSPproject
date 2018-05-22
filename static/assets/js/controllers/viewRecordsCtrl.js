@@ -65,6 +65,11 @@
 
 		    }, function error(response) { 
 
+		    	if(response.data && response.data.Error == 'Invalid Token') {
+		    		alert("Invalid credentials. Please login again.");
+		    		$state.go('login.signin');
+		    	}
+
 	    		// Declaration of table parameters
 	    		$scope.tableParams = new NgTableParams({
 		        	// Show first page
@@ -132,6 +137,11 @@
 
 		    }, function error(response) {
 
+		    	if(response.data && response.data.Error == 'Invalid Token') {
+		    		alert("Invalid credentials. Please login again.");
+		    		$state.go('login.signin');
+		    	}
+
 	    		// Declaration of table parameters
 	    		$scope.tableParams = new NgTableParams({
 		        	// Show first page
@@ -165,8 +175,8 @@ $scope.getPatientRecord = function(patientID, recordno, username, lName, fName, 
 	$rootScope.chosenRecord.lName = lName;
 	$rootScope.chosenRecord.fName = fName;
 	$rootScope.chosenRecord.mName = mName;
-		$state.go("app.users.view_records.patient_consultations");
-	}
+	$state.go("app.users.view_records.patient_consultations");
+}
 
 }]);
 

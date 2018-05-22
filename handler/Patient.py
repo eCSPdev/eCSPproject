@@ -203,7 +203,7 @@ class PatientHandler:
 
     def updatePatientInformation(self, form, path):
         # A-adido
-        print(path)
+        print('estoy en este path : ', path)
         pathlist = RoleBase().splitall(path)
         role = pathlist[1]
         DoctorSign = None
@@ -216,7 +216,7 @@ class PatientHandler:
         print ('Estoy en el update')
         dao = PatientsDAO()
         #print ('antes del DAO')
-        print('form : ', form)
+        print('Este es el form que me enviaron: ', form)
         patientid = form['patientid']
         row = dao.getPatientByID(patientid)
         if row == None :

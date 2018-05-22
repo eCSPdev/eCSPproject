@@ -48,7 +48,7 @@ class PatientHandler:
         result['status'] = row[8]
         result['email'] = row[9]
         result['username'] = row[10]
-        result['Password'] = row[11]
+        result['pssword'] = row[11]
         result['insurancecompanyname'] = row[12]
         result['addressid'] = row[13]
         result['street'] = row[14]
@@ -101,7 +101,7 @@ class PatientHandler:
         result['phone'] = phone
         result['email'] = email
         result['username'] = username
-        result['Password'] = pssword
+        result['pssword'] = pssword
         result['addressid'] = addressid
         result['street'] = street
         result['aptno'] = aptno
@@ -126,7 +126,7 @@ class PatientHandler:
         result['status'] = row[8]
         result['email'] = row[9]
         result['username'] = row[10]
-        result['Password'] = row[11]
+        result['pssword'] = row[11]
         result['insurancecompanyname'] = row[12]
         result['addressid'] = row[13]
         result['street'] = row[14]
@@ -151,7 +151,7 @@ class PatientHandler:
         result['status'] = row[8]
         result['email'] = row[9]
         result['username'] = row[10]
-        result['Password'] = row[11]
+        result['pssword'] = row[11]
         result['insurancecompanyname'] = row[12]
         result['addressid'] = row[13]
         result['street'] = row[14]

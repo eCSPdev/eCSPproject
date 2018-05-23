@@ -104,8 +104,10 @@
 						</div>
 						<div class="modal-body">
 							<h5 style="font-size: 16px; margin-bottom: 0px;">Days of Grace: 
-								<input type="text" name="daysofgrace" placeholder="" ng-model="daysofgrace" ng-pattern="/^[0-9]+$/" required style="width: 60px;">
+								<input type="text" name="daysofgrace" placeholder="" ng-model="daysofgrace" ng-pattern="/^[0-9]+$/" required style="width: 60px;" autofocus>
 							</h5>
+							<span class="help-block" style="margin-top: 15px;margin-left: 5px;font-size:12px;
+"><i class="ti-info-alt text-primary" style="margin-right:5px;"></i>Default Days of Grace: <b>30</b></span>
 						</div>	
 						<div class="modal-footer">
 							<button class="btn btn-primary" ng-click="changeStatus('deactivate')" ng-disabled="!daysofgrace">Confirm</button>

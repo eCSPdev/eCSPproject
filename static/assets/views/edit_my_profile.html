@@ -50,7 +50,7 @@
 						</div>	
 
 						<!-- Insurance company form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': editMyProfileForm.insuranceCompany.$invalid, 'has-success':editMyProfileForm.insuranceCompany.$valid }" ng-if="thisUser.role =='patient'">
+						<div class="form-group" ng-class="{ 'has-error': editMyProfileForm.insuranceCompany.$invalid, 'has-success':editMyProfileForm.insuranceCompany.$valid }" ng-if="thisUser.role !='patient'">
 							<label>
 								Insurance Company
 							</label>

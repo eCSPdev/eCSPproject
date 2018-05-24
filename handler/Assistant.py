@@ -322,10 +322,10 @@ class AssistantHandler:
                 daysofgrace =  0
                 print ('days of grace : ', daysofgrace)
                 date = datetime.now(timezone.utc).astimezone()#datetime.datetime.fromtimestamp(changes_time)
-                print('actual date : ', date.strftime('%Y-%m-%d %H:%M:%S'))
+                print('actual date : ', date)
                 #deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
                 deactivationdate = (date + timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
-                print('deactivationdate : ', deactivationdate.strftime('%Y-%m-%d %H:%M:%S'))
+                print('deactivationdate : ', deactivationdate)
             dao.updateAssistantStatus(assistantid, status, deactivationdate, daysofgrace)
             # History
             changesdate = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')

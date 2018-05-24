@@ -123,10 +123,10 @@
 <!-- Modal Instance Scripts -->
 <script type="text/ng-template" id="modal_upload.html">
 	<div class="modal-header">
-		<h3 class="modal-title">Upload a file</h3>
+		<h3 class="modal-title">Upload a File</h3>
 	</div>
 	<div class="modal-body">
-		<h5 style="font-size: 16px; margin-bottom: 0px;">Select document type: 
+		<h5 style="font-size: 16px; margin-bottom: 0px;">Document Type: 
 			<select class="cs-select cs-skin-elastic" style="width: 140px;" ng-model="fileType">
 				<option value="" disabled selected>-- None --</option>
 				<option value="consultationnote">Consultation Note</option>
@@ -138,16 +138,16 @@
 		</h5>
 		</br>
 
-		<h5 style="font-size: 16px; margin-bottom: 0px;">Select a file: 
-			<span class="btn btn-primary btn-o btn-sm btn-file"> Choose File
-				<input type="file" nv-file-select="" uploader="uploader" accept=".pdf"  />
+		<h5 style="font-size: 16px; margin-bottom: 0px;">Select a File: 
+			<span class="btn btn-primary btn-sm btn-file" ng-disabled="!fileType" style="font-size: 14px;"> Choose File
+				<input type="file" nv-file-select="" uploader="uploader" accept=".pdf" ng-click="uploader.clearQueue()"/>
 			</span>
 			<span>{{uploader.queue[0].file.name}}</span>
 		</h5>
 
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-primary" ng-click="upload();" ng-disabled="!uploader.getNotUploadedItems().length || !fileType"><span class="glyphicon glyphicon-upload"></span>Upload</button>
+		<button class="btn btn-primary" ng-click="upload();" ng-disabled="!uploader.getNotUploadedItems().length || !fileType"><span class="glyphicon glyphicon-upload" style="margin-right:5px;"></span>Upload</button>
 		<button class="btn btn-red" ng-click="cancel()">Cancel</button>
 	</div>
 </script>

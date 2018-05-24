@@ -64,7 +64,7 @@
 								Phone Number <span class="symbol required"></span>
 							</label>
 							<div class="input-group">
-								<input type="text" class="form-control" name="phoneNumber" placeholder="Ex. 7871234567" ng-model="thisPatient.phone" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" maxlength="10" required>
+								<input type="text" class="form-control" name="phoneNumber" placeholder="Ex. 7871234567" ng-model="thisPatient.phone" ng-pattern="/^[0-9]+$/" maxlength="10" required>
 								<span class="error text-small block" ng-if="editPatientForm.phoneNumber.$dirty && editPatientForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>
@@ -140,7 +140,7 @@
 							</label>
 							<input type="password" placeholder="Enter new password" class="form-control" name="password" ng-model="thisPatient.pssword" maxlength="24" minlength="8" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" />
 							<span class="help-block"><i class="ti-info-alt text-primary"></i>   Password must be 8 to 24 characters, include a special character (cannot be '#'), a number (0-9), and an uppercase letter (A-Z).</span>
-							<span class="error text-small block" ng-if="editMyProfileForm.password.$invalid">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
+							<span class="error text-small block" ng-if="editPatientForm.password.$invalid">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
 						</div>
 
 						<!-- Password confirmation form input and validation -->
@@ -153,7 +153,7 @@
 
 						<div class="form-group" style="margin-top: 15px;">
 							<a class="btn btn-red" ui-sref="app.users.manage_users.manage_patients.view_profile" style="float: right">Cancel</a>
-							<button class="btn btn-primary" ng-click="open('sm')" ng-disabled=" editPatientForm.$invalid || thisPatient.pssword != thisPatient.confirmPassword" style="float: right; margin-right: 15px;">Save Changes</a>
+							<button class="btn btn-primary" ng-click="open('sm')" ng-disabled=" editPatientForm.$invalid || editPatientForm.$pristine || thisPatient.pssword != thisPatient.confirmPassword" style="float: right; margin-right: 15px;">Save Changes</a>
 						</div>
 
 					</fieldset>

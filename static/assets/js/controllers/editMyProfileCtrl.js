@@ -79,6 +79,7 @@
        templateUrl: 'modal1.html',
        controller: 'ModalInstanceCtrl',
        size: size,
+       backdrop: 'static',
        resolve: {
         chosenUser: function() {
           if(!$scope.thisUser.pssword) {

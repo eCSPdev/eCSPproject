@@ -67,6 +67,7 @@
        templateUrl: 'modal1.html',
        controller: 'ModalInstanceCtrl',
        size: size,
+       backdrop: 'static',
        resolve: { 
         chosenPatient: function() {
           return [$scope.thisPatient, $scope.temporaryPassword];

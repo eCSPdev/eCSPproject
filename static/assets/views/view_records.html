@@ -52,7 +52,7 @@
 						</thead>
 
 						<tbody>
-							<tr ng-repeat="patient in $data | orderBy:sortType:sortReverse | filter:recordSearch" ng-click="getPatientRecord(patient.patientid, patient.recordno, patient.username, patient.lastname, patient.firstname, patient.middlename)">
+							<tr ng-repeat="patient in $data | orderBy:sortType:sortReverse | filter:recordSearch" ng-click="getPatientRecord(patient.patientid, patient.recordno, patient.username, patient.lastname, patient.firstname, patient.middlename)" style="cursor:pointer;">
 								<td style="text-align:left;">{{ patient.recordno }}</td>
 								<td style="text-align:left;">{{ patient.lastname }}, {{ patient.firstname }} {{ patient.middlename }}</td>
 								<td style="text-align:center;">{{ patient.status }}</td>

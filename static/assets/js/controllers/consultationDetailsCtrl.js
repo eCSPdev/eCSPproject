@@ -289,6 +289,7 @@
     	var modalInstance = $uibModal.open({
     		templateUrl: 'modal_upload.html',
     		controller: 'ModalInstanceCtrl',
+            backdrop: 'static',
     		size: 'md'
        });
     }

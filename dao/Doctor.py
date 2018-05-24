@@ -107,7 +107,7 @@ class DoctorDAO:
             print("Connection closed.")
 
     def updateDoctorInfoByID(self, doctorid, licenseno, firstname, middlename, lastname, officename, phone, status,
-                             email):
+                             email, username, pssword):
         try:
 
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
@@ -119,10 +119,10 @@ class DoctorDAO:
                 cursor = self.conn.cursor()
                 query = "update doctor " \
                         "set licenseno=%s, firstname=%s, middlename=%s, lastname=%s, officename=%s, phone=%s, status=%s, " \
-                            "email=%s " \
+                            "email=%s , username=%s, pssword=%s" \
                         "where doctorid=%s;"
                 cursor.execute(query, ( licenseno, firstname, middlename, lastname, officename, phone, status,
-                                        email,  doctorid, ))
+                                        email, username, pssword, doctorid, ))
                 self.conn.commit()
                 return doctorid
             except Exception as e:
@@ -246,7 +246,7 @@ class DoctorDAO:
 
     def insertDoctorHistory(self, doctorid, licenseno, firstname, middlename, lastname,
                                         officename, phone, status, email, username, pssword,
-                                        street, aptno, city, st, country, zipcode, changesdate):
+                                        street, aptno, city, st, country, zipcode, dateofchanges):
         try:
             print("estoy en el try")
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
@@ -258,12 +258,12 @@ class DoctorDAO:
                 cursor = self.conn.cursor()
                 query = "insert into doctorhistory (doctorid, licenseno, firstname, middlename, lastname, "\
                                                 "phone, status, email, username, pssword,"\
-                                                "street, aptno, city, st, country, zipcode, changesdate)" \
+                                                "street, aptno, city, st, country, zipcode, dateofchanges)" \
                         "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
                         "returning historyid;"
                 cursor.execute(query, (doctorid, licenseno, firstname, middlename, lastname,
                                                 phone, status, email, username, pssword,
-                                                street, aptno, city, st, country, zipcode, changesdate,))
+                                                street, aptno, city, st, country, zipcode, dateofchanges,))
                 historyid = cursor.fetchone()[0]
                 print(historyid)
                 self.conn.commit()

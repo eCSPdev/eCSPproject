@@ -191,15 +191,15 @@ class DoctorHandler:
                     and street and city and country and zipcode and pssword:
 
                 dao.updateDoctorInfoByID(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
-                                         status, email)
+                                         status, email, username, pssword)
                 dao.updateDoctorAddress(doctorid, street, aptno, city, st, country, zipcode)
 
             #History
                 # changes_time = time.time()
-                changesdate = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
+                dateofchanges = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                 dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone,
                                         status, email, username, pssword, street, aptno, city, st, country, zipcode,
-                                        changesdate)
+                                        dateofchanges)
 
                 result = self.update_doctor_dict(doctorid, licenseno, firstname, middlename, lastname, officename,
                                                  phone, status, email, street, aptno, city, st, country, zipcode)

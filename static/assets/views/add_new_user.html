@@ -22,7 +22,7 @@
 						</legend>
 
 						<!-- User Type Selection -->
-						<div class="form-group" style="margin-bottom: 0px;">
+						<div class="form-group" style="margin-bottom: 0px;" ng-if="currentUser.role != 'Assistant'">
 							<label>User Role<span class="symbol required"></span></label>
 
 							<div class="radio clip-radio radio-primary" ng-init="newUser.role = 'patient'">
@@ -31,7 +31,7 @@
 									Patient
 								</label>
 								<input type="radio" id="rdAssistant" name="vertical2" value="assistant" ng-if="currentUser.role != 'Assistant'" ng-model="newUser.role">
-								<label for="rdAssistant" ng-if="currentUser.role != 'Assistant'">
+								<label for="rdAssistant">
 									Assistant
 								</label>
 							</div>
@@ -45,7 +45,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="newUser.firstname" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="newUser.firstname" ng-pattern="/^([a-zA-Z\s])+$/" required>
 							<span class="error text-small block" ng-if="addNewUserForm.firstName.$dirty && addNewUserForm.firstName.$invalid">Enter a valid first name.</span>
 						</div>
 
@@ -56,7 +56,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="newUser.middlename" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/">
+							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="newUser.middlename" ng-pattern="/^([a-zA-Z\s])+$/">
 							<span class="error text-small block" ng-if="addNewUserForm.middleName.$dirty && addNewUserForm.middleName.$invalid">Enter a valid middle name.</span>
 						</div>
 
@@ -65,7 +65,7 @@
 							<label class="control-label">
 								Last Name <span class="symbol required"></span>
 							</label>
-							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="newUser.lastname" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="newUser.lastname" ng-pattern="/^([a-zA-Z\s])+$/" required>
 							<span class="error text-small block" ng-if="addNewUserForm.lastName.$dirty && addNewUserForm.lastName.$invalid">Enter a valid last name.</span>
 						</div>
 
@@ -74,7 +74,7 @@
 							<label class="control-label">
 								Social Security Number (SSN) <span class="symbol required"></span>
 							</label>
-							<input type="password" name="ssn" class="form-control" placeholder="Enter social security number" ng-model="newUser.ssn" maxlength="9" ng-pattern="/^(\d{3}-?\d{2}-?\d{4}|XXX-XX-XXXX)$/" ssn-input required>
+							<input type="password" name="ssn" class="form-control" placeholder="Enter social security number (XXXXXXXXX)" ng-model="newUser.ssn" maxlength="9" ng-pattern="/^(\d{3}-?\d{2}-?\d{4}|XXX-XX-XXXX)$/" ssn-input required>
 							<span class="error text-small block" ng-if="addNewUserForm.ssn.$dirty && addNewUserForm.ssn.$invalid">Enter a valid social security number.</span>
 						</div>
 
@@ -129,7 +129,7 @@
 						<!-- Contact Information -->
 						<!-- Phone number form input and validation -->
 						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.phoneNumber.$invalid && !addNewUserForm.phoneNumber.$pristine, 'has-success':addNewUserForm.phoneNumber.$valid }">
-							<label for="form-field-mask-2">
+							<label>
 								Phone Number <span class="symbol required"></span>
 							</label>
 							<div class="input-group">
@@ -219,7 +219,7 @@
 							<label>
 								Temporary Password <span class="symbol required"></span>
 							</label>
-							<input type="password" placeholder="Enter a temporary password" class="form-control" name="password" ng-model="newUser.pssword" maxlength="24" minlength="8" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" required/>
+							<input type="password" placeholder="Enter a temporary password" class="form-control" name="password" ng-model="newUser.pssword" maxlength="24" minlength="8" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" required/>
 							<span class="help-block"><i class="ti-info-alt text-primary"></i>   Password must be 8 to 24 characters, include a special character (must not be '#'), a number (0-9), and an uppercase letter (A-Z).</span>
 							<span class="error text-small block" ng-if="addNewUserForm.password.$dirty && addNewUserForm.password.$invalid && addNewUserForm.password.$error.required">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
 						</div>

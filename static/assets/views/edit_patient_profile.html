@@ -24,7 +24,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="thisPatient.firstname" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="thisPatient.firstname" ng-pattern="/^([a-zA-Z\s])+$/" required>
 							<span class="error text-small block" ng-if="editPatientForm.firstName.$dirty && editPatientForm.firstName.$invalid">Enter a valid first name.</span>
 						</div>
 
@@ -35,7 +35,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="thisPatient.middlename" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/">
+							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="thisPatient.middlename" ng-pattern="/^([a-zA-Z\s])+$/">
 							<span class="error text-small block" ng-if="editPatientForm.middleName.$dirty && editPatientForm.middleName.$invalid">Enter a valid middle name.</span>
 						</div>
 
@@ -44,7 +44,7 @@
 							<label class="control-label">
 								Last Name <span class="symbol required"></span>
 							</label>
-							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="thisPatient.lastname" ng-pattern="/^([^0-9.~!@#$%&*()_+=;:?><,.]*)$/" required>
+							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="thisPatient.lastname" ng-pattern="/^([a-zA-Z\s])+$/" required>
 							<span class="error text-small block" ng-if="editPatientForm.lastName.$dirty && editPatientForm.lastName.$invalid">Enter a valid last name.</span>
 						</div>	
 
@@ -138,7 +138,7 @@
 							<label>
 								New Password
 							</label>
-							<input type="password" placeholder="Enter new password" class="form-control" name="password" ng-model="thisPatient.pssword" maxlength="24" minlength="8" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" />
+							<input type="password" placeholder="Enter new password" class="form-control" name="password" ng-model="thisPatient.pssword" maxlength="24" minlength="8" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" />
 							<span class="help-block"><i class="ti-info-alt text-primary"></i>   Password must be 8 to 24 characters, include a special character (cannot be '#'), a number (0-9), and an uppercase letter (A-Z).</span>
 							<span class="error text-small block" ng-if="editMyProfileForm.password.$invalid">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
 						</div>

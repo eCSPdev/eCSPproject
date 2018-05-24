@@ -290,12 +290,12 @@ class AssistantHandler:
                 return jsonify(Error="Unexpected attributes in update request"), 400
 
     def manageAssistantStatus(self, form, status):
-        print('estoy en el manageAssistantStatus')
+        print('Just entered manageAssistantStatus method')
         DoctorSign = form['username']
         dao = AssistantDAO()
         assistantid = form["assistantid"]
         assistant = dao.getAssistantByID(assistantid)
-        print ('Assistant : ', assistant)
+        print ('Assistant form: ', assistant)
         if not assistant:
             return jsonify(Error="Assistant not found."), 404
         else:
@@ -313,18 +313,19 @@ class AssistantHandler:
             country = assistant[14]
             zipcode = assistant[15]
             # changes_time = time.time()
-            print('status', status)
+            print('new status will be :', status)
             if status == True:
                 daysofgrace = None
                 deactivationdate = None
             else:
-                daysofgrace =  form['daysofgrace']
+                print("before setting daysofgrace")
+                daysofgrace =  0
                 print ('days of grace : ', daysofgrace)
                 date = datetime.now(timezone.utc).astimezone()#datetime.datetime.fromtimestamp(changes_time)
-                print('date', date)
+                print('actual date : ', date.strftime('%Y-%m-%d %H:%M:%S'))
                 #deactivationdate = (date + datetime.timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
                 deactivationdate = (date + timedelta(days=int(daysofgrace))).strftime('%Y-%m-%d %H:%M:%S')
-                print('deactivationdate : ', deactivationdate)
+                print('deactivationdate : ', deactivationdate.strftime('%Y-%m-%d %H:%M:%S'))
             dao.updateAssistantStatus(assistantid, status, deactivationdate, daysofgrace)
             # History
             changesdate = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')

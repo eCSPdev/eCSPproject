@@ -47,6 +47,7 @@
        templateUrl: 'modal1.html',
        controller: 'ModalInstanceCtrl',
        size: size,
+       backdrop: 'static',
        resolve: { 
         chosenAssistant: function() {
           return [$scope.thisAssistant, $scope.temporaryPassword];

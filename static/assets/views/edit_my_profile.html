@@ -61,11 +61,11 @@
 						<!-- Contact Information -->
 						<!-- Phone number form input and validation -->
 						<div class="form-group" ng-class="{ 'has-error': editMyProfileForm.phoneNumber.$invalid && !editMyProfileForm.phoneNumber.$pristine, 'has-success':editMyProfileForm.phoneNumber.$valid }">
-							<label for="form-field-mask-2">
+							<label>
 								Phone Number <span class="symbol required"></span>
 							</label>
 							<div class="input-group">
-								<input type="text" class="form-control" name="phoneNumber" placeholder="Ex. 7871234567" ng-model="thisUser.phone" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" maxlength="10" required>
+								<input type="text" class="form-control" name="phoneNumber" placeholder="Ex. 7871234567" ng-model="thisUser.phone" ng-pattern="/^[0-9]*$/" maxlength="10" required>
 								<span class="error text-small block" ng-if="editMyProfileForm.phoneNumber.$dirty && editMyProfileForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>
@@ -154,7 +154,7 @@
 
 						<div class="form-group" style="margin-top: 35px;">
 							<a class="btn btn-red" ui-sref="app.users.view_my_profile" style="float: right">Cancel</a>
-							<button class="btn btn-primary" ng-click="open('sm')" ng-disabled="editMyProfileForm.$invalid || thisUser.pssword != thisUser.confirmPassword" style="float:right;margin-right:15px;">Save Changes</a>
+							<button class="btn btn-primary" ng-click="open('sm')" ng-disabled="editMyProfileForm.$invalid || || editMyProfileForm.$pristine || thisUser.pssword != thisUser.confirmPassword" style="float:right;margin-right:15px;">Save Changes</a>
 						</div>
 
 					</fieldset>

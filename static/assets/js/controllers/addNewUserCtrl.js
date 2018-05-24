@@ -35,8 +35,8 @@
           $http.post('/Doctor/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.newUser)
           .then(function success(response) {
 
+            alert("New user added successfuly!");
             $scope.newUser = response.data;
-
             $state.go('app.users.manage_users.manage_patients');
 
           }, function error(response) {
@@ -53,15 +53,15 @@
           $http.post('/Assistant/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.newUser) 
           .then(function success(response) {
 
+            alert("New user added successfuly!");
             $scope.newUser = response.data;
-
             $state.go('app.users.manage_users.manage_patients');
 
           }, function error(response) {
               if(response.data && response.data.Error == 'Invalid Token') {
-              alert("Invalid credentials. Please login again.");
-              $state.go('login.signin');
-            }
+                alert("Invalid credentials. Please login again.");
+                $state.go('login.signin');
+              }
            });
         }
       }
@@ -70,13 +70,14 @@
       else
       {
 
-        $scope.newUser.role = 'patient';
+        //$scope.newUser.role = 'patient';
         
         /* HTTP POST Request: insertAssistant() */
         /* Create new assistant */
         $http.post('/Doctor/eCSP/AssistantList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.newUser) 
         .then(function success(response) {
 
+          alert("New user added successfuly!");
           $scope.newUser = response.data;
           $state.go('app.users.manage_users.manage_assistants');
 

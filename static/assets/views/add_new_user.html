@@ -17,8 +17,12 @@
 			<div class="row">
 				<div class="col-md-offset-2 col-md-8">
 					<fieldset>
-						<legend>
+						<legend ng-if="currentUser.role == 'Doctor'">
 							Add New User
+						</legend>
+
+						<legend ng-if="currentUser.role == 'Assistant'">
+							Add New Patient
 						</legend>
 
 						<!-- User Type Selection -->
@@ -70,7 +74,7 @@
 						</div>
 
 						<!-- Social security number form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.ssn.$invalid && !addNewUserForm.ssn.$pristine, 'has-success':addNewUserForm.ssn.$valid }">
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.ssn.$invalid && !addNewUserForm.ssn.$pristine, 'has-success':addNewUserForm.ssn.$valid }" ng-if="newUser.role == 'patient'">
 							<label class="control-label">
 								Social Security Number (SSN) <span class="symbol required"></span>
 							</label>
@@ -133,7 +137,7 @@
 								Phone Number <span class="symbol required"></span>
 							</label>
 							<div class="input-group">
-								<input type="text" class="form-control" name="phoneNumber" placeholder="Ex. 7871234567" ng-model="newUser.phone" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" maxlength="10" required>
+								<input type="text" class="form-control" name="phoneNumber" placeholder="Ex. 7871234567" ng-model="newUser.phone" ng-pattern="/^[0-9]+$/" maxlength="10" required>
 								<span class="error text-small block" ng-if="addNewUserForm.phoneNumber.$dirty && addNewUserForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>

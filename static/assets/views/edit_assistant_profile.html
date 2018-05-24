@@ -55,7 +55,7 @@
 								Phone Number <span class="symbol required"></span>
 							</label>
 							<div class="input-group">
-								<input type="text" class="form-control" name="phoneNumber" placeholder="Ex. 7871234567" ng-model="thisAssistant.phone" ng-pattern="/^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$|(^\d{10}$)/" maxlength="10" required>
+								<input type="text" class="form-control" name="phoneNumber" placeholder="Ex. 7871234567" ng-model="thisAssistant.phone" ng-pattern="/^[0-9]+$/" maxlength="10" required>
 								<span class="error text-small block" ng-if="editAssistantForm.phoneNumber.$dirty && editAssistantForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>
@@ -153,7 +153,7 @@
 
 						<div class="form-group" style="margin-top: 15px;">
 							<a class="btn btn-red" ui-sref="app.users.manage_users.manage_assistants.view_profile" style="float: right">Cancel</a>
-							<button class="btn btn-primary" ng-click="open('sm')" ng-disabled=" editAssistantForm.$invalid || thisAssistant.pssword != thisAssistant.confirmPassword" style="float: right; margin-right: 15px;">Save Changes</a>
+							<button class="btn btn-primary" ng-click="open('sm')" ng-disabled=" editAssistantForm.$invalid || || editAssistantForm.$pristine || thisAssistant.pssword != thisAssistant.confirmPassword" style="float: right; margin-right: 15px;">Save Changes</a>
 						</div>
 
 					</fieldset>

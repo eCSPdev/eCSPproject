@@ -44,7 +44,7 @@
 						</thead>
 
 						<tbody>
-							<tr ng-repeat="consultation in $data | orderBy:sortType:sortReverse | filter:consultationSearch" ng-click="getPatientConsultation(consultation.month, consultation.year)">
+							<tr ng-repeat="consultation in $data | orderBy:sortType:sortReverse | filter:consultationSearch" ng-click="getPatientConsultation(consultation.month, consultation.year)" style="cursor:pointer;">
 								<td> <i class="fa fa-folder" style="margin-right: 5px;"></i> {{ consultation.monthName }} {{ consultation.year }}</td>
 							</tr>
 						</tbody>

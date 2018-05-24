@@ -8,7 +8,7 @@
 
   	/* Token to determine if a user is logged in */
   	$rootScope.isLoggedIn = false;
-
+    
     /* Variable used to store username, token, and role of logged in user */
     $rootScope.currentUser = {};
 
@@ -19,7 +19,6 @@
         /* Patient login */
         $http.get('/Patient/eCSP/Login?username=' + username + '&pssword=' + password)
         .then(function success(response) {
-
           
           $rootScope.currentUser.username = response.data.Patient.username;
           $rootScope.currentUser.token = response.data.Patient.token;

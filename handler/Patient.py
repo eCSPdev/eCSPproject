@@ -354,6 +354,8 @@ class PatientHandler:
 
 
     def insertPatient(self, form):
+
+            print("estoy añadiendo un paciente : ", form)
             firstname = form['firstname']
             middlename = form['middlename']
             lastname = form['lastname']
@@ -379,7 +381,7 @@ class PatientHandler:
             if firstname and lastname and ssn and birthdate and phone and username and pssword\
                     and street and city and country and zipcode \
                     and rle and recordno:
-
+                print("pase el primer if")
                 dao = PatientsDAO()
                 doctordao = DoctorDAO()
                 assistantdao = AssistantDAO()
@@ -388,7 +390,7 @@ class PatientHandler:
                 existantpatient_list = dao.verifyPatient(firstname, middlename, lastname, ssn, birthdate)
                 #no patient exist with this information
                 if not existantpatient_list:
-
+                    print("paciente no existe, puedo añadirlo")
                     #verify if the record number is already taken
                     if dao.getMedicalRecordByRecordno(recordno) == None:
 
@@ -396,6 +398,7 @@ class PatientHandler:
                         if dao.verifyUsername(username) == None \
                                 and doctordao.verifyUsername(username) == None \
                                 and assistantdao.verifyUsername(username) == None:
+                            print("username y record son unicos")
                             # patientid = uuid.uuid4()
                             #record number and username is not taken yet, Patient can be inserted
                             patientid = dao.insertPatientInfo(firstname, middlename, lastname, ssn, birthdate, gender, phone,
@@ -420,6 +423,7 @@ class PatientHandler:
 
                         #username already exist
                         else:
+                            print("Username is already taken.")
                             return jsonify(Error="Username is already taken.")
 
                     #record number already taken
@@ -428,11 +432,12 @@ class PatientHandler:
                         #get patient info with this record number
                         patient = dao.getPatientByRecordno(recordno)
                         result = self.patient_byrecordno_dict(patient)
+                        print("Record Number is already taken.")
                         return jsonify(Error="Record Number is already taken.", Patient=result)
 
                 #a patient with this info already exists
                 else:
-
+                    print("A Patient with this information already exist.")
                     #return patient or patients with this critical information
                     result_list = []
                     for row in existantpatient_list:

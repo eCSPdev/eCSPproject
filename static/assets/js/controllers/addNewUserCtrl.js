@@ -81,6 +81,8 @@
             }
 
             alert("New patient added successfuly!");
+            $rootScope.deactivatePatientCount++;
+            $rootScope.activatePatientCount++;
             $scope.newUser = response.data;
             $state.go('app.users.manage_users.manage_patients');
 
@@ -123,6 +125,8 @@
             }
 
             alert("New patient added successfuly!");
+            $rootScope.deactivatePatientCount++;
+            $rootScope.activatePatientCount++;
             $scope.newUser = response.data;
             $state.go('app.users.manage_users.manage_patients');
 
@@ -160,6 +164,8 @@
 
           alert("New assistant added successfuly!");
           $scope.newUser = response.data;
+          $rootScope.deactivateAssistantCount++;
+          $rootScope.activateAssistantCount++;
           $state.go('app.users.manage_users.manage_assistants');
 
         }, function error(response) {

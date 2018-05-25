@@ -12,6 +12,7 @@ import logging
 
 class ConsultationNotesHandler:
 
+    #### List of Consultation Notes Diccionary ####
     def build_consultationnoteslist_dict(self,row):
         result = {}
         print(row)
@@ -24,6 +25,7 @@ class ConsultationNotesHandler:
         result['recordno'] = row[6]
         return result
 
+    #### Consultation Notes Insert Diccionary ####
     def build_cninsert_dict(self, consultationnoteid, filename, assistantusername, doctorusername,
                                                       dateofupload, patientid, recordno):
         result = {}
@@ -36,12 +38,14 @@ class ConsultationNotesHandler:
         result['recordno'] = recordno
         return result
 
+    #### List of Consultation Notes Dates ####
     def build_cndates_dict(self, row):
         result = {}
         result['year'] = row[0]
         result['month'] = row[1]
         return result
 
+    #### Files List Diccionary ####
     def build_fileslist_dict(self,row):
         result = {}
         print(row)
@@ -59,11 +63,15 @@ class ConsultationNotesHandler:
         result['recordno'] = row[7]
         return result
 
+    #### File Link Diccionary ####
     def build_link_dict(self, link):
         result = {}
         result['filelink'] = link
         return link
 
+    ### Get Patient Consultation Notes By Patient ID
+    # Parameters:   args - requested parameters
+    # Return:   Error
     def getPatientConsultationNotes(self, args):
         print('estoy en el CN List')
         pid = args.get("patientid")
@@ -77,6 +85,9 @@ class ConsultationNotesHandler:
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
         return jsonify(ConsultationNotes=result_list)
 
+    ### Get Patient Consultation Notes By Patient ID and COnsultation Note ID
+    # Parameters:   args - requested parameters
+    # Return:   Error
     def getConsultationNotesByID(self, args):
         pid = args.get("patientid")
         nid = args.get("consultationnoteid")
@@ -88,6 +99,9 @@ class ConsultationNotesHandler:
             result = self.build_consultationnoteslist_dict(row[0])
             return jsonify(ConsultatioNote=result)
 
+    ### Insert Consultation Notes By Patient ID
+    # Parameters:   args - requested parameters
+    # Return:   Error
     def insertConsultationNotes(self, args, file):
         dao = ConsultationNotesDAO()
 
@@ -136,6 +150,9 @@ class ConsultationNotesHandler:
         else:
             return jsonify(Error="Unexpected attributes in insert request"), 400
 
+    ### Get Files Dates By Patient ID
+    # Parameters:   args - requested parameters
+    # Return:   Error
     def getFilesDates(self, args):
         print('estoy en el CN Dates')
         pid = args.get("patientid")
@@ -149,6 +166,9 @@ class ConsultationNotesHandler:
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
         return jsonify(FilesDates=result_list)
 
+    ### Get Patient Files By Patient ID
+    # Parameters:   args - requested parameters
+    # Return:   Error Assistant don exist
     def getPatientFiles(self, args):
         print('estoy en los Files')
         pid = args.get("patientid")
@@ -165,6 +185,9 @@ class ConsultationNotesHandler:
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
         return jsonify(FilesList=result_list)
 
+    ### Get Download File By Patient ID
+    # Parameters:   args - requested parameters
+    # Return:   Error Assistant don exist
     def getDownloadFile(self, args):
 
         # logging.debug('DEBUG : ESTOY EN METODO DOWNLOAD FILES')

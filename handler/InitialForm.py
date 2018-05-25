@@ -5,6 +5,7 @@ from dao.s3connection import s3Connection
 from datetime import datetime, timezone
 class InitialFormHandler:
 
+    #### List of Initial Form Diccionary ####
     def build_initialformlist_dict(self,row):
         result = {}
         result['initialformid'] = row[0]
@@ -15,6 +16,7 @@ class InitialFormHandler:
         result['patientid'] = row[5]
         return result
 
+    #### Insert Initial Form Diccionary ####
     def build_ifinsert_dict(self, initialformid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno):
         result = {}
         result['initialformid'] = initialformid
@@ -26,12 +28,16 @@ class InitialFormHandler:
         result['recordno'] = recordno
         return result
 
+    #### List of Initial Form Dates Diccionary ####
     def build_ifdates_dict(self, row):
         result = {}
         result['year'] = row[0]
         result['month'] = row[1]
         return result
 
+    ### Get Patient Initial Form By Patient ID
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getPatientInitialForm(self, args):
         pid = args.get("patientid")
         dao = InitialFormDAO()
@@ -44,6 +50,9 @@ class InitialFormHandler:
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
         return jsonify(InitialForm=result_list)
 
+    ### Get Patient Initial Form By Patient ID and Initial Form ID
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getInitialFormByID(self, args):
         pid = args.get("patientid")
         nid = args.get("initialformid")
@@ -55,6 +64,9 @@ class InitialFormHandler:
             result = self.build_initialformlist_dict(row[0])
             return jsonify(ConsultatioNote=result)
 
+    ### Insert Initial form
+    # Parameters:   args - requested parameters
+    # Return:  Json or Error
     def insertInitialForm(self, args, file):
         dao = InitialFormDAO()
         # filepath = file  # this is the file to insert
@@ -95,7 +107,9 @@ class InitialFormHandler:
                 return jsonify(Error="Record Number does not exist.", RecordNo=recordno), 400
         else:
             return jsonify(Error="Unexpected attributes in insert request"), 400
-
+    ### Get Initial Form Dates
+    # Parameters:   args - requested parameters
+    # Return:  Json or Error
     def getInitialFormDates(self, args):
         print('estoy en el IF Dates')
         pid = args.get("patientid")

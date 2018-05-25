@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 ## Coralis Camacho##
 class DoctorHandler:
 
+    #### Doctor List Diccionary ####
     def build_doctorlist_dict(self,row):
         result = {}
         result['doctorid'] = row[0]
@@ -24,7 +25,7 @@ class DoctorHandler:
         result['pssword'] = row[10]
         return result
 
-
+    #### Doctor Information Diccionary ####
     def build_doctorinformation_dict(self,row):
         result = {}
         result['doctorid'] = row[0]
@@ -47,6 +48,7 @@ class DoctorHandler:
         result['zipcode'] = row[17]
         return result
 
+    #### Update Doctor Diccionary ####
     def update_doctor_dict(self,doctorid, licenseno, firstname, middlename, lastname, officename, phone, status,
                                  email, street, aptno, city, st, country, zipcode):
         result = {}
@@ -67,6 +69,7 @@ class DoctorHandler:
         result['zipcode'] = zipcode
         return result
 
+    #### Doctor History Diccionary ####
     def build_doctorhistory_dict(self, doctorid, licenseno, firstname, middlename, lastname, officename, phone, status,
                                  email, username, pssword, street, aptno, city, st, country, zipcode):
         result = {}
@@ -89,6 +92,7 @@ class DoctorHandler:
         result['zipcode'] = zipcode
         return result
 
+    #### New Doctor Diccionary ####
     def new_doctor_dict(self, doctorid, firstname, middlename, lastname, officename, phone, status, email,
                            username, pssword, addressid, street, aptno, city, st, country, zipcode):
         result = {}
@@ -111,6 +115,7 @@ class DoctorHandler:
         result['zipcode'] = zipcode
         return result
 
+    #### Validate Doctor Diccionary ####
     def verify_existantdoctor_dict(self, row):
         result = {}
         result['doctorid'] = row[0]
@@ -132,11 +137,13 @@ class DoctorHandler:
         result['zipcode'] = row[16]
         return result
 
+    #### Update Doctor Password Diccionary ###
     def update_doctor_pssword_dict(self, row):
         result = {}
         result['doctorid'] = row[0]
         return result
 
+    ### List of all Doctors
     def getAllDoctor(self):
         dao = DoctorDAO()
         result = dao.getAllDoctor()
@@ -145,6 +152,9 @@ class DoctorHandler:
             result_list.append(self.build_doctorlist_dict(row))
         return jsonify(Doctor=result_list)
 
+    ### Get Doctor by Doctor ID
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getDoctorByID(self, args):
         doctorid = args.get("doctorid")
         dao = DoctorDAO()
@@ -155,6 +165,9 @@ class DoctorHandler:
             doctor = self.build_doctorinformation_dict(row)
             return jsonify(Doctor = doctor)
 
+    ### Update Doctor information
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def updateDoctorInformation(self,form):
         print ('Estoy en el update patient info')
         print('Este es el form que me enviaron: ', form)
@@ -208,7 +221,9 @@ class DoctorHandler:
                 return jsonify(Error="Unexpected attributes in update request"), 400
 
 
-
+    ### insert Doctor
+    # Parameters:   form - requested parameters
+    # Return:   Json or Error
     def insertDoctor(self, form):
         licenseno = form['licenseno']
         firstname = form['firstname']
@@ -281,6 +296,9 @@ class DoctorHandler:
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
+    ### Update Doctor Password
+    # Parameters:   form - requested parameters
+    # Return:   Json or Error
     def updateDoctorPssword(self, form):
         dao = DoctorDAO()
         doctorid = form["doctorid"]
@@ -295,35 +313,3 @@ class DoctorHandler:
             else:
                 return jsonify(Error="Unexpected attributes in update request"), 400
 
-########## Doctor History #############
-#Para hacerle insert al history del Doctor
-
-    def insertDoctorHistory(self, form):
-        dao = DoctorDAO()
-        doctorid = form['doctorid']
-        licenseno = form['liceseno']
-        firstname = form['firstname']
-        middlename = form['middlename']
-        lastname = form['lastname']
-        officename = form['officename']
-        phone = form['phone']
-        status = form['status']
-        email = form['email']
-        username = form['username']
-        pssword = form['pssword']
-        street = form['street']
-        aptno = form['aptno']
-        city = form['city']
-        st = form['st']
-        country = form['country']
-        zipcode = form['zipcode']
-        if doctorid and licenseno and firstname and lastname and officename and phone and status and username and \
-                pssword and street and city and country and zipcode:
-            dao.insertDoctorHistory(doctorid, licenseno, firstname, middlename, lastname, officename, phone, status,
-                                    email, username, pssword, street, aptno, city, st, country, zipcode)
-            result = self.build_doctorhistory_dict(doctorid, licenseno, firstname, middlename, lastname, officename,
-                                                   phone, status, email, username, pssword, street, aptno, city, st,
-                                                   country, zipcode)
-            return jsonify(History = result), 201 #Verificar porque 201
-        else:
-            return jsonify(Error="Unexpected attributes in insert request"), 400

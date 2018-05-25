@@ -5,6 +5,7 @@ from dao.s3connection import s3Connection
 from datetime import datetime, timezone
 class PrescriptionHandler:
 
+    #### List of Prescription Diccionary ####
     def build_prescriptionlist_dict(self,row):
         result = {}
         result['prescriptionid'] = row[0]
@@ -15,6 +16,7 @@ class PrescriptionHandler:
         result['patientid'] = row[5]
         return result
 
+    #### Prescription insert Diccionary ####
     def build_presinsert_dict(self, prescriptionid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno):
         result = {}
         result['prescriptionid'] = prescriptionid
@@ -26,12 +28,16 @@ class PrescriptionHandler:
         result['recordno'] = recordno
         return result
 
+    #### List of Prescription Dates Diccionary ####
     def build_pdates_dict(self, row):
         result = {}
         result['year'] = row[0]
         result['month'] = row[1]
         return result
 
+    ### Get Patient Prescriptions By Patient ID
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getPatientPrescription(self, args):
         pid = args.get("patientid")
         dao = PrescriptionDAO()
@@ -44,6 +50,9 @@ class PrescriptionHandler:
             result_list.append(result) #mapToDict() turns returned array of arrays to an array of maps
         return jsonify(Prescription=result_list)
 
+    ### Get Prescription Form By Patient ID and Prescription ID
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getPrescriptionByID(self, args):
         pid = args.get("patientid")
         preid = args.get("prescriptionid")
@@ -55,6 +64,9 @@ class PrescriptionHandler:
             result = self.build_prescriptionlist_dict(row[0])
             return jsonify(Prescription=result)
 
+    ### Insert Prescription
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def insertPrescription(self, args, file):
         dao = PrescriptionDAO()
         # filepath = file  # this is the file to insert
@@ -97,6 +109,9 @@ class PrescriptionHandler:
         else:
             return jsonify(Error="Unexpected attributes in insert request"), 400
 
+    ### Get Prescriptions Dates
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getPrescriptionDates(self, args):
         print('estoy en el Pres Dates')
         pid = args.get("patientid")

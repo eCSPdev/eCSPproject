@@ -10,6 +10,7 @@ import uuid
 ## Luis Santiago ##
 class PatientHandler:
 
+    #### Patient List Diccionary ####
     def build_patientlist_dict(self, row):
         result = {}
         result['patientid'] = row[0]
@@ -33,6 +34,7 @@ class PatientHandler:
         # result['initialformid'] = row[18]
         return result
 
+    #### Patient Information Diccionary ####
     def build_patientinfo_dict(self, row):
         print('row')
         print(row)
@@ -65,6 +67,7 @@ class PatientHandler:
         # result['initialformid'] = row[25]
         return result
 
+    #### Update Patient Diccionary ####
     def update_patient_dict(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone, status,
                             email, insurancecompanyname, street, aptno, city, st, country, zipcode):
         result = {}
@@ -87,6 +90,7 @@ class PatientHandler:
         result['zipcode'] = zipcode
         return result
 
+    #### New Patient Diccionary ####
     def new_patient_dict(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                          email, username, pssword, addressid, street, aptno, city, st, country, zipcode,
                          insurancecompanyname, recordno):
@@ -113,6 +117,7 @@ class PatientHandler:
         result['recordno'] = recordno
         return result
 
+    #### Validate Patient Diccionary ####
     def verify_existantpatient_dict(self, row):
         result = {}
         result['patientid'] = row[0]
@@ -168,11 +173,14 @@ class PatientHandler:
         # result['initialformid'] = row[25]
         return result
 
+    #### Update Patient Password Diccionary ####
     def update_patient_pssword_dict(self, row):
         result = {}
         result['patientid'] = row[0]
         return result
 
+    #### Get all Patient Diccionary ####
+    # Return:  Json or Error
     def getAllPatients(self):
         dao = PatientsDAO()
         patient_list = dao.getAllPatients()
@@ -182,6 +190,9 @@ class PatientHandler:
             result_list.append(self.build_patientlist_dict(row)) #mapToDict() turns returned array of arrays to an array of maps
         return jsonify(Patient=result_list)
 
+    ### Get Patient by Patient ID
+    # Parameters:   args - requested parameters
+    # Return:  Json or Error
     def getPatientByID(self, args):
         pid = args.get("patientid")
         dao = PatientsDAO()
@@ -192,6 +203,9 @@ class PatientHandler:
             patient = self.build_patientinfo_dict(row) #mapToDict() turns returned array of arrays to an array of maps
             return jsonify(Patient=patient)
 
+    ### To get patient token
+    # Parameters:   patientid
+    # Return:  Json or Error
     def getPatientToken(self, patientid):
 
         dao = PatientsDAO()
@@ -269,6 +283,9 @@ class PatientHandler:
                 print("Unexpected attributes in update request")
                 return jsonify(Error="Unexpected attributes in update request"), 400
 
+    ### Update Patient Password
+    # Parameters:   form - requested parameters
+    # Return:  Json or Error
     def updatePatientPssword(self, form):
         dao = PatientsDAO()
         patientid = form["patientid"]
@@ -283,6 +300,11 @@ class PatientHandler:
             else:
                 return jsonify(Error="Unexpected attributes in update request"), 400
 
+    ### Manage Patient Status
+    # Parameters:   form - requested parameters
+    #               path - requested path
+    #               status - actual status
+    # Return:  Json or Error
     def managePatientStatus(self, form, path, status):
         print ('iniciando manage patient status')
         # A-adido
@@ -352,7 +374,9 @@ class PatientHandler:
             return jsonify(Assistant=result), 200
 
 
-
+    ### Insert Patient
+    # Parameters:   form - requested parameters
+    # Return:  Json or Error
     def insertPatient(self, form):
 
             print("estoy añadiendo un paciente : ", form)

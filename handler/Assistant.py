@@ -180,6 +180,7 @@ class AssistantHandler:
                         and patientdao.verifyUsername(username) == None \
                         and doctordao.verifyUsername(username) == None:
 
+                    print("username es valido y unico")
                     # assistantid = uuid.uuid4()
                     # license number and username is not taken yet, Doctor can be inserted
                     assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone, email, username, pssword)
@@ -193,13 +194,16 @@ class AssistantHandler:
 
                     result = self.new_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
                                                      email, username, pssword, addressid, street, aptno, city, st, country, zipcode)
+                    print("Assistant added correctly")
                     return jsonify(Success="Assistant added correctly", Assistant=result), 201
                     # return jsonify(Success="Assistant added correctly")
                 # username already exist
                 else:
+                    print("Username is already taken.")
                     return jsonify(Error="Username is already taken.")
             # a patient with this info already exists
             else:
+                print("A Patient with this information already exist.")
                 # return doctor or doctors with this critical information
                 result_list = []
                 for row in existantassistant_list:

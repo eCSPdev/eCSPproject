@@ -72,6 +72,7 @@
       }
     }
 
+
   	// open() Function Definition
     $scope.open = function (size) {
 
@@ -82,10 +83,7 @@
        backdrop: 'static',
        resolve: {
         chosenUser: function() {
-          if(!$scope.thisUser.pssword) {
-            $scope.thisUser.pssword = $scope.temporaryPassword;
-          }
-          return $scope.thisUser;
+          return [$scope.thisUser, $scope.temporaryPassword];
         }
       }
     }).result.catch(function(res) {
@@ -104,9 +102,15 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
     $scope.thisUser = chosenUser;
 
-    console.log($scope.thisUser);
     if($rootScope.currentUser.role == 'Doctor')
     {
+
+       $scope.thisUser = chosenUser[0];
+
+      if(!$scope.thisUser.pssword) {
+        $scope.thisUser.pssword = chosenUser[1];
+      }
+
       /* HTTP PUT Request: getDoctorByID() */
       /* Update doctor personal information */
       $http.put('/Doctor/eCSP/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisUser) 
@@ -130,6 +134,13 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
     else if($rootScope.currentUser.role == 'Assistant')
     {
+
+       $scope.thisUser = chosenUser[0];
+
+      if(!$scope.thisUser.pssword) {
+        $scope.thisUser.pssword = chosenUser[1];
+      }
+
       /* HTTP PUT Request: getAssistantByID() */
       /* Update assistant personal information */
       $http.put('/Assistant/eCSP/PersonalInformation?assistantid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisUser) 
@@ -153,6 +164,13 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 
     else 
     {
+
+       $scope.thisUser = chosenUser[0];
+
+      if(!$scope.thisUser.pssword) {
+        $scope.thisUser.pssword = chosenUser[1];
+      }
+      
       /* HTTP PUT Request: getPatientByID() */
       /* Update patient personal information */
       $http.put('/Patient/eCSP/PersonalInformation?patientid=' + $rootScope.currentUser.userid + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.thisUser) 

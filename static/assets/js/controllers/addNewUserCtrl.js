@@ -24,6 +24,8 @@
     $scope.newUser.email = "";
     $scope.newUser.status = true;
 
+    $scope.tempBirthdate = '';
+
     if($rootScope.currentUser.role == 'Assistant') {
       $scope.newUser.role = 'patient';
     }
@@ -40,6 +42,7 @@
       }
 
       // Save as date
+      $scope.tempBirthdate = $scope.newUser.birthdate;
       $scope.newUser.birthdate = birthdate;
 
       // Create (INSERT) new patient
@@ -51,9 +54,27 @@
           $http.post('/Doctor/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.newUser)
           .then(function success(response) {
 
-            console.log(response);
+            if(response.data && response.data.Error == 'A Patient with this information already exist.') {
+              alert("A patient with this information exists. Please try again.");
+              $scope.newUser.birthdate = $scope.tempBirthdate;
+              return;
+            }
 
-            alert("New user added successfuly!");
+            else if(response.data && response.data.Error == 'Username is already taken.') {
+              alert("Username is already taken. Please try again.");
+              $scope.newUser.username = '';
+              $scope.newUser.birthdate = $scope.tempBirthdate;
+              return;
+            }
+
+            else if(response.data && response.data.Error == 'Record Number is already taken.') {
+              alert("Record number already exists. Please try again.");
+              $scope.newUser.recordno == '';
+              $scope.newUser.birthdate = $scope.tempBirthdate;
+              return;
+            }
+
+            alert("New patient added successfuly!");
             $scope.newUser = response.data;
             $state.go('app.users.manage_users.manage_patients');
 
@@ -66,23 +87,6 @@
               $state.go('login.signin');
             }
 
-            else if(response.data && response.data.Error == 'Username is already taken.') {
-              alert("Username is already taken. Please try again.");
-              $scope.newUser.username = '';
-            }
-
-            else if(response.data && response.data.Error == 'Record Number is already taken.') {
-              alert("Record number already exists. Please try again.");
-              $scope.newUser.recordno == '';
-            }
-
-            else if(response.data && response.data.Error == 'A Patient with this information already exist.') {
-              alert("A patient with this information exists. Please try again.");
-
-            }
-
-            return;
-
           });
         }
 
@@ -91,11 +95,28 @@
           /* Create new patient */
           $http.post('/Assistant/eCSP/PatientList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.newUser) 
           .then(function success(response) {
-
             
-            console.log(response);
+            if(response.data && response.data.Error == 'A Patient with this information already exist.') {
+              alert("A patient with this information exists. Please try again.");
+              $scope.newUser.birthdate = $scope.tempBirthdate;
+              return;
+            }
 
-            alert("New user added successfuly!");
+            else if(response.data && response.data.Error == 'Username is already taken.') {
+              alert("Username is already taken. Please try again.");
+              $scope.newUser.username = '';
+              $scope.newUser.birthdate = $scope.tempBirthdate;
+              return;
+            }
+
+            else if(response.data && response.data.Error == 'Record Number is already taken.') {
+              alert("Record number already exists. Please try again.");
+              $scope.newUser.recordno == '';
+              $scope.newUser.birthdate = $scope.tempBirthdate;
+              return;
+            }
+
+            alert("New patient added successfuly!");
             $scope.newUser = response.data;
             $state.go('app.users.manage_users.manage_patients');
 
@@ -104,23 +125,6 @@
                 alert("Invalid credentials. Please login again.");
                 $state.go('login.signin');
               }
-
-              else if(response.data && response.data.Error == 'Username is already taken.') {
-              alert("Username is already taken. Please try again.");
-              $scope.newUser.username = '';
-            }
-
-              else if(response.data && response.data.Error == 'Record Number is already taken.') {
-                alert("Record number already exists. Please try again.");
-                $scope.newUser.recordno == '';
-              }
-
-              else if(response.data && response.data.Error == 'A Patient with this information already exist.') {
-              alert("A patient with this information exists. Please try again.");
-
-            }
-
-            return;
 
            });
         }
@@ -135,7 +139,20 @@
         $http.post('/Doctor/eCSP/AssistantList?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token, $scope.newUser) 
         .then(function success(response) {
 
-          alert("New user added successfuly!");
+          if(response.data && response.data.Error == 'A Assistant with this information already exist.') {
+              alert("An assistant with this information exists. Please try again.");
+              $scope.newUser.birthdate = $scope.tempBirthdate;
+              return;
+           }
+
+          if(response.data && response.data.Error == 'Username is already taken.') {
+              alert("Username is already taken. Please try again.");
+              $scope.newUser.username = '';
+              $scope.newUser.birthdate = $scope.tempBirthdate;
+              return;
+          }
+
+          alert("New assistant added successfuly!");
           $scope.newUser = response.data;
           $state.go('app.users.manage_users.manage_assistants');
 
@@ -145,17 +162,6 @@
               $state.go('login.signin');
             }
 
-            else if(response.data && response.data.Error == 'Username is already taken.') {
-              alert("Username is already taken. Please try again.");
-              $scope.newUser.username = '';
-            }
-
-            else if(response.data && response.data.Error == 'A Assistant with this information already exist.') {
-              alert("An assistant with this information exists. Please try again.");
-
-            }
-
-            return;
          });
       }
 

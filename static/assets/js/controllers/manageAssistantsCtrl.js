@@ -135,9 +135,11 @@
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenAssistant", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenAssistant) {
 
-    // $scope.daysofgrace = '30';
+  // $route.reload();
 
 	$scope.changeStatus = function(button) {
+
+    console.log('Changing status');
 
 		if(button == 'activate') {
 			$http.put('/Doctor/eCSP/Assistant/Activate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + chosenAssistant)
@@ -152,6 +154,10 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 		}
 
 		else if(button == 'deactivate') {
+
+      console.log('Deactivating here');
+      console.log(chosenAssistant);
+
 			$http.put('/Doctor/eCSP/Assistant/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + chosenAssistant)
 			.then(function success(response) { 
 				$state.reload();
@@ -167,7 +173,8 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 	};
 
   $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
+    console.log('Canceled');
+    $uibModalInstance.close(true);
   };
 
 }]);

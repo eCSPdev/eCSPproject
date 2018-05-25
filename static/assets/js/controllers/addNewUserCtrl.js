@@ -88,7 +88,6 @@
 
           }, function error(response) {
 
-            console.log(response);
 
             if(response.data && response.data.Error == 'Invalid Token') {
               alert("Invalid credentials. Please login again.");

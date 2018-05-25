@@ -43,7 +43,7 @@
 
       var modalInstance = $uibModal.open({
        templateUrl: 'modal1.html',
-       controller: 'ModalInstanceCtrl',
+       controller: 'EditAssistantModalInstanceCtrl',
        size: size,
        backdrop: 'static',
        resolve: { 
@@ -61,7 +61,7 @@
 }]);
 
 // Popup/Modal Controller
-app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "chosenAssistant", "$uibModalInstance", function ($scope, $rootScope, $state, $http, chosenAssistant, $uibModalInstance) {
+app.controller('EditAssistantModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "chosenAssistant", "$uibModalInstance", function ($scope, $rootScope, $state, $http, chosenAssistant, $uibModalInstance) {
 
 	$scope.ok = function () {
 

@@ -96,7 +96,7 @@
       if($rootScope.activateAssistantCount == 0) {
        var modalInstance = $uibModal.open({
         templateUrl: 'modal_activate.html',
-        controller: 'ModalInstanceCtrl',
+        controller: 'AssistantModalInstanceCtrl',
         size: size,
         backdrop: 'static',
         resolve: {
@@ -116,7 +116,7 @@
   else {
     var modalInstance = $uibModal.open({
       templateUrl: 'modal_activate.html',
-      controller: 'ModalInstanceCountCtrl',
+      controller: 'AssistantModalInstanceCountCtrl',
       size: size,
       backdrop: 'static',
       resolve: {
@@ -138,7 +138,7 @@
       if($rootScope.deactivateAssistantCount == 0) {
         var modalInstance = $uibModal.open({
           templateUrl: 'modal_deactivate.html',
-          controller: 'ModalInstanceCtrl',
+          controller: 'AssistantModalInstanceCtrl',
           size: size,
           backdrop: 'static',
           resolve: {
@@ -158,7 +158,7 @@
       else {
         var modalInstance = $uibModal.open({
           templateUrl: 'modal_deactivate.html',
-          controller: 'ModalInstanceCountCtrl',
+          controller: 'AssistantModalInstanceCountCtrl',
           size: size,
           backdrop: 'static',
           resolve: {
@@ -179,10 +179,7 @@
 
 
 // Popup/Modal Controller
-app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenAssistant", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenAssistant) {
-
-  // $route.reload();
-  // var vm = this;
+app.controller('AssistantModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenAssistant", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenAssistant) {
 
   $scope.changeStatus = function(button) {
 
@@ -222,10 +219,8 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 }]);
 
 // Popup/Modal Controller
-app.controller('ModalInstanceCountCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenAssistant", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenAssistant) {
+app.controller('AssistantModalInstanceCountCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenAssistant", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenAssistant) {
 
-  // $route.reload();
-  // var vm = this;
 
   $scope.changeStatus = function(button) {
 

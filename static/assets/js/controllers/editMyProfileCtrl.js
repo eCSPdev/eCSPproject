@@ -78,7 +78,7 @@
 
       var modalInstance = $uibModal.open({
        templateUrl: 'modal1.html',
-       controller: 'ModalInstanceCtrl',
+       controller: 'EditProfileModalInstanceCtrl',
        size: size,
        backdrop: 'static',
        resolve: {
@@ -96,7 +96,7 @@
   }]);
 
 // Popup/Modal Controller
-app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "chosenUser", "$uibModalInstance", function ($scope, $rootScope, $state, $http, chosenUser, $uibModalInstance) {
+app.controller('EditProfileModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "chosenUser", "$uibModalInstance", function ($scope, $rootScope, $state, $http, chosenUser, $uibModalInstance) {
 
   $scope.ok = function () {
 

@@ -21,6 +21,8 @@
 	// Patient that is being managed
 	$rootScope.chosenPatient = '';
 
+  // $rootScope.deactivatePatientCount++;
+
     if ($rootScope.currentUser) {
     	if($rootScope.currentUser.role == 'Doctor')
     	{
@@ -188,7 +190,7 @@
       if($rootScope.activatePatientCount == 0) {
          var modalInstance = $uibModal.open({
             templateUrl: 'modal_activate.html',
-            controller: 'ModalInstanceCtrl',
+            controller: 'PatientModalInstanceCtrl',
             size: size,
             backdrop: 'static',
             resolve: {
@@ -209,7 +211,7 @@
   else {
     var modalInstance = $uibModal.open({
         templateUrl: 'modal_activate.html',
-        controller: 'ModalInstanceCountCtrl',
+        controller: 'PatientModalInstanceCountCtrl',
         size: size,
         backdrop: 'static',
         resolve: {
@@ -232,7 +234,7 @@
       if($rootScope.deactivatePatientCount == 0) {
         var modalInstance = $uibModal.open({
           templateUrl: 'modal_deactivate.html',
-          controller: 'ModalInstanceCtrl',
+          controller: 'PatientModalInstanceCtrl',
           size: size,
           backdrop: 'static',
           resolve: {
@@ -252,7 +254,7 @@
 else {
     var modalInstance = $uibModal.open({
       templateUrl: 'modal_deactivate.html',
-      controller: 'ModalInstanceCountCtrl',
+      controller: 'PatientModalInstanceCountCtrl',
       size: size,
       backdrop: 'static',
       resolve: {
@@ -272,7 +274,8 @@ else {
 }]);
 
 // Popup/Modal Controller
-app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenPatient", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenPatient) {
+app.controller('PatientModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenPatient", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenPatient) {
+
 
     $scope.changeStatus = function(button) {
 
@@ -342,7 +345,8 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
 }]);
 
 // Popup/Modal Controller
-app.controller('ModalInstanceCountCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenPatient", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenPatient) {
+app.controller('PatientModalInstanceCountCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenPatient", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenPatient) {
+
 
     $scope.changeStatus = function(button) {
 

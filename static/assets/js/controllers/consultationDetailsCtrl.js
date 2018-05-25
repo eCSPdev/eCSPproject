@@ -288,7 +288,7 @@
 
     	var modalInstance = $uibModal.open({
     		templateUrl: 'modal_upload.html',
-    		controller: 'ModalInstanceCtrl',
+    		controller: 'ConsultationDetailsModalInstanceCtrl',
             backdrop: 'static',
             size: 'md'
         }).result.catch(function(res) {
@@ -301,7 +301,7 @@
 }]);
 
 // Popup/Modal Controller
-app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "FileUploader", function ($scope, $rootScope, $state, $http, $uibModalInstance, FileUploader) {
+app.controller('ConsultationDetailsModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "FileUploader", function ($scope, $rootScope, $state, $http, $uibModalInstance, FileUploader) {
 
 	
 	$scope.fileType = '';

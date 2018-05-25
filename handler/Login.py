@@ -58,9 +58,9 @@ class LoginHandler:
         pssword = form['pssword']
         dao = LoginDAO()
         patient = dao.validatePatient(username, pssword)
-        status = patient[1]
         if patient == None:
             return jsonify(Error="Invalid Username or Password"), 400
+        status = patient[1]
         if status == True:
             result = self.build_PLogin_dict(patient, token)
             self.updateLogInformation(username, token, 'Patient')

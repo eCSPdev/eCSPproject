@@ -25,7 +25,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="thisUser.firstname" ng-pattern="/^([a-zA-Z\s])+$/" required>
+							<input type="text" name="firstName" class="form-control" placeholder="Enter first name" ng-model="thisUser.firstname" ng-pattern="/^[a-zA-ZñáéíóúüÑÁÉÍÓÚÜ\s]*$/" required>
 							<span class="error text-small block" ng-if="editMyProfileForm.firstName.$dirty && editMyProfileForm.firstName.$invalid">Enter a valid first name.</span>
 						</div>
 
@@ -36,7 +36,7 @@
 							</label>
 
 							<!-- ng-pattern: Regular Expressions for Input -->
-							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="thisUser.middlename" ng-pattern="/^([a-zA-Z\s])+$/">
+							<input type="text" name="middleName" class="form-control" placeholder="Enter middle name" ng-model="thisUser.middlename" ng-pattern="/^[a-zA-ZñáéíóúüÑÁÉÍÓÚÜ\s]*$/">
 							<span class="error text-small block" ng-if="editMyProfileForm.middleName.$dirty && editMyProfileForm.middleName.$invalid">Enter a valid middle name.</span>
 						</div>
 
@@ -45,7 +45,7 @@
 							<label class="control-label">
 								Last Name <span class="symbol required"></span>
 							</label>
-							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="thisUser.lastname" ng-pattern="/^([a-zA-Z\s])+$/" required>
+							<input type="text" name="lastName" class="form-control" placeholder="Enter last name" ng-model="thisUser.lastname" ng-pattern="/^[a-zA-ZñáéíóúüÑÁÉÍÓÚÜ\s]*$/" required>
 							<span class="error text-small block" ng-if="editMyProfileForm.lastName.$dirty && editMyProfileForm.lastName.$invalid">Enter a valid last name.</span>
 						</div>	
 
@@ -64,9 +64,9 @@
 							<label>
 								Phone Number <span class="symbol required"></span>
 							</label>
-							<div class="input-group">
-								<input type="text" class="form-control" name="phoneNumber" placeholder="Ex. 7871234567" ng-model="thisUser.phone" ng-pattern="/^[0-9]*$/" maxlength="10" required>
-								<span class="error text-small block" ng-if="editMyProfileForm.phoneNumber.$dirty && editMyProfileForm.phoneNumber.$invalid">Enter a valid phone number.</span>
+							<div class="form-group">
+								<input type="text" placeholder="Ex. 7871234567" name="phoneNumber" class="form-control" ng-model="thisUser.phone" maxlength="10" minlength="10" ng-pattern="/^([0-9])*$/" required>
+								<span class="error text-small block" ng-if="editMyProfileForm.phoneNumber.$dirty && editMyProfileForm.phoneNumber.$invalid">Enter a valid record number.</span>
 							</div>
 						</div>
 
@@ -154,7 +154,7 @@
 
 						<div class="form-group" style="margin-top: 35px;">
 							<a class="btn btn-red" ui-sref="app.users.view_my_profile" style="float: right">Cancel</a>
-							<button class="btn btn-primary" ng-click="open('sm')" ng-disabled="editMyProfileForm.$invalid || || editMyProfileForm.$pristine || thisUser.pssword != thisUser.confirmPassword" style="float:right;margin-right:15px;">Save Changes</a>
+							<button class="btn btn-primary" ng-click="open('sm')" ng-disabled="editMyProfileForm.$invalid || editMyProfileForm.$pristine || thisUser.pssword != thisUser.confirmPassword" style="float:right;margin-right:15px;">Save Changes</a>
 						</div>
 
 					</fieldset>

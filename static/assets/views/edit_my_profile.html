@@ -66,7 +66,7 @@
 							</label>
 							<div class="form-group">
 								<input type="text" placeholder="Ex. 7871234567" name="phoneNumber" class="form-control" ng-model="thisUser.phone" maxlength="10" minlength="10" ng-pattern="/^([0-9])*$/" required>
-								<span class="error text-small block" ng-if="editMyProfileForm.phoneNumber.$dirty && editMyProfileForm.phoneNumber.$invalid">Enter a valid record number.</span>
+								<span class="error text-small block" ng-if="editMyProfileForm.phoneNumber.$dirty && editMyProfileForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>
 
@@ -150,6 +150,8 @@
 								Repeat Password
 							</label>
 							<input type="password" placeholder="Repeat new password" class="form-control" id="confirmPassword" ng-model="thisUser.confirmPassword" ng-pattern="thisUser.pssword"/>
+							<span class="error text-small block" ng-if="editMyProfileForm.confirmPassword.$invalid">Re-enter a valid password.</span>
+							<span class="error text-small block" ng-if="thisUser.pssword != thisUser.confirmPassword">Passwords do not match. Please try again.</span>
 						</div>
 
 						<div class="form-group" style="margin-top: 35px;">

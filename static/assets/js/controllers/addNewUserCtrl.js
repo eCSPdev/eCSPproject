@@ -35,7 +35,13 @@
       var birthdate = new Date($scope.newUser.birthdate);
       var today = new Date();
 
-      if (birthdate >= today || birthdate == 'Invalid Date') {
+      if (birthdate == 'Invalid Date') {
+        alert('Date of birth is invalid. Please try again.');
+        $scope.newUser.birthdate = '';
+        return;
+      }
+
+      else if (birthdate >= today) {
         alert('Date of birth cannot be later than the current date. Try again.');
         $scope.newUser.birthdate = '';
         return;

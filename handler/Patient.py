@@ -417,7 +417,7 @@ class PatientHandler:
                 #History
                             dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender,
                                                      phone, status, email, username, pssword, insurancecompanyname, street,
-                                                     aptno, city, st, country, zipcode, visitdate, 'none', 'none', 'none', 'none')
+                                                     aptno, city, st, country, zipcode, visitdate, None, None, None, None)
                             print("Añadi el patient history")
                             result = self.new_patient_dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                                    email, username, pssword, addressid, street, aptno, city, st, country,

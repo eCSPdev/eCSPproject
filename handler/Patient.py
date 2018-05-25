@@ -381,11 +381,12 @@ class PatientHandler:
             if firstname and lastname and ssn and birthdate and phone and username and pssword\
                     and street and city and country and zipcode \
                     and rle and recordno:
-                print("pase el primer if")
+                print("Tengo toda la info requerida asi que pase el primer if")
                 dao = PatientsDAO()
                 doctordao = DoctorDAO()
                 assistantdao = AssistantDAO()
 
+                print("Voy a verificar el nombre completo, ssn y fecha de nacimiento a ver si no existe este paciente")
                 #verify if a patient exist with this information
                 existantpatient_list = dao.verifyPatient(firstname, middlename, lastname, ssn, birthdate)
                 #no patient exist with this information
@@ -393,30 +394,35 @@ class PatientHandler:
                     print("paciente no existe, puedo añadirlo")
                     #verify if the record number is already taken
                     if dao.getMedicalRecordByRecordno(recordno) == None:
-
+                        print("Recordno es valido y unico")
                         #verify if username already exist
                         if dao.verifyUsername(username) == None \
                                 and doctordao.verifyUsername(username) == None \
                                 and assistantdao.verifyUsername(username) == None:
-                            print("username y record son unicos")
+                            print("Username es valido y unico")
                             # patientid = uuid.uuid4()
                             #record number and username is not taken yet, Patient can be inserted
                             patientid = dao.insertPatientInfo(firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                                    email, username, pssword, insurancecompanyname)
+                            print("Añadi el patient info")
                             addressid = dao.insertPatientAddress(patientid, street, aptno, city, st, country, zipcode)
+                            print("Añadi el patient address")
                             dao.insertMedicalRecord(recordno, patientid)
+                            print("Añadi el medical record")
                             # visit_time = time.time()
                             visitdate = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(visit_time).strftime('%Y-%m-%d %H:%M:%S')
                             dao.insertVisit(recordno, patientid, visitdate, type)
+                            print("Añadi la visita")
 
                 #History
                             dao.insertPatientHistory(patientid, firstname, middlename, lastname, ssn, birthdate, gender,
                                                      phone, status, email, username, pssword, insurancecompanyname, street,
                                                      aptno, city, st, country, zipcode, visitdate, 'none', 'none', 'none', 'none')
-
+                            print("Añadi el patient history")
                             result = self.new_patient_dict(patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
                                                    email, username, pssword, addressid, street, aptno, city, st, country,
                                                    zipcode, insurancecompanyname, recordno)
+                            print("Patient added correctly")
                             return jsonify(Success="Patient added correctly", New_Patient=result), 201
 
                             # return jsonify(Success="Patient added correctly")

@@ -26,6 +26,18 @@
 
     $scope.addUser = function() {
 
+      var birthdate = new Date($scope.newUser.birthdate);
+      var today = new Date();
+
+      if (birthdate >= today || birthdate == 'Invalid Date') {
+        alert('Date of birth cannot be later than the current date. Try again.');
+        $scope.newUser.birthdate = '';
+        return;
+      }
+
+      // Save as date
+      $scope.newUser.birthdate = birthdate;
+
       // Create (INSERT) new patient
       if($scope.newUser.role == 'patient')
       {
@@ -44,6 +56,24 @@
               alert("Invalid credentials. Please login again.");
               $state.go('login.signin');
             }
+
+            else if(response.data && response.data.Error == 'Username is already taken.') {
+              alert("Username is already taken. Please try again.");
+              $scope.newUser.username = '';
+            }
+
+            else if(response.data && response.data.Error == 'Record Number is already taken.') {
+              alert("Record number already exists. Please try again.");
+              $scope.newUser.recordno == '';
+            }
+
+            else if(response.data && response.data.Error == 'A Patient with this information already exist.') {
+              alert("A patient with this information exists. Please try again.");
+
+            }
+
+            return;
+
           });
         }
 
@@ -54,6 +84,7 @@
           .then(function success(response) {
 
             alert("New user added successfuly!");
+            $scope.newUser.role = 'patient';
             $scope.newUser = response.data;
             $state.go('app.users.manage_users.manage_patients');
 
@@ -62,6 +93,24 @@
                 alert("Invalid credentials. Please login again.");
                 $state.go('login.signin');
               }
+
+              else if(response.data && response.data.Error == 'Username is already taken.') {
+              alert("Username is already taken. Please try again.");
+              $scope.newUser.username = '';
+            }
+
+              else if(response.data && response.data.Error == 'Record Number is already taken.') {
+                alert("Record number already exists. Please try again.");
+                $scope.newUser.recordno == '';
+              }
+
+              else if(response.data && response.data.Error == 'A Patient with this information already exist.') {
+              alert("A patient with this information exists. Please try again.");
+
+            }
+
+            return;
+
            });
         }
       }
@@ -69,8 +118,6 @@
       // Create (INSERT) new assistant
       else
       {
-
-        //$scope.newUser.role = 'patient';
         
         /* HTTP POST Request: insertAssistant() */
         /* Create new assistant */
@@ -86,6 +133,18 @@
               alert("Invalid credentials. Please login again.");
               $state.go('login.signin');
             }
+
+            else if(response.data && response.data.Error == 'Username is already taken.') {
+              alert("Username is already taken. Please try again.");
+              $scope.newUser.username = '';
+            }
+
+            else if(response.data && response.data.Error == 'A Assistant with this information already exist.') {
+              alert("An assistant with this information exists. Please try again.");
+
+            }
+
+            return;
          });
       }
 

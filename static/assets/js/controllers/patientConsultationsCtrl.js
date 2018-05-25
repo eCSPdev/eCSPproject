@@ -38,8 +38,6 @@
 
 	else {
 		if($rootScope.currentUser.role == 'Doctor') {
-			console.log('Doctor Query');
-			console.log($rootScope.currentUser);
 			$http.get('/Doctor/eCSP/Patient/Files/Dates?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $rootScope.chosenRecord.patientID) 
 			.then(function success(response) {
 
@@ -55,7 +53,7 @@
 		        	page: 1, 
 
 		        	// Count per page
-		        	count: 10,
+		        	count: 25,
 
 		        	// initial sort order
 		        	sorting: {
@@ -83,7 +81,7 @@
 		        	page: 1, 
 
 		        	// Count per page
-		        	count: 10,
+		        	count: 25,
 
 		        	// initial sort order
 		        	sorting: {
@@ -99,8 +97,7 @@
 		}
 
 		else if($rootScope.currentUser.role == 'Assistant') {
-			console.log('Assistant Query');
-			console.log($rootScope.currentUser);
+	
 			$http.get('/Assistant/eCSP/Patient/Files/Dates?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $rootScope.chosenRecord.patientID) 
 			.then(function success(response) {
 
@@ -116,7 +113,7 @@
 		        	page: 1, 
 
 		        	// Count per page
-		        	count: 10,
+		        	count: 25,
 
 		        	// initial sort order
 		        	sorting: {
@@ -144,7 +141,7 @@
 		        	page: 1, 
 
 		        	// Count per page
-		        	count: 10,
+		        	count: 25,
 
 		        	// initial sort order
 		        	sorting: {
@@ -161,8 +158,6 @@
 		}
 
 		else {
-			console.log('Patient Query');
-			console.log($rootScope.currentUser);
 			$http.get('/Patient/eCSP/Files/Dates?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + $rootScope.currentUser.userid) 
 			.then(function success(response) {
 
@@ -178,7 +173,7 @@
 		        	page: 1, 
 
 		        	// Count per page
-		        	count: 10,
+		        	count: 25,
 
 		        	// initial sort order
 		        	sorting: {
@@ -206,7 +201,7 @@
 		        	page: 1, 
 
 		        	// Count per page
-		        	count: 10,
+		        	count: 25,
 
 		        	// initial sort order
 		        	sorting: {

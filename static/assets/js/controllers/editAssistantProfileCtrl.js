@@ -23,8 +23,6 @@
     $http.get('/Doctor/eCSP/Assistant/PersonalInformation?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&assistantid=' + $rootScope.chosenAssistant + '&username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token) 
     .then(function success(response) {
 
-      console.log(response);
-
       $scope.temporaryPassword = response.data.Assistant.pssword;
       delete response.data.Assistant.pssword;
       $scope.thisAssistant = response.data.Assistant;
@@ -53,14 +51,14 @@
           return [$scope.thisAssistant, $scope.temporaryPassword];
         }
       }
+    }).result.catch(function(res) {
+      if (!(res === 'cancel' || res === 'escape key press')) {
+        throw res;
+      }
     });
+  };
 
-      modalInstance.result.then(function (confirmation) {
-       if(confirmation == true) {  }
-     });
-    };
-
-  }]);
+}]);
 
 // Popup/Modal Controller
 app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", "chosenAssistant", "$uibModalInstance", function ($scope, $rootScope, $state, $http, chosenAssistant, $uibModalInstance) {
@@ -70,10 +68,8 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     $scope.thisAssistant = chosenAssistant[0];
 
     if(!$scope.thisAssistant.pssword) {
-            $scope.thisAssistant.pssword = $scope.temporaryPassword;
+      $scope.thisAssistant.pssword = chosenAssistant[1];
     }
-
-    console.log($scope.thisAssistant.pssword);
 
     /* HTTP PUT Request: getAssistantByID() */
     /* Update (PUT) assistant personal information */

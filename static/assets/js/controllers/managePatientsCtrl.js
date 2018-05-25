@@ -189,6 +189,7 @@
             templateUrl: 'modal_activate.html',
             controller: 'ModalInstanceCtrl',
             size: size,
+            backdrop: 'static',
             resolve: {
                 chosenPatient: function() {
                     return patientID;
@@ -204,6 +205,7 @@
             templateUrl: 'modal_deactivate.html',
             controller: 'ModalInstanceCtrl',
             size: size,
+            backdrop: 'static',
             resolve: {
                 chosenPatient: function() {
                     return patientID;

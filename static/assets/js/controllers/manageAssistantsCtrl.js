@@ -96,6 +96,7 @@
     		templateUrl: 'modal_activate.html',
     		controller: 'ModalInstanceCtrl',
     		size: size,
+        backdrop: 'static',
     		resolve: {
     			chosenAssistant: function() {
           		return assistantID;
@@ -111,6 +112,7 @@
     		templateUrl: 'modal_deactivate.html',
     		controller: 'ModalInstanceCtrl',
     		size: size,
+        backdrop: 'static',
     		resolve: {
     			chosenAssistant: function() {
           		return assistantID;

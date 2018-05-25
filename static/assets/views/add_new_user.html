@@ -109,7 +109,7 @@
 						</div>
 
 						<!-- Insurance company form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.insuranceCompany.$invalid, 'has-success':addNewUserForm.insuranceCompany.$valid }" ng-if="newUser.role == 'patient'">
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.insuranceCompany.$invalid, 'has-success':addNewUserForm.insuranceCompany.$valid }" ng-if="currentUser.role == 'Assistant' || (currentUser.role == 'Doctor' && newUser.role == 'patient')">
 							<label>
 								Insurance Company
 							</label>
@@ -118,7 +118,7 @@
 						</div>	
 
 						<!-- Medical record number form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.recordNumber.$invalid && !addNewUserForm.recordNumber.$pristine, 'has-success':addNewUserForm.recordNumber.$valid }" ng-if="newUser.role == 'patient'">
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.recordNumber.$invalid && !addNewUserForm.recordNumber.$pristine, 'has-success':addNewUserForm.recordNumber.$valid }" ng-if="currentUser.role == 'Assistant' || (currentUser.role == 'Doctor' && newUser.role == 'patient')">
 							<label>
 								Record Number <span class="symbol required"></span>
 							</label>
@@ -134,7 +134,7 @@
 							</label>
 							<div class="form-group">
 								<input type="text" placeholder="Ex. 7871234567" name="phoneNumber" class="form-control" ng-model="newUser.phone" maxlength="10" minlength="10" ng-pattern="/^([0-9])*$/" required>
-								<span class="error text-small block" ng-if="addNewUserForm.phoneNumber.$dirty && addNewUserForm.phoneNumber.$invalid">Enter a valid record number.</span>
+								<span class="error text-small block" ng-if="addNewUserForm.phoneNumber.$dirty && addNewUserForm.phoneNumber.$invalid">Enter a valid phone number.</span>
 							</div>
 						</div>
 
@@ -221,7 +221,7 @@
 						</div>
 
 						<!-- Password confirmation form input and validation -->
-						<div class="form-group" ng-class="{'has-error':addNewUserForm.confirmPassword.$dirty || addNewUserForm.confirmPassword.$dirty && addNewUserForm.confirmPassword.$invalid, 'has-success':addNewUserForm.confirmPassword.$valid}">
+						<div class="form-group" ng-class="{'has-error':addNewUserForm.confirmPassword.$dirty && addNewUserForm.confirmPassword.$invalid, 'has-success':addNewUserForm.confirmPassword.$valid}">
 							<label>
 								Repeat Password <span class="symbol required"></span>
 							</label>

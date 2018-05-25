@@ -185,42 +185,90 @@
     // openActivate() Function Definition
     $scope.openActivate = function (size, patientID) {
 
-        var modalInstance = $uibModal.open({
+      if($rootScope.activatePatientCount == 0) {
+         var modalInstance = $uibModal.open({
             templateUrl: 'modal_activate.html',
             controller: 'ModalInstanceCtrl',
             size: size,
             backdrop: 'static',
             resolve: {
-                chosenPatient: function() {
-                    return patientID;
-                }
-            }
-        }).result.catch(function(res) {
+               chosenPatient: function() {
+                  return patientID;
+              }
+          }
+      }).result.catch(function(res) {
           if (!(res === 'cancel' || res === 'escape key press')) {
+            console.log(res);
             throw res;
         }
     });
+
+      $rootScope.activatePatientCount++;
+  }
+
+  else {
+    var modalInstance = $uibModal.open({
+        templateUrl: 'modal_activate.html',
+        controller: 'ModalInstanceCountCtrl',
+        size: size,
+        backdrop: 'static',
+        resolve: {
+           chosenPatient: function() {
+              return patientID;
+          }
+      }
+  }).result.catch(function(res) {
+      if (!(res === 'cancel' || res === 'escape key press')) {
+        console.log(res);
+        throw res;
     }
+});
+}
+}
 
     // openDeactivate() Function Definition
     $scope.openDeactivate = function (size, patientID) {
 
+      if($rootScope.deactivatePatientCount == 0) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'modal_deactivate.html',
-            controller: 'ModalInstanceCtrl',
-            size: size,
-            backdrop: 'static',
-            resolve: {
-                chosenPatient: function() {
-                    return patientID;
-                }
-            }
-        }).result.catch(function(res) {
-          if (!(res === 'cancel' || res === 'escape key press')) {
-            throw res;
-        }
-    });
+          templateUrl: 'modal_deactivate.html',
+          controller: 'ModalInstanceCtrl',
+          size: size,
+          backdrop: 'static',
+          resolve: {
+            chosenPatient: function() {
+              return patientID;
+          }
+      }
+  }).result.catch(function(res) {
+    if (!(res === 'cancel' || res === 'escape key press')) {
+        throw res;
     }
+});
+
+  $rootScope.deactivatePatientCount++;
+}
+
+else {
+    var modalInstance = $uibModal.open({
+      templateUrl: 'modal_deactivate.html',
+      controller: 'ModalInstanceCountCtrl',
+      size: size,
+      backdrop: 'static',
+      resolve: {
+        chosenPatient: function() {
+          return patientID;
+      }
+  }
+}).result.catch(function(res) {
+  if (!(res === 'cancel' || res === 'escape key press')) {
+    throw res;
+}
+});
+}
+
+}
+
 }]);
 
 // Popup/Modal Controller
@@ -229,7 +277,76 @@ app.controller('ModalInstanceCtrl', ["$scope", "$rootScope", "$state", "$http", 
     $scope.changeStatus = function(button) {
 
         if($rootScope.currentUser.role == 'Doctor') {
-            console.log($scope.daysofgrace);
+
+            if(button == 'activate') {
+                $http.put('/Doctor/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient)
+                .then(function success(response) {
+                    $state.reload();
+                }, function error(response) {
+                    if(response.data && response.data.Error == 'Invalid Token') {
+                      alert("Invalid credentials. Please login again.");
+                      $state.go('login.signin');
+                  }
+
+              });
+            }
+
+            else if(button == 'deactivate') {
+                $http.put('/Doctor/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient  + '&daysofgrace=' + $scope.daysofgrace)
+                .then(function success(response) { 
+                    $state.reload();
+                }, function error(response) { 
+                    if(response.data && response.data.Error == 'Invalid Token') {
+                      alert("Invalid credentials. Please login again.");
+                      $state.go('login.signin');
+                  }
+              });
+            }
+        }
+
+        else {
+
+            if(button == 'activate') {
+                $http.put('/Assistant/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient)
+                .then(function success(response) { 
+                    $state.reload();
+                }, function error(response) { 
+                    if(response.data && response.data.Error == 'Invalid Token') {
+                      alert("Invalid credentials. Please login again.");
+                      $state.go('login.signin');
+                  }
+              });
+            }
+
+            else if(button == 'deactivate') {
+                $http.put('/Assistant/eCSP/Patient/Deactivate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient  + '&daysofgrace=' + $scope.daysofgrace)
+                .then(function success(response) { 
+                    $state.reload();
+                }, function error(response) { 
+                    if(response.data && response.data.Error == 'Invalid Token') {
+                      alert("Invalid credentials. Please login again.");
+                      $state.go('login.signin');
+                  }
+              });
+            }
+        }
+
+        $uibModalInstance.close(true);
+    };
+
+    $scope.cancel = function () {
+        $scope.daysofgrace = '30';
+        $uibModalInstance.dismiss('cancel');
+    };
+
+}]);
+
+// Popup/Modal Controller
+app.controller('ModalInstanceCountCtrl', ["$scope", "$rootScope", "$state", "$http", "$uibModalInstance", "chosenPatient", function ($scope, $rootScope, $state, $http, $uibModalInstance, chosenPatient) {
+
+    $scope.changeStatus = function(button) {
+
+        if($rootScope.currentUser.role == 'Doctor') {
 
             if(button == 'activate') {
                 $http.put('/Doctor/eCSP/Patient/Activate?username=' + $rootScope.currentUser.username + '&token=' + $rootScope.currentUser.token + '&patientid=' + chosenPatient)

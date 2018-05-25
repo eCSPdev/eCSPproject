@@ -15,6 +15,11 @@ app.controller('homepageCtrl', ["$scope", "$rootScope", "$state", function($scop
     $rootScope.uploaded = { };
     $rootScope.chosenRecord = { };
 
+    $rootScope.activateAssistantCount = 0;
+    $rootScope.deactivateAssistantCount = 0;
+    $rootScope.activatePatientCount = 0;
+    $rootScope.deactivatePatientCount = 0;
+
     if ($rootScope.currentUser) {
 
         if($rootScope.currentUser.role == 'Doctor' || $rootScope.currentUser.role == 'Assistant') {

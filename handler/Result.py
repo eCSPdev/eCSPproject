@@ -5,6 +5,7 @@ from dao.s3connection import s3Connection
 from datetime import datetime, timezone
 class ResultHandler:
 
+    #### List of Result Diccionary ####
     def build_resultlist_dict(self,row):
         result = {}
         result['resultid'] = row[0]
@@ -15,6 +16,7 @@ class ResultHandler:
         result['patientid'] = row[5]
         return result
 
+    #### Insert Result Diccionary ####
     def build_resinsert_dict(self, resultid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno):
         result = {}
         result['resultid'] = resultid
@@ -26,12 +28,16 @@ class ResultHandler:
         result['recordno'] = recordno
         return result
 
+    #### List of Result Dates Diccionary ####
     def build_rdates_dict(self, row):
         result = {}
         result['year'] = row[0]
         result['month'] = row[1]
         return result
 
+    ### Get Pateint Result
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getPatientResult(self, args):
         pid = args.get("patientid")
         dao = ResultDAO()
@@ -44,6 +50,9 @@ class ResultHandler:
             list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
         return jsonify(Result=list)
 
+    ### Get Result by patient ID and Referral ID
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getResultByID(self, args):
         pid = args.get("patientid")
         resid = args.get("resultid")
@@ -55,6 +64,10 @@ class ResultHandler:
             result = self.build_resultlist_dict(row[0])
             return jsonify(Result=result)
 
+    ### insert Results
+    # Parameters:   args - requested parameters
+    #               file
+    # Return:   Json or Error
     def insertResult(self, args, file):
         dao = ResultDAO()
         # filepath = file  # this is the file to insert
@@ -97,6 +110,9 @@ class ResultHandler:
         else:
             return jsonify(Error="Unexpected attributes in insert request"), 400
 
+    ### Get Results Dates
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getResultDates(self, args):
         print('estoy en el Result Dates')
         pid = args.get("patientid")

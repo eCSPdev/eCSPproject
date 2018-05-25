@@ -9,6 +9,7 @@ import uuid
 
 class AssistantHandler:
 
+    #### Assistant List Diccionary ####
     def build_assistantlist_dict(self,row):
         result = {}
         result['assistantid'] = row[0]
@@ -22,6 +23,7 @@ class AssistantHandler:
         #result['pssword'] = row[8]
         return result
 
+    #### Assistant Information Diccionary ####
     def build_assistantinfo_dict(self,row):
         print(row)
         result = {}
@@ -43,6 +45,7 @@ class AssistantHandler:
         result['zipcode'] = row[15]
         return result
 
+    #### Update Assistant Information Diccionary ####
     def update_assistant_dict(self, assistantid, firstname, middlename, lastname, phone, status,
                            email, street, aptno, city, st, country, zipcode):
         result = {}
@@ -61,6 +64,7 @@ class AssistantHandler:
         result['zipcode'] = zipcode
         return result
 
+    #### New Assistant Diccionary ####
     def new_assistant_dict(self, assistantid, firstname, middlename, lastname, phone, status, email, username,
                            pssword, addressid, street, aptno, city, st, country, zipcode):
         result = {}
@@ -82,7 +86,7 @@ class AssistantHandler:
         result['zipcode'] = zipcode
         return result
 
-
+    #### Assistant History Diccionary ####
     def build_assistanthistory_dict(self, assistantid, firstname, middlename, lastname, phone, status,
                                  email, username, street, aptno, city, st, country, zipcode):
         result = {}
@@ -102,6 +106,7 @@ class AssistantHandler:
         result['zipcode'] = zipcode
         return result
 
+    #### Assistant Validation Diccionary ####
     def verify_existantassistant_dict(self, row):
         result = {}
         result['assistantid'] = row[0]
@@ -121,11 +126,13 @@ class AssistantHandler:
         result['zipcode'] = row[14]
         return result
 
+    #### Update Assistant pssword Diccionary ####
     def update_assistant_pssword_dict(self, row):
         result = {}
         result['assistantid'] = row[0]
         return result
 
+    #### Assistant List Diccionary ####
     def getAllAssistant(self):
         dao = AssistantDAO()
         result = dao.getAllAssistants()
@@ -134,6 +141,9 @@ class AssistantHandler:
             result_list.append(self.build_assistantlist_dict(row))
         return jsonify(Assistant=result_list)
 
+    ### Get Assistant information By ID
+    # Parameters:   form - requested parameters
+    # Return:   Json or Error
     def getAssistantByID(self, args):
         dao = AssistantDAO()
         aid = args.get("assistantid")
@@ -144,6 +154,9 @@ class AssistantHandler:
             result = self.build_assistantinfo_dict(row)
             return jsonify(Assistant = result)
 
+    ### Insert New Assistant
+    # Parameters:   form - requested parameters
+    # Return:   Json or Error
     def insertAssistant(self, form):
         DoctorSign = form['registeredby']
         firstname = form['firstname']
@@ -185,7 +198,6 @@ class AssistantHandler:
                     # license number and username is not taken yet, Doctor can be inserted
                     assistantid = dao.insertAssistantInfo(firstname, middlename, lastname, phone, email, username, pssword)
                     addressid = dao.insertAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
-
                     # changes_time = time.time()
                     changesdate = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                     dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
@@ -212,6 +224,10 @@ class AssistantHandler:
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
+    ### Update Assistant Information
+    # Parameters:   form - requested parameters
+    #               path - requested path
+    # Return:   Json or Error
     def updateAssistantInformation(self, form, path):
         # A-adido
         print ('Estoy en el update assistant information')
@@ -258,14 +274,11 @@ class AssistantHandler:
 
             if assistantid and firstname and lastname and phone and status and street \
                     and city and country and zipcode:
-                print('En el IF')
                 dao.updateAssistantInfoByID(assistantid, firstname, middlename, lastname, phone, status,
                                             email, username, pssword)
                 dao.updateAssistantAddress(assistantid, street, aptno, city, st, country, zipcode)
 
-        #History
-                # changes_time = time.time()
-
+                #History
                 dateofchanges = datetime.now(timezone.utc).astimezone().strftime('%Y-%m-%d %H:%M:%S')#datetime.datetime.fromtimestamp(changes_time).strftime('%Y-%m-%d %H:%M:%S')
                 ## Modificado (... , DoctorSign)
                 dao.insertAssistantHistory(assistantid, firstname, middlename, lastname, phone, status,
@@ -279,6 +292,9 @@ class AssistantHandler:
                 print('Entre al else')
                 return jsonify(Error="Unexpected attributes in update request"), 400
 
+    ### Update Assistant Password
+    # Parameters:   form - requested parameters
+    # Return:   Json or Error
     def updateAssistantPssword(self, form):
         dao = AssistantDAO()
         assistantid = form["assistantid"]
@@ -293,6 +309,10 @@ class AssistantHandler:
             else:
                 return jsonify(Error="Unexpected attributes in update request"), 400
 
+    ### Update Assistant Status
+    # Parameters:   form - requested parameters
+    #               status - new status
+    # Return:   Json or Error
     def manageAssistantStatus(self, form, status):
         print('Just entered manageAssistantStatus method')
         DoctorSign = form['username']
@@ -340,37 +360,3 @@ class AssistantHandler:
             result = self.update_assistant_dict(assistantid, firstname, middlename, lastname, phone, status,
                                                 email, street, aptno, city, st, country, zipcode)
             return jsonify(Assistant=result), 200
-
-
-########## Assistant History #############
-#Para hacerle insert al history del Asistente
-
-    def insertAssistantHistory(self, form):
-        dao = AssistantDAO()
-        assistantid = form['assistantid']
-        firstname = form['firstname']
-        middlename = form['middlename']
-        lastname = form['lastname']
-        phone = form['phone']
-        status = form['status']
-        email = form['email']
-        username = form['username']
-        street = form['street']
-        aptno = form['aptno']
-        city = form['city']
-        st = form['st']
-        country = form['country']
-        zipcode = form['zipcode']
-        if assistantid and firstname and middlename and lastname and \
-                phone and status and username \
-                and street and city and st and country and zipcode:
-            dao.insertAssistantHistory(assistantid, firstname, middlename, lastname,
-                                    phone, status, email, username,
-                                    street, aptno, city, st, country, zipcode)
-            result = self.build_assistanthistory_dict(assistantid, firstname, middlename,
-                                                lastname, phone, status, email,
-                                                username, street, aptno,
-                                                city, st, country, zipcode)
-            return jsonify(Assistant = result), 201 #Verificar porque 201
-        else:
-            return jsonify(Error="Unexpected attributes in insert request"), 400

@@ -4773,27 +4773,27 @@ select[multiple="multiple"]:focus option {
 }
 
 .has-warning {
-  color: #eea236;
+  color: #3c763d;
 }
 .has-warning .control-label {
-  color: #8e8e93 !important;
+  color: #3c763d !important;
 }
 .has-warning .form-control {
-  color: #5b5b60;
-  border-color: #F8F8F8;
-  border-bottom-color: #8a6d3b !important;
+  /*color: #5b5b60;
+  border-color: #F8F8F8;*/
+  border-bottom-color: #3c763d !important;
   border-bottom-width: 1px !important;
   border-bottom-style: dotted;
-  border-color: #8a6d3b !important;
+  border-color: #3c763d !important;
   border-width: 1px !important;
-  border-style: dotted;
+  /*border-style: dotted;*/
 }
 .has-warning .form-control:focus, .has-warning .form-control:hover {
-  border-color: #F8F8F8;
-  border-bottom-color: #8a6d3b !important;
+  /*border-color: #F8F8F8;*/
+  border-bottom-color: #3c763d !important;
 }
 .has-warning label {
-  color: #8a6d3b;
+  color: #3c763d;
 }
 
 .has-success {
@@ -5003,10 +5003,8 @@ textarea.autosize.area-animated:focus {
 }
 
 .has-warning .symbol:before {
-  content: "\f071";
   display: inline;
   font-family: FontAwesome;
-  color: #eea236;
 }
 
 .has-error .note-editor, .has-error .cke_chrome {

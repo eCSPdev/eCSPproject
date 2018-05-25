@@ -120,7 +120,7 @@
 								Zip Code <span class="symbol required"></span>
 							</label>
 							<input type="text" name="zipCode" class="form-control" placeholder="Enter zipcode" ng-model="thisUser.zipcode" maxlength="5" minlength="5" ng-pattern="/^([0-9])*$/" required>
-							<span class="error text-small block" ng-if="editMyProfileForm.city.$dirty && editMyProfileForm.city.$invalid">Enter a valid zip code.</span>
+							<span class="error text-small block" ng-if="editMyProfileForm.zipCode.$dirty && editMyProfileForm.zipCode.$invalid">Enter a valid zip code.</span>
 						</div>	
 
 						<!-- Email form input and validation -->
@@ -139,8 +139,8 @@
 							<label>
 								New Password <span class="symbol required"></span>
 							</label>
-							<input type="password" placeholder="Enter new password" class="form-control" name="password" ng-model="thisUser.pssword" maxlength="24" minlength="8" ng-pattern="/^(?=^.{8,25}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" />
-							<span class="help-block"><i class="ti-info-alt text-primary"></i>   Password must be 8 to 24 characters, include a special character (cannot be '#'), a number (0-9), and an uppercase letter (A-Z).</span>
+							<input type="password" placeholder="Enter new password" class="form-control" name="password" ng-model="thisUser.pssword" maxlength="24" minlength="8" ng-pattern="/^(?=^.{8,24}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[~`!@$%^&*()_+?><-]).*$/" />
+							<span class="help-block" style="color:#636366;"><i class="ti-info-alt text-primary"></i>   Password must be 8 to 24 characters, include a special character (cannot be '#'), a number (0-9), and an uppercase letter (A-Z).</span>
 							<span class="error text-small block" ng-if="editMyProfileForm.password.$invalid">Enter a valid password (8 to 24 characters, include at least one special character and one uppercase letter)</span>
 						</div>
 

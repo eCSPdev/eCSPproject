@@ -393,8 +393,8 @@ class PatientsDAO:
             print("Connection closed.")
 
     def insertPatientHistory(self, patientid, firstname, middlename, lastname, ssn, birthdate, gender, phone,
-                                            status, email, username, pssword, insurancecompanyname, street, aptno, city,
-                                            st, country, zipcode, dateofchanges , AssistantSign, DoctorSign, deactivationdate, daysofgrace):
+                            status, email, username, pssword, insurancecompanyname, street, aptno, city,
+                            st, country, zipcode, dateofchanges , AssistantSign, DoctorSign, deactivationdate, daysofgrace):
         try:
             connection_url = "host=%s, port=%s, dbname=%s user=%s password=%s" % (
                 pg_config['host'], pg_config['port'], pg_config['dbname'], pg_config['user'], pg_config['passwd'])

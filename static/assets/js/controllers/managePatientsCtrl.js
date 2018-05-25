@@ -52,7 +52,7 @@
             	page: 1, 
 
             	// Count per page
-            	count: 10,
+            	count: 25,
 
             	// initial sort order
             	sorting: {
@@ -78,7 +78,7 @@
                 page: 1, 
 
                 // Count per page
-                count: 10,
+                count: 25,
 
                 // initial sort order
                 sorting: {
@@ -125,7 +125,7 @@
             	page: 1, 
 
             	// Count per page
-            	count: 10,
+            	count: 25,
 
             	// initial sort order
             	sorting: {
@@ -151,7 +151,7 @@
                     page: 1, 
 
                     // Count per page
-                    count: 10,
+                    count: 25,
 
                     // initial sort order
                     sorting: {
@@ -195,7 +195,11 @@
                     return patientID;
                 }
             }
-        });
+        }).result.catch(function(res) {
+          if (!(res === 'cancel' || res === 'escape key press')) {
+            throw res;
+        }
+    });
     }
 
     // openDeactivate() Function Definition
@@ -211,7 +215,11 @@
                     return patientID;
                 }
             }
-        });
+        }).result.catch(function(res) {
+          if (!(res === 'cancel' || res === 'escape key press')) {
+            throw res;
+        }
+    });
     }
 }]);
 

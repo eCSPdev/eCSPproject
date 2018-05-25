@@ -73,11 +73,11 @@
           return [$scope.thisPatient, $scope.temporaryPassword];
         }
       }
+    }).result.catch(function(res) {
+          if (!(res === 'cancel' || res === 'escape key press')) {
+            throw res;
+        }
     });
-
-      modalInstance.result.then(function (confirmation) {
-       // if(confirmation == true) { }
-     });
     };
 
   }]);

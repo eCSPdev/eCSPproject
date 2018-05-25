@@ -27,7 +27,7 @@
 					<table class="table table-hover" style="width=50%;" ng-table="tableParams" template-pagination="custom/pager">
 						<thead>
 							<tr>
-								<td style="text-align:center;">
+								<td style="text-align:left;">
 									<a href="#" ng-click="sortType = 'recordno'; sortReverse = !sortReverse">
 										Record Number 
 										<span ng-show="sortType == 'recordno' && !sortReverse" class="fa fa-caret-down"></span>
@@ -56,7 +56,7 @@
 
 						<tbody>
 							<tr ng-repeat="patient in $data | orderBy:sortType:sortReverse | filter:patientSearch">
-								<td style="text-align:center;">{{ patient.recordno }}</td>
+								<td style="text-align:left;">{{ patient.recordno }}</td>
 								<td style="text-align:left;">{{ patient.lastname }}, {{ patient.firstname }} {{ patient.middlename }}</td>
 								<td style="text-align:center;">{{ patient.status }}</td>
 								<td style="text-align:center;"> 

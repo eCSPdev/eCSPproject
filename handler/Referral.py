@@ -5,6 +5,7 @@ from dao.s3connection import s3Connection
 from datetime import datetime, timezone
 class ReferralHandler:
 
+    #### List of Referral Diccionary ####
     def build_referrallist_dict(self,row):
         result = {}
         result['referralid'] = row[0]
@@ -15,6 +16,7 @@ class ReferralHandler:
         result['patientid'] = row[5]
         return result
 
+    #### Insert Referral Diccionary ####
     def build_refinsert_dict(self, referralid, filename, assistantusername, doctorusername, dateofupload, patientid, recordno):
         result = {}
         result['referralid'] = referralid
@@ -26,12 +28,16 @@ class ReferralHandler:
         result['recordno'] = recordno
         return result
 
+    #### Referral Dates Diccionary ####
     def build_rdates_dict(self, row):
         result = {}
         result['year'] = row[0]
         result['month'] = row[1]
         return result
 
+    ### Get Referral By Patient ID
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getPatientReferral(self, args):
         pid = args.get("patientid")
         dao = ReferralDAO()
@@ -44,6 +50,9 @@ class ReferralHandler:
             result_list.append(result)  # mapToDict() turns returned array of arrays to an array of maps
         return jsonify(Referral=result_list)
 
+    ### Get Referral By Patient ID and Referral ID
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getReferralByID(self, args):
         pid = args.get("patientid")
         refid = args.get("referralid")
@@ -55,6 +64,10 @@ class ReferralHandler:
             result = self.build_referrallist_dict(row[0])
             return jsonify(Referral=result)
 
+    ### Insert Referral By Patient ID
+    # Parameters:   args - requested parameters
+    #               file
+    # Return:   Json or Error
     def insertReferral(self, args, file):
         dao = ReferralDAO()
         # filepath = file  # this is the file to insert
@@ -97,6 +110,9 @@ class ReferralHandler:
         else:
             return jsonify(Error="Unexpected attributes in insert request"), 400
 
+    ### Get Referral Dates
+    # Parameters:   args - requested parameters
+    # Return:   Json or Error
     def getReferralDates(self, args):
         print('estoy en el Referral Dates')
         pid = args.get("patientid")

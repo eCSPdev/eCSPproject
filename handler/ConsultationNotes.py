@@ -71,7 +71,7 @@ class ConsultationNotesHandler:
 
     ### Get Patient Consultation Notes By Patient ID
     # Parameters:   args - requested parameters
-    # Return:   Error
+    # Return:   Json or Error
     def getPatientConsultationNotes(self, args):
         print('estoy en el CN List')
         pid = args.get("patientid")
@@ -87,7 +87,7 @@ class ConsultationNotesHandler:
 
     ### Get Patient Consultation Notes By Patient ID and COnsultation Note ID
     # Parameters:   args - requested parameters
-    # Return:   Error
+    # Return:   Json or Error
     def getConsultationNotesByID(self, args):
         pid = args.get("patientid")
         nid = args.get("consultationnoteid")
@@ -101,7 +101,7 @@ class ConsultationNotesHandler:
 
     ### Insert Consultation Notes By Patient ID
     # Parameters:   args - requested parameters
-    # Return:   Error
+    # Return:   Json or Error
     def insertConsultationNotes(self, args, file):
         dao = ConsultationNotesDAO()
 
@@ -152,7 +152,7 @@ class ConsultationNotesHandler:
 
     ### Get Files Dates By Patient ID
     # Parameters:   args - requested parameters
-    # Return:   Error
+    # Return:   Json or Error
     def getFilesDates(self, args):
         print('estoy en el CN Dates')
         pid = args.get("patientid")
@@ -168,7 +168,7 @@ class ConsultationNotesHandler:
 
     ### Get Patient Files By Patient ID
     # Parameters:   args - requested parameters
-    # Return:   Error Assistant don exist
+    # Return:   Json or Error
     def getPatientFiles(self, args):
         print('estoy en los Files')
         pid = args.get("patientid")
@@ -187,7 +187,7 @@ class ConsultationNotesHandler:
 
     ### Get Download File By Patient ID
     # Parameters:   args - requested parameters
-    # Return:   Error Assistant don exist
+    # Return:   Json or Erro
     def getDownloadFile(self, args):
 
         # logging.debug('DEBUG : ESTOY EN METODO DOWNLOAD FILES')

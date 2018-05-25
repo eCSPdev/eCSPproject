@@ -74,7 +74,7 @@
 						</div>
 
 						<!-- Social security number form input and validation -->
-						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.ssn.$invalid && !addNewUserForm.ssn.$pristine, 'has-success':addNewUserForm.ssn.$valid }" ng-if="newUser.role == 'patient'">
+						<div class="form-group" ng-class="{ 'has-error': addNewUserForm.ssn.$invalid && !addNewUserForm.ssn.$pristine, 'has-success':addNewUserForm.ssn.$valid }" ng-if="currentUser.role == 'Assistant' || (currentUser.role == 'Doctor' && newUser.role == 'patient'">
 							<label class="control-label">
 								Social Security Number (SSN) <span class="symbol required"></span>
 							</label>

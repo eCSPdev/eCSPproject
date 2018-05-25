@@ -266,7 +266,7 @@ class PatientHandler:
                             email, insurancecompanyname, street, aptno, city, st, country, zipcode)
                 return jsonify(Patient=result), 200
             else:
-                print('Else')
+                print("Unexpected attributes in update request")
                 return jsonify(Error="Unexpected attributes in update request"), 400
 
     def updatePatientPssword(self, form):
